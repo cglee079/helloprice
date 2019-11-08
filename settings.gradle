@@ -6,5 +6,7 @@ pluginManagement {
 
 rootProject.name = 'podo-itemwatcher'
 
-include 'itemwatcher-domain',
-        'itemwatcher-pooler'
+include 'itemwatcher-core',
+        'itemwatcher-domain',
+        'itemwatcher-pooler',
+        'itemwatcher-telegram'

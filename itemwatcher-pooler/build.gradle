@@ -1,5 +1,6 @@
 
 dependencies {
+    implementation project(':itemwatcher-core')
     implementation project(':itemwatcher-domain')
 
     implementation 'org.springframework.boot:spring-boot-starter-batch'
