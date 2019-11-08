@@ -1,6 +1,6 @@
-package com.podo.itemwatcher.pooler.job.pooler;
+package com.podo.itemwatcher.pooler;
 
-import com.podo.itemwatcher.core.domain.item.ItemInfoVo;
+import com.podo.itemwatcher.pooler.domain.ItemInfoVo;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.jsoup.nodes.Document;
@@ -28,7 +28,7 @@ public class DanawaPooler implements Pooler {
             final String itemImage = document.select(ITEM_IMAGE_SELECTOR).attr("src");
             final Integer itemPrice = Integer.valueOf(document.select(ITEM_PRICE_SELECTOR).text().replace(",", ""));
 
-            ItemInfoVo itemInfoVo = new ItemInfoVo(itemName, itemImage, itemPrice);
+            ItemInfoVo itemInfoVo = new ItemInfoVo(itemCode, itemName, itemImage, itemPrice);
 
             log.info("Pool ItemInfo, Code {}, ItemInfo : '{}'", itemCode, itemInfoVo);
 

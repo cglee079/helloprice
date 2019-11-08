@@ -1,7 +1,7 @@
 package com.podo.itemwatcher.core.domain.item;
 
 import com.podo.itemwatcher.core.domain.UpdatableBaseEntity;
-import com.podo.itemwatcher.core.domain.itemuser.ItemUserRelation;
+import com.podo.itemwatcher.core.domain.useritem.UserItemRelation;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -40,22 +40,28 @@ public class Item extends UpdatableBaseEntity {
     private ItemStatus itemStatus;
 
     @OneToMany(mappedBy = "item")
-    List<ItemUserRelation> itemUserRelations;
+    List<UserItemRelation> userItemRelations;
 
     @Builder
-    public Item(String itemCode, String itemName, Integer itemPrice, Integer itemBeforePrice, ItemStatus itemStatus) {
+    public Item(String itemCode, String itemName,
+                String itemImage,
+                Integer itemPrice, Integer itemBeforePrice,
+                ItemStatus itemStatus, LocalDateTime lastPoolAt) {
+
         this.itemCode = itemCode;
         this.itemName = itemName;
+        this.itemImage = itemImage;
         this.itemPrice = itemPrice;
         this.itemBeforePrice = itemBeforePrice;
         this.itemStatus = itemStatus;
+        this.lastPoolAt = lastPoolAt;
     }
 
-    public void updateInfo(ItemInfoVo itemInfoVo, LocalDateTime lastPoolAt) {
+    public void updateInfo(String itemName, String itemImage, Integer itemPrice, LocalDateTime lastPoolAt) {
         itemBeforePrice = itemPrice;
-        this.itemImage = itemInfoVo.getItemImage();
-        this.itemName = itemInfoVo.getItemName();
-        this.itemPrice = itemInfoVo.getItemPrice();
+        this.itemName = itemName;
+        this.itemImage = itemImage;
+        this.itemPrice = itemPrice;
         this.lastPoolAt = lastPoolAt;
         this.deadCount = 0;
 
@@ -70,5 +76,9 @@ public class Item extends UpdatableBaseEntity {
 
     public void died() {
         this.itemStatus = ItemStatus.DEAD;
+    }
+
+    public void addItemUserRelation(UserItemRelation userItemRelation) {
+        this.userItemRelations.add(userItemRelation);
     }
 }

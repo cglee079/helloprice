@@ -21,8 +21,8 @@ public class HomeKeyboard extends ReplyKeyboardMarkup {
 
         KeyboardRow keyboardRow = new KeyboardRow();
 
-        keyboardRow.add(HomeCommand.ITEM_ADD.getValue());
-        keyboardRow.add(HomeCommand.ITEM_DELETE.getValue());
+        keyboardRow.add(HomeCommand.ADD_ITEM.getValue());
+        keyboardRow.add(HomeCommand.DELETE_ITEM.getValue());
 
         keyboard.add(keyboardRow);
 

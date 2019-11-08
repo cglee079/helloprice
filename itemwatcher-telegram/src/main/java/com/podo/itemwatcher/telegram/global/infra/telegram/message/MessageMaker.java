@@ -1,5 +1,7 @@
 package com.podo.itemwatcher.telegram.global.infra.telegram.message;
 
+import com.podo.itemwatcher.pooler.domain.ItemInfoVo;
+
 public class MessageMaker {
 
     public static String introduce(String username) {
@@ -45,5 +47,41 @@ public class MessageMaker {
                 .append(url);
 
         return message.toString();
+    }
+
+    public static String successAddItem(ItemInfoVo itemInfoVo) {
+
+        StringBuilder message = new StringBuilder();
+
+        message.append("아이템 알림이 등록되었습니다\n")
+                .append("코드 : ")
+                .append(itemInfoVo.getItemCode())
+                .append("\n")
+                .append("이름 : ")
+                .append(itemInfoVo.getItemName())
+                .append("\n")
+                .append("가격 : ")
+                .append(itemInfoVo.getItemPrice())
+                .append("\n");
+
+        return message.toString();
+    }
+
+    public static String alreadySetNotifyItem(ItemInfoVo itemInfoVo) {
+        StringBuilder message = new StringBuilder();
+
+        message.append("이미 알림이 등록되어있습니다\n")
+                .append("코드 : ")
+                .append(itemInfoVo.getItemCode())
+                .append("\n")
+                .append("이름 : ")
+                .append(itemInfoVo.getItemName())
+                .append("\n")
+                .append("가격 : ")
+                .append(itemInfoVo.getItemPrice())
+                .append("\n");
+
+        return message.toString();
+
     }
 }

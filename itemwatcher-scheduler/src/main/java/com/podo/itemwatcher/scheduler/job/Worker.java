@@ -1,4 +1,4 @@
-package com.podo.itemwatcher.pooler.job;
+package com.podo.itemwatcher.scheduler.job;
 
 public interface Worker {
 

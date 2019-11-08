@@ -1,12 +1,14 @@
 package com.podo.itemwatcher.core.domain.user;
 
 import com.podo.itemwatcher.core.domain.UpdatableBaseEntity;
+import com.podo.itemwatcher.core.domain.useritem.UserItemRelation;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -30,6 +32,9 @@ public class User extends UpdatableBaseEntity {
     @Enumerated(EnumType.STRING)
     private UserStatus userStatus;
 
+    @OneToMany(mappedBy = "user")
+    List<UserItemRelation> userItemRelations;
+
     @Builder
     public User(String username,
                 String telegramId, String email,
@@ -43,5 +48,9 @@ public class User extends UpdatableBaseEntity {
 
     public void updateMenuStatus(MenuStatus menuStatus) {
         this.menuStatus = menuStatus;
+    }
+
+    public void addItemUserRelation(UserItemRelation userItemRelation) {
+        this.userItemRelations.add(userItemRelation);
     }
 }

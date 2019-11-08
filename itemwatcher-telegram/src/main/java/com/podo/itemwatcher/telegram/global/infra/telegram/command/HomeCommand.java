@@ -8,8 +8,8 @@ import lombok.Getter;
 public enum HomeCommand implements Command {
 
 
-    ITEM_ADD("추가"),
-    ITEM_DELETE("삭제");
+    ADD_ITEM("추가"),
+    DELETE_ITEM("삭제");
 
     private String value;
 

@@ -1,4 +1,4 @@
-package com.podo.itemwatcher.pooler.job;
+package com.podo.itemwatcher.scheduler.job;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

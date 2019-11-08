@@ -1,6 +1,6 @@
-package com.podo.itemwatcher.pooler;
+package com.podo.itemwatcher.scheduler;
 
-import com.podo.itemwatcher.pooler.job.Worker;
+import com.podo.itemwatcher.scheduler.job.Worker;
 import lombok.RequiredArgsConstructor;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;

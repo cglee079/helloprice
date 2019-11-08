@@ -1,4 +1,4 @@
-package com.podo.itemwatcher.pooler.job.pooler;
+package com.podo.itemwatcher.pooler;
 
 
 import com.podo.itemwatcher.pooler.job.exception.FailGetDocumentException;

@@ -1,8 +1,8 @@
-package com.podo.itemwatcher.pooler.job;
+package com.podo.itemwatcher.scheduler.job;
 
 import com.podo.itemwatcher.core.domain.item.Item;
-import com.podo.itemwatcher.core.domain.item.ItemInfoVo;
-import com.podo.itemwatcher.pooler.job.pooler.DanawaPooler;
+import com.podo.itemwatcher.pooler.DanawaPooler;
+import com.podo.itemwatcher.pooler.domain.ItemInfoVo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.batch.core.configuration.annotation.StepScope;
 import org.springframework.batch.item.ItemProcessor;
@@ -16,7 +16,7 @@ import java.util.Objects;
 @StepScope
 public class PoolerJobProcessor implements ItemProcessor<Item, Item> {
 
-    private static final Integer MAX_DEADCOUNT = 3;
+    private static final Integer MAX_DEADCOUNT = 2;
 
     private final DanawaPooler danawaPooler;
 
@@ -38,7 +38,7 @@ public class PoolerJobProcessor implements ItemProcessor<Item, Item> {
             return item;
         }
 
-        item.updateInfo(itemInfoVo, LocalDateTime.now());
+        item.updateInfo(itemInfoVo.getItemName(), itemInfoVo.getItemImage(), itemInfoVo.getItemPrice(), LocalDateTime.now());
 
         return item;
     }

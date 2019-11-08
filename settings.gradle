@@ -8,5 +8,6 @@ rootProject.name = 'podo-itemwatcher'
 
 include 'itemwatcher-core',
         'itemwatcher-domain',
+        'itemwatcher-scheduler',
         'itemwatcher-pooler',
         'itemwatcher-telegram'

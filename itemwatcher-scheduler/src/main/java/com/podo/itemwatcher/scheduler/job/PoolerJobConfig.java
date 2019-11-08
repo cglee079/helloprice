@@ -1,4 +1,4 @@
-package com.podo.itemwatcher.pooler.job;
+package com.podo.itemwatcher.scheduler.job;
 
 import com.podo.itemwatcher.core.domain.item.Item;
 import com.podo.itemwatcher.core.domain.item.ItemStatus;

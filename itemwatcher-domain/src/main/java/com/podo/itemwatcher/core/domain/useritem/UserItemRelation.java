@@ -1,4 +1,4 @@
-package com.podo.itemwatcher.core.domain.itemuser;
+package com.podo.itemwatcher.core.domain.useritem;
 
 import com.podo.itemwatcher.core.domain.item.Item;
 import com.podo.itemwatcher.core.domain.user.User;
@@ -10,23 +10,25 @@ import javax.persistence.*;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Table(name = "item_user")
+@Table(name = "user_item")
 @Entity
-public class ItemUserRelation {
+public class UserItemRelation {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
 
     @ManyToOne
-    @JoinColumn(name="item_id")
+    @JoinColumn(name = "item_id")
     private Item item;
 
 
-    @ManyToOne
-    @JoinColumn(name="user_id")
-    private User user;
-
+    public UserItemRelation(User user, Item item) {
+        this.user = user;
+        this.item = item;
+    }
 }
