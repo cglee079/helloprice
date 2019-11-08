@@ -1,6 +1,6 @@
-package com.podo.itemwatchertelegram;
+package com.podo.itemwatcher;
 
-import org.junit.jupiter.api.Test;
+import org.junit.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest

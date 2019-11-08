@@ -1,4 +1,4 @@
-package com.podo.itemwatchertelegram;
+package com.podo.itemwatcher;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
