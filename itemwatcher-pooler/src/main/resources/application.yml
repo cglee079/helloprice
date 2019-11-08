@@ -1,3 +1,8 @@
+server:
+  port: 17070
+
 spring:
   profiles:
-    include: jpa, jpa-secret
+    include: core, jpa, jpa-secret
+
+

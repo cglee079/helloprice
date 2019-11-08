@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Objects;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -58,7 +59,7 @@ public class Item extends UpdatableBaseEntity {
         this.lastPoolAt = lastPoolAt;
         this.deadCount = 0;
 
-        if (!itemBeforePrice.equals(itemPrice)) {
+        if (!Objects.equals(itemBeforePrice, itemPrice)) {
             itemStatus = ItemStatus.UPDATED;
         }
     }

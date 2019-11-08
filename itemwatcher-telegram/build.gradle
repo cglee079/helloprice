@@ -1,4 +1,6 @@
 dependencies {
     implementation project(':itemwatcher-core')
     implementation project(':itemwatcher-domain')
+
+    implementation group: 'org.telegram', name: 'telegrambots', version: '4.0.0'
 }
