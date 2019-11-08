@@ -1,0 +1,12 @@
+pluginManagement {
+    repositories {
+        gradlePluginPortal()
+    }
+}
+
+rootProject.name = 'podo-itemwatcher'
+
+include 'itemwatcher-core',
+        'itemwatcher-domain',
+        'itemwatcher-pooler',
+        'itemwatcher-telegram'

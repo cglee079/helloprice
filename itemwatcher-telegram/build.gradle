@@ -1,0 +1,4 @@
+dependencies {
+    implementation project(':itemwatcher-core')
+    implementation project(':itemwatcher-domain')
+}
