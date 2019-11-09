@@ -1,4 +1,4 @@
-package com.podo.itemwatcher.pooler.job.exception;
+package com.podo.itemwatcher.pooler.exception;
 
 public class FailGetDocumentException extends RuntimeException {
     public FailGetDocumentException(String url) {

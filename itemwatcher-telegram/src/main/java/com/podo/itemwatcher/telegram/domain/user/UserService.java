@@ -1,4 +1,4 @@
-package com.podo.itemwatcher.telegram.domain;
+package com.podo.itemwatcher.telegram.domain.user;
 
 import com.podo.itemwatcher.core.domain.item.Item;
 import com.podo.itemwatcher.core.domain.item.ItemRepository;
@@ -43,8 +43,16 @@ public class UserService {
         user.updateMenuStatus(menuStatus);
     }
 
-    public boolean hasNotifyItem(Long itemId){
-        return userRepository.hasNotifyItem(itemId);
+    public boolean hasNotifyItem(Integer telegramId, Long itemId) {
+        User user = userRepository.findByTelegramId(telegramId + "");
+
+        for (UserItemRelation userItemRelation : user.getUserItemRelations()) {
+            if (userItemRelation.getItem().getId().equals(itemId)) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     public void addNotifyItem(Integer telegramId, Long itemId) {

@@ -14,7 +14,6 @@ import org.springframework.batch.item.database.builder.JpaItemWriterBuilder;
 import org.springframework.batch.item.database.builder.JpaPagingItemReaderBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManagerFactory;
 import java.util.HashMap;
@@ -59,7 +58,7 @@ public class PoolerJobConfig {
         final JpaPagingItemReaderBuilder jpaPagingItemReaderBuilder = new JpaPagingItemReaderBuilder();
 
         Map<String, Object> params = new HashMap<>();
-        params.put("itemStatus", ItemStatus.BE);
+        params.put("itemStatus", ItemStatus.SAIL);
 
         final String query = "SELECT i FROM Item i WHERE i.itemStatus = :itemStatus ORDER BY i.lastPoolAt";
 

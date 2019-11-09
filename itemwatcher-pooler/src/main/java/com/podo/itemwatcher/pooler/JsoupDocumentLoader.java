@@ -1,7 +1,7 @@
 package com.podo.itemwatcher.pooler;
 
 
-import com.podo.itemwatcher.pooler.job.exception.FailGetDocumentException;
+import com.podo.itemwatcher.pooler.exception.FailGetDocumentException;
 import lombok.extern.slf4j.Slf4j;
 import org.jsoup.Connection;
 import org.jsoup.Jsoup;

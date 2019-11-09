@@ -4,30 +4,34 @@ import com.podo.itemwatcher.core.domain.user.MenuStatus;
 import com.podo.itemwatcher.core.domain.user.UserStatus;
 import com.podo.itemwatcher.core.util.MyHttpUtils;
 import com.podo.itemwatcher.pooler.DanawaPooler;
-import com.podo.itemwatcher.pooler.domain.ItemInfoVo;
-import com.podo.itemwatcher.telegram.domain.ItemDto;
-import com.podo.itemwatcher.telegram.domain.ItemService;
-import com.podo.itemwatcher.telegram.domain.UserDto;
-import com.podo.itemwatcher.telegram.domain.UserService;
+import com.podo.itemwatcher.core.domain.item.ItemInfoVo;
+import com.podo.itemwatcher.telegram.domain.item.ItemDto;
+import com.podo.itemwatcher.telegram.domain.item.ItemService;
+import com.podo.itemwatcher.telegram.domain.user.UserDto;
+import com.podo.itemwatcher.telegram.domain.user.UserService;
 import com.podo.itemwatcher.telegram.global.infra.telegram.command.HomeCommand;
 import com.podo.itemwatcher.telegram.global.infra.telegram.keyboard.KeyboardManager;
 import com.podo.itemwatcher.telegram.global.infra.telegram.message.MessageMaker;
+import com.podo.itemwatcher.telegram.global.infra.telegram.message.UserItemCommandMaker;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.api.objects.User;
 
+import java.util.Collections;
+import java.util.List;
 import java.util.Objects;
 
 @RequiredArgsConstructor
 @Component
 public class TelegramReceiveHandler {
-
+    public static final String ITEM_PAGE_URL = "http://prod.danawa.com/info/?pcode=";
     public static final String[] ITEM_CODE_PARAMKEY = {"pcode", "code"};
 
     private final DanawaPooler danawaPooler;
     private final UserService userService;
+    private final UserItemCommandMaker userItemCommandMaker;
     private final ItemService itemService;
     private final KeyboardManager keyboardManager;
 
@@ -54,7 +58,7 @@ public class TelegramReceiveHandler {
 
         if (Objects.isNull(userDetail)) {
             insertNewUser(username, telegramId);
-            telegramBot.send(telegramId, messageId, MessageMaker.introduce(username), keyboardManager.getHomeKeyboard());
+            telegramBot.send(telegramId, messageId, MessageMaker.introduce(username), keyboardManager.getHomeKeyboard(Collections.emptyList()));
             return;
         }
 
@@ -90,36 +94,47 @@ public class TelegramReceiveHandler {
     }
 
     private void handleAddItem(Integer telegramId, Integer messageId, String message) {
-        final String url = message;
+        userService.updateMenuStatus(telegramId, MenuStatus.HOME);
 
+        final String url = message;
         final String itemCode = getItemCode(url);
 
+        List<String> itemCommands = userItemCommandMaker.getItemCommands(itemService.findByUserTelegramId(telegramId));
+
+        //URL에서 아이템코드를 찾을 수 없음
         if (Objects.isNull(itemCode)) {
-            userService.updateMenuStatus(telegramId, MenuStatus.HOME);
-            telegramBot.send(telegramId, messageId, MessageMaker.wrongItemUrl(url), keyboardManager.getHomeKeyboard());
+            telegramBot.send(telegramId, messageId, MessageMaker.wrongItemUrl(url), keyboardManager.getHomeKeyboard(itemCommands));
             return;
         }
 
+
         final ItemInfoVo itemInfoVo = danawaPooler.poolItem(itemCode);
+
+        if (Objects.isNull(itemInfoVo)) {
+            telegramBot.send(telegramId, messageId, MessageMaker.wrongItemUrl(url), keyboardManager.getHomeKeyboard(itemCommands));
+            return;
+        }
 
         final ItemDto.insert itemInsert = ItemDto.insert.builder()
                 .itemCode(itemCode)
+                .itemUrl(ITEM_PAGE_URL + itemCode)
                 .itemName(itemInfoVo.getItemName())
                 .itemImage(itemInfoVo.getItemImage())
                 .itemPrice(itemInfoVo.getItemPrice())
+                .itemSaleStatus(itemInfoVo.getItemSaleStatus())
                 .build();
 
         final Long itemId = itemService.insertIfNotExist(itemInsert);
+        ItemDto.detail itemDetail = itemService.findByItemId(itemId);
 
-        if (userService.hasNotifyItem(itemId)) {
-            userService.updateMenuStatus(telegramId, MenuStatus.HOME);
-            telegramBot.send(telegramId, messageId, MessageMaker.alreadySetNotifyItem(itemInfoVo), keyboardManager.getHomeKeyboard());
+        if (userService.hasNotifyItem(telegramId, itemId)) {
+            telegramBot.send(telegramId, messageId, MessageMaker.alreadySetNotifyItem(itemDetail), itemDetail.getItemImage(), keyboardManager.getHomeKeyboard(itemCommands));
             return;
         }
 
         userService.addNotifyItem(telegramId, itemId);
-        userService.updateMenuStatus(telegramId, MenuStatus.HOME);
-        telegramBot.send(telegramId, messageId, MessageMaker.successAddItem(itemInfoVo), keyboardManager.getHomeKeyboard());
+        itemCommands = userItemCommandMaker.getItemCommands(itemService.findByUserTelegramId(telegramId)); // 갱신
+        telegramBot.send(telegramId, messageId, MessageMaker.successAddItem(itemDetail), itemInfoVo.getItemImage(), keyboardManager.getHomeKeyboard(itemCommands));
     }
 
     private String getItemCode(String url) {
@@ -138,10 +153,34 @@ public class TelegramReceiveHandler {
     private void handleHome(Integer telegramId, Integer messageId, String message) {
         HomeCommand homeCommand = HomeCommand.from(message);
 
+        List<String> itemCommands = userItemCommandMaker.getItemCommands(itemService.findByUserTelegramId(telegramId));
+
+
         if (Objects.isNull(homeCommand)) {
-            telegramBot.send(telegramId, messageId, MessageMaker.wrongInput(), keyboardManager.getHomeKeyboard());
+
+            //아이템 명령어인지 체크,
+            final String itemCode = userItemCommandMaker.getItemCodeFromCommand(message);
+
+            // 잘못된 명령어
+            if (Objects.isNull(itemCode)) {
+                telegramBot.send(telegramId, messageId, MessageMaker.wrongInput(), keyboardManager.getHomeKeyboard(itemCommands));
+                return;
+            }
+
+            final ItemDto.detail itemDetail = itemService.findByItemCode(itemCode);
+
+            //아이템 코드가 잘못된 경우
+            if (Objects.isNull(itemDetail)) {
+                telegramBot.send(telegramId, messageId, MessageMaker.wrongItemCode(itemCode), keyboardManager.getHomeKeyboard(itemCommands));
+                return;
+            }
+
+            //정상 아이템 명령어
+            telegramBot.send(telegramId, messageId, MessageMaker.makeItemInfo(itemDetail), itemDetail.getItemImage(), keyboardManager.getHomeKeyboard(itemCommands));
+
             return;
         }
+
 
         switch (homeCommand) {
             case ADD_ITEM:
@@ -150,10 +189,10 @@ public class TelegramReceiveHandler {
                 break;
             case DELETE_ITEM:
                 userService.updateMenuStatus(telegramId, MenuStatus.ITEM_DELETE);
-                telegramBot.send(telegramId, messageId, MessageMaker.explainDeleteItem(), keyboardManager.getHomeKeyboard());
+                telegramBot.send(telegramId, messageId, MessageMaker.explainDeleteItem(), keyboardManager.getHomeKeyboard(itemCommands));
                 break;
             default:
-                telegramBot.send(telegramId, messageId, MessageMaker.wrongInput(), keyboardManager.getHomeKeyboard());
+                telegramBot.send(telegramId, messageId, MessageMaker.wrongInput(), keyboardManager.getHomeKeyboard(itemCommands));
                 break;
         }
 

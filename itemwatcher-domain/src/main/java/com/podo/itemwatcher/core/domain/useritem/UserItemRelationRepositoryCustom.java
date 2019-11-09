@@ -7,6 +7,5 @@ import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 
-public interface UserItemRelationRepository extends JpaRepository<UserItemRelation, Long>, UserItemRelationRepositoryCustom{
-
+public interface UserItemRelationRepositoryCustom {
 }

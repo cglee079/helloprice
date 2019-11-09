@@ -15,7 +15,7 @@ import java.util.Objects;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "item")
-@Entity(name = "Item")
+@Entity
 public class Item extends UpdatableBaseEntity {
 
     @Id
@@ -26,6 +26,8 @@ public class Item extends UpdatableBaseEntity {
 
     private String itemName;
 
+    private String itemUrl;
+
     private String itemImage;
 
     private Integer itemPrice;
@@ -34,40 +36,56 @@ public class Item extends UpdatableBaseEntity {
 
     private LocalDateTime lastPoolAt;
 
+    private LocalDateTime lastUpdatedAt;
+
     private Integer deadCount;
 
     @Enumerated(EnumType.STRING)
     private ItemStatus itemStatus;
+
+    @Enumerated(EnumType.STRING)
+    private ItemSaleStatus itemSaleStatus;
 
     @OneToMany(mappedBy = "item")
     List<UserItemRelation> userItemRelations;
 
     @Builder
     public Item(String itemCode, String itemName,
-                String itemImage,
-                Integer itemPrice, Integer itemBeforePrice,
-                ItemStatus itemStatus, LocalDateTime lastPoolAt) {
+                String itemUrl, String itemImage,
+                Integer itemPrice, ItemSaleStatus itemSaleStatus,
+                LocalDateTime lastPoolAt) {
 
         this.itemCode = itemCode;
+        this.itemUrl = itemUrl;
         this.itemName = itemName;
         this.itemImage = itemImage;
         this.itemPrice = itemPrice;
-        this.itemBeforePrice = itemBeforePrice;
-        this.itemStatus = itemStatus;
+        this.itemBeforePrice = itemPrice;
         this.lastPoolAt = lastPoolAt;
+        this.lastUpdatedAt = lastPoolAt;
+        this.deadCount = 0;
+        this.itemStatus = ItemStatus.BE;
+        this.itemSaleStatus = itemSaleStatus;
+
     }
 
-    public void updateInfo(String itemName, String itemImage, Integer itemPrice, LocalDateTime lastPoolAt) {
-        itemBeforePrice = itemPrice;
-        this.itemName = itemName;
-        this.itemImage = itemImage;
-        this.itemPrice = itemPrice;
+    public void updateInfo(ItemInfoVo itemInfoVo, LocalDateTime lastPoolAt) {
+        itemBeforePrice = this.itemPrice;
+
+        this.itemName = itemInfoVo.getItemName();
+        this.itemImage = itemInfoVo.getItemImage();
+        this.itemPrice = itemInfoVo.getItemPrice();
         this.lastPoolAt = lastPoolAt;
+        this.itemSaleStatus = itemInfoVo.getItemSaleStatus();
         this.deadCount = 0;
 
-        if (!Objects.equals(itemBeforePrice, itemPrice)) {
+        if (Objects.equals(this.itemBeforePrice, this.itemPrice)) {
+            itemStatus = ItemStatus.BE;
+        } else {
             itemStatus = ItemStatus.UPDATED;
+            lastUpdatedAt = lastPoolAt;
         }
+
     }
 
     public void increaseDeadCount() {
@@ -81,4 +99,5 @@ public class Item extends UpdatableBaseEntity {
     public void addItemUserRelation(UserItemRelation userItemRelation) {
         this.userItemRelations.add(userItemRelation);
     }
+
 }

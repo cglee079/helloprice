@@ -4,9 +4,11 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
+import org.springframework.util.StringUtils;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
+import org.telegram.telegrambots.meta.api.methods.send.SendPhoto;
 import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboard;
@@ -54,7 +56,35 @@ public class TelegramBot extends TelegramLongPollingBot {
 
     public void send(Integer telegramId, Integer messageId, String message, ReplyKeyboard keyboard) {
 
+        this.send(telegramId, messageId, message, null, keyboard);
+    }
+
+    public void send(Integer telegramId, Integer messageId, String message, String image, ReplyKeyboard keyboard) {
+
+        if (StringUtils.isEmpty(image)) {
+            sendMessage(telegramId, messageId, message, keyboard);
+            return;
+        }
+
+        final SendPhoto sendPhoto = new SendPhoto();
+        sendPhoto.setChatId(telegramId.toString());
+        sendPhoto.setPhoto(image);
+        sendPhoto.setReplyMarkup(keyboard);
+        sendPhoto.setReplyToMessageId(messageId);
+
+        try {
+            this.execute(sendPhoto);
+        } catch (TelegramApiException e) {
+            e.printStackTrace();
+            log.error("이미지를 전송 할 수 없습니다. Image : {}", image);
+        }
+
+        sendMessage(telegramId, messageId, message, keyboard);
+    }
+
+    private void sendMessage(Integer telegramId, Integer messageId, String message, ReplyKeyboard keyboard) {
         final SendMessage sendMessage = new SendMessage(telegramId.toString(), message);
+
         sendMessage.setReplyMarkup(keyboard);
         sendMessage.setReplyToMessageId(messageId);
         sendMessage.enableHtml(true);
@@ -80,6 +110,5 @@ public class TelegramBot extends TelegramLongPollingBot {
         } catch (TelegramApiException e) {
             log.error(e.getMessage());
         }
-
     }
 }

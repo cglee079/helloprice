@@ -1,4 +1,4 @@
-package com.podo.itemwatcher.telegram.domain;
+package com.podo.itemwatcher.telegram.domain.user;
 
 import com.podo.itemwatcher.core.domain.user.MenuStatus;
 import com.podo.itemwatcher.core.domain.user.User;

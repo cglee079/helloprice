@@ -6,5 +6,4 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     User findByTelegramId(String telegramId);
 
-    boolean hasNotifyItem(Long itemId);
 }

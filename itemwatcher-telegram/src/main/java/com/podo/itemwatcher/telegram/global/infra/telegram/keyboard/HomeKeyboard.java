@@ -2,6 +2,7 @@ package com.podo.itemwatcher.telegram.global.infra.telegram.keyboard;
 
 import com.podo.itemwatcher.telegram.global.infra.telegram.command.HomeCommand;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboardMarkup;
+import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.KeyboardButton;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.KeyboardRow;
 
 import java.util.ArrayList;
@@ -9,7 +10,7 @@ import java.util.List;
 
 public class HomeKeyboard extends ReplyKeyboardMarkup {
 
-    public HomeKeyboard() {
+    public HomeKeyboard(List<String> itemList) {
 
         super();
 
@@ -25,6 +26,12 @@ public class HomeKeyboard extends ReplyKeyboardMarkup {
         keyboardRow.add(HomeCommand.DELETE_ITEM.getValue());
 
         keyboard.add(keyboardRow);
+
+        for (String item : itemList) {
+            KeyboardRow keyboardItemRow = new KeyboardRow();
+            keyboardItemRow.add(item);
+            keyboard.add(keyboardItemRow);
+        }
 
         this.setKeyboard(keyboard);
 
