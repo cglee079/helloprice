@@ -2,6 +2,7 @@ package com.podo.sadream.telegram.client;
 
 import com.podo.sadream.core.domain.user.Menu;
 import com.podo.sadream.core.domain.user.UserStatus;
+import com.podo.sadream.telegram.client.response.CommonResponse;
 import com.podo.sadream.telegram.domain.user.UserDto;
 import com.podo.sadream.telegram.domain.user.UserService;
 import com.podo.sadream.telegram.client.menu.MenuHandler;
@@ -80,7 +81,7 @@ public class TelegramBot extends TelegramLongPollingBot {
 
         if (Objects.isNull(userDetail)) {
             insertNewUser(username, telegramId);
-            this.send(tMessageVo.create(CommonResponse.introduce(username), km.getHomeKeyboard(Collections.emptyList()), callbackFactory.createDefaultCallback(telegramId + "", Menu.HOME)));
+            this.send(tMessageVo.newValue(CommonResponse.introduce(username), km.getHomeKeyboard(Collections.emptyList()), callbackFactory.createDefaultCallback(telegramId + "", Menu.HOME)));
             return;
         }
 

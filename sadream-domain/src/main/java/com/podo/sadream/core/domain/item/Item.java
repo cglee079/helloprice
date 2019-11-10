@@ -103,4 +103,8 @@ public class Item extends UpdatableBaseEntity {
     public void deleteUserItemNotify(UserItemNotify userItemNotify) {
         this.userItemNotifies.remove(userItemNotify);
     }
+
+    public void notifiedUpdate() {
+        this.itemStatus = ItemStatus.BE;
+    }
 }

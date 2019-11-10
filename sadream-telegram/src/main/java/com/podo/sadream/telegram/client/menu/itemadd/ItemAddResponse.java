@@ -1,7 +1,7 @@
 package com.podo.sadream.telegram.client.menu.itemadd;
 
 import com.podo.sadream.core.domain.item.ItemInfoVo;
-import com.podo.sadream.telegram.client.CommonResponse;
+import com.podo.sadream.telegram.client.response.CommonResponse;
 import com.podo.sadream.telegram.domain.item.ItemDto;
 
 public class ItemAddResponse {

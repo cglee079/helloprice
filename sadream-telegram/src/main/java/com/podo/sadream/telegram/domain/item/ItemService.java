@@ -1,6 +1,7 @@
 package com.podo.sadream.telegram.domain.item;
 
 import com.podo.sadream.core.domain.item.*;
+import com.podo.sadream.core.domain.useritem.UserItemNotifyRepository;
 import com.podo.sadream.pooler.DanawaPooler;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -8,12 +9,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
-import java.util.Set;
-
-import static java.util.stream.Collectors.toList;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Transactional
@@ -22,6 +20,7 @@ import static java.util.stream.Collectors.toList;
 public class ItemService {
 
     private final ItemRepository itemRepository;
+    private final UserItemNotifyRepository userItemNotifyRepository;
 
     public Long merge(ItemInfoVo itemInfoVo) {
 
@@ -51,14 +50,6 @@ public class ItemService {
         return item.getId();
     }
 
-    public List<ItemDto.detail> findByUserTelegramId(String telegramId) {
-        final List<Item> items = itemRepository.findByUserTelegramId(telegramId);
-
-        return items.stream()
-                .map(ItemDto.detail::new)
-                .collect(toList());
-    }
-
     public ItemDto.detail findByItemCode(String itemCode) {
         final Item item = itemRepository.findByItemCode(itemCode);
 
@@ -74,18 +65,29 @@ public class ItemService {
         return new ItemDto.detail(item);
     }
 
-    public void cleanInvalidItems() {
-
-        Set<Item> itemSet = new HashSet<>();
-
-        itemSet.addAll(itemRepository.findByItemStatus(ItemStatus.DEAD));
-        itemSet.addAll(itemRepository.findByItemSaleStatus(ItemSaleStatus.ERROR));
-        itemSet.addAll(itemRepository.findByItemSaleStatus(ItemSaleStatus.DISCONTINUE));
-        itemSet.addAll(itemRepository.findByItemSaleStatus(ItemSaleStatus.NOT_SUPPORT));
-    }
-
-
     public boolean existByItemCode(String itemCode) {
         return Objects.isNull(itemRepository.findByItemCode(itemCode));
     }
+
+    public List<ItemDto.detail> findByItemStatus(ItemStatus itemStatus) {
+        List<Item> items = itemRepository.findByItemStatus(itemStatus);
+        return items.stream()
+                .map(ItemDto.detail::new)
+                .collect(Collectors.toList());
+    }
+
+    public void deleteByItemId(Long itemId) {
+        Item item = itemRepository.findById(itemId).get();
+
+        userItemNotifyRepository.deleteAll(item.getUserItemNotifies());
+
+        itemRepository.delete(item);
+    }
+
+    public void notifiedUpdate(Long itemId) {
+        Item item = itemRepository.findById(itemId).get();
+
+        item.notifiedUpdate();
+    }
+
 }

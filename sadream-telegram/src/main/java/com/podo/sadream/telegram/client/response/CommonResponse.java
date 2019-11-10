@@ -1,4 +1,4 @@
-package com.podo.sadream.telegram.client;
+package com.podo.sadream.telegram.client.response;
 
 import com.podo.sadream.core.domain.item.ItemInfoVo;
 import com.podo.sadream.core.util.MyCurrencyUtils;

@@ -61,7 +61,7 @@ public class DanawaPooler implements Pooler {
                         itemSaleStatus = ItemSaleStatus.DISCONTINUE;
                         break;
                     case ITEM_STATUS_EMPTY_ACCOUNT:
-                        itemSaleStatus = ItemSaleStatus.EMPTY_ACCOUNT;
+                        itemSaleStatus = ItemSaleStatus.EMPTY_AMOUNT;
                         break;
                     case ITEM_STATUS_NO_SUPPORT:
                         itemSaleStatus = ItemSaleStatus.NOT_SUPPORT;

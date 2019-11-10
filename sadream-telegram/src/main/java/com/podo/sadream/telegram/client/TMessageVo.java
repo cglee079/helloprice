@@ -30,11 +30,11 @@ public class TMessageVo {
         this.callback = callback;
     }
 
-    public TMessageVo create(String message, String image, ReplyKeyboard keyboard, SentCallback<Message> callback) {
+    public TMessageVo newValue(String message, String image, ReplyKeyboard keyboard, SentCallback<Message> callback) {
         return new TMessageVo(this.telegramId, this.messageId, message, image, keyboard, callback);
     }
 
-    public TMessageVo create(String message, ReplyKeyboard keyboard, SentCallback<Message> callback) {
+    public TMessageVo newValue(String message, ReplyKeyboard keyboard, SentCallback<Message> callback) {
         return new TMessageVo(this.telegramId, this.messageId, message, null, keyboard, callback);
     }
 

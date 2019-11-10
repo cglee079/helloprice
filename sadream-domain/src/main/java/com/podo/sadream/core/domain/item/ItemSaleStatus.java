@@ -9,7 +9,7 @@ public enum ItemSaleStatus {
 
     SALE("판매중"),
     DISCONTINUE("단종"),
-    EMPTY_ACCOUNT("일시품절"),
+    EMPTY_AMOUNT("일시품절"),
     NOT_SUPPORT("가격비교중지"),
     ERROR("알 수 없음");
 

@@ -1,7 +1,7 @@
 package com.podo.sadream.telegram.client.menu.itemdelete;
 
 import com.podo.sadream.core.domain.user.Menu;
-import com.podo.sadream.telegram.client.CommonResponse;
+import com.podo.sadream.telegram.client.response.CommonResponse;
 import com.podo.sadream.telegram.client.TMessageCallbackFactory;
 import com.podo.sadream.telegram.domain.item.ItemDto;
 import com.podo.sadream.telegram.domain.item.ItemService;
@@ -41,7 +41,7 @@ public class ItemDeleteMenuHandler extends AbstractMenuHandler {
 
         log.info("{} << 상품 알림 삭제 메뉴에서 응답, RequestMessage '{}'", telegramId, requestMessage);
 
-        final List<String> itemCommands = UserItemCommand.getItemCommands(itemService.findByUserTelegramId(telegramId));
+        final List<String> itemCommands = UserItemCommand.getItemCommands(userItemNotifyService.findNotifyItemsByUserTelegramId(telegramId));
 
         ItemDeleteCommand itemDeleteCommand = ItemDeleteCommand.from(requestMessage);
         if (Objects.nonNull(itemDeleteCommand)) {
@@ -53,7 +53,7 @@ public class ItemDeleteMenuHandler extends AbstractMenuHandler {
 
         if (Objects.isNull(itemCode)) {
             log.info("{} << 잘못된 값을 입력했습니다. 상품코드를 찾을 수 없습니다. RequestMessage '{}'", telegramId, requestMessage);
-            getBot().send(tMessageVo.create(CommonResponse.wrongInput(), km.getHomeKeyboard(itemCommands), callbackFactory.createDefaultCallback(telegramId, Menu.HOME)));
+            getBot().send(tMessageVo.newValue(CommonResponse.wrongInput(), km.getHomeKeyboard(itemCommands), callbackFactory.createDefaultCallback(telegramId, Menu.HOME)));
             return;
         }
 
@@ -62,19 +62,19 @@ public class ItemDeleteMenuHandler extends AbstractMenuHandler {
 
         if (!userItemNotifyService.hasNotify(userDetail.getId(), itemDetail.getId())) {
             log.info("{} << 삭제 요청한 {}({}) 상품 알림이 등록되어있지 않습니다. RequestMessage '{}'", telegramId, itemDetail.getItemName(), itemCode, requestMessage);
-            getBot().send(tMessageVo.create(ItemDeleteResponse.alreadyNotNotifyItem(), km.getHomeKeyboard(itemCommands), callbackFactory.createDefaultCallback(telegramId, Menu.HOME)));
+            getBot().send(tMessageVo.newValue(ItemDeleteResponse.alreadyNotNotifyItem(), km.getHomeKeyboard(itemCommands), callbackFactory.createDefaultCallback(telegramId, Menu.HOME)));
         }
 
         userItemNotifyService.deleteNotify(userDetail.getId(), itemDetail.getId());
-        final List<String> reloadItemCommands = UserItemCommand.getItemCommands(itemService.findByUserTelegramId(telegramId));
-        getBot().send(tMessageVo.create(ItemDeleteResponse.deletedNotifyItem(itemDetail), km.getHomeKeyboard(reloadItemCommands), callbackFactory.createDefaultCallback(telegramId, Menu.HOME)));
+        final List<String> reloadItemCommands = UserItemCommand.getItemCommands(userItemNotifyService.findNotifyItemsByUserTelegramId(telegramId));
+        getBot().send(tMessageVo.newValue(ItemDeleteResponse.deletedNotifyItem(itemDetail), km.getHomeKeyboard(reloadItemCommands), callbackFactory.createDefaultCallback(telegramId, Menu.HOME)));
 
     }
 
     private void handleCommand(ItemDeleteCommand itemDeleteCommand, TMessageVo tMessageVo, List<String> itemCommands) {
         switch (itemDeleteCommand) {
             case EXIT:
-                getBot().send(tMessageVo.create(CommonResponse.exit(), km.getHomeKeyboard(itemCommands), callbackFactory.createDefaultCallback(tMessageVo.getTelegramId() + "", Menu.HOME)));
+                getBot().send(tMessageVo.newValue(CommonResponse.exit(), km.getHomeKeyboard(itemCommands), callbackFactory.createDefaultCallback(tMessageVo.getTelegramId() + "", Menu.HOME)));
                 return;
             default:
                 return;

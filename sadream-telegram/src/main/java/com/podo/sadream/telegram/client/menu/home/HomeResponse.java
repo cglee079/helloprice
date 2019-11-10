@@ -1,7 +1,7 @@
 package com.podo.sadream.telegram.client.menu.home;
 
 import com.podo.sadream.telegram.domain.item.ItemDto;
-import com.podo.sadream.telegram.client.CommonResponse;
+import com.podo.sadream.telegram.client.response.CommonResponse;
 
 public class HomeResponse {
 
