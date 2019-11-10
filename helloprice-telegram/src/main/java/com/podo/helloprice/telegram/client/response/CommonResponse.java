@@ -15,17 +15,20 @@ public class CommonResponse {
                 .append("\n")
                 .append("\n")
 
-                .append("안녕하세요! \n ")
+                .append("안녕하세요!\n")
                 .append("최저가 알림을 주는 ")
                 .append(appName)
-                .append("입니다!\n")
+                .append(" 입니다!\n")
                 .append("\n")
 
-                .append("상품을 등록하면, 최저가 갱신됬을때, 재고가 생겼을때 \n")
+                .append("상품을 등록하면\n")
+                .append("최저가격이 갱신됬을때!\n")
+                .append("재고가 생겼을 때 \n")
                 .append("텔레그램을 통해 알람을 드려요!!! \n")
                 .append("\n")
 
                 .append("자세한 내용은, 도움말 페이지를 참조해주세요\n")
+                .append("\n")
                 .append(CommonResponse.help(helpUrl))
 
                 .toString();

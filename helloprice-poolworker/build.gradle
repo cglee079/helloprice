@@ -1,3 +1,13 @@
+archivesBaseName = 'podo-helloprice-poolworker'
+version = ''
+
+bootJar {
+    enabled = true
+}
+
+jar {
+    enabled = false
+}
 
 dependencies {
     implementation project(':helloprice-core')

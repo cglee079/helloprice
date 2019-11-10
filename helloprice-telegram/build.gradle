@@ -1,3 +1,14 @@
+archivesBaseName = 'podo-helloprice-telegram'
+version = ''
+
+bootJar {
+    enabled = true
+}
+
+jar {
+    enabled = false
+}
+
 dependencies {
     implementation project(':helloprice-core')
     implementation project(':helloprice-pooler')

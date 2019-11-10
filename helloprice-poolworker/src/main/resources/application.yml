@@ -17,7 +17,7 @@ item:
 ## Log
 logging:
   file: poolworker.%d{yyyy-MM-dd}-%i.log
-  path: c://helloprice/log/poolworker
+  path: c://helloprice/logs/helloprice-poolworker
 
 ---
 
@@ -29,5 +29,5 @@ server:
 
 ## Log
 logging:
-  path: /data/log/poolworker
+  path: /data/logs
 

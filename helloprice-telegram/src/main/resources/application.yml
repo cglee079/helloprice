@@ -21,7 +21,7 @@ item:
 ## Log
 logging:
   file: telegram.%d{yyyy-MM-dd}-%i.log
-  path: c://helloprice/log/telegram
+  path: c://helloprice/logs/helloprice-telegram
 
 ---
 
@@ -33,4 +33,4 @@ server:
 
 ## Log
 logging:
-  path: /data/log/telegram
+  path: /data/logs
