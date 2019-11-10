@@ -12,7 +12,7 @@ spring:
 item:
   pool:
     expire:
-      time: 60
+      time: 5
 
 ## Log
 logging:

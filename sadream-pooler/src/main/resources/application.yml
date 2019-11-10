@@ -1,8 +1,0 @@
-server:
-  port: 17070
-
-spring:
-  profiles:
-    include: core, jpa, jpa-secret
-
-

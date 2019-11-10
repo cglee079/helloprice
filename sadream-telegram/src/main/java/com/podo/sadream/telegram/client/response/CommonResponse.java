@@ -35,6 +35,8 @@ public class CommonResponse {
         return new StringBuilder()
                 .append("도움말 : ")
                 .append(helpUrl)
+                .append("\n")
+                .append("제보는 해당 링크에 댓글로 부탁드립니다!")
                 .toString();
     }
 

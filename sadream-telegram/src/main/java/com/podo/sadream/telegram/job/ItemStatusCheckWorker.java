@@ -41,7 +41,7 @@ public class ItemStatusCheckWorker implements Worker {
 
     @Override
     public void doIt() {
-        log.info("상품 상태체크를 시작합니다" + Thread.currentThread());
+        log.info("상품 상태체크를 시작합니다");
 
         handleItemStatusUpdated();
         handleItemStatusDead();

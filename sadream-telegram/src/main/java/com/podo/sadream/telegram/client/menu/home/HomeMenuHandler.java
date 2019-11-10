@@ -70,9 +70,9 @@ public class HomeMenuHandler extends AbstractMenuHandler {
 
             //정상 상품 명령어
             log.info("{} << 상품정보 요청을 확인했습니다. 보낸메세지 '{}'", telegramId, requestMessage);
-            final ItemInfoVo itemInfoVo = danawaPooler.poolItem(itemCode);
-            final Long itemId = itemService.merge(itemInfoVo);
-            final ItemDto.detail itemDetail = itemService.findByItemId(itemId);
+            //final ItemInfoVo itemInfoVo = danawaPooler.poolItem(itemCode);
+            //final Long itemId = itemService.merge(itemInfoVo);
+            final ItemDto.detail itemDetail = itemService.findByItemCode(itemCode);
             getBot().send(tMessageVo.newValue(HomeResponse.itemDetail(itemDetail), itemDetail.getItemImage(), km.getHomeKeyboard(itemCommands), callbackFactory.createDefaultCallback(telegramId, Menu.HOME)));
 
             return;

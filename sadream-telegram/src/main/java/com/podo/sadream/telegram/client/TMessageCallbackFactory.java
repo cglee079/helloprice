@@ -21,7 +21,7 @@ public class TMessageCallbackFactory {
         return new SentCallback<Message>() {
             @Override
             public void onResult(BotApiMethod<Message> method, Message response) {
-                log.info("RESULT : " + Thread.currentThread());
+                //log.info("RESULT : " + Thread.currentThread());
                 userService.updateMenuStatus(telegramId, menu);
                 userService.resetUserErrorCount(telegramId);
             }

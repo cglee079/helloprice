@@ -26,7 +26,7 @@ public class PoolerJobWorker implements Worker {
     private final Job poolerJob;
 
     public void run() {
-        log.info("아이템 갱신 배치를 실행합니다");
+        log.info("상품 정보 갱신 작업을 실행합니다");
 
         try {
 
