@@ -4,10 +4,10 @@ pluginManagement {
     }
 }
 
-rootProject.name = 'podo-itemwatcher'
+rootProject.name = 'podo-sadream'
 
-include 'itemwatcher-core',
-        'itemwatcher-domain',
-        'itemwatcher-scheduler',
-        'itemwatcher-pooler',
-        'itemwatcher-telegram'
+include 'sadream-core',
+        'sadream-domain',
+        'sadream-worker',
+        'sadream-pooler',
+        'sadream-telegram'

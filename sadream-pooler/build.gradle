@@ -1,0 +1,6 @@
+dependencies {
+    implementation project(':sadream-core')
+    implementation project(':sadream-domain')
+
+    implementation group: 'org.jsoup', name: 'jsoup', version: '1.11.3'
+}

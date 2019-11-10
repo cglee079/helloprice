@@ -1,6 +1,0 @@
-dependencies {
-    implementation project(':itemwatcher-core')
-    implementation project(':itemwatcher-domain')
-
-    implementation group: 'org.jsoup', name: 'jsoup', version: '1.11.3'
-}
