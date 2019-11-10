@@ -3,6 +3,7 @@ package com.podo.helloprice.telegram.client.menu.itemadd;
 import com.podo.helloprice.core.domain.item.ItemInfoVo;
 import com.podo.helloprice.core.domain.user.Menu;
 import com.podo.helloprice.pooler.DanawaPooler;
+import com.podo.helloprice.pooler.exception.FailGetDocumentException;
 import com.podo.helloprice.telegram.client.KeyboardManager;
 import com.podo.helloprice.telegram.client.TMessageCallbackFactory;
 import com.podo.helloprice.telegram.client.TMessageVo;
@@ -46,9 +47,10 @@ public class ItemAddMenuHandler extends AbstractMenuHandler {
         log.info("{} << 상품 알림 추가 메뉴에서 응답, 보낸메세지 '{}'", telegramId, requestMessage);
 
         final String url = requestMessage;
-        final String itemCode = danawaPooler.getItemCodeFromUrl(url);
-
         final List<String> itemCommands = UserItemCommand.getItemCommands(userItemNotifyService.findNotifyItemsByUserTelegramId(telegramId));
+
+        String itemCode = danawaPooler.getItemCodeFromUrl(url);
+
 
         //URL에서 아이템코드를 찾을 수 없음
         if (Objects.isNull(itemCode)) {
@@ -76,7 +78,7 @@ public class ItemAddMenuHandler extends AbstractMenuHandler {
         if (userItemNotifyService.hasNotify(userDetail.getId(), itemDetail.getId())) {
             log.info("{} << {}({}) 상품 알림이 이미 등록되었습니다. 보낸메세지 '{}'", telegramId, itemInfoVo.getItemName(), itemCode, requestMessage);
             getBot().send(tMessageVo.newValue(CommonResponse.descItemDetail(itemDetail), itemDetail.getItemImage(), km.getHomeKeyboard(itemCommands), callbackFactory.createDefaultCallback(telegramId, Menu.HOME)));
-            getBot().send(tMessageVo.newValue(ItemAddResponse.alreadySetNotifyItem(), itemDetail.getItemImage(), km.getHomeKeyboard(itemCommands), callbackFactory.createDefaultCallback(telegramId, Menu.HOME)));
+            getBot().send(tMessageVo.newValue(ItemAddResponse.alreadySetNotifyItem(), null, km.getHomeKeyboard(itemCommands), callbackFactory.createDefaultCallback(telegramId, Menu.HOME)));
             return;
         }
 
@@ -90,7 +92,7 @@ public class ItemAddMenuHandler extends AbstractMenuHandler {
         userItemNotifyService.addNotify(userDetail.getId(), itemId);
         List<String> reloadItemCommands = UserItemCommand.getItemCommands(userItemNotifyService.findNotifyItemsByUserTelegramId(telegramId)); // 갱신
         getBot().send(tMessageVo.newValue(CommonResponse.descItemDetail(itemDetail), itemInfoVo.getItemImage(), km.getHomeKeyboard(reloadItemCommands), callbackFactory.createDefaultCallback(telegramId, Menu.HOME)));
-        getBot().send(tMessageVo.newValue(ItemAddResponse.successAddNotifyItem(), itemInfoVo.getItemImage(), km.getHomeKeyboard(reloadItemCommands), callbackFactory.createDefaultCallback(telegramId, Menu.HOME)));
+        getBot().send(tMessageVo.newValue(ItemAddResponse.successAddNotifyItem(), null, km.getHomeKeyboard(reloadItemCommands), callbackFactory.createDefaultCallback(telegramId, Menu.HOME)));
     }
 
     private boolean validateNewItem(TMessageVo tMessageVo, String telegramId, List<String> itemCommands, ItemInfoVo itemInfoVo) {

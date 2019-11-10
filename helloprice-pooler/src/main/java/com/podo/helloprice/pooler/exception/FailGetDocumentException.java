@@ -1,7 +1,7 @@
 package com.podo.helloprice.pooler.exception;
 
-public class FailGetDocumentException extends RuntimeException {
-    public FailGetDocumentException(String url) {
-        super("HTML 문서를 가져올 수 없습니다. url : " + url);
+public class FailGetDocumentException extends Exception {
+    public FailGetDocumentException(Exception e) {
+        super(e);
     }
 }

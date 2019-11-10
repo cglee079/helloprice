@@ -23,7 +23,7 @@ public class CommonResponse {
 
                 .append("상품을 등록하면\n")
                 .append("최저가격이 갱신됬을때!\n")
-                .append("재고가 생겼을 때 \n")
+                .append("재고가 생겼을 때! \n")
                 .append("텔레그램을 통해 알람을 드려요!!! \n")
                 .append("\n")
 
@@ -36,10 +36,10 @@ public class CommonResponse {
 
     public static String help(String helpUrl) {
         return new StringBuilder()
-                .append("도움말 : ")
+                .append("도움말(사용법) : ")
                 .append(helpUrl)
                 .append("\n")
-                .append("제보는 해당 링크에 댓글로 부탁드립니다!")
+                .append("건의/버그제보는 해당 링크에 댓글로 부탁드립니다!")
                 .toString();
     }
 
@@ -48,15 +48,17 @@ public class CommonResponse {
     }
 
     public static String descItemDetail(ItemDto.detail itemDetail) {
+        final String dateTimeFormat = "yyyy-MM-dd HH:mm:ss";
+
         return new StringBuilder()
                 .append("<b>")
                 .append("최종체크일 : ")
-                .append(MyFormatUtils.dateTimeToString(itemDetail.getLastPoolAt(), "yyyy-MM-dd HH:mm:ss"))
+                .append(MyFormatUtils.dateTimeToString(itemDetail.getLastPoolAt(), dateTimeFormat))
                 .append("</b>")
                 .append("\n")
 
                 .append("가격변동일 : ")
-                .append(MyFormatUtils.dateTimeToString(itemDetail.getLastUpdateAt(), "yyyy-MM-dd HH:mm:ss"))
+                .append(MyFormatUtils.dateTimeToString(itemDetail.getLastUpdateAt(), dateTimeFormat))
                 .append("\n")
                 .append("\n")
 

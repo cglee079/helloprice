@@ -27,6 +27,9 @@ import java.util.Objects;
 @Component
 public class HomeMenuHandler extends AbstractMenuHandler {
 
+    @Value("${app.name}")
+    private String appName;
+
     @Value("${app.telegram.help_url}")
     private String helpUrl;
 
@@ -90,7 +93,7 @@ public class HomeMenuHandler extends AbstractMenuHandler {
                 break;
             case HELP:
                 log.info("{} << 도움말. 보낸메세지 '{}'", telegramId, requestMessage);
-                getBot().send(tMessageVo.newValue(CommonResponse.help(helpUrl), km.getHomeKeyboard(itemCommands), callbackFactory.createDefaultCallback(telegramId, Menu.HOME)));
+                getBot().send(tMessageVo.newValue(CommonResponse.introduce(appName, helpUrl), km.getHomeKeyboard(itemCommands), callbackFactory.createDefaultCallback(telegramId, Menu.HOME)));
                 break;
         }
 

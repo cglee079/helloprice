@@ -3,6 +3,7 @@ package com.podo.helloprice.pooler;
 import com.podo.helloprice.core.domain.item.ItemInfoVo;
 import com.podo.helloprice.core.domain.item.ItemSaleStatus;
 import com.podo.helloprice.core.util.MyHttpUtils;
+import com.podo.helloprice.pooler.exception.FailGetDocumentException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.jsoup.nodes.Document;
@@ -17,12 +18,13 @@ import java.util.Objects;
 @Component
 public class DanawaPooler implements Pooler {
 
-    public static final String DANAWA_URL = "http://www.danawa.com/";
+    public static final String DANAWA_URL = "http://www.danawa.com";
+    public static final String DANAWA_REDIRECT_URL = "https://danawa.page.link";
     public static final String DANAWA_ITEM_URL = "http://prod.danawa.com/info/?pcode=";
     public static final String[] ITEM_CODE_PARAMKEYS = {"pcode", "code"};
 
-        private static final String ITEM_NAME_SELECTOR = "#blog_content > div.summary_info > div.top_summary > h3";
-//    private static final String ITEM_NAME_SELECTOR = "head > meta[property=og:title]";
+    private static final String ITEM_NAME_SELECTOR = "#blog_content > div.summary_info > div.top_summary > h3";
+    //    private static final String ITEM_NAME_SELECTOR = "head > meta[property=og:title]";
     private static final String ITEM_PRICE_SELECTOR = "span.lwst_prc > a > em";
     private static final String ITEM_IMAGE_SELECTOR = "#baseImage";
     private static final String ITEM_SALE_STATUS_SELECTOR = "div.lowest_area > div.no_data > p > strong";
@@ -42,7 +44,15 @@ public class DanawaPooler implements Pooler {
 
         log.info("CRAWL URL : {}", itemUrl);
 
-        Document document = jsoupDocumentLoader.getDocument(itemUrl);
+        Document document;
+
+        try {
+            document = jsoupDocumentLoader.getDocument(itemUrl);
+        } catch (FailGetDocumentException e) {
+            log.error("아이템 페이지를 가져올 수 없습니다. {}", e.getMessage());
+            return null;
+        }
+
 
         try {
             final String itemName = document.select(ITEM_NAME_SELECTOR).text().replace("[다나와]", "").trim();
@@ -92,6 +102,22 @@ public class DanawaPooler implements Pooler {
     }
 
     public String getItemCodeFromUrl(String url) {
+
+        if (url.contains(DANAWA_REDIRECT_URL)) {
+
+            Document document;
+
+            try {
+                document = jsoupDocumentLoader.getDocument(url);
+            } catch (FailGetDocumentException e) {
+                log.error("아이템 페이지를 가져올 수 없습니다. {}", e.getMessage());
+                return null;
+            }
+
+            Element canonical = document.select("link[rel=canonical]").first();
+            url = canonical.attr("href");
+        }
+
         String itemCode;
 
         for (String key : ITEM_CODE_PARAMKEYS) {

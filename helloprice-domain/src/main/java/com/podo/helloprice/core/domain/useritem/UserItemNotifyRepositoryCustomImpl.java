@@ -35,6 +35,7 @@ public class UserItemNotifyRepositoryCustomImpl extends QuerydslRepositorySuppor
                 .leftJoin(userItemNotify.user, QUser.user)
                 .leftJoin(userItemNotify.item, QItem.item)
                 .where(userItemNotify.user.telegramId.eq(telegramId))
+                .orderBy(userItemNotify.createAt.desc())
                 .fetch();
     }
 }

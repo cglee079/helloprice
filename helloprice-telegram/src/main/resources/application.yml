@@ -8,7 +8,7 @@ spring:
 app:
   name: 헬로프라이스 v1.0
   telegram:
-    help_url: https://www.podo-dev.com/blogs/184
+    help_url: https://www.podo-dev.com/blogs/185
 
 user:
   max_error_count: 5
