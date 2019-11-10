@@ -4,10 +4,10 @@ pluginManagement {
     }
 }
 
-rootProject.name = 'podo-sadream'
+rootProject.name = 'podo-helloprice'
 
-include 'sadream-core',
-        'sadream-domain',
-        'sadream-poolworker',
-        'sadream-pooler',
-        'sadream-telegram'
+include 'helloprice-core',
+        'helloprice-domain',
+        'helloprice-poolworker',
+        'helloprice-pooler',
+        'helloprice-telegram'

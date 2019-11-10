@@ -1,7 +1,0 @@
-dependencies {
-    implementation project(':sadream-core')
-    implementation project(':sadream-pooler')
-    implementation project(':sadream-domain')
-
-    implementation group: 'org.telegram', name: 'telegrambots', version: '4.0.0'
-}
