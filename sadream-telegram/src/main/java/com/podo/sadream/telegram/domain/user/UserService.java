@@ -1,8 +1,8 @@
 package com.podo.sadream.telegram.domain.user;
 
-import com.podo.itemwatcher.core.domain.user.Menu;
-import com.podo.itemwatcher.core.domain.user.User;
-import com.podo.itemwatcher.core.domain.user.UserRepository;
+import com.podo.sadream.core.domain.user.Menu;
+import com.podo.sadream.core.domain.user.User;
+import com.podo.sadream.core.domain.user.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;

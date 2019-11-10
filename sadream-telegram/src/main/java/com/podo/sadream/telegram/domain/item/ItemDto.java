@@ -1,7 +1,7 @@
 package com.podo.sadream.telegram.domain.item;
 
-import com.podo.itemwatcher.core.domain.item.Item;
-import com.podo.itemwatcher.core.domain.item.ItemSaleStatus;
+import com.podo.sadream.core.domain.item.Item;
+import com.podo.sadream.core.domain.item.ItemSaleStatus;
 import lombok.Builder;
 import lombok.Getter;
 

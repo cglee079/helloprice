@@ -1,6 +1,6 @@
 package com.podo.sadream.telegram.client;
 
-import com.podo.itemwatcher.core.domain.user.Menu;
+import com.podo.sadream.core.domain.user.Menu;
 import com.podo.sadream.telegram.domain.user.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

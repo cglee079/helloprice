@@ -1,6 +1,7 @@
 package com.podo.sadream.pooler;
 
-import com.podo.itemwatcher.core.domain.item.ItemInfoVo;
+
+import com.podo.sadream.core.domain.item.ItemInfoVo;
 
 public interface Pooler {
 

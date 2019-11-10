@@ -1,4 +1,4 @@
-package com.podo.sadream.worker.job.config;
+package com.podo.sadream.poolworker.job.config;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.batch.core.configuration.annotation.BatchConfigurer;

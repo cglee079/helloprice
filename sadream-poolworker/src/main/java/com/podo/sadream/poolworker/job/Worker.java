@@ -1,4 +1,4 @@
-package com.podo.sadream.worker.job;
+package com.podo.sadream.poolworker.job;
 
 public interface Worker {
 

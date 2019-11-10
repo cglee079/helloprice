@@ -1,6 +1,6 @@
 package com.podo.sadream.telegram.client.menu.itemdelete;
 
-import com.podo.itemwatcher.core.domain.user.Menu;
+import com.podo.sadream.core.domain.user.Menu;
 import com.podo.sadream.telegram.client.CommonResponse;
 import com.podo.sadream.telegram.client.TMessageCallbackFactory;
 import com.podo.sadream.telegram.domain.item.ItemDto;

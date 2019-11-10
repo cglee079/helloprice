@@ -1,8 +1,8 @@
 package com.podo.sadream.telegram.domain.user;
 
-import com.podo.itemwatcher.core.domain.user.Menu;
-import com.podo.itemwatcher.core.domain.user.User;
-import com.podo.itemwatcher.core.domain.user.UserStatus;
+import com.podo.sadream.core.domain.user.Menu;
+import com.podo.sadream.core.domain.user.User;
+import com.podo.sadream.core.domain.user.UserStatus;
 import lombok.Builder;
 import lombok.Getter;
 

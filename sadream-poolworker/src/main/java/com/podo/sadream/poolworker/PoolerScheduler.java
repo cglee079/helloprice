@@ -1,6 +1,6 @@
-package com.podo.sadream.worker;
+package com.podo.sadream.poolworker;
 
-import com.podo.sadream.worker.job.Worker;
+import com.podo.sadream.poolworker.job.Worker;
 import lombok.RequiredArgsConstructor;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;

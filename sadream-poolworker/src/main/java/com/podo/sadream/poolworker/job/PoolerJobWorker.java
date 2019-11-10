@@ -1,4 +1,4 @@
-package com.podo.sadream.worker.job;
+package com.podo.sadream.poolworker.job;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

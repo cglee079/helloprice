@@ -1,6 +1,7 @@
 package com.podo.sadream.telegram.domain.item;
 
-import com.podo.itemwatcher.pooler.DanawaPooler;
+import com.podo.sadream.core.domain.item.*;
+import com.podo.sadream.pooler.DanawaPooler;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -71,14 +72,6 @@ public class ItemService {
     public ItemDto.detail findByItemId(Long itemId) {
         final Item item = itemRepository.findById(itemId).get();
         return new ItemDto.detail(item);
-    }
-
-    public Long update(Long itemId, ItemInfoVo itemInfoVo) {
-        final Item item = itemRepository.findById(itemId).get();
-
-        item.updateInfo(itemInfoVo, LocalDateTime.now());
-
-        return itemId;
     }
 
     public void cleanInvalidItems() {

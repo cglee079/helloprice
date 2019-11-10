@@ -1,6 +1,6 @@
 package com.podo.sadream.telegram.client.menu;
 
-import com.podo.itemwatcher.core.domain.user.Menu;
+import com.podo.sadream.core.domain.user.Menu;
 import com.podo.sadream.telegram.client.TMessageVo;
 import com.podo.sadream.telegram.client.TelegramBot;
 

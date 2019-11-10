@@ -1,6 +1,6 @@
 package com.podo.sadream.telegram.client.menu.itemadd;
 
-import com.podo.itemwatcher.core.domain.item.ItemInfoVo;
+import com.podo.sadream.core.domain.item.ItemInfoVo;
 import com.podo.sadream.telegram.client.CommonResponse;
 import com.podo.sadream.telegram.domain.item.ItemDto;
 

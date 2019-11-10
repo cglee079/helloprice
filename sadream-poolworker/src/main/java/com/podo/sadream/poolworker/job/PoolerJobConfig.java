@@ -1,7 +1,7 @@
-package com.podo.sadream.worker.job;
+package com.podo.sadream.poolworker.job;
 
-import com.podo.itemwatcher.core.domain.item.Item;
-import com.podo.itemwatcher.core.domain.item.ItemStatus;
+import com.podo.sadream.core.domain.item.Item;
+import com.podo.sadream.core.domain.item.ItemStatus;
 import lombok.RequiredArgsConstructor;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.Step;

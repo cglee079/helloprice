@@ -8,6 +8,6 @@ rootProject.name = 'podo-sadream'
 
 include 'sadream-core',
         'sadream-domain',
-        'sadream-worker',
+        'sadream-poolworker',
         'sadream-pooler',
         'sadream-telegram'

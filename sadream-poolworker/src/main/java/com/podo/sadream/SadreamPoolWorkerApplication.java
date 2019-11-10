@@ -7,10 +7,10 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 
 @EnableScheduling
 @SpringBootApplication
-public class SadreamWorkerApplication {
+public class SadreamPoolWorkerApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(SadreamWorkerApplication.class, args);
+        SpringApplication.run(SadreamPoolWorkerApplication.class, args);
     }
 
 }

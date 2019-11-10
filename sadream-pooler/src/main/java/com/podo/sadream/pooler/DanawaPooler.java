@@ -1,8 +1,8 @@
 package com.podo.sadream.pooler;
 
-import com.podo.itemwatcher.core.domain.item.ItemInfoVo;
-import com.podo.itemwatcher.core.domain.item.ItemSaleStatus;
-import com.podo.itemwatcher.core.util.MyHttpUtils;
+import com.podo.sadream.core.domain.item.ItemInfoVo;
+import com.podo.sadream.core.domain.item.ItemSaleStatus;
+import com.podo.sadream.core.util.MyHttpUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.jsoup.nodes.Document;

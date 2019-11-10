@@ -4,7 +4,7 @@ import org.junit.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-public class SadreamWorkerApplicationTests {
+public class SadreamPoolWorkerApplicationTests {
 
     @Test
     void contextLoads() {

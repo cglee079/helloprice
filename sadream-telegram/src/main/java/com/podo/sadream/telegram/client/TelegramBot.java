@@ -1,7 +1,7 @@
 package com.podo.sadream.telegram.client;
 
-import com.podo.itemwatcher.core.domain.user.Menu;
-import com.podo.itemwatcher.core.domain.user.UserStatus;
+import com.podo.sadream.core.domain.user.Menu;
+import com.podo.sadream.core.domain.user.UserStatus;
 import com.podo.sadream.telegram.domain.user.UserDto;
 import com.podo.sadream.telegram.domain.user.UserService;
 import com.podo.sadream.telegram.client.menu.MenuHandler;
@@ -40,13 +40,13 @@ public class TelegramBot extends TelegramLongPollingBot {
         }
     }
 
-    @Value("${telegram.podo_itemwatcher.bot.token}")
+    @Value("${telegram.podo_sadream.bot.token}")
     private String botToken;
 
-    @Value("${telegram.podo_itemwatcher.bot.name}")
+    @Value("${telegram.podo_sadream.bot.name}")
     private String botUsername;
 
-    @Value("${telegram.podo_itemwatcher.admin.id}")
+    @Value("${telegram.podo_sadream.admin.id}")
     private String adminId;
 
     @Override

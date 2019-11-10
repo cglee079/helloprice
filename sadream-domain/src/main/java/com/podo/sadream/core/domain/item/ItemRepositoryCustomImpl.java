@@ -1,6 +1,6 @@
 package com.podo.sadream.core.domain.item;
 
-import com.podo.itemwatcher.core.domain.useritem.QUserItemNotify;
+import com.podo.sadream.core.domain.useritem.QUserItemNotify;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import org.springframework.data.jpa.repository.support.QuerydslRepositorySupport;
 
