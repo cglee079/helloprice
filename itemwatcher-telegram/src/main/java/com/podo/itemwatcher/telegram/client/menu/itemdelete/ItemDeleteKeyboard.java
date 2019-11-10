@@ -1,16 +1,14 @@
-package com.podo.itemwatcher.telegram.global.infra.telegram.keyboard;
+package com.podo.itemwatcher.telegram.client.menu.itemdelete;
 
-import com.podo.itemwatcher.telegram.global.infra.telegram.command.HomeCommand;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboardMarkup;
-import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.KeyboardButton;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.KeyboardRow;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class HomeKeyboard extends ReplyKeyboardMarkup {
+public class ItemDeleteKeyboard extends ReplyKeyboardMarkup {
 
-    public HomeKeyboard(List<String> itemList) {
+    public ItemDeleteKeyboard(List<String> itemList) {
 
         super();
 
@@ -18,12 +16,11 @@ public class HomeKeyboard extends ReplyKeyboardMarkup {
         this.setResizeKeyboard(true);
         this.setOneTimeKeyboard(false);
 
-        List<KeyboardRow> keyboard = new ArrayList<>();
+        final List<KeyboardRow> keyboard = new ArrayList<>();
 
         KeyboardRow keyboardRow = new KeyboardRow();
 
-        keyboardRow.add(HomeCommand.ADD_ITEM.getValue());
-        keyboardRow.add(HomeCommand.DELETE_ITEM.getValue());
+        keyboardRow.add(ItemDeleteCommand.EXIT.getValue());
 
         keyboard.add(keyboardRow);
 

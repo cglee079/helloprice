@@ -1,7 +1,7 @@
 package com.podo.itemwatcher.core.domain.item;
 
 import com.podo.itemwatcher.core.domain.UpdatableBaseEntity;
-import com.podo.itemwatcher.core.domain.useritem.UserItemRelation;
+import com.podo.itemwatcher.core.domain.useritem.UserItemNotify;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -47,7 +47,7 @@ public class Item extends UpdatableBaseEntity {
     private ItemSaleStatus itemSaleStatus;
 
     @OneToMany(mappedBy = "item")
-    List<UserItemRelation> userItemRelations;
+    List<UserItemNotify> userItemNotifies;
 
     @Builder
     public Item(String itemCode, String itemName,
@@ -96,8 +96,11 @@ public class Item extends UpdatableBaseEntity {
         this.itemStatus = ItemStatus.DEAD;
     }
 
-    public void addItemUserRelation(UserItemRelation userItemRelation) {
-        this.userItemRelations.add(userItemRelation);
+    public void addUserItemNotify(UserItemNotify userItemNotify) {
+        this.userItemNotifies.add(userItemNotify);
     }
 
+    public void deleteUserItemNotify(UserItemNotify userItemNotify) {
+        this.userItemNotifies.remove(userItemNotify);
+    }
 }

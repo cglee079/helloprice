@@ -1,4 +1,4 @@
-package com.podo.itemwatcher.telegram.global.infra.telegram.message;
+package com.podo.itemwatcher.telegram.client;
 
 import com.podo.itemwatcher.telegram.domain.item.ItemDto;
 import lombok.RequiredArgsConstructor;
@@ -12,22 +12,21 @@ import static java.util.stream.Collectors.toList;
 @Slf4j
 @RequiredArgsConstructor
 @Component
-public class UserItemCommandMaker {
+public class UserItemCommand {
 
-    private static final String FORMAT = "#%s, %s";
 
-    private String formatCommand(String itemCode, String itemName) {
-
+    private static String formatCommand(String itemCode, String itemName) {
+        final String FORMAT = "#%s, %s";
         return String.format(FORMAT, itemCode, itemName);
     }
 
-    public List<String> getItemCommands(List<ItemDto.detail> items) {
+    public static List<String> getItemCommands(List<ItemDto.detail> items) {
         return items.stream()
                 .map(item -> formatCommand(item.getItemCode(), item.getItemName()))
                 .collect(toList());
     }
 
-    public String getItemCodeFromCommand(String message) {
+    public static String getItemCodeFromCommand(String message) {
         int index = message.indexOf(",");
 
         if (index == -1) {

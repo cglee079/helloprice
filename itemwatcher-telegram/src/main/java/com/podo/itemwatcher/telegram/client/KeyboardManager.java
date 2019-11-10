@@ -1,5 +1,7 @@
-package com.podo.itemwatcher.telegram.global.infra.telegram.keyboard;
+package com.podo.itemwatcher.telegram.client;
 
+import com.podo.itemwatcher.telegram.client.menu.itemdelete.ItemDeleteKeyboard;
+import com.podo.itemwatcher.telegram.client.menu.home.HomeKeyboard;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboard;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboardRemove;
@@ -17,5 +19,9 @@ public class KeyboardManager {
 
     public ReplyKeyboard getDefaultKeyboard() {
         return defaultKeyboard;
+    }
+
+    public ReplyKeyboard getItemDeleteKeyboard(List<String> itemCommands) {
+        return new ItemDeleteKeyboard(itemCommands);
     }
 }

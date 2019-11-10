@@ -1,5 +1,6 @@
-package com.podo.itemwatcher.telegram.global.infra.telegram.command;
+package com.podo.itemwatcher.telegram.client.menu.home;
 
+import com.podo.itemwatcher.telegram.client.menu.Command;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
@@ -8,8 +9,8 @@ import lombok.Getter;
 public enum HomeCommand implements Command {
 
 
-    ADD_ITEM("추가"),
-    DELETE_ITEM("삭제");
+    ADD_ITEM("상품 알림 추가"),
+    DELETE_ITEM("상품 알림 삭제");
 
     private String value;
 

@@ -2,6 +2,7 @@ package com.podo.itemwatcher.pooler;
 
 import com.podo.itemwatcher.core.domain.item.ItemInfoVo;
 import com.podo.itemwatcher.core.domain.item.ItemSaleStatus;
+import com.podo.itemwatcher.core.util.MyHttpUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.jsoup.nodes.Document;
@@ -16,7 +17,9 @@ import java.util.Objects;
 @Component
 public class DanawaPooler implements Pooler {
 
-    private static final String DANAWA_ITEM_URL = "http://prod.danawa.com/info/?pcode=";
+    public static final String DANAWA_URL = "http://www.danawa.com/";
+    public static final String DANAWA_ITEM_URL = "http://prod.danawa.com/info/?pcode=";
+    public static final String[] ITEM_CODE_PARAMKEYS = {"pcode", "code"};
 
     private static final String ITEM_NAME_SELECTOR = "#blog_content > div.summary_info > div.top_summary > h3";
     private static final String ITEM_PRICE_SELECTOR = "span.lwst_prc > a > em";
@@ -32,8 +35,12 @@ public class DanawaPooler implements Pooler {
 
     @Override
     public ItemInfoVo poolItem(String itemCode) {
+        log.info("DANAWA 상품페이지 크롤을 시작합니다, 상품코드 : {}", itemCode);
 
         final String itemUrl = DANAWA_ITEM_URL + itemCode;
+
+        log.info("CRAWL URL : {}", itemUrl);
+
         Document document = jsoupDocumentLoader.getDocument(itemUrl);
 
         try {
@@ -57,7 +64,7 @@ public class DanawaPooler implements Pooler {
                         itemSaleStatus = ItemSaleStatus.EMPTY_ACCOUNT;
                         break;
                     case ITEM_STATUS_NO_SUPPORT:
-                        itemSaleStatus = ItemSaleStatus.NO_SUPPORT;
+                        itemSaleStatus = ItemSaleStatus.NOT_SUPPORT;
                         break;
                     default:
                         itemSaleStatus = ItemSaleStatus.ERROR;
@@ -81,6 +88,18 @@ public class DanawaPooler implements Pooler {
             return null;
         }
 
+    }
 
+    public String getItemCodeFromUrl(String url) {
+        String itemCode;
+
+        for (String key : ITEM_CODE_PARAMKEYS) {
+            itemCode = MyHttpUtils.getParamValue(url, key);
+            if (Objects.nonNull(itemCode)) {
+                return itemCode;
+            }
+        }
+
+        return null;
     }
 }

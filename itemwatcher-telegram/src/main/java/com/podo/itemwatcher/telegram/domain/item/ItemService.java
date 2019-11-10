@@ -1,14 +1,13 @@
 package com.podo.itemwatcher.telegram.domain.item;
 
-import com.podo.itemwatcher.core.domain.item.Item;
-import com.podo.itemwatcher.core.domain.item.ItemRepository;
-import com.podo.itemwatcher.core.domain.item.ItemSaleStatus;
-import com.podo.itemwatcher.core.domain.item.ItemStatus;
+import com.podo.itemwatcher.core.domain.item.*;
+import com.podo.itemwatcher.pooler.DanawaPooler;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
@@ -24,21 +23,36 @@ public class ItemService {
 
     private final ItemRepository itemRepository;
 
-    public Long insertIfNotExist(ItemDto.insert itemInsert) {
+    public Long merge(ItemInfoVo itemInfoVo) {
 
-        Item item = itemRepository.findByItemCode(itemInsert.getItemCode());
+        Item item = itemRepository.findByItemCode(itemInfoVo.getItemCode());
+
         if (Objects.nonNull(item)) {
-//            item.updateInfo(, LocalDateTime.now());
+            item.updateInfo(itemInfoVo, LocalDateTime.now());
             return item.getId();
         }
 
-        item = itemRepository.save(itemInsert.toEntity());
+        final ItemDto.insert itemInsert = ItemDto.insert.builder()
+                .itemCode(itemInfoVo.getItemCode())
+                .itemUrl(DanawaPooler.DANAWA_ITEM_URL + itemInfoVo.getItemCode())
+                .itemName(itemInfoVo.getItemName())
+                .itemImage(itemInfoVo.getItemImage())
+                .itemPrice(itemInfoVo.getItemPrice())
+                .itemSaleStatus(itemInfoVo.getItemSaleStatus())
+                .build();
+
+        return this.insert(itemInsert);
+    }
+
+    public Long insert(ItemDto.insert itemInsert) {
+
+        Item item = itemRepository.save(itemInsert.toEntity());
 
         return item.getId();
     }
 
-    public List<ItemDto.detail> findByUserTelegramId(Integer telegramId) {
-        final List<Item> items = itemRepository.findByUserTelegramId(telegramId + "");
+    public List<ItemDto.detail> findByUserTelegramId(String telegramId) {
+        final List<Item> items = itemRepository.findByUserTelegramId(telegramId);
 
         return items.stream()
                 .map(ItemDto.detail::new)
@@ -60,6 +74,14 @@ public class ItemService {
         return new ItemDto.detail(item);
     }
 
+    public Long update(Long itemId, ItemInfoVo itemInfoVo) {
+        final Item item = itemRepository.findById(itemId).get();
+
+        item.updateInfo(itemInfoVo, LocalDateTime.now());
+
+        return itemId;
+    }
+
     public void cleanInvalidItems() {
 
         Set<Item> itemSet = new HashSet<>();
@@ -67,6 +89,11 @@ public class ItemService {
         itemSet.addAll(itemRepository.findByItemStatus(ItemStatus.DEAD));
         itemSet.addAll(itemRepository.findByItemSaleStatus(ItemSaleStatus.ERROR));
         itemSet.addAll(itemRepository.findByItemSaleStatus(ItemSaleStatus.DISCONTINUE));
-        itemSet.addAll(itemRepository.findByItemSaleStatus(ItemSaleStatus.NO_SUPPORT));
+        itemSet.addAll(itemRepository.findByItemSaleStatus(ItemSaleStatus.NOT_SUPPORT));
+    }
+
+
+    public boolean existByItemCode(String itemCode) {
+        return Objects.isNull(itemRepository.findByItemCode(itemCode));
     }
 }

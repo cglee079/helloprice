@@ -49,6 +49,7 @@ public class ItemDto {
 
     @Getter
     public static class detail {
+        private Long id;
         private String itemCode;
         private String itemUrl;
         private String itemName;
@@ -61,6 +62,7 @@ public class ItemDto {
 
         @Builder
         public detail(Item item) {
+            this.id = item.getId();
             this.itemCode = item.getItemCode();
             this.itemName = item.getItemName();
             this.itemUrl = item.getItemUrl();

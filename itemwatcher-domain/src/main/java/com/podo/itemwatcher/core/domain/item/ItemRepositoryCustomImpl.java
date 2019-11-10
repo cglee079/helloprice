@@ -1,10 +1,6 @@
 package com.podo.itemwatcher.core.domain.item;
 
-import com.podo.itemwatcher.core.domain.user.QUser;
-import com.podo.itemwatcher.core.domain.user.User;
-import com.podo.itemwatcher.core.domain.user.UserRepositoryCustom;
-import com.podo.itemwatcher.core.domain.useritem.QUserItemRelation;
-import com.podo.itemwatcher.core.domain.useritem.UserItemRelation;
+import com.podo.itemwatcher.core.domain.useritem.QUserItemNotify;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import org.springframework.data.jpa.repository.support.QuerydslRepositorySupport;
 
@@ -24,9 +20,10 @@ public class ItemRepositoryCustomImpl extends QuerydslRepositorySupport implemen
     @Override
     public List<Item> findByUserTelegramId(String telegramId) {
 
-        return queryFactory.select(QUserItemRelation.userItemRelation.item)
-                .from(QUserItemRelation.userItemRelation)
-                .where(QUserItemRelation.userItemRelation.user.telegramId.eq(telegramId))
+        return queryFactory.select(QUserItemNotify.userItemNotify.item)
+                .from(QUserItemNotify.userItemNotify)
+                .where(QUserItemNotify.userItemNotify.user.telegramId.eq(telegramId))
+                .orderBy(QUserItemNotify.userItemNotify.createAt.desc())
                 .fetch();
 
     }

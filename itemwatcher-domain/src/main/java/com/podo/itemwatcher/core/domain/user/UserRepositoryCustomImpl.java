@@ -2,9 +2,9 @@ package com.podo.itemwatcher.core.domain.user;
 
 import com.podo.itemwatcher.core.domain.item.Item;
 import com.podo.itemwatcher.core.domain.item.QItem;
-import com.podo.itemwatcher.core.domain.useritem.QUserItemRelation;
-import com.podo.itemwatcher.core.domain.useritem.UserItemRelation;
-import com.podo.itemwatcher.core.domain.useritem.UserItemRelationRepositoryCustom;
+import com.podo.itemwatcher.core.domain.useritem.QUserItemNotify;
+import com.podo.itemwatcher.core.domain.useritem.UserItemNotify;
+import com.podo.itemwatcher.core.domain.useritem.UserItemNotifyRepositoryCustom;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import org.springframework.data.jpa.repository.support.QuerydslRepositorySupport;
 

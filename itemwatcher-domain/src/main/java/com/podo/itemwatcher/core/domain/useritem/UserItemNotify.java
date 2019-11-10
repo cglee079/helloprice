@@ -1,5 +1,6 @@
 package com.podo.itemwatcher.core.domain.useritem;
 
+import com.podo.itemwatcher.core.domain.BaseEntity;
 import com.podo.itemwatcher.core.domain.item.Item;
 import com.podo.itemwatcher.core.domain.user.User;
 import lombok.AccessLevel;
@@ -10,9 +11,9 @@ import javax.persistence.*;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Table(name = "user_item")
+@Table(name = "user_item_notify")
 @Entity
-public class UserItemRelation {
+public class UserItemNotify extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -27,7 +28,7 @@ public class UserItemRelation {
     private Item item;
 
 
-    public UserItemRelation(User user, Item item) {
+    public UserItemNotify(User user, Item item) {
         this.user = user;
         this.item = item;
     }

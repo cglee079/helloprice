@@ -1,13 +1,10 @@
 package com.podo.itemwatcher.telegram.domain.user;
 
-import com.podo.itemwatcher.core.domain.user.MenuStatus;
+import com.podo.itemwatcher.core.domain.user.Menu;
 import com.podo.itemwatcher.core.domain.user.User;
 import com.podo.itemwatcher.core.domain.user.UserStatus;
 import lombok.Builder;
 import lombok.Getter;
-
-import javax.persistence.*;
-import java.util.stream.Stream;
 
 public class UserDto {
 
@@ -16,11 +13,11 @@ public class UserDto {
         private Integer telegramId;
         private String username;
         private String email;
-        private MenuStatus menuStatus;
+        private Menu menuStatus;
         private UserStatus userStatus;
 
         @Builder
-        public insert(Integer telegramId, String username, String email, MenuStatus menuStatus, UserStatus userStatus) {
+        public insert(Integer telegramId, String username, String email, Menu menuStatus, UserStatus userStatus) {
             this.telegramId = telegramId;
             this.username = username;
             this.email = email;
@@ -45,7 +42,7 @@ public class UserDto {
         private Integer telegramId;
         private String username;
         private String email;
-        private MenuStatus menuStatus;
+        private Menu menuStatus;
         private UserStatus userStatus;
 
         public detail(User user) {

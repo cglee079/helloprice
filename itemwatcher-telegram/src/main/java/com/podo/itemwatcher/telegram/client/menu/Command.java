@@ -1,4 +1,4 @@
-package com.podo.itemwatcher.telegram.global.infra.telegram.command;
+package com.podo.itemwatcher.telegram.client.menu;
 
 public interface Command {
 

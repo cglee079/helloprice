@@ -1,7 +1,7 @@
 package com.podo.itemwatcher.core.domain.user;
 
 import com.podo.itemwatcher.core.domain.UpdatableBaseEntity;
-import com.podo.itemwatcher.core.domain.useritem.UserItemRelation;
+import com.podo.itemwatcher.core.domain.useritem.UserItemNotify;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -27,18 +27,18 @@ public class User extends UpdatableBaseEntity {
     private String email;
 
     @Enumerated(EnumType.STRING)
-    private MenuStatus menuStatus;
+    private Menu menuStatus;
 
     @Enumerated(EnumType.STRING)
     private UserStatus userStatus;
 
     @OneToMany(mappedBy = "user")
-    List<UserItemRelation> userItemRelations;
+    List<UserItemNotify> userItemNotifies;
 
     @Builder
     public User(String username,
                 String telegramId, String email,
-                MenuStatus menuStatus, UserStatus userStatus) {
+                Menu menuStatus, UserStatus userStatus) {
         this.username = username;
         this.telegramId = telegramId;
         this.email = email;
@@ -46,11 +46,15 @@ public class User extends UpdatableBaseEntity {
         this.userStatus = userStatus;
     }
 
-    public void updateMenuStatus(MenuStatus menuStatus) {
+    public void updateMenuStatus(Menu menuStatus) {
         this.menuStatus = menuStatus;
     }
 
-    public void addItemUserRelation(UserItemRelation userItemRelation) {
-        this.userItemRelations.add(userItemRelation);
+    public void addUserItemNotify(UserItemNotify userItemNotify) {
+        this.userItemNotifies.add(userItemNotify);
+    }
+
+    public void deleteUserItemNotify(UserItemNotify userItemNotify) {
+        this.userItemNotifies.remove(userItemNotify);
     }
 }
