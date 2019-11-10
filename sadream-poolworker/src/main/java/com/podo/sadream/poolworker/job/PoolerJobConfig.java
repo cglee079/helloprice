@@ -12,6 +12,7 @@ import org.springframework.batch.item.database.JpaItemWriter;
 import org.springframework.batch.item.database.JpaPagingItemReader;
 import org.springframework.batch.item.database.builder.JpaItemWriterBuilder;
 import org.springframework.batch.item.database.builder.JpaPagingItemReaderBuilder;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -23,14 +24,18 @@ import java.util.Map;
 @Configuration
 public class PoolerJobConfig {
 
-    public static final String POOLER_JOB_BEAN_NAME = "poolerJob";
-    public static final String POOLER_JOB_NAME = "pooler_job";
+    @Value("${item.pool.expire.time}")
+    private Integer itemPoolExpireTime;
+
+    public static final String POOLER_JOB_BEAN_NAME = "poolWorkerJob";
+    public static final String POOLER_JOB_NAME = "pool_worker_job";
     public static final Integer CHUNK_SIZE = 1;
 
     private final EntityManagerFactory entityManagerFactory;
     private final JobBuilderFactory jobBuilderFactory;
     private final StepBuilderFactory stepBuilderFactory;
     private final PoolerJobProcessor poolerJobProcessor;
+    private final PoolerJobParameter jobParameter;
 
     @Bean(POOLER_JOB_BEAN_NAME)
     public Job job() {
@@ -54,16 +59,29 @@ public class PoolerJobConfig {
 
     @Bean
     @StepScope
+    public PoolerJobParameter jobParameter() {
+        return new PoolerJobParameter();
+    }
+
+    @Bean
+    @StepScope
     public JpaPagingItemReader poolerJobReader() {
         final JpaPagingItemReaderBuilder jpaPagingItemReaderBuilder = new JpaPagingItemReaderBuilder();
 
         Map<String, Object> params = new HashMap<>();
-        params.put("itemStatus", ItemStatus.SAIL);
+        params.put("itemStatus", ItemStatus.BE);
+        params.put("expirePoolAt", jobParameter.getCreateAt().minusMinutes(itemPoolExpireTime));
 
-        final String query = "SELECT i FROM Item i WHERE i.itemStatus = :itemStatus ORDER BY i.lastPoolAt";
+        final String query = "" +
+                "SELECT i " +
+                "FROM Item i " +
+                "WHERE i.itemStatus = :itemStatus " +
+                "AND i.lastPoolAt <= :expirePoolAt " +
+                "ORDER BY i.lastPoolAt ";
 
         return jpaPagingItemReaderBuilder.name(POOLER_JOB_NAME + "_reader")
                 .queryString(query)
+                .maxItemCount(CHUNK_SIZE)
                 .parameterValues(params)
                 .pageSize(CHUNK_SIZE)
                 .entityManagerFactory(entityManagerFactory)

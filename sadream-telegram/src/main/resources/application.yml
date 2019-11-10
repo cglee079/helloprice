@@ -5,3 +5,32 @@ spring:
   profiles:
     include: core, jpa, jpa-secret, telegram-secret
 
+app:
+  name: sadream V1.0
+  telegram:
+    help_url: https://www.podo-dev.com/blogs/184
+
+user:
+  max_error_count: 5
+  max_item: 10
+
+item:
+  max_error_count: 10
+  max_dead_count: 10
+
+## Log
+logging:
+  file: telegram.%d{yyyy-MM-dd}-%i.log
+  path: c://sadream/log/telegram
+
+---
+
+spring:
+  profiles: deploy
+
+server:
+  port: 8080
+
+## Log
+logging:
+  path: /data/log/telegram

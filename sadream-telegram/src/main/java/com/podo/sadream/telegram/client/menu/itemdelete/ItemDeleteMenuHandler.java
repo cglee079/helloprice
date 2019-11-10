@@ -39,7 +39,7 @@ public class ItemDeleteMenuHandler extends AbstractMenuHandler {
     public void handle(TMessageVo tMessageVo, String requestMessage) {
         final String telegramId = tMessageVo.getTelegramId() + "";
 
-        log.info("{} << 상품 알림 삭제 메뉴에서 응답, RequestMessage '{}'", telegramId, requestMessage);
+        log.info("{} << 상품 알림 삭제 메뉴에서 응답, 보낸메세지 '{}'", telegramId, requestMessage);
 
         final List<String> itemCommands = UserItemCommand.getItemCommands(userItemNotifyService.findNotifyItemsByUserTelegramId(telegramId));
 
@@ -52,7 +52,7 @@ public class ItemDeleteMenuHandler extends AbstractMenuHandler {
         final String itemCode = UserItemCommand.getItemCodeFromCommand(requestMessage);
 
         if (Objects.isNull(itemCode)) {
-            log.info("{} << 잘못된 값을 입력했습니다. 상품코드를 찾을 수 없습니다. RequestMessage '{}'", telegramId, requestMessage);
+            log.info("{} << 잘못된 값을 입력했습니다. 상품코드를 찾을 수 없습니다. 보낸메세지 '{}'", telegramId, requestMessage);
             getBot().send(tMessageVo.newValue(CommonResponse.wrongInput(), km.getHomeKeyboard(itemCommands), callbackFactory.createDefaultCallback(telegramId, Menu.HOME)));
             return;
         }
@@ -61,7 +61,7 @@ public class ItemDeleteMenuHandler extends AbstractMenuHandler {
         final ItemDto.detail itemDetail = itemService.findByItemCode(itemCode);
 
         if (!userItemNotifyService.hasNotify(userDetail.getId(), itemDetail.getId())) {
-            log.info("{} << 삭제 요청한 {}({}) 상품 알림이 등록되어있지 않습니다. RequestMessage '{}'", telegramId, itemDetail.getItemName(), itemCode, requestMessage);
+            log.info("{} << 삭제 요청한 {}({}) 상품 알림이 등록되어있지 않습니다. 보낸메세지 '{}'", telegramId, itemDetail.getItemName(), itemCode, requestMessage);
             getBot().send(tMessageVo.newValue(ItemDeleteResponse.alreadyNotNotifyItem(), km.getHomeKeyboard(itemCommands), callbackFactory.createDefaultCallback(telegramId, Menu.HOME)));
         }
 

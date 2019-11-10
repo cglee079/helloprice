@@ -21,7 +21,8 @@ public class DanawaPooler implements Pooler {
     public static final String DANAWA_ITEM_URL = "http://prod.danawa.com/info/?pcode=";
     public static final String[] ITEM_CODE_PARAMKEYS = {"pcode", "code"};
 
-    private static final String ITEM_NAME_SELECTOR = "#blog_content > div.summary_info > div.top_summary > h3";
+        private static final String ITEM_NAME_SELECTOR = "#blog_content > div.summary_info > div.top_summary > h3";
+//    private static final String ITEM_NAME_SELECTOR = "head > meta[property=og:title]";
     private static final String ITEM_PRICE_SELECTOR = "span.lwst_prc > a > em";
     private static final String ITEM_IMAGE_SELECTOR = "#baseImage";
     private static final String ITEM_SALE_STATUS_SELECTOR = "div.lowest_area > div.no_data > p > strong";
@@ -44,7 +45,7 @@ public class DanawaPooler implements Pooler {
         Document document = jsoupDocumentLoader.getDocument(itemUrl);
 
         try {
-            final String itemName = document.select(ITEM_NAME_SELECTOR).text();
+            final String itemName = document.select(ITEM_NAME_SELECTOR).text().replace("[다나와]", "").trim();
             final String itemImage = document.select(ITEM_IMAGE_SELECTOR).attr("src");
 
             final Element itemPriceElement = document.select(ITEM_PRICE_SELECTOR).first();

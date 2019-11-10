@@ -6,6 +6,7 @@ import com.podo.sadream.telegram.client.response.CommonResponse;
 import com.podo.sadream.telegram.domain.user.UserDto;
 import com.podo.sadream.telegram.domain.user.UserService;
 import com.podo.sadream.telegram.client.menu.MenuHandler;
+import com.podo.sadream.telegram.domain.useritem.UserItemNotifyService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -41,6 +42,12 @@ public class TelegramBot extends TelegramLongPollingBot {
         }
     }
 
+    @Value("${app.name}")
+    private String appName;
+
+    @Value("${app.telegram.help_url}")
+    private String helpUrl;
+
     @Value("${telegram.podo_sadream.bot.token}")
     private String botToken;
 
@@ -73,7 +80,7 @@ public class TelegramBot extends TelegramLongPollingBot {
         final Integer messageId = message.getMessageId();
         final String messageText = message.getText();
 
-        log.info("{} << 메세지 수신 : {}", username, messageText);
+        log.info("{} << 메세지 수신 : {}", telegramId, messageText);
 
         final TMessageVo tMessageVo = new TMessageVo(telegramId, messageId);
 
@@ -81,7 +88,11 @@ public class TelegramBot extends TelegramLongPollingBot {
 
         if (Objects.isNull(userDetail)) {
             insertNewUser(username, telegramId);
-            this.send(tMessageVo.newValue(CommonResponse.introduce(username), km.getHomeKeyboard(Collections.emptyList()), callbackFactory.createDefaultCallback(telegramId + "", Menu.HOME)));
+            this.send(tMessageVo.newValue(CommonResponse.introduce(appName, helpUrl), km.getHomeKeyboard(Collections.emptyList()), callbackFactory.createDefaultCallback(telegramId + "", Menu.HOME)));
+            return;
+        } else if (userDetail.getUserStatus().equals(UserStatus.DEAD)) {
+            userService.reviveUser(userDetail.getId());
+            this.send(tMessageVo.newValue(CommonResponse.introduce(appName, helpUrl), km.getHomeKeyboard(Collections.emptyList()), callbackFactory.createDefaultCallback(telegramId + "", Menu.HOME)));
             return;
         }
 
@@ -126,7 +137,7 @@ public class TelegramBot extends TelegramLongPollingBot {
         try {
             this.execute(sendPhoto);
         } catch (TelegramApiException e) {
-            log.error("이미지를 전송 할 수 없습니다. Image : {}", image);
+            log.error("{} >> 이미지를 전송 할 수 없습니다. Image : {}", tMessageVo.getTelegramId(), image);
         }
 
         sendMessage(tMessageVo);
@@ -142,7 +153,11 @@ public class TelegramBot extends TelegramLongPollingBot {
         try {
             this.executeAsync(sendMessage, tMessageVo.getCallback());
         } catch (TelegramApiException e) {
-            e.printStackTrace();
+            String telegramId = tMessageVo.getTelegramId() + "";
+            userService.updateMenuStatus(telegramId, Menu.HOME);
+            userService.increaseUserErrorCount(telegramId);
+            log.error("{} >> 메시지를 전송 할 수 없습니다 '{}'", telegramId, e.getMessage());
         }
+
     }
 }

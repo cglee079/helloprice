@@ -11,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -77,11 +78,17 @@ public class ItemService {
     }
 
     public void deleteByItemId(Long itemId) {
-        Item item = itemRepository.findById(itemId).get();
+        Optional<Item> itemOptional = itemRepository.findById(itemId);
 
-        userItemNotifyRepository.deleteAll(item.getUserItemNotifies());
+        if (itemOptional.isPresent()) {
 
-        itemRepository.delete(item);
+            Item item = itemOptional.get();
+            userItemNotifyRepository.deleteAll(item.getUserItemNotifies());
+
+            itemRepository.delete(item);
+        }
+
+
     }
 
     public void notifiedUpdate(Long itemId) {

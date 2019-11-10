@@ -31,6 +31,10 @@ public class HomeKeyboard extends ReplyKeyboardMarkup {
             keyboard.add(keyboardItemRow);
         }
 
+        keyboardRow = new KeyboardRow();
+        keyboardRow.add(HomeCommand.HELP.getValue());
+        keyboard.add(keyboardRow);
+
         this.setKeyboard(keyboard);
 
     }

@@ -4,12 +4,14 @@ import com.podo.sadream.core.domain.item.Item;
 import com.podo.sadream.core.domain.item.ItemRepository;
 import com.podo.sadream.core.domain.user.User;
 import com.podo.sadream.core.domain.user.UserRepository;
+import com.podo.sadream.core.domain.user.UserStatus;
 import com.podo.sadream.core.domain.useritem.UserItemNotify;
 import com.podo.sadream.core.domain.useritem.UserItemNotifyRepository;
 import com.podo.sadream.telegram.domain.item.ItemDto;
 import com.podo.sadream.telegram.domain.user.UserDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -21,6 +23,9 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 @Service
 public class UserItemNotifyService {
+
+    @Value("${user.max_item}")
+    private Integer maxItemsPerUser;
 
     private final UserRepository userRepository;
     private final ItemRepository itemRepository;
@@ -40,6 +45,15 @@ public class UserItemNotifyService {
 
         user.addUserItemNotify(userItemNotify);
         item.addUserItemNotify(userItemNotify);
+    }
+
+    public boolean hasMaxNotifyByUserTelegramId(String telegramId) {
+
+        List<UserItemNotify> userItemNotifies = userItemNotifyRepository.findByUserTelegramId(telegramId);
+        if (userItemNotifies.size() > maxItemsPerUser) {
+            return true;
+        }
+        return false;
     }
 
     public void deleteNotify(Long userId, Long itemId) {
@@ -63,8 +77,8 @@ public class UserItemNotifyService {
         }
     }
 
-    public List<UserDto.detail> findNotifyUsersByItem(Long itemId) {
-        List<UserItemNotify> userItemNotifies = userItemNotifyRepository.findByItemId(itemId);
+    public List<UserDto.detail> findNotifyUsersByItemId(Long itemId, UserStatus userStatus) {
+        List<UserItemNotify> userItemNotifies = userItemNotifyRepository.findByItemIdAndUserStatus(itemId, userStatus);
 
         return userItemNotifies.stream()
                 .map(notify -> new UserDto.detail(notify.getUser()))
@@ -72,9 +86,7 @@ public class UserItemNotifyService {
     }
 
     public List<ItemDto.detail> findNotifyItemsByUserTelegramId(String telegramId) {
-        User user = userRepository.findByTelegramId(telegramId);
-
-        List<UserItemNotify> userItemNotifies = userItemNotifyRepository.findByUserId(user.getId());
+        List<UserItemNotify> userItemNotifies = userItemNotifyRepository.findByUserTelegramId(telegramId);
 
         return userItemNotifies.stream()
                 .map(notify -> new ItemDto.detail(notify.getItem()))

@@ -14,7 +14,6 @@ import static java.util.stream.Collectors.toList;
 @Component
 public class UserItemCommand {
 
-
     private static String formatCommand(String itemCode, String itemName) {
         final String FORMAT = "#%s, %s";
         return String.format(FORMAT, itemCode, itemName);

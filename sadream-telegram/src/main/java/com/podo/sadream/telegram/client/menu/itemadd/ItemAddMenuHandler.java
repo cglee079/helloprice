@@ -7,6 +7,7 @@ import com.podo.sadream.telegram.client.KeyboardManager;
 import com.podo.sadream.telegram.client.TMessageCallbackFactory;
 import com.podo.sadream.telegram.client.TMessageVo;
 import com.podo.sadream.telegram.client.menu.AbstractMenuHandler;
+import com.podo.sadream.telegram.client.response.CommonResponse;
 import com.podo.sadream.telegram.domain.item.ItemDto;
 import com.podo.sadream.telegram.domain.item.ItemService;
 import com.podo.sadream.telegram.domain.user.UserDto;
@@ -42,7 +43,7 @@ public class ItemAddMenuHandler extends AbstractMenuHandler {
     public void handle(TMessageVo tMessageVo, String requestMessage) {
         final String telegramId = tMessageVo.getTelegramId() + "";
 
-        log.info("{} << 상품 알림 추가 메뉴에서 응답, RequestMessage '{}'", telegramId, requestMessage);
+        log.info("{} << 상품 알림 추가 메뉴에서 응답, 보낸메세지 '{}'", telegramId, requestMessage);
 
         final String url = requestMessage;
         final String itemCode = danawaPooler.getItemCodeFromUrl(url);
@@ -51,7 +52,7 @@ public class ItemAddMenuHandler extends AbstractMenuHandler {
 
         //URL에서 아이템코드를 찾을 수 없음
         if (Objects.isNull(itemCode)) {
-            log.info("{} << 링크에서 상품 코드를 찾을 수 없습니다. RequestMessage '{}'", telegramId, requestMessage);
+            log.info("{} << 링크에서 상품 코드를 찾을 수 없습니다. 보낸메세지 '{}'", telegramId, requestMessage);
             getBot().send(tMessageVo.newValue(ItemAddResponse.wrongItemUrl(url), km.getHomeKeyboard(itemCommands), callbackFactory.createDefaultCallback(telegramId, Menu.HOME)));
             return;
         }
@@ -59,7 +60,7 @@ public class ItemAddMenuHandler extends AbstractMenuHandler {
         final ItemInfoVo itemInfoVo = danawaPooler.poolItem(itemCode);
 
         if (Objects.isNull(itemInfoVo)) {
-            log.info("{} << 상품 정보를 가져 올 수 없습니다. RequestMessage '{}'", telegramId, requestMessage);
+            log.info("{} << 상품 정보를 가져 올 수 없습니다. 보낸메세지 '{}'", telegramId, requestMessage);
             getBot().send(tMessageVo.newValue(ItemAddResponse.wrongItem(url), km.getHomeKeyboard(itemCommands), callbackFactory.createDefaultCallback(telegramId, Menu.HOME)));
             return;
         }
@@ -72,16 +73,24 @@ public class ItemAddMenuHandler extends AbstractMenuHandler {
         final Long itemId = itemService.merge(itemInfoVo);
         final ItemDto.detail itemDetail = itemService.findByItemId(itemId);
 
-        if (userItemNotifyService.hasNotify(userDetail.getId(), itemId)) {
-            log.info("{} << {}({}) 상품 알림이 이미 등록되었습니다. RequestMessage '{}'", telegramId, itemInfoVo.getItemName(), itemCode, requestMessage);
-            getBot().send(tMessageVo.newValue(ItemAddResponse.alreadySetNotifyItem(itemDetail), itemDetail.getItemImage(), km.getHomeKeyboard(itemCommands), callbackFactory.createDefaultCallback(telegramId, Menu.HOME)));
+        if (userItemNotifyService.hasNotify(userDetail.getId(), itemDetail.getId())) {
+            log.info("{} << {}({}) 상품 알림이 이미 등록되었습니다. 보낸메세지 '{}'", telegramId, itemInfoVo.getItemName(), itemCode, requestMessage);
+            getBot().send(tMessageVo.newValue(CommonResponse.descItemDetail(itemDetail), itemDetail.getItemImage(), km.getHomeKeyboard(itemCommands), callbackFactory.createDefaultCallback(telegramId, Menu.HOME)));
+            getBot().send(tMessageVo.newValue(ItemAddResponse.alreadySetNotifyItem(), itemDetail.getItemImage(), km.getHomeKeyboard(itemCommands), callbackFactory.createDefaultCallback(telegramId, Menu.HOME)));
             return;
         }
 
-        log.info("{} << {}({}) 상품 알림을 등록합니다. RequestMessage '{}'", telegramId, itemInfoVo.getItemName(), itemCode, requestMessage);
+        log.info("{} << {}({}) 상품 알림을 등록합니다. 보낸메세지 '{}'", telegramId, itemInfoVo.getItemName(), itemCode, requestMessage);
+        if (userItemNotifyService.hasMaxNotifyByUserTelegramId(telegramId)) {
+            log.info("{} << 사용자는 이미 최대 상품알림 개수를 초과했습니다", telegramId);
+            getBot().send(tMessageVo.newValue(ItemAddResponse.hasMaxItem(), null, km.getHomeKeyboard(itemCommands), callbackFactory.createDefaultCallback(telegramId, Menu.HOME)));
+            return;
+        }
+
         userItemNotifyService.addNotify(userDetail.getId(), itemId);
         List<String> reloadItemCommands = UserItemCommand.getItemCommands(userItemNotifyService.findNotifyItemsByUserTelegramId(telegramId)); // 갱신
-        getBot().send(tMessageVo.newValue(ItemAddResponse.successAddNotifyItem(itemDetail), itemInfoVo.getItemImage(), km.getHomeKeyboard(reloadItemCommands), callbackFactory.createDefaultCallback(telegramId, Menu.HOME)));
+        getBot().send(tMessageVo.newValue(CommonResponse.descItemDetail(itemDetail), itemInfoVo.getItemImage(), km.getHomeKeyboard(reloadItemCommands), callbackFactory.createDefaultCallback(telegramId, Menu.HOME)));
+        getBot().send(tMessageVo.newValue(ItemAddResponse.successAddNotifyItem(), itemInfoVo.getItemImage(), km.getHomeKeyboard(reloadItemCommands), callbackFactory.createDefaultCallback(telegramId, Menu.HOME)));
     }
 
     private boolean validateNewItem(TMessageVo tMessageVo, String telegramId, List<String> itemCommands, ItemInfoVo itemInfoVo) {

@@ -26,6 +26,8 @@ public class User extends UpdatableBaseEntity {
 
     private String email;
 
+    private Integer errorCount;
+
     @Enumerated(EnumType.STRING)
     private Menu menuStatus;
 
@@ -37,11 +39,12 @@ public class User extends UpdatableBaseEntity {
 
     @Builder
     public User(String username,
-                String telegramId, String email,
+                String telegramId, String email, Integer errorCount,
                 Menu menuStatus, UserStatus userStatus) {
         this.username = username;
         this.telegramId = telegramId;
         this.email = email;
+        this.errorCount = errorCount;
         this.menuStatus = menuStatus;
         this.userStatus = userStatus;
     }
@@ -57,4 +60,22 @@ public class User extends UpdatableBaseEntity {
     public void deleteUserItemNotify(UserItemNotify userItemNotify) {
         this.userItemNotifies.remove(userItemNotify);
     }
+
+    public void increaseErrorCount() {
+        errorCount++;
+    }
+
+    public void resetErrorCount() {
+        this.errorCount = 0;
+    }
+
+    public void died() {
+        this.userStatus = UserStatus.DEAD;
+    }
+
+    public void revive() {
+        this.userStatus = UserStatus.ALIVE;
+        this.errorCount = 0;
+    }
+
 }

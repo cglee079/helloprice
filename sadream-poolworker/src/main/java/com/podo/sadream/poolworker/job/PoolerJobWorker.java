@@ -18,7 +18,7 @@ import java.util.Date;
 @Slf4j
 @Component
 @RequiredArgsConstructor
-public class PoolerJobWorker implements Worker{
+public class PoolerJobWorker implements Worker {
 
     private final JobLauncher jobLauncher;
 
@@ -26,6 +26,8 @@ public class PoolerJobWorker implements Worker{
     private final Job poolerJob;
 
     public void run() {
+        log.info("아이템 갱신 배치를 실행합니다");
+
         try {
 
             JobParameters jobParameters =

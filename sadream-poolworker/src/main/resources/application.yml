@@ -5,4 +5,29 @@ spring:
   profiles:
     include: core, jpa, jpa-secret
 
+  batch:
+    job:
+      enabled: false
+
+item:
+  pool:
+    expire:
+      time: 60
+
+## Log
+logging:
+  file: poolworker.%d{yyyy-MM-dd}-%i.log
+  path: c://sadream/log/poolworker
+
+---
+
+spring:
+  profiles: deploy
+
+server:
+  port: 8080
+
+## Log
+logging:
+  path: /data/log/poolworker
 

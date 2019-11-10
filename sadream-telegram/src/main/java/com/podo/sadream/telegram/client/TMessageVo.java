@@ -21,6 +21,7 @@ public class TMessageVo {
         this.messageId = messageId;
     }
 
+
     private TMessageVo(Integer telegramId, Integer messageId, String message, String image, ReplyKeyboard keyboard, SentCallback<Message> callback) {
         this.telegramId = telegramId;
         this.messageId = messageId;

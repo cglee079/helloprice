@@ -2,6 +2,7 @@ package com.podo.sadream.telegram.job;
 
 import com.podo.sadream.core.domain.item.ItemStatus;
 import com.podo.sadream.core.domain.user.Menu;
+import com.podo.sadream.core.domain.user.UserStatus;
 import com.podo.sadream.telegram.client.*;
 import com.podo.sadream.telegram.client.response.NotifyResponse;
 import com.podo.sadream.telegram.domain.item.ItemDto;
@@ -10,6 +11,7 @@ import com.podo.sadream.telegram.domain.user.UserDto;
 import com.podo.sadream.telegram.domain.useritem.UserItemNotifyService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -19,6 +21,18 @@ import java.util.List;
 @Component
 public class ItemStatusCheckWorker implements Worker {
 
+    @Value("${telegram.podo_sadream.admin.id}")
+    private Integer adminTelegramId;
+
+    @Value("${item.max_dead_count}")
+    private Integer maxDeadCount;
+
+    @Value("${item.max_error_count}")
+    private Integer maxErrorCount;
+
+    private int deadCount = 0;
+    private int errorCount = 0;
+
     private final ItemService itemService;
     private final UserItemNotifyService userItemNotifyService;
     private final KeyboardManager km;
@@ -27,12 +41,11 @@ public class ItemStatusCheckWorker implements Worker {
 
     @Override
     public void doIt() {
-        log.info("상품 상태체크를 시작합니다");
+        log.info("상품 상태체크를 시작합니다" + Thread.currentThread());
 
         handleItemStatusUpdated();
         handleItemStatusDead();
     }
-
 
     private void handleItemStatusUpdated() {
         List<ItemDto.detail> items = itemService.findByItemStatus(ItemStatus.UPDATED);
@@ -57,12 +70,12 @@ public class ItemStatusCheckWorker implements Worker {
     }
 
     private void handleSale(ItemDto.detail item) {
-        log.info("{}({}) 상품은 판매중 상태로 변경되었습니다.", item.getItemName(), item.getItemCode());
+        log.info("{}({}) 상품의 최저가가 갱신되었습니다.", item.getItemName(), item.getItemCode());
 
-        List<UserDto.detail> users = userItemNotifyService.findNotifyUsersByItem(item.getId());
+        List<UserDto.detail> users = userItemNotifyService.findNotifyUsersByItemId(item.getId(), UserStatus.ALIVE);
 
         for (UserDto.detail user : users) {
-            notifyUser(user, item.getItemImage(), NotifyResponse.notifyItemSale(item));
+            notifyUser(user.getTelegramId(), item.getItemImage(), NotifyResponse.notifyItemSale(item));
         }
 
         itemService.notifiedUpdate(item.getId());
@@ -71,10 +84,10 @@ public class ItemStatusCheckWorker implements Worker {
     private void handleEmptyAmount(ItemDto.detail item) {
         log.info("{}({}) 상품은 재고없음 상태로 변경되었습니다.", item.getItemName(), item.getItemCode());
 
-        List<UserDto.detail> users = userItemNotifyService.findNotifyUsersByItem(item.getId());
+        List<UserDto.detail> users = userItemNotifyService.findNotifyUsersByItemId(item.getId(), UserStatus.ALIVE);
 
         for (UserDto.detail user : users) {
-            notifyUser(user, item.getItemImage(), NotifyResponse.notifyItemEmptyAccount(item));
+            notifyUser(user.getTelegramId(), item.getItemImage(), NotifyResponse.notifyItemEmptyAccount(item));
         }
 
         itemService.notifiedUpdate(item.getId());
@@ -83,12 +96,12 @@ public class ItemStatusCheckWorker implements Worker {
     private void handleErrorItem(ItemDto.detail item) {
         log.info("{}({}) 상품은 알 수 없는 상태로 변경되었습니다.", item.getItemName(), item.getItemCode());
 
-        List<UserDto.detail> users = userItemNotifyService.findNotifyUsersByItem(item.getId());
+        List<UserDto.detail> users = userItemNotifyService.findNotifyUsersByItemId(item.getId(), UserStatus.ALIVE);
 
         for (UserDto.detail user : users) {
             userItemNotifyService.deleteNotify(user.getId(), item.getId());
 
-            notifyUser(user, item.getItemImage(), NotifyResponse.notifyItemError(item));
+            notifyUser(user.getTelegramId(), item.getItemImage(), NotifyResponse.notifyItemError(item));
         }
 
         itemService.deleteByItemId(item.getId());
@@ -98,42 +111,65 @@ public class ItemStatusCheckWorker implements Worker {
     private void handleDiscontinueItem(ItemDto.detail item) {
         log.info("{}({}) 상품은 단종 상태로 변경되었습니다.", item.getItemName(), item.getItemCode());
 
-        List<UserDto.detail> users = userItemNotifyService.findNotifyUsersByItem(item.getId());
+        increaseErrorCount();
+        List<UserDto.detail> users = userItemNotifyService.findNotifyUsersByItemId(item.getId(), UserStatus.ALIVE);
 
         for (UserDto.detail user : users) {
             userItemNotifyService.deleteNotify(user.getId(), item.getId());
 
-            notifyUser(user, item.getItemImage(), NotifyResponse.notifyItemDiscontinued(item));
+            notifyUser(user.getTelegramId(), item.getItemImage(), NotifyResponse.notifyItemDiscontinued(item));
         }
 
         itemService.deleteByItemId(item.getId());
+    }
+
+    private void increaseErrorCount() {
+        this.errorCount++;
+
+        if (errorCount >= maxErrorCount) {
+            log.info("{} 이상 상품 상태를 확인 할 수 없습니다", deadCount);
+            notifyUser(adminTelegramId, null, NotifyResponse.notifyTooManyDead(errorCount));
+            errorCount = 0;
+        }
+
     }
 
     private void handleItemStatusDead() {
         List<ItemDto.detail> items = itemService.findByItemStatus(ItemStatus.DEAD);
 
         for (ItemDto.detail item : items) {
+            increaseDeadCount();
             log.info("{}({}) 상품은 페이지를 확인 할 수 상태로 변경되었습니다.", item.getItemName(), item.getItemCode());
 
-            List<UserDto.detail> users = userItemNotifyService.findNotifyUsersByItem(item.getId());
+            List<UserDto.detail> users = userItemNotifyService.findNotifyUsersByItemId(item.getId(), UserStatus.ALIVE);
 
             for (UserDto.detail user : users) {
                 userItemNotifyService.deleteNotify(user.getId(), item.getId());
 
-                notifyUser(user, null, NotifyResponse.notifyItemDead(item));
+                notifyUser(user.getTelegramId(), null, NotifyResponse.notifyItemDead(item));
             }
 
             itemService.deleteByItemId(item.getId());
         }
     }
 
-    private void notifyUser(UserDto.detail user, String itemImage, String response) {
-        log.info("{}님에게 변경상태 알림을 전송합니다", user.getTelegramId());
+    private void increaseDeadCount() {
+        this.deadCount++;
 
-        String telegramId = user.getTelegramId() + "";
-        TMessageVo tMessageVo = new TMessageVo(user.getTelegramId(), null);
+        if (deadCount >= maxDeadCount) {
+            log.info("{} 이상 상품페이지를 확인 할 수 없습니다", deadCount);
+            notifyUser(adminTelegramId, null, NotifyResponse.notifyTooManyError(deadCount));
+            deadCount = 0;
+        }
 
-        List<String> itemCommands = UserItemCommand.getItemCommands(userItemNotifyService.findNotifyItemsByUserTelegramId(telegramId));
-        telegramBot.send(tMessageVo.newValue(response, itemImage, km.getHomeKeyboard(itemCommands), callbackFactory.createDefaultCallback(telegramId, Menu.HOME)));
+    }
+
+    private void notifyUser(Integer telegramId, String itemImage, String response) {
+        log.info("{}님에게 변경상태 알림을 전송합니다", telegramId);
+
+        TMessageVo tMessageVo = new TMessageVo(telegramId, null);
+
+        List<String> itemCommands = UserItemCommand.getItemCommands(userItemNotifyService.findNotifyItemsByUserTelegramId(telegramId + ""));
+        telegramBot.send(tMessageVo.newValue(response, itemImage, km.getHomeKeyboard(itemCommands), callbackFactory.createDefaultCallback(telegramId + "", Menu.HOME)));
     }
 }

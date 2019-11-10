@@ -10,7 +10,9 @@ public enum HomeCommand implements Command {
 
 
     ADD_ITEM("상품 알림 추가"),
-    DELETE_ITEM("상품 알림 삭제");
+    DELETE_ITEM("상품 알림 삭제"),
+    HELP("도움말");
+
 
     private String value;
 

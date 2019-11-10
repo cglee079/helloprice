@@ -12,7 +12,7 @@ public class WorkScheduler {
 
     private final List<Worker> workers;
 
-    @Scheduled(cron = "1 * * * * *")
+    @Scheduled(cron = "*/30 * * * * *")
     public void schedule() {
         for (Worker worker : workers) {
             worker.doIt();

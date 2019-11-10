@@ -32,6 +32,7 @@ public class UserDto {
                     .email(email)
                     .menuStatus(menuStatus)
                     .userStatus(userStatus)
+                    .errorCount(0)
                     .build();
         }
     }

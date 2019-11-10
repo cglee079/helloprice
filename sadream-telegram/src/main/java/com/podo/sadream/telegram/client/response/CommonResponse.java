@@ -7,16 +7,35 @@ import com.podo.sadream.telegram.domain.item.ItemDto;
 
 public class CommonResponse {
 
-    public static String introduce(String username) {
-        StringBuilder message = new StringBuilder();
+    public static String introduce(String appName, String helpUrl) {
+        return new StringBuilder()
+                .append("<b>")
+                .append(appName)
+                .append("</b>")
+                .append("\n")
+                .append("\n")
 
-        message.append(username)
-                .append("님 안녕하세요! \n")
-                .append("본 서비스는 최저가 알림을 주는 봇입니다! \n")
-                .append("아이템을 등록하면, 최저가 갱신됬을때, \n")
-                .append("텔레그램을 통해 알람을 드려요! \n");
+                .append("안녕하세요! \n ")
+                .append("최저가 알림을 주는 ")
+                .append(appName)
+                .append("입니다!\n")
+                .append("\n")
 
-        return message.toString();
+                .append("상품을 등록하면, 최저가 갱신됬을때, 재고가 생겼을때 \n")
+                .append("텔레그램을 통해 알람을 드려요!!! \n")
+                .append("\n")
+
+                .append("자세한 내용은, 도움말 페이지를 참조해주세요\n")
+                .append(CommonResponse.help(helpUrl))
+
+                .toString();
+    }
+
+    public static String help(String helpUrl) {
+        return new StringBuilder()
+                .append("도움말 : ")
+                .append(helpUrl)
+                .toString();
     }
 
     public static String wrongInput() {
@@ -83,5 +102,6 @@ public class CommonResponse {
                 .append("홈메뉴로 돌아갑니다\n")
                 .toString();
     }
+
 
 }

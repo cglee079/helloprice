@@ -43,7 +43,7 @@ public class NotifyResponse {
     public static String notifyItemSale(ItemDto.detail itemDetail) {
         return new StringBuilder()
                 .append("<b>")
-                .append("해당 상품은 '판매중' 상태로 변경되었습니다\n")
+                .append("해당 상품은 최저가가 갱신되었습니다!!\n")
                 .append("</b>")
                 .append("\n")
                 .append(CommonResponse.descItemDetail(itemDetail))
@@ -60,6 +60,28 @@ public class NotifyResponse {
                 .append("\n")
                 .append(CommonResponse.descItemDetail(itemDetail))
                 .append("\n")
+                .toString();
+    }
+
+    public static String notifyTooManyDead(int deadCount) {
+        return new StringBuilder()
+                .append("<b>")
+                .append("관리자님 너무 많은 상품페이지를 확인 할 수 없습니다.\n")
+                .append("</b>")
+                .append("\n")
+                .append("DEAD COUNT : ")
+                .append(deadCount)
+                .toString();
+    }
+
+    public static String notifyTooManyError(int deadCount) {
+        return new StringBuilder()
+                .append("<b>")
+                .append("관리자님 너무 많은 상품 상태를 확인 할 수 없습니다.\n")
+                .append("</b>")
+                .append("\n")
+                .append("DEAD COUNT : ")
+                .append(deadCount)
                 .toString();
     }
 }

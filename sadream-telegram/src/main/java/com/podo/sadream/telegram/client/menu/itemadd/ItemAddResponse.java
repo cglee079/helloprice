@@ -6,64 +6,49 @@ import com.podo.sadream.telegram.domain.item.ItemDto;
 
 public class ItemAddResponse {
 
-    public static String explain(String url) {
+    public static String explain(String url, String helpUrl) {
         return new StringBuilder()
-                .append("다나와에서 페이지의 URL(링크)을 입력해주세요!\n")
+                .append("다나와에서 상품페이지의 URL(링크)을 입력해주세요!\n")
                 .append("\n")
 
                 .append("다나와 : ")
                 .append(url)
+                .append("\n")
+                .append("\n")
+
+                .append(CommonResponse.help(helpUrl))
 
                 .toString();
 
     }
 
     public static String wrongItemUrl(String url) {
-        StringBuilder message = new StringBuilder();
-
-        message.append("상품페이지의 URL이 잘못되었습니다\n")
+        return new StringBuilder().append("죄송합니다, 상품페이지의 URL이 잘못되었습니다\n")
                 .append("URL : ")
-                .append(url);
-
-        return message.toString();
+                .append(url)
+                .toString();
     }
 
     public static String wrongItem(String url) {
-        StringBuilder message = new StringBuilder();
-
-        message.append("상품 정보를 가져 올 수 없습니다\n")
+        return new StringBuilder()
+                .append("죄송합니다, 상품 정보를 가져 올 수 없습니다\n")
                 .append("URL : ")
-                .append(url);
-
-        return message.toString();
+                .append(url)
+                .toString();
     }
 
-    public static String successAddNotifyItem(ItemDto.detail itemDetail) {
+    public static String successAddNotifyItem() {
 
         return new StringBuilder()
                 .append("상품 가격알림이 등록되었습니다\n")
-                .append("지금부터 상품의 최저가격이 갱신되면 알림이 전송됩니다!\n")
-                .append("\n")
-
-                .append(CommonResponse.descItemDetail(itemDetail))
+                .append("지금부터 상품의 <b>최저가격</b>이 갱신되면 알림이 전송됩니다!\n")
                 .toString();
 
     }
 
-
-
-    public static String alreadySetNotifyItem(ItemDto.detail itemDetail) {
-        return new StringBuilder().append("이미 알림이 등록되어있습니다\n")
-                .append("\n")
-                .append(CommonResponse.descItemDetail(itemDetail))
-                .toString();
-    }
-
-    public static String makeItemInfo(ItemDto.detail itemDetail) {
+    public static String alreadySetNotifyItem() {
         return new StringBuilder()
-                .append("현재 상품정보는 다음과 같습니다\n")
-                .append("\n")
-                .append(CommonResponse.descItemDetail(itemDetail))
+                .append("이미 알림이 등록된 상품입니다\n")
                 .toString();
     }
 
@@ -72,7 +57,7 @@ public class ItemAddResponse {
         return new StringBuilder()
                 .append(CommonResponse.descItemInfoVo(itemInfoVo))
                 .append("\n")
-                .append("단종된 상품입니다")
+                .append("죄송합니다, 페이지에서 단종된 상품입니다")
                 .toString();
     }
 
@@ -80,7 +65,7 @@ public class ItemAddResponse {
         return new StringBuilder()
                 .append(CommonResponse.descItemInfoVo(itemInfoVo))
                 .append("\n")
-                .append("알 수 없는 상태의 상품입니다")
+                .append("죄송합니다, 페이지에서 알 수 없는 상태의 상품입니다")
                 .toString();
     }
 
@@ -88,8 +73,13 @@ public class ItemAddResponse {
         return new StringBuilder()
                 .append(CommonResponse.descItemInfoVo(itemInfoVo))
                 .append("\n")
-                .append("가격비교를 제공하지 않는 상품입니다")
+                .append("죄송합니다, 페이지에서 가격비교를 제공하지 않는 상품입니다")
                 .toString();
     }
 
+    public static String hasMaxItem() {
+        return new StringBuilder()
+                .append("죄송합니다, 최대 상품 알림 수를 초과했습니다.")
+                .toString();
+    }
 }

@@ -10,8 +10,8 @@ public class ItemDeleteResponse {
     public static String explain() {
         StringBuilder message = new StringBuilder();
 
-        message.append("삭제할 아이템을 선택해주세요\n")
-                .append("삭제된 아이템은 더 이상 알림이 가지않습니다");
+        message.append("삭제할 상품을 선택해주세요\n")
+                .append("삭제된 상품은 더 이상 알림이 가지않습니다");
 
         return message.toString();
 

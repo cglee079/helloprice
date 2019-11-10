@@ -1,7 +1,7 @@
 decorator:
   datasource:
     p6spy:
-      enable-logging: true
+      enable-logging: false
       multiline: false
       logging: slf4j
       #log-file: spy.log
@@ -23,3 +23,12 @@ spring:
 
 
 
+---
+
+spring:
+  profiles: deploy
+
+decorator:
+  datasource:
+    p6spy:
+      enable-logging: false

@@ -21,21 +21,23 @@ public class TMessageCallbackFactory {
         return new SentCallback<Message>() {
             @Override
             public void onResult(BotApiMethod<Message> method, Message response) {
+                log.info("RESULT : " + Thread.currentThread());
                 userService.updateMenuStatus(telegramId, menu);
+                userService.resetUserErrorCount(telegramId);
             }
 
             @Override
             public void onError(BotApiMethod<Message> method, TelegramApiRequestException e) {
                 userService.updateMenuStatus(telegramId, Menu.HOME);
-                log.error("{} >> 메시지를 전송 할 수 없습니다 '{}'", telegramId, e.getMessage());
-                e.printStackTrace();
+                userService.increaseUserErrorCount(telegramId);
+                log.error("{} >> Send Error, 메시지를 전송 할 수 없습니다 '{}'", telegramId, e.getMessage());
             }
 
             @Override
             public void onException(BotApiMethod<Message> method, Exception e) {
                 userService.updateMenuStatus(telegramId, Menu.HOME);
-                log.error("{} >> 메시지를 전송 할 수 없습니다 '{}'", telegramId, e.getMessage());
-                e.printStackTrace();
+                userService.increaseUserErrorCount(telegramId);
+                log.error("{} >> Send Exception, 메시지를 전송 할 수 없습니다 '{}'", telegramId, e.getMessage());
             }
         };
     }
