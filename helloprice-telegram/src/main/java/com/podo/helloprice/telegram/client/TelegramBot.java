@@ -30,13 +30,14 @@ import java.util.Objects;
 @Component
 public class TelegramBot extends TelegramLongPollingBot {
 
+
     private final UserService userService;
     private final TMessageCallbackFactory callbackFactory;
     private final KeyboardManager km;
     private final Map<Menu, MenuHandler> menuHandlers;
 
     @PostConstruct
-    public void setTelegramBot() {
+    public void injectThisToMenuHandlers() {
         for (Menu menu : menuHandlers.keySet()) {
             menuHandlers.get(menu).setBot(this);
         }
