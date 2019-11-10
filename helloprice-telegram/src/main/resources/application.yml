@@ -20,7 +20,7 @@ item:
 
 ## Log
 logging:
-  file: telegram.%d{yyyy-MM-dd}-%i.log
+  file: helloprice-telegram.%d{yyyy-MM-dd}-%i.log
   path: c://helloprice/logs/helloprice-telegram
 
 ---
