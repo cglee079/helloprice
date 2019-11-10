@@ -4,8 +4,12 @@ import com.podo.helloprice.core.domain.item.ItemInfoVo;
 import com.podo.helloprice.core.util.MyCurrencyUtils;
 import com.podo.helloprice.core.util.MyFormatUtils;
 import com.podo.helloprice.telegram.domain.item.ItemDto;
+import com.podo.helloprice.core.util.MyCalculateUtils;
+
+import java.text.DecimalFormat;
 
 public class CommonResponse {
+    public static final String DATE_TIME_FORMAT = "yyyy-MM-dd HH:mm:ss";
 
     public static String introduce(String appName, String helpUrl) {
         return new StringBuilder()
@@ -48,17 +52,16 @@ public class CommonResponse {
     }
 
     public static String descItemDetail(ItemDto.detail itemDetail) {
-        final String dateTimeFormat = "yyyy-MM-dd HH:mm:ss";
 
         return new StringBuilder()
                 .append("<b>")
-                .append("최종체크일 : ")
-                .append(MyFormatUtils.dateTimeToString(itemDetail.getLastPoolAt(), dateTimeFormat))
+                .append("최종확인시간 : ")
+                .append(MyFormatUtils.dateTimeToString(itemDetail.getLastPoolAt(), DATE_TIME_FORMAT))
                 .append("</b>")
                 .append("\n")
 
-                .append("가격변동일 : ")
-                .append(MyFormatUtils.dateTimeToString(itemDetail.getLastUpdateAt(), dateTimeFormat))
+                .append("가격변동시간 : ")
+                .append(MyFormatUtils.dateTimeToString(itemDetail.getLastUpdateAt(), DATE_TIME_FORMAT))
                 .append("\n")
                 .append("\n")
 
@@ -74,17 +77,27 @@ public class CommonResponse {
                 .append(itemDetail.getItemName())
                 .append("\n")
 
+                .append("<b>")
                 .append("상품상태 : ")
                 .append(itemDetail.getItemSaleStatus().getValue())
+                .append("</b>")
                 .append("\n")
 
+                .append("<b>")
                 .append("이전가격 : ")
                 .append(MyCurrencyUtils.toExchangeRateKRWStr(itemDetail.getItemBeforePrice()))
+                .append("</b>")
                 .append("\n")
 
                 .append("<b>")
                 .append("현재가격 : ")
                 .append(MyCurrencyUtils.toExchangeRateKRWStr(itemDetail.getItemPrice()))
+                .append("</b>")
+                .append("\n")
+
+                .append("<b>")
+                .append("가격변화 : ")
+                .append(CommonResponse.toSignPercentStr(itemDetail.getItemPrice(), itemDetail.getItemBeforePrice()))
                 .append("</b>")
                 .append("\n")
 
@@ -102,6 +115,19 @@ public class CommonResponse {
                 .append(itemInfoVo.getItemName())
                 .append("\n")
                 .toString();
+    }
+
+    public static String toSignPercentStr(double a, double b) {
+        String prefix = "";
+
+        double percent = MyCalculateUtils.getChangePercent(a, b);
+
+        if (percent > 0) {
+            prefix = "+";
+        }
+
+        DecimalFormat df = new DecimalFormat("#.##");
+        return prefix + df.format(percent) + "%";
     }
 
     public static String exit() {

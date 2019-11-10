@@ -91,7 +91,7 @@ public class ItemService {
 
     }
 
-    public void notifiedUpdate(Long itemId) {
+    public void notifiedItem(Long itemId) {
         Item item = itemRepository.findById(itemId).get();
 
         item.notifiedUpdate();

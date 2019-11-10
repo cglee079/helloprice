@@ -3,6 +3,7 @@ package com.podo.helloprice.telegram.job;
 import com.podo.helloprice.core.domain.item.ItemStatus;
 import com.podo.helloprice.core.domain.user.Menu;
 import com.podo.helloprice.core.domain.user.UserStatus;
+import com.podo.helloprice.core.util.MyCalculateUtils;
 import com.podo.helloprice.telegram.client.*;
 import com.podo.helloprice.telegram.client.response.NotifyResponse;
 import com.podo.helloprice.telegram.domain.item.ItemDto;
@@ -14,6 +15,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
+import java.text.DecimalFormat;
 import java.util.List;
 
 @Slf4j
@@ -69,8 +71,17 @@ public class ItemStatusCheckWorker implements Worker {
         }
     }
 
+
     private void handleSale(ItemDto.detail item) {
         log.info("{}({}) 상품의 최저가가 갱신되었습니다.", item.getItemName(), item.getItemCode());
+
+        final double changePercent = MyCalculateUtils.getChangePercent(item.getItemPrice(), item.getItemBeforePrice());
+        if (Math.abs(changePercent) < 1) {
+            log.info("{}({}) 상품의 가격변화율('{}%')이 너무 작아 알림을 전송하지 않습니다", item.getItemName(), item.getItemCode(), new DecimalFormat("#.##").format(changePercent));
+            itemService.notifiedItem(item.getId());
+            return;
+        }
+
 
         List<UserDto.detail> users = userItemNotifyService.findNotifyUsersByItemId(item.getId(), UserStatus.ALIVE);
 
@@ -78,7 +89,7 @@ public class ItemStatusCheckWorker implements Worker {
             notifyUser(user.getTelegramId(), item.getItemImage(), NotifyResponse.notifyItemSale(item));
         }
 
-        itemService.notifiedUpdate(item.getId());
+        itemService.notifiedItem(item.getId());
     }
 
     private void handleEmptyAmount(ItemDto.detail item) {
@@ -90,7 +101,7 @@ public class ItemStatusCheckWorker implements Worker {
             notifyUser(user.getTelegramId(), item.getItemImage(), NotifyResponse.notifyItemEmptyAccount(item));
         }
 
-        itemService.notifiedUpdate(item.getId());
+        itemService.notifiedItem(item.getId());
     }
 
     private void handleErrorItem(ItemDto.detail item) {

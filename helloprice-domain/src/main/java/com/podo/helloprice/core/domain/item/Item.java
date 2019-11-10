@@ -70,7 +70,7 @@ public class Item extends UpdatableBaseEntity {
     }
 
     public void updateInfo(ItemInfoVo itemInfoVo, LocalDateTime lastPoolAt) {
-        itemBeforePrice = this.itemPrice;
+        final Integer existPrice = this.itemPrice;
 
         this.itemName = itemInfoVo.getItemName();
         this.itemImage = itemInfoVo.getItemImage();
@@ -79,9 +79,10 @@ public class Item extends UpdatableBaseEntity {
         this.itemSaleStatus = itemInfoVo.getItemSaleStatus();
         this.deadCount = 0;
 
-        if (Objects.equals(this.itemBeforePrice, this.itemPrice)) {
+        if (Objects.equals(existPrice, this.itemPrice)) {
             itemStatus = ItemStatus.BE;
         } else {
+            itemBeforePrice = existPrice;
             itemStatus = ItemStatus.UPDATED;
             lastUpdatedAt = lastPoolAt;
         }
