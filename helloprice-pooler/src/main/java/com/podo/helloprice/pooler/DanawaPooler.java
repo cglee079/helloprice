@@ -78,7 +78,7 @@ public class DanawaPooler implements Pooler {
                         itemSaleStatus = ItemSaleStatus.NOT_SUPPORT;
                         break;
                     default:
-                        itemSaleStatus = ItemSaleStatus.ERROR;
+                        itemSaleStatus = ItemSaleStatus.UNKNOWN;
                         break;
                 }
             }

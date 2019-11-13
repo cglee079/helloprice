@@ -10,4 +10,5 @@ public interface UserItemNotifyRepository extends JpaRepository<UserItemNotify, 
     UserItemNotify findByUserIdAndItemId(Long userId, Long itemId);
 
 
+    List<UserItemNotify> findByItemId(Long itemId);
 }

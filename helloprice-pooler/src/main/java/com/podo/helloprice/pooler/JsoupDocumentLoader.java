@@ -15,7 +15,7 @@ import java.io.IOException;
 class JsoupDocumentLoader {
 
     private static final String USER_AGENT = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/77.0.3865.120 Safari/537.36";
-    private static final Integer MAX_TIMEOUT = 5000;
+    private static final Integer MAX_TIMEOUT = 15000;
 
     public Document getDocument(String url) throws FailGetDocumentException {
         final Connection connection = jsoupConnect(url);

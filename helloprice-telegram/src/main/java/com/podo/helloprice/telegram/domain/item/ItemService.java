@@ -70,8 +70,8 @@ public class ItemService {
         return Objects.isNull(itemRepository.findByItemCode(itemCode));
     }
 
-    public List<ItemDto.detail> findByItemStatus(ItemStatus itemStatus) {
-        List<Item> items = itemRepository.findByItemStatus(itemStatus);
+    public List<ItemDto.detail> findByItemUpdateStatus(ItemUpdateStatus itemUpdateStatus) {
+        List<Item> items = itemRepository.findByItemUpdateStatus(itemUpdateStatus);
         return items.stream()
                 .map(ItemDto.detail::new)
                 .collect(Collectors.toList());
@@ -93,8 +93,13 @@ public class ItemService {
 
     public void notifiedItem(Long itemId) {
         Item item = itemRepository.findById(itemId).get();
-
         item.notifiedUpdate();
     }
 
+    public List<ItemDto.detail> findByItemStatus(ItemStatus itemStatus) {
+        List<Item> items = itemRepository.findByItemStatus(itemStatus);
+        return items.stream()
+                .map(ItemDto.detail::new)
+                .collect(Collectors.toList());
+    }
 }

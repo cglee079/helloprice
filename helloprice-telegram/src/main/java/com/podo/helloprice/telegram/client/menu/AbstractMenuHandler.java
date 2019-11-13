@@ -1,18 +1,19 @@
 package com.podo.helloprice.telegram.client.menu;
 
-import com.podo.helloprice.telegram.client.TelegramBot;
+import com.podo.helloprice.telegram.client.TelegramMessageSender;
 
 public abstract class AbstractMenuHandler implements MenuHandler {
 
-    private TelegramBot telegramBot;
+    private TelegramMessageSender telegramMessageSender;
 
     @Override
-    public final void setBot(TelegramBot telegramBot) {
-        this.telegramBot = telegramBot;
+    public void setSender(TelegramMessageSender telegramMessageSender) {
+        this.telegramMessageSender = telegramMessageSender;
     }
 
-    public TelegramBot getBot() {
-        return telegramBot;
+    @Override
+    public TelegramMessageSender getSender() {
+        return telegramMessageSender;
     }
 
 }

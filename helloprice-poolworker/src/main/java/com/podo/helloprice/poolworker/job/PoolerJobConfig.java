@@ -69,7 +69,7 @@ public class PoolerJobConfig {
         final JpaPagingItemReaderBuilder jpaPagingItemReaderBuilder = new JpaPagingItemReaderBuilder();
 
         Map<String, Object> params = new HashMap<>();
-        params.put("itemStatus", ItemStatus.BE);
+        params.put("itemStatus", ItemStatus.ALIVE);
         params.put("expirePoolAt", jobParameter.getCreateAt().minusMinutes(itemPoolExpireTime));
 
         final String query = "" +

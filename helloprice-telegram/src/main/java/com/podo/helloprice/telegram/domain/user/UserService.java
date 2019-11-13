@@ -11,6 +11,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
 
@@ -45,7 +47,6 @@ public class UserService {
         user.updateMenuStatus(menu);
     }
 
-
     public void increaseUserErrorCount(String telegramId) {
         final User user = userRepository.findByTelegramId(telegramId);
         user.increaseErrorCount();
@@ -54,13 +55,12 @@ public class UserService {
 
             user.died();
 
-            userItemNotifyRepository.deleteAll(user.getUserItemNotifies());
-//            for (UserItemNotify userItemNotify : user.getUserItemNotifies()) {
-//                userItemNotify.getUser().deleteUserItemNotify(userItemNotify);
-//                userItemNotify.getItem().deleteUserItemNotify(userItemNotify);
-//
-//                userItemNotifyRepository.delete(userItemNotify);
-//            }
+            for (UserItemNotify userItemNotify : user.getUserItemNotifies()) {
+                userItemNotify.getUser().removeUserItemNotify(userItemNotify);
+                userItemNotify.getItem().removeUserItemNotify(userItemNotify);
+
+                userItemNotifyRepository.delete(userItemNotify);
+            }
         }
     }
 
@@ -73,4 +73,15 @@ public class UserService {
         User user = userRepository.findById(id).get();
         user.revive();
     }
+
+    public void updateSendAt(Long id, LocalDateTime lastSendAt) {
+        User user = userRepository.findById(id).get();
+        user.updateSendAt(lastSendAt);
+    }
+
+    public void updateNotifyAt(Integer telegramId, LocalDateTime lastNotifyAt) {
+        User user = userRepository.findByTelegramId(telegramId + "");
+        user.updateNotifyAt(lastNotifyAt);
+    }
+
 }

@@ -11,7 +11,7 @@ public enum ItemSaleStatus {
     DISCONTINUE("단종"),
     EMPTY_AMOUNT("일시품절"),
     NOT_SUPPORT("가격비교중지"),
-    ERROR("알 수 없음");
+    UNKNOWN("알 수 없음");
 
     private final String value;
 

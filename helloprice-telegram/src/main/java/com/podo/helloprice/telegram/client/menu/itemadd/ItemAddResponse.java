@@ -26,6 +26,9 @@ public class ItemAddResponse {
         return new StringBuilder().append("죄송합니다, 상품페이지의 URL이 잘못되었습니다\n")
                 .append("URL : ")
                 .append(url)
+                .append("\n")
+                .append("\n")
+                .append(CommonResponse.toHome())
                 .toString();
     }
 
@@ -34,6 +37,9 @@ public class ItemAddResponse {
                 .append("죄송합니다, 상품 정보를 가져 올 수 없습니다\n")
                 .append("URL : ")
                 .append(url)
+                .append("\n")
+                .append("\n")
+                .append(CommonResponse.toHome())
                 .toString();
     }
 
@@ -49,6 +55,9 @@ public class ItemAddResponse {
     public static String alreadySetNotifyItem() {
         return new StringBuilder()
                 .append("이미 알림이 등록된 상품입니다\n")
+                .append("\n")
+                .append("\n")
+                .append(CommonResponse.toHome())
                 .toString();
     }
 
@@ -58,6 +67,9 @@ public class ItemAddResponse {
                 .append(CommonResponse.descItemInfoVo(itemInfoVo))
                 .append("\n")
                 .append("죄송합니다, 페이지에서 단종된 상품입니다")
+                .append("\n")
+                .append("\n")
+                .append(CommonResponse.toHome())
                 .toString();
     }
 
@@ -66,6 +78,9 @@ public class ItemAddResponse {
                 .append(CommonResponse.descItemInfoVo(itemInfoVo))
                 .append("\n")
                 .append("죄송합니다, 페이지에서 알 수 없는 상태의 상품입니다")
+                .append("\n")
+                .append("\n")
+                .append(CommonResponse.toHome())
                 .toString();
     }
 
@@ -74,12 +89,18 @@ public class ItemAddResponse {
                 .append(CommonResponse.descItemInfoVo(itemInfoVo))
                 .append("\n")
                 .append("죄송합니다, 페이지에서 가격비교를 제공하지 않는 상품입니다")
+                .append("\n")
+                .append("\n")
+                .append(CommonResponse.toHome())
                 .toString();
     }
 
     public static String hasMaxItem() {
         return new StringBuilder()
                 .append("죄송합니다, 최대 상품 알림 수를 초과했습니다.")
+                .append("\n")
+                .append("\n")
+                .append(CommonResponse.toHome())
                 .toString();
     }
 }

@@ -6,6 +6,8 @@ import com.podo.helloprice.core.domain.user.UserStatus;
 import lombok.Builder;
 import lombok.Getter;
 
+import java.time.LocalDateTime;
+
 public class UserDto {
 
 
@@ -15,14 +17,16 @@ public class UserDto {
         private String email;
         private Menu menuStatus;
         private UserStatus userStatus;
+        private LocalDateTime lastSendAt;
 
         @Builder
-        public insert(Integer telegramId, String username, String email, Menu menuStatus, UserStatus userStatus) {
+        public insert(Integer telegramId, String username, String email, Menu menuStatus, UserStatus userStatus, LocalDateTime lastSendAt) {
             this.telegramId = telegramId;
             this.username = username;
             this.email = email;
             this.menuStatus = menuStatus;
             this.userStatus = userStatus;
+            this.lastSendAt = lastSendAt;
         }
 
         public User toEntity() {
@@ -32,6 +36,7 @@ public class UserDto {
                     .email(email)
                     .menuStatus(menuStatus)
                     .userStatus(userStatus)
+                    .lastSendAt(lastSendAt)
                     .errorCount(0)
                     .build();
         }

@@ -8,6 +8,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Getter
@@ -34,19 +35,31 @@ public class User extends UpdatableBaseEntity {
     @Enumerated(EnumType.STRING)
     private UserStatus userStatus;
 
+    private LocalDateTime lastSendAt;
+
+    private LocalDateTime lastNotifyAt;
+
     @OneToMany(mappedBy = "user")
     List<UserItemNotify> userItemNotifies;
 
     @Builder
     public User(String username,
                 String telegramId, String email, Integer errorCount,
-                Menu menuStatus, UserStatus userStatus) {
+                Menu menuStatus, UserStatus userStatus, LocalDateTime lastSendAt) {
         this.username = username;
         this.telegramId = telegramId;
         this.email = email;
         this.errorCount = errorCount;
         this.menuStatus = menuStatus;
         this.userStatus = userStatus;
+    }
+
+    public void updateNotifyAt(LocalDateTime lastNotifyAt) {
+        this.lastNotifyAt = lastNotifyAt;
+    }
+
+    public void updateSendAt(LocalDateTime lastSendAt) {
+        this.lastSendAt = lastSendAt;
     }
 
     public void updateMenuStatus(Menu menuStatus) {
@@ -57,7 +70,7 @@ public class User extends UpdatableBaseEntity {
         this.userItemNotifies.add(userItemNotify);
     }
 
-    public void deleteUserItemNotify(UserItemNotify userItemNotify) {
+    public void removeUserItemNotify(UserItemNotify userItemNotify) {
         this.userItemNotifies.remove(userItemNotify);
     }
 

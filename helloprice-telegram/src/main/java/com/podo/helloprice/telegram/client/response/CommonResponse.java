@@ -9,7 +9,7 @@ import com.podo.helloprice.core.util.MyCalculateUtils;
 import java.text.DecimalFormat;
 
 public class CommonResponse {
-    public static final String DATE_TIME_FORMAT = "yyyy-MM-dd HH:mm:ss";
+    public static final String DATE_TIME_FORMAT = "yyyy년 MM월 dd일 HH시 mm분";
 
     public static String introduce(String appName, String helpUrl) {
         return new StringBuilder()
@@ -48,12 +48,16 @@ public class CommonResponse {
     }
 
     public static String wrongInput() {
-        return "잘못된 값을 입력하셨습니다";
+        return "잘못된 값을 입력하셨어요..";
     }
 
     public static String descItemDetail(ItemDto.detail itemDetail) {
 
-        return new StringBuilder()
+        StringBuilder message = new StringBuilder();
+        Integer itemPrice = itemDetail.getItemPrice();
+        Integer itemBeforePrice = itemDetail.getItemBeforePrice();
+
+        message.append("")
                 .append("<b>")
                 .append("최종확인시간 : ")
                 .append(MyFormatUtils.dateTimeToString(itemDetail.getLastPoolAt(), DATE_TIME_FORMAT))
@@ -85,25 +89,45 @@ public class CommonResponse {
 
                 .append("<b>")
                 .append("이전가격 : ")
-                .append(MyCurrencyUtils.toExchangeRateKRWStr(itemDetail.getItemBeforePrice()))
+                .append(MyCurrencyUtils.toExchangeRateKRWStr(itemBeforePrice))
                 .append("</b>")
                 .append("\n")
 
                 .append("<b>")
                 .append("현재가격 : ")
-                .append(MyCurrencyUtils.toExchangeRateKRWStr(itemDetail.getItemPrice()))
+                .append(MyCurrencyUtils.toExchangeRateKRWStr(itemPrice))
                 .append("</b>")
                 .append("\n")
 
                 .append("<b>")
                 .append("가격변화 : ")
-                .append(CommonResponse.toSignPercentStr(itemDetail.getItemPrice(), itemDetail.getItemBeforePrice()))
-                .append("</b>")
-                .append("\n")
+                .append(CommonResponse.toSignPercentStr(itemPrice, itemBeforePrice))
+                .append("</b>");
 
-                .toString();
-
+        return message.toString();
     }
+
+    public static String descItemChange(ItemDto.detail itemDetail) {
+        StringBuilder message = new StringBuilder();
+
+        Integer itemPrice = itemDetail.getItemPrice();
+        Integer itemBeforePrice = itemDetail.getItemBeforePrice();
+
+        if (itemPrice > itemBeforePrice) {
+            message.append("죄송합니다.. 가격이 <b>")
+                    .append(MyCurrencyUtils.toExchangeRateKRWStr(itemPrice - itemBeforePrice))
+                    .append("</b> 올랐어요...");
+        } else if (itemPrice.equals(itemBeforePrice)) {
+            message.append("아직 가격이 똑같아요! 좀만 더 기다려보세요!");
+        } else {
+            message.append("야호! 가격이 <b>")
+                    .append(MyCurrencyUtils.toExchangeRateKRWStr(itemBeforePrice - itemPrice))
+                    .append("</b> 떨어졌어요!!");
+        }
+
+        return message.toString();
+    }
+
 
     public static String descItemInfoVo(ItemInfoVo itemInfoVo) {
         return new StringBuilder()
@@ -116,6 +140,14 @@ public class CommonResponse {
                 .append("\n")
                 .toString();
     }
+
+
+    public static String toHome() {
+        return new StringBuilder()
+                .append("홈 메뉴로 돌아갑니다\n")
+                .toString();
+    }
+
 
     public static String toSignPercentStr(double a, double b) {
         String prefix = "";
@@ -130,11 +162,8 @@ public class CommonResponse {
         return prefix + df.format(percent) + "%";
     }
 
-    public static String exit() {
-        return new StringBuilder()
-                .append("홈메뉴로 돌아갑니다\n")
-                .toString();
+
+    public static String justWait() {
+        return "잠시만, 잠시만 기다려주세요!";
     }
-
-
 }

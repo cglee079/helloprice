@@ -3,6 +3,7 @@ package com.podo.helloprice.telegram.client.menu.itemdelete;
 import com.podo.helloprice.core.domain.item.ItemInfoVo;
 import com.podo.helloprice.core.util.MyCurrencyUtils;
 import com.podo.helloprice.core.util.MyFormatUtils;
+import com.podo.helloprice.telegram.client.response.CommonResponse;
 import com.podo.helloprice.telegram.domain.item.ItemDto;
 
 public class ItemDeleteResponse {
@@ -18,7 +19,11 @@ public class ItemDeleteResponse {
     }
 
     public static String alreadyNotNotifyItem() {
-        return new StringBuilder().append("알림이 등록되어있지 않은 상품입니다\n")
+        return new StringBuilder()
+                .append("알림이 등록되어있지 않은 상품입니다\n")
+                .append("\n")
+                .append("\n")
+                .append(CommonResponse.toHome())
                 .toString();
     }
 

@@ -18,7 +18,7 @@ import java.util.Objects;
 @StepScope
 public class PoolerJobProcessor implements ItemProcessor<Item, Item> {
 
-    private static final Integer MAX_DEADCOUNT = 3;
+    private static final Integer MAX_DEAD_COUNT = 3;
 
     private final DanawaPooler danawaPooler;
 
@@ -28,6 +28,7 @@ public class PoolerJobProcessor implements ItemProcessor<Item, Item> {
 
         final String itemCode = item.getItemCode();
 
+        final LocalDateTime poolAt = LocalDateTime.now();
         final ItemInfoVo itemInfoVo = danawaPooler.poolItem(itemCode);
 
         if (Objects.isNull(itemInfoVo)) {
@@ -35,16 +36,16 @@ public class PoolerJobProcessor implements ItemProcessor<Item, Item> {
 
             item.increaseDeadCount();
 
-            if (item.getDeadCount() > MAX_DEADCOUNT) {
+            if (item.getDeadCount() > MAX_DEAD_COUNT) {
                 log.info("{}({}) 상품의 에러카운트 초과, DEAD 상태 변경", item.getItemName(), item.getItemCode());
 
-                item.died();
+                item.died(poolAt);
             }
 
             return item;
         }
 
-        item.updateInfo(itemInfoVo, LocalDateTime.now());
+        item.updateInfo(itemInfoVo, poolAt);
 
         log.info("{}({}), 가격 : `{}`, 상품판매상태 : `{}`, 상품상태 `{}`", item.getItemName(), item.getItemCode(), item.getItemPrice(), item.getItemSaleStatus().getValue(), item.getItemStatus());
         return item;

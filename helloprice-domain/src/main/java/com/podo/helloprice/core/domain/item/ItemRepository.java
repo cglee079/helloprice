@@ -7,7 +7,7 @@ import java.util.List;
 public interface ItemRepository extends JpaRepository<Item, Long>, ItemRepositoryCustom {
     Item findByItemCode(String itemCode);
 
-    List<Item> findByItemStatus(ItemStatus itemStatus);
+    List<Item> findByItemUpdateStatus(ItemUpdateStatus itemUpdateStatus);
 
-    List<Item> findByItemSaleStatus(ItemSaleStatus itemSaleStatus);
+    List<Item> findByItemStatus(ItemStatus itemStatus);
 }

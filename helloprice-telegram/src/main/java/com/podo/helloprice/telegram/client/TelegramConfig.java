@@ -3,6 +3,7 @@ package com.podo.helloprice.telegram.client;
 import com.podo.helloprice.core.domain.user.Menu;
 import com.podo.helloprice.telegram.client.menu.MenuHandler;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -11,9 +12,11 @@ import java.util.Map;
 
 import static java.util.stream.Collectors.toMap;
 
-@Configuration
 @RequiredArgsConstructor
+@Slf4j
+@Configuration
 public class TelegramConfig {
+
 
     private final List<MenuHandler> menuHandlers;
 

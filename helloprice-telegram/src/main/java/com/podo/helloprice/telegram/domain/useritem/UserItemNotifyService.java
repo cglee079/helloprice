@@ -56,25 +56,30 @@ public class UserItemNotifyService {
         return false;
     }
 
-    public void deleteNotify(Long userId, Long itemId) {
-
-        UserItemNotify userItemNotify = userItemNotifyRepository.findByUserIdAndItemId(userId, itemId);
-
+    private void deleteNotify(UserItemNotify userItemNotify) {
         User user = userItemNotify.getUser();
         Item item = userItemNotify.getItem();
 
         log.info("{}님의 {}({}) 상품 알림을 삭제합니다.", user.getTelegramId(), item.getItemName(), item.getItemCode());
 
-        user.deleteUserItemNotify(userItemNotify);
-        item.deleteUserItemNotify(userItemNotify);
+        user.removeUserItemNotify(userItemNotify);
+        item.removeUserItemNotify(userItemNotify);
 
         userItemNotifyRepository.delete(userItemNotify);
+    }
 
-        if (item.getUserItemNotifies().isEmpty()) {
-            log.info("{}({}) 상품은, 어떤 사용자에게도 알림이 없습니다", item.getItemName(), item.getItemCode());
-            log.info("{}({}) 상품을, 더 이상 갱신하지 않습니다.(삭제)", item.getItemName(), item.getItemCode());
-            itemRepository.delete(item);
+    public void deleteNotifies(Long itemId) {
+        final List<UserItemNotify> userItemNotifies = userItemNotifyRepository.findByItemId(itemId);
+
+        for (UserItemNotify userItemNotify : userItemNotifies) {
+            this.deleteNotify(userItemNotify);
         }
+
+    }
+
+    public void deleteNotifyByUserIdAndItemId(Long userId, Long itemId) {
+        UserItemNotify userItemNotify = userItemNotifyRepository.findByUserIdAndItemId(userId, itemId);
+        deleteNotify(userItemNotify);
     }
 
     public List<UserDto.detail> findNotifyUsersByItemId(Long itemId, UserStatus userStatus) {
@@ -92,4 +97,6 @@ public class UserItemNotifyService {
                 .map(notify -> new ItemDto.detail(notify.getItem()))
                 .collect(Collectors.toList());
     }
+
+
 }

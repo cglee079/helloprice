@@ -15,7 +15,7 @@ user:
   max_item: 10
 
 item:
-  max_error_count: 10
+  max_unknown_count: 1
   max_dead_count: 10
 
 ## Log
