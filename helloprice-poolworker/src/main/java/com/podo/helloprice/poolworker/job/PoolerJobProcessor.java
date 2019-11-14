@@ -1,7 +1,7 @@
 package com.podo.helloprice.poolworker.job;
 
 import com.podo.helloprice.core.domain.item.Item;
-import com.podo.helloprice.pooler.DanawaPooler;
+import com.podo.helloprice.pooler.target.danawa.DanawaPooler;
 import com.podo.helloprice.core.domain.item.ItemInfoVo;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

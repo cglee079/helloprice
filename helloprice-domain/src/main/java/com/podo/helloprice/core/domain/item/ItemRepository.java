@@ -9,5 +9,5 @@ public interface ItemRepository extends JpaRepository<Item, Long>, ItemRepositor
 
     List<Item> findByItemUpdateStatus(ItemUpdateStatus itemUpdateStatus);
 
-    List<Item> findByItemStatus(ItemStatus itemStatus);
+    List<Item> findByItemStatusAndItemUpdateStatus(ItemStatus itemStatus, ItemUpdateStatus itemUpdateStatus);
 }

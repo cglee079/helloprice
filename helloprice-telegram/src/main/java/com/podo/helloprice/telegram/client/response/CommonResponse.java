@@ -11,7 +11,7 @@ import java.text.DecimalFormat;
 public class CommonResponse {
     public static final String DATE_TIME_FORMAT = "yyyy년 MM월 dd일 HH시 mm분";
 
-    public static String introduce(String appName, String helpUrl) {
+    public static String introduce(String appName) {
         return new StringBuilder()
                 .append("<b>")
                 .append(appName)
@@ -31,10 +31,6 @@ public class CommonResponse {
                 .append("텔레그램을 통해 알람을 드려요!!! \n")
                 .append("\n")
 
-                .append("자세한 내용은, 도움말 페이지를 참조해주세요\n")
-                .append("\n")
-                .append(CommonResponse.help(helpUrl))
-
                 .toString();
     }
 
@@ -48,7 +44,12 @@ public class CommonResponse {
     }
 
     public static String wrongInput() {
-        return "잘못된 값을 입력하셨어요..";
+        return new StringBuilder()
+                .append("잘못된 값을 입력하셨어요...")
+                .append("\n")
+                .append("\n")
+                .append("홈으로 돌아갑니다!")
+                .toString();
     }
 
     public static String descItemDetail(ItemDto.detail itemDetail) {
@@ -138,13 +139,26 @@ public class CommonResponse {
                 .append("상품이름 : ")
                 .append(itemInfoVo.getItemName())
                 .append("\n")
+
+                .append("<b>")
+                .append("상품상태 : ")
+                .append(itemInfoVo.getItemSaleStatus().getValue())
+                .append("</b>")
+                .append("\n")
+
+                .append("<b>")
+                .append("상품가격 : ")
+                .append(MyCurrencyUtils.toExchangeRateKRWStr(itemInfoVo.getItemPrice()))
+                .append("</b>")
+                .append("\n")
+
                 .toString();
     }
 
 
     public static String toHome() {
         return new StringBuilder()
-                .append("홈 메뉴로 돌아갑니다\n")
+                .append("<b>홈 메뉴로 돌아갑니다!!!!</b>\n")
                 .toString();
     }
 

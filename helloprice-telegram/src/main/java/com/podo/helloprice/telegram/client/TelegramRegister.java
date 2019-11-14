@@ -10,7 +10,8 @@ import java.util.List;
 public class TelegramRegister {
 
     public TelegramRegister(List<TelegramBot> telegramBots) throws TelegramApiRequestException {
-        TelegramBotsApi api = new TelegramBotsApi();
+        final TelegramBotsApi api = new TelegramBotsApi();
+
         for (TelegramBot telegramBot : telegramBots) {
             api.registerBot(telegramBot);
         }

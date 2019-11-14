@@ -10,6 +10,8 @@ import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiRequestException;
 import org.telegram.telegrambots.meta.updateshandlers.SentCallback;
 
+import java.util.Objects;
+
 @Slf4j
 @Component
 @RequiredArgsConstructor
@@ -17,12 +19,14 @@ public class TMessageCallbackFactory {
 
     private final UserService userService;
 
-    public SentCallback<Message> createDefaultCallback(String telegramId, Menu menu) {
+    public SentCallback<Message> createDefault(String telegramId, Menu menu) {
         return new SentCallback<Message>() {
             @Override
             public void onResult(BotApiMethod<Message> method, Message response) {
                 //log.info("RESULT : " + Thread.currentThread());
-                userService.updateMenuStatus(telegramId, menu);
+                if (!Objects.isNull(menu)) {
+                    userService.updateMenuStatus(telegramId, menu);
+                }
                 userService.resetUserErrorCount(telegramId);
             }
 

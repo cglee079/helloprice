@@ -6,17 +6,13 @@ import com.podo.helloprice.telegram.domain.item.ItemDto;
 
 public class ItemAddResponse {
 
-    public static String explain(String url, String helpUrl) {
+    public static String explain(String url) {
         return new StringBuilder()
                 .append("다나와에서 상품페이지의 URL(링크)을 입력해주세요!\n")
                 .append("\n")
 
                 .append("다나와 : ")
                 .append(url)
-                .append("\n")
-                .append("\n")
-
-                .append(CommonResponse.help(helpUrl))
 
                 .toString();
 
@@ -32,11 +28,13 @@ public class ItemAddResponse {
                 .toString();
     }
 
-    public static String wrongItem(String url) {
+    public static String wrongItemCode(String itemCode) {
         return new StringBuilder()
                 .append("죄송합니다, 상품 정보를 가져 올 수 없습니다\n")
-                .append("URL : ")
-                .append(url)
+
+                .append("\n")
+                .append("상품코드 : ")
+                .append(itemCode)
                 .append("\n")
                 .append("\n")
                 .append(CommonResponse.toHome())

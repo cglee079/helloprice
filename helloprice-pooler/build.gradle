@@ -3,4 +3,6 @@ dependencies {
     implementation project(':helloprice-domain')
 
     implementation group: 'org.jsoup', name: 'jsoup', version: '1.11.3'
+    implementation group: 'org.seleniumhq.selenium', name: 'selenium-java', version: '3.141.59'
+    implementation group: 'org.seleniumhq.selenium', name: 'selenium-chrome-driver', version: '3.141.59'
 }

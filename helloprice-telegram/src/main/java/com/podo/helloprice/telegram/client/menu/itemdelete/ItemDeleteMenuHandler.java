@@ -53,7 +53,7 @@ public class ItemDeleteMenuHandler extends AbstractMenuHandler {
 
         if (Objects.isNull(itemCode)) {
             log.info("{} << 잘못된 값을 입력했습니다. 상품코드를 찾을 수 없습니다. 받은메세지 '{}'", telegramId, requestMessage);
-            getSender().send(tMessageVo.newValue(CommonResponse.wrongInput(), km.getHomeKeyboard(itemCommands), callbackFactory.createDefaultCallback(telegramId, Menu.HOME)));
+            getSender().send(tMessageVo.newValue(CommonResponse.wrongInput(), km.getHomeKeyboard(itemCommands), callbackFactory.createDefault(telegramId, Menu.HOME)));
             return;
         }
 
@@ -62,22 +62,19 @@ public class ItemDeleteMenuHandler extends AbstractMenuHandler {
 
         if (!userItemNotifyService.hasNotify(userDetail.getId(), itemDetail.getId())) {
             log.info("{} << 삭제 요청한 {}({}) 상품 알림이 등록되어있지 않습니다. 받은메세지 '{}'", telegramId, itemDetail.getItemName(), itemCode, requestMessage);
-            getSender().send(tMessageVo.newValue(ItemDeleteResponse.alreadyNotNotifyItem(), km.getHomeKeyboard(itemCommands), callbackFactory.createDefaultCallback(telegramId, Menu.HOME)));
+            getSender().send(tMessageVo.newValue(ItemDeleteResponse.alreadyNotNotifyItem(), km.getHomeKeyboard(itemCommands), callbackFactory.createDefault(telegramId, Menu.HOME)));
         }
 
         userItemNotifyService.deleteNotifyByUserIdAndItemId(userDetail.getId(), itemDetail.getId());
         final List<String> reloadItemCommands = UserItemCommand.getItemCommands(userItemNotifyService.findNotifyItemsByUserTelegramId(telegramId));
-        getSender().send(tMessageVo.newValue(ItemDeleteResponse.deletedNotifyItem(itemDetail), km.getHomeKeyboard(reloadItemCommands), callbackFactory.createDefaultCallback(telegramId, Menu.HOME)));
+        getSender().send(tMessageVo.newValue(ItemDeleteResponse.deletedNotifyItem(itemDetail), km.getHomeKeyboard(reloadItemCommands), callbackFactory.createDefault(telegramId, Menu.HOME)));
 
     }
 
     private void handleCommand(ItemDeleteCommand itemDeleteCommand, TMessageVo tMessageVo, List<String> itemCommands) {
         switch (itemDeleteCommand) {
             case EXIT:
-                getSender().send(tMessageVo.newValue(CommonResponse.toHome(), km.getHomeKeyboard(itemCommands), callbackFactory.createDefaultCallback(tMessageVo.getTelegramId() + "", Menu.HOME)));
-                return;
-            default:
-                return;
+                getSender().send(tMessageVo.newValue(CommonResponse.toHome(), km.getHomeKeyboard(itemCommands), callbackFactory.createDefault(tMessageVo.getTelegramId() + "", Menu.HOME)));
         }
     }
 }

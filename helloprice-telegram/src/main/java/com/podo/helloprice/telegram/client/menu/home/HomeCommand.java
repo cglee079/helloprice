@@ -9,8 +9,9 @@ import lombok.Getter;
 public enum HomeCommand implements Command {
 
 
-    ADD_ITEM("상품 알림 추가"),
-    DELETE_ITEM("상품 알림 삭제"),
+    ITEM_SEARCH_ADD("검색 후, 알림추가"),
+    ITEM_ADD("상품 알림 추가"),
+    ITEM_DELETE("상품 알림 삭제"),
     HELP("도움말");
 
 

@@ -10,8 +10,6 @@ public class ItemDeleteKeyboard extends ReplyKeyboardMarkup {
 
     public ItemDeleteKeyboard(List<String> itemList) {
 
-        super();
-
         this.setSelective(true);
         this.setResizeKeyboard(true);
         this.setOneTimeKeyboard(false);

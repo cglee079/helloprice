@@ -107,8 +107,6 @@ public class Item extends UpdatableBaseEntity {
             default:
                 break;
         }
-
-
     }
 
     public void increaseDeadCount() {
@@ -139,7 +137,7 @@ public class Item extends UpdatableBaseEntity {
         }
     }
 
-    public void notifiedUpdate() {
+    public void notified() {
         this.itemUpdateStatus = ItemUpdateStatus.BE;
     }
 }

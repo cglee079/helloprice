@@ -10,7 +10,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -39,9 +38,9 @@ public class TelegramNotifier {
         log.info("{}님에게 변경상태 알림을 전송합니다", telegramId);
         userService.updateNotifyAt(telegramId, LocalDateTime.now());
 
-        TMessageVo tMessageVo = new TMessageVo(telegramId, null);
+        final TMessageVo tMessageVo = new TMessageVo(telegramId, null);
 
-        telegramMessageSender.send(tMessageVo.newValue(response, itemImage, null, callbackFactory.createDefaultCallback(telegramId + "", Menu.HOME)));
+        telegramMessageSender.send(tMessageVo.newValue(response, itemImage, null, callbackFactory.createDefault(telegramId + "", Menu.HOME)));
     }
 
     public void notifyAdmin(String message) {

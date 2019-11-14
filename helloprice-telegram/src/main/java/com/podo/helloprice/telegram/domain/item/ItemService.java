@@ -2,7 +2,8 @@ package com.podo.helloprice.telegram.domain.item;
 
 import com.podo.helloprice.core.domain.item.*;
 import com.podo.helloprice.core.domain.useritem.UserItemNotifyRepository;
-import com.podo.helloprice.pooler.DanawaPooler;
+import com.podo.helloprice.pooler.target.danawa.DanawaPoolConfig;
+import com.podo.helloprice.pooler.target.danawa.DanawaPooler;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -34,7 +35,7 @@ public class ItemService {
 
         final ItemDto.insert itemInsert = ItemDto.insert.builder()
                 .itemCode(itemInfoVo.getItemCode())
-                .itemUrl(DanawaPooler.DANAWA_ITEM_URL + itemInfoVo.getItemCode())
+                .itemUrl(itemInfoVo.getItemUrl())
                 .itemName(itemInfoVo.getItemName())
                 .itemImage(itemInfoVo.getItemImage())
                 .itemPrice(itemInfoVo.getItemPrice())
@@ -93,11 +94,11 @@ public class ItemService {
 
     public void notifiedItem(Long itemId) {
         Item item = itemRepository.findById(itemId).get();
-        item.notifiedUpdate();
+        item.notified();
     }
 
-    public List<ItemDto.detail> findByItemStatus(ItemStatus itemStatus) {
-        List<Item> items = itemRepository.findByItemStatus(itemStatus);
+    public List<ItemDto.detail> findByItemStatusAndItemUpdateStatus(ItemStatus itemStatus, ItemUpdateStatus itemUpdateStatus) {
+        List<Item> items = itemRepository.findByItemStatusAndItemUpdateStatus(itemStatus, itemUpdateStatus);
         return items.stream()
                 .map(ItemDto.detail::new)
                 .collect(Collectors.toList());

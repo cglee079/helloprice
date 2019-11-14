@@ -36,7 +36,7 @@ public class ItemStatusCheckWorker implements Worker {
 
     @Override
     public void doIt() {
-        log.info("상품 상태체크를 시작합니다");
+        log.info("상품 업데이트 알림 WORKER, 상품 상태체크를 시작합니다");
 
         handleItemStatusUpdated();
         handleItemStatusDead();
@@ -124,12 +124,12 @@ public class ItemStatusCheckWorker implements Worker {
     }
 
     private void handleItemStatusDead() {
-        List<ItemDto.detail> items = itemService.findByItemStatus(ItemStatus.DEAD);
+        List<ItemDto.detail> items = itemService.findByItemStatusAndItemUpdateStatus(ItemStatus.DEAD, ItemUpdateStatus.UPDATED);
 
         for (ItemDto.detail item : items) {
             increaseDeadCount();
 
-            log.info("{}({}) 상품은 페이지를 확인 할 수 상태로 변경되었습니다.", item.getItemName(), item.getItemCode());
+            log.info("{}({}) 상품은 페이지를 확인 할 수 없는 상태로 변경되었습니다.", item.getItemName(), item.getItemCode());
 
             telegramNotifier.notifyUsers(item.getId(), item.getItemImage(), NotifyResponse.notifyItemDead(item));
             userItemNotifyService.deleteNotifies(item.getId());

@@ -14,15 +14,15 @@ import static java.util.stream.Collectors.toList;
 @Component
 public class UserItemCommand {
 
-    private static String formatCommand(String itemCode, String itemName) {
-        final String FORMAT = "#%s, %s";
-        return String.format(FORMAT, itemCode, itemName);
-    }
-
     public static List<String> getItemCommands(List<ItemDto.detail> items) {
         return items.stream()
-                .map(item -> formatCommand(item.getItemCode(), item.getItemName()))
+                .map(item -> getItemCommand(item.getItemCode(), item.getItemName()))
                 .collect(toList());
+    }
+
+    public static String getItemCommand(String itemCode, String itemName) {
+        final String FORMAT = "#%s, %s";
+        return String.format(FORMAT, itemCode, itemName);
     }
 
     public static String getItemCodeFromCommand(String message) {

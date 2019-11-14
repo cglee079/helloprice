@@ -14,12 +14,10 @@ import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.User;
 
-import java.time.Instant;
 import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.Map;
 import java.util.Objects;
-import java.util.TimeZone;
 
 @Slf4j
 @Component
@@ -55,12 +53,14 @@ public class TelegramMessageReceiver {
 
         if (Objects.isNull(userDetail)) {
             insertNewUser(username, telegramId, messageReceiveAt);
-            telegramMessageSender.send(tMessageVo.newValue(CommonResponse.introduce(appName, helpUrl), km.getHomeKeyboard(Collections.emptyList()), callbackFactory.createDefaultCallback(telegramId + "", Menu.HOME)));
+            telegramMessageSender.send(tMessageVo.newValue(CommonResponse.introduce(appName), km.getHomeKeyboard(Collections.emptyList()), callbackFactory.createDefault(telegramId + "", Menu.HOME)));
+            telegramMessageSender.send(tMessageVo.newValue(CommonResponse.help(helpUrl), null, callbackFactory.createDefault(telegramId + "", Menu.HOME)));
             return;
         } else if (userDetail.getUserStatus().equals(UserStatus.DEAD)) {
             userService.reviveUser(userDetail.getId());
             userService.updateSendAt(userDetail.getId(), messageReceiveAt);
-            telegramMessageSender.send(tMessageVo.newValue(CommonResponse.introduce(appName, helpUrl), km.getHomeKeyboard(Collections.emptyList()), callbackFactory.createDefaultCallback(telegramId + "", Menu.HOME)));
+            telegramMessageSender.send(tMessageVo.newValue(CommonResponse.introduce(appName), km.getHomeKeyboard(Collections.emptyList()), callbackFactory.createDefault(telegramId + "", Menu.HOME)));
+            telegramMessageSender.send(tMessageVo.newValue(CommonResponse.help(helpUrl), null, callbackFactory.createDefault(telegramId + "", Menu.HOME)));
             return;
         }
 

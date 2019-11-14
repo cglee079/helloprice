@@ -2,6 +2,8 @@ package com.podo.helloprice.telegram.client;
 
 import com.podo.helloprice.telegram.client.menu.itemdelete.ItemDeleteKeyboard;
 import com.podo.helloprice.telegram.client.menu.home.HomeKeyboard;
+import com.podo.helloprice.telegram.client.menu.itemsearchresult.ItemSearchResultKeyboard;
+import com.podo.helloprice.telegram.client.menu.itemserachadd.ItemSearchAddKeyboard;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboard;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboardRemove;
@@ -24,4 +26,14 @@ public class KeyboardManager {
     public ReplyKeyboard getItemDeleteKeyboard(List<String> itemCommands) {
         return new ItemDeleteKeyboard(itemCommands);
     }
+
+    public ReplyKeyboard getItemSearchResultKeyboard(List<String> itemCommands) {
+        return new ItemSearchResultKeyboard(itemCommands);
+    }
+
+    public ReplyKeyboard getItemSearchAddKeyboard(String itemCode) {
+        return new ItemSearchAddKeyboard(itemCode);
+    }
+
+
 }
