@@ -1,0 +1,21 @@
+archivesBaseName = 'podo-helloprice-telegram'
+version = ''
+
+bootJar {
+    enabled = true
+}
+
+jar {
+    enabled = false
+}
+
+dependencies {
+    implementation project(':helloprice-core')
+    implementation project(':helloprice-pooler')
+    implementation project(':helloprice-domain')
+
+    implementation group: 'org.telegram', name: 'telegrambots', version: '4.0.0'
+    implementation group: 'javax.mail', name: 'mail', version: '1.4.7'
+    implementation 'commons-validator:commons-validator:1.4.1'
+
+}

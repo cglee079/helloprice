@@ -1,0 +1,34 @@
+decorator:
+  datasource:
+    p6spy:
+      enable-logging: false
+      multiline: false
+      logging: slf4j
+      #log-file: spy.log
+      #log-format: # custom log format
+
+
+spring:
+
+  # Hibernate config
+  jpa:
+    database: MYSQL
+    hibernate:
+      dialect: org.hibernate.dialect.MySQL5Dialect
+    properties:
+      hibernate:
+        fomat_sql: true
+        #        show_sql: true
+        default_batch_fetch_size: 20
+    open-in-view: false
+
+
+---
+
+spring:
+  profiles: deploy
+
+decorator:
+  datasource:
+    p6spy:
+      enable-logging: false

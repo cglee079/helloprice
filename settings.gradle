@@ -4,9 +4,10 @@ pluginManagement {
     }
 }
 
-rootProject.name = 'podo-itemwatcher'
+rootProject.name = 'podo-helloprice'
 
-include 'itemwatcher-core',
-        'itemwatcher-domain',
-        'itemwatcher-pooler',
-        'itemwatcher-telegram'
+include 'helloprice-core',
+        'helloprice-domain',
+        'helloprice-poolworker',
+        'helloprice-pooler',
+        'helloprice-telegram'
