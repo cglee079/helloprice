@@ -40,6 +40,12 @@ public class ItemSearchAddMenuHandler extends AbstractMenuHandler {
         final List<String> itemCommands = ItemCommandTranslator.getItemCommands(userItemNotifyService.findNotifyItemsByUserTelegramId(telegramId));
 
 
+        //기본 명령어보다 글자 수가 작을 경우
+        if (requestMessage.length() < ItemSearchAddCommand.YES.getValue().length()) {
+            getSender().send(tMessageVo.newValue(CommonResponse.wrongInput(), km.getHomeKeyboard(itemCommands), callbackFactory.createDefault(telegramId, Menu.HOME)));
+            return;
+        }
+
         //명령어가 아닌 경우
         final ItemSearchAddCommand requestCommand = ItemSearchAddCommand.from(requestMessage.substring(0, 3));
         if (Objects.isNull(requestCommand)) {

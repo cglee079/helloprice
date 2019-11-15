@@ -12,12 +12,17 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
+import org.openqa.selenium.remote.DesiredCapabilities;
+import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
+import javax.annotation.PostConstruct;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.TimeUnit;
@@ -42,11 +47,20 @@ public class DelayDocumentLoader {
         chromeOptions.addArguments("disable-gpu");
         chromeOptions.addArguments("user-agent=" + userAgent);
 
-        driver = new ChromeDriver(chromeOptions);
+        final URL url;
+        try {
+            url = new URL("http://192.168.219.103:4444/wd/hub");
+            DesiredCapabilities.chrome();
 
-        driver.manage().timeouts().pageLoadTimeout(timeout, TimeUnit.MILLISECONDS);
-        driver.manage().timeouts().implicitlyWait(timeout, TimeUnit.MILLISECONDS);
-        driver.manage().timeouts().setScriptTimeout(timeout, TimeUnit.MILLISECONDS);
+            driver = new RemoteWebDriver(url, chromeOptions);
+
+            driver.manage().timeouts().pageLoadTimeout(timeout, TimeUnit.MILLISECONDS);
+            driver.manage().timeouts().implicitlyWait(timeout, TimeUnit.MILLISECONDS);
+            driver.manage().timeouts().setScriptTimeout(timeout, TimeUnit.MILLISECONDS);
+
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
     }
 
     public final Document getDocument(String url, List<String> waitElementSelectors) throws FailGetDocumentException {

@@ -56,7 +56,6 @@ public class ItemAddResponse {
         return new StringBuilder()
                 .append("이미 알림이 등록된 상품입니다\n")
                 .append("\n")
-                .append("\n")
                 .append(CommonResponse.toHome())
                 .toString();
     }
@@ -67,7 +66,6 @@ public class ItemAddResponse {
                 .append(CommonResponse.descItemInfoVo(itemInfoVo))
                 .append("\n")
                 .append("죄송합니다, 페이지에서 단종된 상품입니다")
-                .append("\n")
                 .append("\n")
                 .append(CommonResponse.toHome())
                 .toString();
