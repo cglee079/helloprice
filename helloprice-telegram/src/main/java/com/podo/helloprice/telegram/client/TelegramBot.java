@@ -20,7 +20,6 @@ import static java.util.stream.Collectors.toMap;
 @Component
 public class TelegramBot extends TelegramLongPollingBot {
 
-
     private final TelegramMessageReceiver telegramMessageReceiver;
     private final TelegramMessageSender telegramMessageSender;
     private final List<MenuHandler> menuHandlers;

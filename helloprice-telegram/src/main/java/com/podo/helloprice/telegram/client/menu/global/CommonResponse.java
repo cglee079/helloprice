@@ -72,13 +72,17 @@ public class CommonResponse {
                 .append(itemDetail.getItemCode())
                 .append("\n")
 
-                .append("<b>상품이름</b> : ")
+                .append("<b>")
+                .append("상품이름 : ")
                 .append(itemDetail.getItemName())
+                .append("</b>")
                 .append("\n")
 
-                .append("<b>상품설명</b> : ")
-                .append(itemDetail.getItemDesc())
-                .append("\n")
+//                .append("<b>상품설명</b> : ")
+//                .append("<i>")
+//                .append(itemDetail.getItemDesc())
+//                .append("</i>")
+//                .append("\n")
 
                 .append("<b>")
                 .append("상품상태 : ")
@@ -134,12 +138,16 @@ public class CommonResponse {
                 .append(itemInfoVo.getItemCode())
                 .append("\n")
 
-                .append("<b>상품이름</b> : ")
+                .append("<b>")
+                .append("상품이름 : ")
                 .append(itemInfoVo.getItemName())
+                .append("</b>")
                 .append("\n")
 
                 .append("<b>상품설명</b> : ")
+                .append("<i>")
                 .append(itemInfoVo.getItemDesc())
+                .append("</i>")
                 .append("\n")
 
                 .append("<b>")

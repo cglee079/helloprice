@@ -12,7 +12,6 @@ import com.podo.helloprice.pooler.loader.DelayDocumentLoader;
 import com.podo.helloprice.pooler.loader.PromptDocumentLoader;
 import com.podo.helloprice.pooler.target.danawa.DanawaPoolConfig.*;
 import lombok.RequiredArgsConstructor;
-import lombok.Value;
 import lombok.extern.slf4j.Slf4j;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -20,7 +19,6 @@ import org.jsoup.select.Elements;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
-import java.time.LocalDateTime;
 import java.util.*;
 
 @Slf4j
@@ -45,7 +43,7 @@ public class DanawaPooler implements Pooler {
 
         final String itemUrl = ItemPage.DANAWA_ITEM_URL + itemCode;
 
-        log.info("CRAWL URL : {}", itemUrl);
+        log.info("크롤, URL : {}", itemUrl);
 
         Document document;
 
@@ -58,40 +56,11 @@ public class DanawaPooler implements Pooler {
 
 
         try {
-            final String itemName = document.select(ItemPage.ITEM_NAME_SELECTOR).text().replace("[다나와]", "").trim();
-            final String itemDesc = document.select(ItemPage.ITEM_DESC_SELECTOR).text().replace("[다나와]", "").trim();
-            final String itemImage = document.select(ItemPage.ITEM_IMAGE_SELECTOR).attr("src");
-
-            final Element itemPriceElement = document.select(ItemPage.ITEM_PRICE_SELECTOR).first();
-            final Integer itemPrice = Objects.isNull(itemPriceElement) ? 0 : Integer.valueOf(itemPriceElement.text().replace(",", ""));
-            final String itemSaleStatusStr = document.select(ItemPage.ITEM_SALE_STATUS_SELECTOR).text();
-
-            ItemSaleStatus itemSaleStatus;
-
-            if (itemPrice != 0) {
-                itemSaleStatus = ItemSaleStatus.SALE;
-            } else {
-                switch (itemSaleStatusStr.trim()) {
-                    case ItemPage.ITEM_STATUS_DISCONTINUE:
-                        itemSaleStatus = ItemSaleStatus.DISCONTINUE;
-                        break;
-                    case ItemPage.ITEM_STATUS_EMPTY_ACCOUNT:
-                        itemSaleStatus = ItemSaleStatus.EMPTY_AMOUNT;
-                        break;
-                    case ItemPage.ITEM_STATUS_NO_SUPPORT:
-                        itemSaleStatus = ItemSaleStatus.NOT_SUPPORT;
-                        break;
-                    default:
-                        itemSaleStatus = ItemSaleStatus.UNKNOWN;
-                        break;
-                }
-            }
-
-            final ItemInfoVo itemInfoVo = new ItemInfoVo(itemCode, itemUrl, itemName, itemDesc, itemImage, itemPrice, itemSaleStatus);
+            final ItemInfoVo itemInfoVo = getItemInfoVo(document, itemCode, itemUrl);
 
             log.info("상품 정보확인, '{}'", itemInfoVo);
 
-            if (StringUtils.isEmpty(itemName)) {
+            if (StringUtils.isEmpty(itemInfoVo.getItemName())) {
                 log.info("확인 할 수 없는 상품입니다, 상품 코드 : {}", itemCode);
                 return null;
             }
@@ -105,6 +74,39 @@ public class DanawaPooler implements Pooler {
             return null;
         }
 
+    }
+
+    private ItemInfoVo getItemInfoVo(Document document, String itemCode, String itemUrl) {
+        final String itemName = document.select(ItemPage.ITEM_NAME_SELECTOR).text().replace("[다나와]", "").trim();
+        final String itemDesc = document.select(ItemPage.ITEM_DESC_SELECTOR).text().replace("[다나와]", "").trim();
+        final String itemImage = document.select(ItemPage.ITEM_IMAGE_SELECTOR).attr("src");
+
+        final Element itemPriceElement = document.select(ItemPage.ITEM_PRICE_SELECTOR).first();
+        final Integer itemPrice = Objects.isNull(itemPriceElement) ? 0 : Integer.valueOf(itemPriceElement.text().replace(",", ""));
+        final String itemSaleStatusStr = document.select(ItemPage.ITEM_SALE_STATUS_SELECTOR).text();
+
+        ItemSaleStatus itemSaleStatus;
+
+        if (itemPrice != 0) {
+            itemSaleStatus = ItemSaleStatus.SALE;
+        } else {
+            switch (itemSaleStatusStr.trim()) {
+                case ItemPage.ITEM_STATUS_DISCONTINUE:
+                    itemSaleStatus = ItemSaleStatus.DISCONTINUE;
+                    break;
+                case ItemPage.ITEM_STATUS_EMPTY_ACCOUNT:
+                    itemSaleStatus = ItemSaleStatus.EMPTY_AMOUNT;
+                    break;
+                case ItemPage.ITEM_STATUS_NO_SUPPORT:
+                    itemSaleStatus = ItemSaleStatus.NOT_SUPPORT;
+                    break;
+                default:
+                    itemSaleStatus = ItemSaleStatus.UNKNOWN;
+                    break;
+            }
+        }
+
+        return new ItemInfoVo(itemCode, itemUrl, itemName, itemDesc, itemImage, itemPrice, itemSaleStatus);
     }
 
     public String getItemCodeFromUrl(String url) {

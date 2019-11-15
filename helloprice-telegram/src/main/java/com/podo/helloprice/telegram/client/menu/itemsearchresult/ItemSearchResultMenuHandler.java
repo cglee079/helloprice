@@ -41,8 +41,6 @@ public class ItemSearchResultMenuHandler extends AbstractMenuHandler {
 
         final List<String> itemCommands = ItemCommandTranslator.getItemCommands(userItemNotifyService.findNotifyItemsByUserTelegramId(telegramId));
 
-        getSender().send(tMessageVo.newValue(CommonResponse.justWait(), null, callbackFactory.createDefault(telegramId, null)));
-
 
         //기본 명령어 검증
         final ItemSearchResultCommand requestCommand = ItemSearchResultCommand.from(requestMessage);
@@ -51,6 +49,7 @@ public class ItemSearchResultMenuHandler extends AbstractMenuHandler {
             return;
         }
 
+
         //상품 명령어인지 검증
         final String itemCode = ItemCommandTranslator.getItemCodeFromCommand(requestMessage);
         if (Objects.isNull(itemCode)) {
@@ -58,6 +57,7 @@ public class ItemSearchResultMenuHandler extends AbstractMenuHandler {
             getSender().send(tMessageVo.newValue(CommonResponse.wrongInput(), km.getHomeKeyboard(itemCommands), callbackFactory.createDefault(telegramId, Menu.HOME)));
             return;
         }
+
 
         handleItemCommand(itemCode, tMessageVo, itemCommands);
     }
@@ -70,9 +70,12 @@ public class ItemSearchResultMenuHandler extends AbstractMenuHandler {
     }
 
     private void handleItemCommand(String itemCode, TMessageVo tMessageVo, List<String> itemCommands) {
-        final String telegramId = tMessageVo.getTelegramId() + "";
-        final ItemInfoVo itemInfoVo = danawaPooler.poolItem(itemCode);
 
+        final String telegramId = tMessageVo.getTelegramId() + "";
+
+        getSender().send(tMessageVo.newValue(CommonResponse.justWait(), null, callbackFactory.createDefault(telegramId, null)));
+
+        final ItemInfoVo itemInfoVo = danawaPooler.poolItem(itemCode);
         if (Objects.isNull(itemInfoVo)) {
             getSender().send(tMessageVo.newValue(ItemSearchAddResponse.cantPoolItem(), km.getHomeKeyboard(itemCommands), callbackFactory.createDefault(tMessageVo.getTelegramId() + "", Menu.HOME)));
             return;
