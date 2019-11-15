@@ -1,8 +1,9 @@
-package com.podo.helloprice.telegram.client.response;
+package com.podo.helloprice.telegram.job.notifier;
 
+import com.podo.helloprice.telegram.client.menu.global.CommonResponse;
 import com.podo.helloprice.telegram.domain.item.ItemDto;
 
-public class NotifyResponse {
+public class NotifyContents {
 
 
     public static String notifyItemDiscontinued(ItemDto.detail itemDetail) {
@@ -46,7 +47,7 @@ public class NotifyResponse {
                 .toString();
     }
 
-    public static String notifyItemNotSupprt(ItemDto.detail itemDetail) {
+    public static String notifyItemNotSupport(ItemDto.detail itemDetail) {
         return new StringBuilder()
                 .append("<b>")
                 .append("해당 상품은 '가격비교중비' 상태로 변경되었습니다\n")
@@ -109,4 +110,6 @@ public class NotifyResponse {
                 .append(deadCount)
                 .toString();
     }
+
+
 }

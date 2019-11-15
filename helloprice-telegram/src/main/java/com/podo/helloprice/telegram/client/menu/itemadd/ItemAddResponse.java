@@ -1,18 +1,20 @@
 package com.podo.helloprice.telegram.client.menu.itemadd;
 
 import com.podo.helloprice.core.domain.item.ItemInfoVo;
-import com.podo.helloprice.telegram.client.response.CommonResponse;
-import com.podo.helloprice.telegram.domain.item.ItemDto;
+import com.podo.helloprice.telegram.client.menu.global.CommonResponse;
 
 public class ItemAddResponse {
 
-    public static String explain(String url) {
+    public static String explain(String url, String helpUrl) {
         return new StringBuilder()
                 .append("다나와에서 상품페이지의 URL(링크)을 입력해주세요!\n")
                 .append("\n")
 
                 .append("다나와 : ")
                 .append(url)
+                .append("\n")
+                .append(CommonResponse.help(helpUrl))
+
 
                 .toString();
 

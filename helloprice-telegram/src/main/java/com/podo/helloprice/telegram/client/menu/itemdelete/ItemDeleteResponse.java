@@ -1,9 +1,6 @@
 package com.podo.helloprice.telegram.client.menu.itemdelete;
 
-import com.podo.helloprice.core.domain.item.ItemInfoVo;
-import com.podo.helloprice.core.util.MyCurrencyUtils;
-import com.podo.helloprice.core.util.MyFormatUtils;
-import com.podo.helloprice.telegram.client.response.CommonResponse;
+import com.podo.helloprice.telegram.client.menu.global.CommonResponse;
 import com.podo.helloprice.telegram.domain.item.ItemDto;
 
 public class ItemDeleteResponse {

@@ -15,19 +15,21 @@ public class ItemDto {
         private String itemCode;
         private String itemUrl;
         private String itemName;
+        private String itemDesc;
         private String itemImage;
         private Integer itemPrice;
         private ItemSaleStatus itemSaleStatus;
 
         @Builder
         public insert(String itemCode,
-                      String itemUrl, String itemName,
+                      String itemUrl, String itemName, String itemDesc,
                       String itemImage, Integer itemPrice,
                       ItemSaleStatus itemSaleStatus
         ) {
             this.itemCode = itemCode;
             this.itemUrl = itemUrl;
             this.itemName = itemName;
+            this.itemDesc = itemDesc;
             this.itemImage = itemImage;
             this.itemPrice = itemPrice;
             this.itemSaleStatus = itemSaleStatus;
@@ -38,6 +40,7 @@ public class ItemDto {
                     .itemCode(itemCode)
                     .itemUrl(itemUrl)
                     .itemName(itemName)
+                    .itemDesc(itemDesc)
                     .itemImage(itemImage)
                     .itemPrice(itemPrice)
                     .itemSaleStatus(itemSaleStatus)
@@ -53,6 +56,7 @@ public class ItemDto {
         private String itemCode;
         private String itemUrl;
         private String itemName;
+        private String itemDesc;
         private String itemImage;
         private Integer itemPrice;
         private Integer itemBeforePrice;
@@ -66,6 +70,7 @@ public class ItemDto {
             this.itemCode = item.getItemCode();
             this.itemName = item.getItemName();
             this.itemUrl = item.getItemUrl();
+            this.itemDesc = item.getItemDesc();
             this.itemImage = item.getItemImage();
             this.itemPrice = item.getItemPrice();
             this.itemSaleStatus = item.getItemSaleStatus();

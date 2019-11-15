@@ -3,6 +3,7 @@ package com.podo.helloprice.pooler.loader;
 import com.podo.helloprice.pooler.target.danawa.DanawaPoolConfig;
 import com.podo.helloprice.pooler.target.danawa.DanawaPooler;
 import com.podo.helloprice.pooler.exception.FailGetDocumentException;
+import com.querydsl.core.types.dsl.TimeOperation;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.openqa.selenium.By;
@@ -20,6 +21,7 @@ import org.springframework.stereotype.Component;
 import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 import java.util.stream.Collectors;
 
 
@@ -53,7 +55,11 @@ public class DelayDocumentLoader {
             initDriver();
         }
 
-        driver.get(url);
+        try {
+            driver.get(url);
+        } catch (org.openqa.selenium.TimeoutException e) {
+            throw new FailGetDocumentException(e);
+        }
 
         //Wait Element Loading Complete.
         waitElement(driver, waitElementSelectors);

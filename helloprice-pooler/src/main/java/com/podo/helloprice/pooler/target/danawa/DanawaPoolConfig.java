@@ -14,6 +14,7 @@ public class DanawaPoolConfig {
     public interface ItemPage {
         String DANAWA_ITEM_URL = "http://prod.danawa.com/info/?pcode=";
         String ITEM_NAME_SELECTOR = "#blog_content > div.summary_info > div.top_summary > h3";
+        String ITEM_DESC_SELECTOR = "#blog_content .spec_list";
         String ITEM_PRICE_SELECTOR = "span.lwst_prc > a > em";
         String ITEM_IMAGE_SELECTOR = "#baseImage";
         String ITEM_SALE_STATUS_SELECTOR = "div.lowest_area > div.no_data > p > strong";

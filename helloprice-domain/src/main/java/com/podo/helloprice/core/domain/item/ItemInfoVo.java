@@ -10,14 +10,17 @@ import lombok.ToString;
 public class ItemInfoVo {
     private String itemCode;
     private String itemUrl;
+    private String itemDesc;
     private String itemName;
     private String itemImage;
     private ItemSaleStatus itemSaleStatus;
     private Integer itemPrice;
 
-    public ItemInfoVo(String itemCode, String itemUrl, String itemName, String itemImage, Integer itemPrice, ItemSaleStatus itemSaleStatus) {
+
+    public ItemInfoVo(String itemCode, String itemUrl, String itemName, String itemDesc, String itemImage, Integer itemPrice, ItemSaleStatus itemSaleStatus) {
         this.itemCode = itemCode;
         this.itemUrl = itemUrl;
+        this.itemDesc = itemDesc;
         this.itemName = itemName;
         this.itemImage = itemImage;
         this.itemPrice = itemPrice;

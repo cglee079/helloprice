@@ -37,6 +37,7 @@ public class ItemService {
                 .itemCode(itemInfoVo.getItemCode())
                 .itemUrl(itemInfoVo.getItemUrl())
                 .itemName(itemInfoVo.getItemName())
+                .itemDesc(itemInfoVo.getItemDesc())
                 .itemImage(itemInfoVo.getItemImage())
                 .itemPrice(itemInfoVo.getItemPrice())
                 .itemSaleStatus(itemInfoVo.getItemSaleStatus())
@@ -82,14 +83,11 @@ public class ItemService {
         Optional<Item> itemOptional = itemRepository.findById(itemId);
 
         if (itemOptional.isPresent()) {
-
             Item item = itemOptional.get();
             userItemNotifyRepository.deleteAll(item.getUserItemNotifies());
 
             itemRepository.delete(item);
         }
-
-
     }
 
     public void notifiedItem(Long itemId) {

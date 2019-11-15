@@ -1,5 +1,6 @@
-package com.podo.helloprice.telegram.client;
+package com.podo.helloprice.telegram.client.menu;
 
+import com.podo.helloprice.telegram.client.menu.emaildelete.EmailDeleteKeyboard;
 import com.podo.helloprice.telegram.client.menu.itemdelete.ItemDeleteKeyboard;
 import com.podo.helloprice.telegram.client.menu.home.HomeKeyboard;
 import com.podo.helloprice.telegram.client.menu.itemsearchresult.ItemSearchResultKeyboard;
@@ -36,4 +37,7 @@ public class KeyboardManager {
     }
 
 
+    public ReplyKeyboard getEmailDeleteKeyboard() {
+        return new EmailDeleteKeyboard();
+    }
 }

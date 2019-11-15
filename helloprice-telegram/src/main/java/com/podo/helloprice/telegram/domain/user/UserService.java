@@ -69,19 +69,24 @@ public class UserService {
         user.resetErrorCount();
     }
 
-    public void reviveUser(Long id) {
-        User user = userRepository.findById(id).get();
+    public void reviveUser(Long userId) {
+        User user = userRepository.findById(userId).get();
         user.revive();
     }
 
-    public void updateSendAt(Long id, LocalDateTime lastSendAt) {
-        User user = userRepository.findById(id).get();
+    public void updateSendAt(Long userId, LocalDateTime lastSendAt) {
+        User user = userRepository.findById(userId).get();
         user.updateSendAt(lastSendAt);
     }
 
     public void updateNotifyAt(Integer telegramId, LocalDateTime lastNotifyAt) {
         User user = userRepository.findByTelegramId(telegramId + "");
         user.updateNotifyAt(lastNotifyAt);
+    }
+
+    public void updateEmail(String telegramId, String email) {
+        final User user = userRepository.findByTelegramId(telegramId);
+        user.updateEmail(email);
     }
 
 }

@@ -12,7 +12,7 @@ public class UserDto {
 
 
     public static class insert {
-        private Integer telegramId;
+        private String telegramId;
         private String username;
         private String email;
         private Menu menuStatus;
@@ -20,7 +20,7 @@ public class UserDto {
         private LocalDateTime lastSendAt;
 
         @Builder
-        public insert(Integer telegramId, String username, String email, Menu menuStatus, UserStatus userStatus, LocalDateTime lastSendAt) {
+        public insert(String telegramId, String username, String email, Menu menuStatus, UserStatus userStatus, LocalDateTime lastSendAt) {
             this.telegramId = telegramId;
             this.username = username;
             this.email = email;
@@ -31,7 +31,7 @@ public class UserDto {
 
         public User toEntity() {
             return User.builder()
-                    .telegramId(telegramId + "")
+                    .telegramId(telegramId)
                     .username(username)
                     .email(email)
                     .menuStatus(menuStatus)

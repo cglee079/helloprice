@@ -1,27 +1,24 @@
-package com.podo.helloprice.telegram.client.response;
+package com.podo.helloprice.telegram.client.menu.global;
 
 import com.podo.helloprice.core.domain.item.ItemInfoVo;
 import com.podo.helloprice.core.util.MyCurrencyUtils;
 import com.podo.helloprice.core.util.MyFormatUtils;
 import com.podo.helloprice.telegram.domain.item.ItemDto;
-import com.podo.helloprice.core.util.MyCalculateUtils;
-
-import java.text.DecimalFormat;
 
 public class CommonResponse {
     public static final String DATE_TIME_FORMAT = "yyyy년 MM월 dd일 HH시 mm분";
 
-    public static String introduce(String appName) {
+    public static String introduce(String appDesc) {
         return new StringBuilder()
                 .append("<b>")
-                .append(appName)
+                .append(appDesc)
                 .append("</b>")
                 .append("\n")
                 .append("\n")
 
                 .append("안녕하세요!\n")
                 .append("최저가 알림을 주는 ")
-                .append(appName)
+                .append(appDesc)
                 .append(" 입니다!\n")
                 .append("\n")
 
@@ -36,10 +33,8 @@ public class CommonResponse {
 
     public static String help(String helpUrl) {
         return new StringBuilder()
-                .append("도움말(사용법) : ")
+                .append("도움말 : ")
                 .append(helpUrl)
-                .append("\n")
-                .append("건의/버그제보는 해당 링크에 댓글로 부탁드립니다!")
                 .toString();
     }
 
@@ -48,7 +43,7 @@ public class CommonResponse {
                 .append("잘못된 값을 입력하셨어요...")
                 .append("\n")
                 .append("\n")
-                .append("홈으로 돌아갑니다!")
+                .append(CommonResponse.toHome())
                 .toString();
     }
 
@@ -58,28 +53,31 @@ public class CommonResponse {
         Integer itemPrice = itemDetail.getItemPrice();
         Integer itemBeforePrice = itemDetail.getItemBeforePrice();
 
-        message.append("")
-                .append("<b>")
+        message.append("<b>")
                 .append("최종확인시간 : ")
                 .append(MyFormatUtils.dateTimeToString(itemDetail.getLastPoolAt(), DATE_TIME_FORMAT))
                 .append("</b>")
                 .append("\n")
 
-                .append("가격변동시간 : ")
+                .append("<b>가격변동시간</b> : ")
                 .append(MyFormatUtils.dateTimeToString(itemDetail.getLastUpdateAt(), DATE_TIME_FORMAT))
                 .append("\n")
                 .append("\n")
 
-                .append("상품링크 : ")
+                .append("<b>상품링크</b> : ")
                 .append(itemDetail.getItemUrl())
                 .append("\n")
 
-                .append("상품코드 : ")
+                .append("<b>상품코드</b> : ")
                 .append(itemDetail.getItemCode())
                 .append("\n")
 
-                .append("상품이름 : ")
+                .append("<b>상품이름</b> : ")
                 .append(itemDetail.getItemName())
+                .append("\n")
+
+                .append("<b>상품설명</b> : ")
+                .append(itemDetail.getItemDesc())
                 .append("\n")
 
                 .append("<b>")
@@ -102,7 +100,7 @@ public class CommonResponse {
 
                 .append("<b>")
                 .append("가격변화 : ")
-                .append(CommonResponse.toSignPercentStr(itemPrice, itemBeforePrice))
+                .append(MyFormatUtils.toSignPercentStr(itemPrice, itemBeforePrice))
                 .append("</b>");
 
         return message.toString();
@@ -119,7 +117,7 @@ public class CommonResponse {
                     .append(MyCurrencyUtils.toExchangeRateKRWStr(itemPrice - itemBeforePrice))
                     .append("</b> 올랐어요...");
         } else if (itemPrice.equals(itemBeforePrice)) {
-            message.append("아직 가격이 똑같아요! 좀만 더 기다려보세요!");
+            message.append("<i>아직 가격이 똑같아요! 좀만 더 기다려보세요!</i>");
         } else {
             message.append("야호! 가격이 <b>")
                     .append(MyCurrencyUtils.toExchangeRateKRWStr(itemBeforePrice - itemPrice))
@@ -132,12 +130,16 @@ public class CommonResponse {
 
     public static String descItemInfoVo(ItemInfoVo itemInfoVo) {
         return new StringBuilder()
-                .append("상품코드 : ")
+                .append("<b>상품코드</b> : ")
                 .append(itemInfoVo.getItemCode())
                 .append("\n")
 
-                .append("상품이름 : ")
+                .append("<b>상품이름</b> : ")
                 .append(itemInfoVo.getItemName())
+                .append("\n")
+
+                .append("<b>상품설명</b> : ")
+                .append(itemInfoVo.getItemDesc())
                 .append("\n")
 
                 .append("<b>")
@@ -163,21 +165,11 @@ public class CommonResponse {
     }
 
 
-    public static String toSignPercentStr(double a, double b) {
-        String prefix = "";
-
-        double percent = MyCalculateUtils.getChangePercent(a, b);
-
-        if (percent > 0) {
-            prefix = "+";
-        }
-
-        DecimalFormat df = new DecimalFormat("#.##");
-        return prefix + df.format(percent) + "%";
+    public static String justWait() {
+        return "<b>잠시만, 잠시만 기다려주세요!</b>";
     }
 
-
-    public static String justWait() {
-        return "잠시만, 잠시만 기다려주세요!";
+    public static String seeKeyboardIcon() {
+        return "<b>중요!!\n 오른쪽아래에 버튼 아이콘을 눌러주세요!!!\n 이쁜 버튼이 보여요!!</b>";
     }
 }

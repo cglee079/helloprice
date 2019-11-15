@@ -3,10 +3,11 @@ server:
 
 spring:
   profiles:
-    include: core, jpa, jpa-secret, pooler, telegram-secret
+    include: core, jpa, jpa-secret, pooler, gmail-secret, telegram-secret
 
 app:
-  name: 헬로프라이스 v1.0
+  name: 헬로프라이스
+  version: v1.0
   telegram:
     help_url: https://www.podo-dev.com/blogs/185
 
@@ -22,6 +23,8 @@ item:
 logging:
   file: helloprice-telegram.%d{yyyy-MM-dd}-%i.log
   path: c://helloprice/logs/helloprice-telegram
+
+
 
 ---
 

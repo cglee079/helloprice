@@ -3,9 +3,11 @@ package com.podo.helloprice.telegram.client.menu.global;
 import com.podo.helloprice.core.domain.item.ItemInfoVo;
 import com.podo.helloprice.core.domain.user.Menu;
 import com.podo.helloprice.pooler.target.danawa.DanawaPooler;
-import com.podo.helloprice.telegram.client.*;
+import com.podo.helloprice.telegram.client.TMessageCallbackFactory;
+import com.podo.helloprice.telegram.client.TMessageVo;
+import com.podo.helloprice.telegram.client.TelegramMessageSender;
+import com.podo.helloprice.telegram.client.menu.KeyboardManager;
 import com.podo.helloprice.telegram.client.menu.itemadd.ItemAddResponse;
-import com.podo.helloprice.telegram.client.response.CommonResponse;
 import com.podo.helloprice.telegram.domain.item.ItemDto;
 import com.podo.helloprice.telegram.domain.item.ItemService;
 import com.podo.helloprice.telegram.domain.user.UserDto;
@@ -35,7 +37,7 @@ public class ItemAddHandler {
         final String telegramId = tMessageVo.getTelegramId() + "";
         final ItemInfoVo itemInfoVo = danawaPooler.poolItem(itemCode);
 
-        final List<String> itemCommands = UserItemCommand.getItemCommands(userItemNotifyService.findNotifyItemsByUserTelegramId(telegramId));
+        final List<String> itemCommands = ItemCommandTranslator.getItemCommands(userItemNotifyService.findNotifyItemsByUserTelegramId(telegramId));
 
         if (Objects.isNull(itemInfoVo)) {
             log.info("{} << 상품 정보를 가져 올 수 없습니다. 상품코드 '{}'", telegramId, itemCode);
@@ -73,7 +75,7 @@ public class ItemAddHandler {
     private void handleItemCommand(TMessageVo tMessageVo, String telegramId, ItemInfoVo itemInfoVo, Long itemId, UserDto.detail userDetail, ItemDto.detail itemDetail) {
         userItemNotifyService.addNotify(userDetail.getId(), itemId);
 
-        final List<String> reloadItemCommands = UserItemCommand.getItemCommands(userItemNotifyService.findNotifyItemsByUserTelegramId(telegramId)); // 갱신
+        final List<String> reloadItemCommands = ItemCommandTranslator.getItemCommands(userItemNotifyService.findNotifyItemsByUserTelegramId(telegramId)); // 갱신
         sender.send(tMessageVo.newValue(CommonResponse.descItemDetail(itemDetail), itemInfoVo.getItemImage(), km.getHomeKeyboard(reloadItemCommands), callbackFactory.createDefault(telegramId, Menu.HOME)));
         sender.send(tMessageVo.newValue(ItemAddResponse.successAddNotifyItem(), null, null, callbackFactory.createDefault(telegramId, null)));
     }

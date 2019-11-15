@@ -2,14 +2,14 @@ package com.podo.helloprice.telegram.client.menu.itemadd;
 
 import com.podo.helloprice.core.domain.user.Menu;
 import com.podo.helloprice.pooler.target.danawa.DanawaPooler;
-import com.podo.helloprice.telegram.client.KeyboardManager;
+import com.podo.helloprice.telegram.client.menu.KeyboardManager;
 import com.podo.helloprice.telegram.client.TMessageCallbackFactory;
 import com.podo.helloprice.telegram.client.TMessageVo;
 import com.podo.helloprice.telegram.client.menu.AbstractMenuHandler;
 import com.podo.helloprice.telegram.client.menu.global.ItemAddHandler;
-import com.podo.helloprice.telegram.client.response.CommonResponse;
+import com.podo.helloprice.telegram.client.menu.global.CommonResponse;
 import com.podo.helloprice.telegram.domain.useritem.UserItemNotifyService;
-import com.podo.helloprice.telegram.client.UserItemCommand;
+import com.podo.helloprice.telegram.client.menu.global.ItemCommandTranslator;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -42,7 +42,7 @@ public class ItemAddMenuHandler extends AbstractMenuHandler {
 
         getSender().send(tMessageVo.newValue(CommonResponse.justWait(), null, callbackFactory.createDefault(telegramId, null)));
 
-        final List<String> itemCommands = UserItemCommand.getItemCommands(userItemNotifyService.findNotifyItemsByUserTelegramId(telegramId));
+        final List<String> itemCommands = ItemCommandTranslator.getItemCommands(userItemNotifyService.findNotifyItemsByUserTelegramId(telegramId));
 
         final String url = requestMessage;
         String itemCode = danawaPooler.getItemCodeFromUrl(url);

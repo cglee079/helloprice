@@ -3,13 +3,13 @@ package com.podo.helloprice.telegram.client.menu.itemsearch;
 import com.podo.helloprice.core.domain.item.ItemSearchResultVo;
 import com.podo.helloprice.core.domain.user.Menu;
 import com.podo.helloprice.pooler.target.danawa.DanawaPooler;
-import com.podo.helloprice.telegram.client.KeyboardManager;
+import com.podo.helloprice.telegram.client.menu.KeyboardManager;
 import com.podo.helloprice.telegram.client.TMessageCallbackFactory;
 import com.podo.helloprice.telegram.client.TMessageVo;
-import com.podo.helloprice.telegram.client.UserItemCommand;
+import com.podo.helloprice.telegram.client.menu.global.ItemCommandTranslator;
 import com.podo.helloprice.telegram.client.menu.AbstractMenuHandler;
 import com.podo.helloprice.telegram.client.menu.itemsearchresult.ItemSearchResultResponse;
-import com.podo.helloprice.telegram.client.response.CommonResponse;
+import com.podo.helloprice.telegram.client.menu.global.CommonResponse;
 import com.podo.helloprice.telegram.domain.useritem.UserItemNotifyService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -47,24 +47,24 @@ public class ItemSearchMenuHandler extends AbstractMenuHandler {
 
         final List<ItemSearchResultVo> itemSearchResults = danawaPooler.poolItemSearchResults(keyword);
 
+        //검색 결과 없는 경우, 홈으로 이동
         if (itemSearchResults.isEmpty()) {
-            final List<String> itemCommands = UserItemCommand.getItemCommands(userItemNotifyService.findNotifyItemsByUserTelegramId(telegramId));
+            final List<String> itemCommands = ItemCommandTranslator.getItemCommands(userItemNotifyService.findNotifyItemsByUserTelegramId(telegramId));
             getSender().send(tMessageVo.newValue(ItemSearchResponse.noResult(), km.getHomeKeyboard(itemCommands), callbackFactory.createDefault(tMessageVo.getTelegramId() + "", Menu.HOME)));
             return;
         }
 
+        //아이템 검색 결과 응답
         final List<String> itemSearchResultCommands = getItemSearchResultCommands(itemSearchResults);
-
         final ReplyKeyboard itemSearchResultKeyboard = km.getItemSearchResultKeyboard(itemSearchResultCommands);
         final SentCallback<Message> defaultCallback = callbackFactory.createDefault(telegramId, Menu.ITEM_SEARCH_RESULT);
-
         getSender().send(tMessageVo.newValue(ItemSearchResultResponse.explain(), itemSearchResultKeyboard, defaultCallback));
 
     }
 
     private List<String> getItemSearchResultCommands(List<ItemSearchResultVo> itemSearchResults) {
         return itemSearchResults.stream()
-                .map(item -> UserItemCommand.getItemCommand(item.getItemCode(), item.getItemDesc()))
+                .map(item -> ItemCommandTranslator.getItemCommand(item.getItemCode(), item.getItemDesc()))
                 .collect(Collectors.toList());
     }
 

@@ -28,6 +28,8 @@ public class Item extends UpdatableBaseEntity {
 
     private String itemName;
 
+    private String itemDesc;
+
     private String itemUrl;
 
     private String itemImage;
@@ -55,7 +57,8 @@ public class Item extends UpdatableBaseEntity {
     List<UserItemNotify> userItemNotifies;
 
     @Builder
-    public Item(String itemCode, String itemName,
+    public Item(String itemCode,
+                String itemName, String itemDesc,
                 String itemUrl, String itemImage,
                 Integer itemPrice,
                 ItemSaleStatus itemSaleStatus,
@@ -64,6 +67,7 @@ public class Item extends UpdatableBaseEntity {
         this.itemCode = itemCode;
         this.itemUrl = itemUrl;
         this.itemName = itemName;
+        this.itemDesc = itemDesc;
         this.itemImage = itemImage;
         this.itemPrice = itemPrice;
         this.itemBeforePrice = itemPrice;
@@ -129,7 +133,7 @@ public class Item extends UpdatableBaseEntity {
     public void removeUserItemNotify(UserItemNotify userItemNotify) {
         this.userItemNotifies.remove(userItemNotify);
 
-        if (this.userItemNotifies.isEmpty()) {
+        if (this.userItemNotifies.isEmpty() && this.itemStatus.equals(ItemStatus.ALIVE)) {
             log.info("{}({}) 상품은, 어떤 사용자에게도 알림이 없습니다", this.itemName, this.itemCode);
             log.info("{}({}) 상품을, 더 이상 갱신하지 않습니다.(중지)", this.itemName, this.itemCode);
 

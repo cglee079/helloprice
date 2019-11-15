@@ -1,14 +1,14 @@
-package com.podo.helloprice.telegram.client.menu.itemserachadd;
+package com.podo.helloprice.telegram.client.menu.emaildelete;
 
 import com.podo.helloprice.core.domain.user.Menu;
-import com.podo.helloprice.telegram.client.menu.KeyboardManager;
 import com.podo.helloprice.telegram.client.TMessageCallbackFactory;
 import com.podo.helloprice.telegram.client.TMessageVo;
-import com.podo.helloprice.telegram.client.menu.global.ItemCommandTranslator;
 import com.podo.helloprice.telegram.client.menu.AbstractMenuHandler;
-import com.podo.helloprice.telegram.client.menu.global.ItemAddHandler;
-import com.podo.helloprice.telegram.client.menu.global.CommonResponse;
+import com.podo.helloprice.telegram.client.menu.KeyboardManager;
+import com.podo.helloprice.telegram.client.menu.global.ItemCommandTranslator;
+import com.podo.helloprice.telegram.domain.user.UserService;
 import com.podo.helloprice.telegram.domain.useritem.UserItemNotifyService;
+import com.podo.helloprice.telegram.client.menu.global.CommonResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -19,14 +19,14 @@ import java.util.Objects;
 @Slf4j
 @RequiredArgsConstructor
 @Component
-public class ItemSearchAddMenuHandler extends AbstractMenuHandler {
+public class EmailDeleteMenuHandler extends AbstractMenuHandler {
 
     @Override
     public Menu getHandleMenu() {
-        return Menu.ITEM_SEARCH_ADD;
+        return Menu.EMAILL_DELETE;
     }
 
-    private final ItemAddHandler itemAddHandler;
+    private final UserService userService;
     private final UserItemNotifyService userItemNotifyService;
     private final TMessageCallbackFactory callbackFactory;
     private final KeyboardManager km;
@@ -35,30 +35,37 @@ public class ItemSearchAddMenuHandler extends AbstractMenuHandler {
 
         final String telegramId = tMessageVo.getTelegramId() + "";
 
-        log.info("{} << 상품 검색 추가 메뉴에서 응답, 받은메세지 '{}'", telegramId, requestMessage);
+        log.info("{} << 이메일 삭제 메뉴에서 응답, 받은메세지 '{}'", telegramId, requestMessage);
 
         final List<String> itemCommands = ItemCommandTranslator.getItemCommands(userItemNotifyService.findNotifyItemsByUserTelegramId(telegramId));
 
 
         //명령어가 아닌 경우
-        final ItemSearchAddCommand requestCommand = ItemSearchAddCommand.from(requestMessage.substring(0, 3));
+        final EmailDeleteCommand requestCommand = EmailDeleteCommand.from(requestMessage);
         if (Objects.isNull(requestCommand)) {
             getSender().send(tMessageVo.newValue(CommonResponse.wrongInput(), km.getHomeKeyboard(itemCommands), callbackFactory.createDefault(telegramId, Menu.HOME)));
             return;
         }
 
-        handleCommand(requestCommand, tMessageVo, requestMessage, itemCommands);
+        handleCommand(requestCommand, tMessageVo, itemCommands);
     }
 
-    private void handleCommand(ItemSearchAddCommand requestCommand, TMessageVo tMessageVo, String requestMessage, List<String> itemCommands) {
+    private void handleCommand(EmailDeleteCommand requestCommand, TMessageVo tMessageVo, List<String> itemCommands) {
         switch (requestCommand) {
             case YES:
-                final String itemCode = requestMessage.substring(4).replace("#", "");
-                itemAddHandler.handleItemAdd(tMessageVo, itemCode);
+                handleYesCommand(tMessageVo, itemCommands);
                 break;
             case NO:
                 getSender().send(tMessageVo.newValue(CommonResponse.toHome(), km.getHomeKeyboard(itemCommands), callbackFactory.createDefault(tMessageVo.getTelegramId() + "", Menu.HOME)));
         }
+    }
+
+    private void handleYesCommand(TMessageVo tMessageVo, List<String> itemCommands) {
+        final String telegramId = tMessageVo.getTelegramId() + "";
+
+        userService.updateEmail(telegramId, null);
+
+        getSender().send(tMessageVo.newValue(EmailDeleteResponse.success(), km.getHomeKeyboard(itemCommands), callbackFactory.createDefault(tMessageVo.getTelegramId() + "", Menu.HOME)));
     }
 
 }

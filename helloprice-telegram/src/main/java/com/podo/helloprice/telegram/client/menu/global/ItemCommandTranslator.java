@@ -1,4 +1,4 @@
-package com.podo.helloprice.telegram.client;
+package com.podo.helloprice.telegram.client.menu.global;
 
 import com.podo.helloprice.telegram.domain.item.ItemDto;
 import lombok.RequiredArgsConstructor;
@@ -12,7 +12,7 @@ import static java.util.stream.Collectors.toList;
 @Slf4j
 @RequiredArgsConstructor
 @Component
-public class UserItemCommand {
+public class ItemCommandTranslator {
 
     public static List<String> getItemCommands(List<ItemDto.detail> items) {
         return items.stream()

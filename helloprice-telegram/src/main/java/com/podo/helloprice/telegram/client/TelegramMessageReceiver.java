@@ -3,8 +3,9 @@ package com.podo.helloprice.telegram.client;
 
 import com.podo.helloprice.core.domain.user.Menu;
 import com.podo.helloprice.core.domain.user.UserStatus;
+import com.podo.helloprice.telegram.client.menu.KeyboardManager;
 import com.podo.helloprice.telegram.client.menu.MenuHandler;
-import com.podo.helloprice.telegram.client.response.CommonResponse;
+import com.podo.helloprice.telegram.client.menu.global.CommonResponse;
 import com.podo.helloprice.telegram.domain.user.UserDto;
 import com.podo.helloprice.telegram.domain.user.UserService;
 import lombok.RequiredArgsConstructor;
@@ -49,18 +50,21 @@ public class TelegramMessageReceiver {
 
         final TMessageVo tMessageVo = new TMessageVo(telegramId, messageId);
 
-        final UserDto.detail userDetail = userService.findByTelegramId(telegramId + "");
+        final String telegramIdStr = telegramId + "";
+        final UserDto.detail userDetail = userService.findByTelegramId(telegramIdStr);
 
         if (Objects.isNull(userDetail)) {
-            insertNewUser(username, telegramId, messageReceiveAt);
-            telegramMessageSender.send(tMessageVo.newValue(CommonResponse.introduce(appName), km.getHomeKeyboard(Collections.emptyList()), callbackFactory.createDefault(telegramId + "", Menu.HOME)));
-            telegramMessageSender.send(tMessageVo.newValue(CommonResponse.help(helpUrl), null, callbackFactory.createDefault(telegramId + "", Menu.HOME)));
+            insertNewUser(username, telegramIdStr, messageReceiveAt);
+            telegramMessageSender.send(tMessageVo.newValue(CommonResponse.introduce(appName), km.getHomeKeyboard(Collections.emptyList()), callbackFactory.createDefault(telegramIdStr, Menu.HOME)));
+            telegramMessageSender.send(tMessageVo.newValue(CommonResponse.help(helpUrl), null, callbackFactory.createDefault(telegramIdStr, null)));
+            telegramMessageSender.send(tMessageVo.newValue(CommonResponse.seeKeyboardIcon(), null, callbackFactory.createDefault(telegramIdStr, null)));
             return;
         } else if (userDetail.getUserStatus().equals(UserStatus.DEAD)) {
             userService.reviveUser(userDetail.getId());
             userService.updateSendAt(userDetail.getId(), messageReceiveAt);
-            telegramMessageSender.send(tMessageVo.newValue(CommonResponse.introduce(appName), km.getHomeKeyboard(Collections.emptyList()), callbackFactory.createDefault(telegramId + "", Menu.HOME)));
-            telegramMessageSender.send(tMessageVo.newValue(CommonResponse.help(helpUrl), null, callbackFactory.createDefault(telegramId + "", Menu.HOME)));
+            telegramMessageSender.send(tMessageVo.newValue(CommonResponse.introduce(appName), km.getHomeKeyboard(Collections.emptyList()), callbackFactory.createDefault(telegramIdStr, Menu.HOME)));
+            telegramMessageSender.send(tMessageVo.newValue(CommonResponse.help(helpUrl), null, callbackFactory.createDefault(telegramIdStr, null)));
+            telegramMessageSender.send(tMessageVo.newValue(CommonResponse.seeKeyboardIcon(), null, callbackFactory.createDefault(telegramIdStr, null)));
             return;
         }
 
@@ -69,7 +73,7 @@ public class TelegramMessageReceiver {
     }
 
 
-    private void insertNewUser(String username, Integer telegramId, LocalDateTime messageReceiveAt) {
+    private void insertNewUser(String username, String telegramId, LocalDateTime messageReceiveAt) {
         log.info("{} << 새로운 사용자가 등록되었습니다 {}({})", telegramId, username, telegramId);
 
         final UserDto.insert userInsert = UserDto.insert.builder()

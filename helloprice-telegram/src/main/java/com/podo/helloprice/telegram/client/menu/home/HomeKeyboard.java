@@ -26,15 +26,18 @@ public class HomeKeyboard extends ReplyKeyboardMarkup {
 
         keyboard.add(keyboardRow);
 
+        keyboardRow = new KeyboardRow();
+        keyboardRow.add(HomeCommand.EMAIL_ADD.getValue());
+        keyboardRow.add(HomeCommand.EMAIL_DELETE.getValue());
+        keyboardRow.add(HomeCommand.HELP.getValue());
+        keyboard.add(keyboardRow);
+
+
         for (String item : itemList) {
             KeyboardRow keyboardItemRow = new KeyboardRow();
             keyboardItemRow.add(item);
             keyboard.add(keyboardItemRow);
         }
-
-        keyboardRow = new KeyboardRow();
-        keyboardRow.add(HomeCommand.HELP.getValue());
-        keyboard.add(keyboardRow);
 
         this.setKeyboard(keyboard);
 

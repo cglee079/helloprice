@@ -12,6 +12,7 @@ import com.podo.helloprice.pooler.loader.DelayDocumentLoader;
 import com.podo.helloprice.pooler.loader.PromptDocumentLoader;
 import com.podo.helloprice.pooler.target.danawa.DanawaPoolConfig.*;
 import lombok.RequiredArgsConstructor;
+import lombok.Value;
 import lombok.extern.slf4j.Slf4j;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -19,21 +20,27 @@ import org.jsoup.select.Elements;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Objects;
+import java.time.LocalDateTime;
+import java.util.*;
 
 @Slf4j
 @RequiredArgsConstructor
 @Component
 public class DanawaPooler implements Pooler {
 
+    private final DanawaItemCache danawaItemCache;
     private final DelayDocumentLoader delayDocumentLoader;
     private final PromptDocumentLoader promptDocumentLoader;
 
     @Override
     public ItemInfoVo poolItem(String itemCode) {
+
+        final ItemInfoVo existCache = danawaItemCache.get(itemCode);
+        if (Objects.nonNull(existCache)) {
+            return existCache;
+        }
+
+
         log.info("DANAWA '상품' 페이지 크롤을 시작합니다, 상품코드 : {}", itemCode);
 
         final String itemUrl = ItemPage.DANAWA_ITEM_URL + itemCode;
@@ -52,6 +59,7 @@ public class DanawaPooler implements Pooler {
 
         try {
             final String itemName = document.select(ItemPage.ITEM_NAME_SELECTOR).text().replace("[다나와]", "").trim();
+            final String itemDesc = document.select(ItemPage.ITEM_DESC_SELECTOR).text().replace("[다나와]", "").trim();
             final String itemImage = document.select(ItemPage.ITEM_IMAGE_SELECTOR).attr("src");
 
             final Element itemPriceElement = document.select(ItemPage.ITEM_PRICE_SELECTOR).first();
@@ -79,7 +87,7 @@ public class DanawaPooler implements Pooler {
                 }
             }
 
-            ItemInfoVo itemInfoVo = new ItemInfoVo(itemCode, itemUrl, itemName, itemImage, itemPrice, itemSaleStatus);
+            final ItemInfoVo itemInfoVo = new ItemInfoVo(itemCode, itemUrl, itemName, itemDesc, itemImage, itemPrice, itemSaleStatus);
 
             log.info("상품 정보확인, '{}'", itemInfoVo);
 
@@ -87,6 +95,8 @@ public class DanawaPooler implements Pooler {
                 log.info("확인 할 수 없는 상품입니다, 상품 코드 : {}", itemCode);
                 return null;
             }
+
+            danawaItemCache.put(itemCode, itemInfoVo);
 
             return itemInfoVo;
 

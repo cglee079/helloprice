@@ -1,3 +1,6 @@
 pooler:
-  useragent : Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/77.0.3865.120 Safari/537.36
-  timeout: 1000
+  useragent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/77.0.3865.120 Safari/537.36
+  timeout: 10000
+  item:
+    cache:
+      timeout: 1

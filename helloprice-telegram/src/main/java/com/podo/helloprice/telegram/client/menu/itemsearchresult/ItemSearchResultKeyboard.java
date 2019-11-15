@@ -1,10 +1,7 @@
 package com.podo.helloprice.telegram.client.menu.itemsearchresult;
 
-import com.podo.helloprice.telegram.client.menu.home.HomeCommand;
-import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboard;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboardMarkup;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.KeyboardRow;
-import org.telegram.telegrambots.meta.exceptions.TelegramApiValidationException;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -91,4 +91,7 @@ public class User extends UpdatableBaseEntity {
         this.errorCount = 0;
     }
 
+    public void updateEmail(String email) {
+        this.email = email;
+    }
 }
