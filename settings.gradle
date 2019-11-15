@@ -1,0 +1,13 @@
+pluginManagement {
+    repositories {
+        gradlePluginPortal()
+    }
+}
+
+rootProject.name = 'podo-helloprice'
+
+include 'helloprice-core',
+        'helloprice-domain',
+        'helloprice-poolworker',
+        'helloprice-pooler',
+        'helloprice-telegram'
