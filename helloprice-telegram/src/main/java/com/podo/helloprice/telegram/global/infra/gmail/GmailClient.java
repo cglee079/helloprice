@@ -28,16 +28,6 @@ public class GmailClient {
     private String adminEmail;
 
     private final Authenticator gmailAuth;
-    private Transport transport;
-    private Session msgSession;
-
-    @PostConstruct
-    public void init() throws MessagingException {
-        final Properties mailProperties = this.getMailProperties();
-        msgSession = Session.getInstance(mailProperties, gmailAuth);
-        transport = msgSession.getTransport("smtp");
-        transport.connect();
-    }
 
     public void sendAdmin(String title, String contents) {
         sendEmail(appName, adminEmail, title, contents);
@@ -47,7 +37,12 @@ public class GmailClient {
         log.info("'{}({})'로 메일을 발송합니다, 메일제목 : {}", userEmail, username, title);
 
         try {
-            final MimeMessage message = createMessage(username, userEmail, title, contents, msgSession);
+            final Properties mailProperties = this.getMailProperties();
+            final Session messageSession = Session.getInstance(mailProperties, gmailAuth);
+            final Transport transport = messageSession.getTransport("smtp");
+            transport.connect();
+
+            final MimeMessage message = createMessage(username, userEmail, title, contents, messageSession);
             transport.sendMessage(message, message.getAllRecipients());
 
         } catch (Exception e) {
