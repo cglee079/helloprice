@@ -1,6 +1,9 @@
 pooler:
   useragent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/77.0.3865.120 Safari/537.36
   timeout: 10000
+  webdriver:
+    server1 : http://192.168.219.103:4445/wd/hub
+    server2 : http://192.168.219.103:4446/wd/hub
   item:
     cache:
       timeout: 1

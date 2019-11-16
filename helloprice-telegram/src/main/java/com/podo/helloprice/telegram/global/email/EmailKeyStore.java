@@ -1,12 +1,12 @@
 package com.podo.helloprice.telegram.global.email;
 
+import com.podo.helloprice.core.util.MyNumberUtils;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
-import java.util.Random;
 
 
 @Component
@@ -14,15 +14,13 @@ public class EmailKeyStore {
 
     private Map<String, String> emailKeyStore = new HashMap<>();
     private Map<String, LocalDateTime> keyStoreTimes = new HashMap<>();
-    private long cretifyTimeout = 1000 * 60 * 5;
+    private long certifyTimeout = 1000 * 60 * 5;
 
     public String createKey(String email) {
 
-        final long seed = System.currentTimeMillis();
 
-        final Random rand = new Random(seed);
 
-        final String key = String.format("%06d", rand.nextInt(999999));
+        final String key = String.format("%06d", MyNumberUtils.rand(999999));
 
         emailKeyStore.put(email, key);
         keyStoreTimes.put(key, LocalDateTime.now());
@@ -37,7 +35,7 @@ public class EmailKeyStore {
             return null;
         }
 
-        if (now.minusMinutes(cretifyTimeout).compareTo(keyStoreTime) > 0) {
+        if (now.minusMinutes(certifyTimeout).compareTo(keyStoreTime) > 0) {
             return null;
         }
 

@@ -110,6 +110,9 @@ public class DanawaPooler implements Pooler {
     }
 
     public String getItemCodeFromUrl(String url) {
+        if (StringUtils.isEmpty(url)) {
+            return null;
+        }
 
         if (url.contains(GetCode.DANAWA_REDIRECT_URL)) {
             url = getRealUrlFromRedirect(url);

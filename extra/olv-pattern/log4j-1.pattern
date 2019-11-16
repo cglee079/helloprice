@@ -1,0 +1,5 @@
+type=log4j
+pattern=TIMESTAMP LEVEL --- [THREAD] CLASS: MESSAGE
+dateFormat=yyyy:MM:dd HH:mm:ss.SSS
+name=Lo4j-pattern: %d{yyyy:MM:dd HH:mm:ss.SSS} %-5level --- [%thread] %logger{35} : %msg %n
+charset=UTF-8

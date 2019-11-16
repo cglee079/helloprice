@@ -6,11 +6,8 @@ public class ItemSearchAddResponse {
 
     public static String explain() {
         return new StringBuilder()
-                .append("<b>해당 상품이 맞으신가요?</b>\n")
-                .append("\n")
-                .append("알림을 추가하시겠습니까\n")
+                .append("<b>해당 상품의 알림을 추가할까요?</b>\n")
                 .toString();
-
     }
 
     public static String cantPoolItem() {

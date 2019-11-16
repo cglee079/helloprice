@@ -1,35 +1,23 @@
 package com.podo.helloprice.pooler.loader;
 
-import com.podo.helloprice.pooler.target.danawa.DanawaPoolConfig;
-import com.podo.helloprice.pooler.target.danawa.DanawaPooler;
 import com.podo.helloprice.pooler.exception.FailGetDocumentException;
-import com.querydsl.core.types.dsl.TimeOperation;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
-import org.openqa.selenium.By;
-import org.openqa.selenium.JavascriptExecutor;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.chrome.ChromeOptions;
-import org.openqa.selenium.remote.DesiredCapabilities;
-import org.openqa.selenium.remote.RemoteWebDriver;
+import org.openqa.selenium.*;
 import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
-import javax.annotation.PostConstruct;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.List;
 import java.util.Objects;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.TimeoutException;
 import java.util.stream.Collectors;
 
-
+@Slf4j
+@RequiredArgsConstructor
 @Component
 public class DelayDocumentLoader {
 
@@ -39,46 +27,32 @@ public class DelayDocumentLoader {
     @Value("${pooler.timeout}")
     private Integer timeout;
 
-    private WebDriver driver;
-
-    private void initDriver() {
-        ChromeOptions chromeOptions = new ChromeOptions();
-        chromeOptions.addArguments("headless");
-        chromeOptions.addArguments("disable-gpu");
-        chromeOptions.addArguments("user-agent=" + userAgent);
-
-        final URL url;
-        try {
-            url = new URL("http://192.168.219.103:4444/wd/hub");
-            DesiredCapabilities.chrome();
-
-            driver = new RemoteWebDriver(url, chromeOptions);
-
-            driver.manage().timeouts().pageLoadTimeout(timeout, TimeUnit.MILLISECONDS);
-            driver.manage().timeouts().implicitlyWait(timeout, TimeUnit.MILLISECONDS);
-            driver.manage().timeouts().setScriptTimeout(timeout, TimeUnit.MILLISECONDS);
-
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
-        }
-    }
+    private final DelayWebDriverManager delayWebDriverManager;
 
     public final Document getDocument(String url, List<String> waitElementSelectors) throws FailGetDocumentException {
 
-        if (Objects.isNull(driver)) {
-            initDriver();
-        }
+        WebDriver randDriver = delayWebDriverManager.getRandDriver();
 
         try {
-            driver.get(url);
-        } catch (org.openqa.selenium.TimeoutException e) {
-            throw new FailGetDocumentException(e);
+            randDriver.get(url);
+        } catch (org.openqa.selenium.TimeoutException e1) {
+            throw new FailGetDocumentException(e1);
+        } catch (NoSuchSessionException e2) {
+            //세션 에러면, WebDriver 재연결후, 문서를 다시 요청함.
+            log.error("WebDriver 세션을 찾을 수 없습니다", e2);
+            delayWebDriverManager.clearDrivers();
+            return getDocument(url, waitElementSelectors);
+        } catch (Exception e3) {
+            //알 수 없는 에러면, 초기화하고, 서버에러 메세지 전송
+            log.error("WebDriver 알수 없는 에러", e3);
+            delayWebDriverManager.clearDrivers();
+            throw new FailGetDocumentException(e3);
         }
 
         //Wait Element Loading Complete.
-        waitElement(driver, waitElementSelectors);
+        waitElement(randDriver, waitElementSelectors);
 
-        WebElement html = driver.findElement(By.cssSelector("html"));
+        WebElement html = randDriver.findElement(By.cssSelector("html"));
         return Jsoup.parse(html.getAttribute("innerHTML"));
     }
 
@@ -107,4 +81,5 @@ public class DelayDocumentLoader {
         }
 
     }
+
 }
