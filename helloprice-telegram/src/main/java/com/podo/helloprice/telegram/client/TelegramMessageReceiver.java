@@ -73,7 +73,7 @@ public class TelegramMessageReceiver {
     }
 
 
-    private void insertNewUser(String username, String telegramId, LocalDateTime messageReceiveAt) {
+    private Long insertNewUser(String username, String telegramId, LocalDateTime messageReceiveAt) {
         log.info("{} << 새로운 사용자가 등록되었습니다 {}({})", telegramId, username, telegramId);
 
         final UserDto.insert userInsert = UserDto.insert.builder()
@@ -85,7 +85,7 @@ public class TelegramMessageReceiver {
                 .lastSendAt(messageReceiveAt)
                 .build();
 
-        userService.insert(userInsert);
+        return userService.insert(userInsert);
     }
 
     private void handleCommand(TMessageVo tMessageVo, String requestMessage, Menu userMenuStatus) {

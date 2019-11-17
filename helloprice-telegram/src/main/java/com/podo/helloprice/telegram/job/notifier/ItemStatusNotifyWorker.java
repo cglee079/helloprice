@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.text.DecimalFormat;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -42,11 +43,13 @@ public class ItemStatusNotifyWorker implements Worker {
     public void doIt() {
         log.info("상품 업데이트 알림 WORKER, 상품 상태체크를 시작합니다");
 
-        handleItemStatusUpdated();
+        final LocalDateTime now = LocalDateTime.now();
+
+        handleItemStatusUpdated(now);
         handleItemStatusDead();
     }
 
-    private void handleItemStatusUpdated() {
+    private void handleItemStatusUpdated(LocalDateTime notifyAt) {
         final List<ItemDto.detail> items = new ArrayList<>();
 
         items.addAll(itemService.findByItemStatusAndItemUpdateStatus(ItemStatus.ALIVE, ItemUpdateStatus.UPDATED));
@@ -61,13 +64,13 @@ public class ItemStatusNotifyWorker implements Worker {
                     handleUnknownItem(item);
                     break;
                 case EMPTY_AMOUNT:
-                    handleEmptyAmount(item);
+                    handleEmptyAmount(item, notifyAt);
                     break;
                 case NOT_SUPPORT:
                     handleNotSupport(item);
                     break;
                 case SALE:
-                    handleSale(item);
+                    handleSale(item, notifyAt);
                     break;
             }
 
@@ -83,13 +86,14 @@ public class ItemStatusNotifyWorker implements Worker {
                 .collect(toList());
     }
 
-    private void handleSale(ItemDto.detail item) {
+    private void handleSale(ItemDto.detail item, LocalDateTime notifyAt) {
         log.info("{}({}) 상품의 최저가가 갱신되었습니다.", item.getItemName(), item.getItemCode());
 
         final double changePercent = MyCalculateUtils.getChangePercent(item.getItemPrice(), item.getItemBeforePrice());
 
         if ((Math.abs(changePercent) > 1) && (changePercent < 0)) {
             globalNotifier.notifyUsers(getNotifyUsersByItemId(item.getId()), NotifyTitle.notifyItemSale(item), item.getItemImage(), NotifyContents.notifyItemSale(item));
+            userItemNotifyService.updateNotifyAt(item.getId(), notifyAt);
             return;
         }
 
@@ -97,11 +101,12 @@ public class ItemStatusNotifyWorker implements Worker {
     }
 
 
-    private void handleEmptyAmount(ItemDto.detail item) {
+    private void handleEmptyAmount(ItemDto.detail item, LocalDateTime notifyAt) {
         log.info("{}({}) 상품은 재고없음 상태로 변경되었습니다.", item.getItemName(), item.getItemCode());
-
         globalNotifier.notifyUsers(getNotifyUsersByItemId(item.getId()), NotifyTitle.notifyItemEmptyAccount(item), item.getItemImage(), NotifyContents.notifyItemEmptyAccount(item));
+        userItemNotifyService.updateNotifyAt(item.getId(), notifyAt);
     }
+
 
     private void handleNotSupport(ItemDto.detail item) {
         log.info("{}({}) 상품은 가격격비교중지 상태로 변경되었습니다.", item.getItemName(), item.getItemCode());

@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -99,4 +100,10 @@ public class UserItemNotifyService {
     }
 
 
+    public void updateNotifyAt(Long itemId, LocalDateTime notifyAt) {
+        final List<UserItemNotify> userItemNotifies = userItemNotifyRepository.findByItemId(itemId);
+        for (UserItemNotify userItemNotify : userItemNotifies) {
+            userItemNotify.updateNotifiedAt(notifyAt);
+        }
+    }
 }

@@ -37,8 +37,6 @@ public class User extends UpdatableBaseEntity {
 
     private LocalDateTime lastSendAt;
 
-    private LocalDateTime lastNotifyAt;
-
     @OneToMany(mappedBy = "user")
     List<UserItemNotify> userItemNotifies;
 
@@ -52,10 +50,7 @@ public class User extends UpdatableBaseEntity {
         this.errorCount = errorCount;
         this.menuStatus = menuStatus;
         this.userStatus = userStatus;
-    }
-
-    public void updateNotifyAt(LocalDateTime lastNotifyAt) {
-        this.lastNotifyAt = lastNotifyAt;
+        this.lastSendAt = lastSendAt;
     }
 
     public void updateSendAt(LocalDateTime lastSendAt) {

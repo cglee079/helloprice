@@ -17,13 +17,9 @@ public class MineTelegramNotifier {
     @Value("${telegram.podo_helloprice.admin.id}")
     private Integer adminTelegramId;
 
-    private final UserService userService;
     private final TelegramApi telegramApi;
 
     public void notifyUser(Integer telegramId, String image, String response) {
-        final LocalDateTime now = LocalDateTime.now();
-        userService.updateNotifyAt(telegramId, now);
-
         telegramApi.send(telegramId, image, response);
     }
 

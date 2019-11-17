@@ -5,7 +5,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
-import javax.annotation.PostConstruct;
 import javax.mail.*;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
@@ -21,7 +20,7 @@ public class GmailClient {
     @Value("${app.name}")
     private String appName;
 
-    @Value("${infra.gmail.timeout}")
+    @Value("${infra.gmail.send.timeout}")
     private Integer timeout;
 
     @Value("${infra.gmail.admin.email}")

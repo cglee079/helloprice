@@ -8,9 +8,8 @@ public interface MenuHandler {
 
     Menu getHandleMenu();
 
+    TelegramMessageSender getSender();
+
     void handle(TMessageVo tMessageVo, String requestMessage);
 
-    void setSender(TelegramMessageSender telegramMessageSender);
-
-    TelegramMessageSender getSender();
 }

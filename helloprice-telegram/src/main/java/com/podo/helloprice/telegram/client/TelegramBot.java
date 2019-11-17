@@ -22,16 +22,10 @@ public class TelegramBot extends TelegramLongPollingBot {
 
     private final TelegramMessageReceiver telegramMessageReceiver;
     private final TelegramMessageSender telegramMessageSender;
-    private final List<MenuHandler> menuHandlers;
 
     @PostConstruct
     public void init() {
         telegramMessageSender.setBot(this);
-
-        for (MenuHandler menuHandler : menuHandlers) {
-            menuHandler.setSender(telegramMessageSender);
-        }
-
     }
 
     @Value("${telegram.podo_helloprice.bot.token}")

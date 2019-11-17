@@ -19,6 +19,11 @@ item:
   max_unknown_count: 1
   max_dead_count: 10
 
+email:
+  key:
+    auth_timeout: 5 #Minutes
+
+
 ## Log
 logging:
   file: helloprice-telegram.%d{yyyy-MM-dd}-%i.log

@@ -38,8 +38,9 @@ public class UserService {
         return new UserDto.detail(user);
     }
 
-    public void insert(UserDto.insert userInsert) {
-        userRepository.save(userInsert.toEntity());
+    public Long insert(UserDto.insert userInsert) {
+        final User user = userRepository.save(userInsert.toEntity());
+        return user.getId();
     }
 
     public void updateMenuStatus(String telegramId, Menu menu) {
@@ -77,11 +78,6 @@ public class UserService {
     public void updateSendAt(Long userId, LocalDateTime lastSendAt) {
         User user = userRepository.findById(userId).get();
         user.updateSendAt(lastSendAt);
-    }
-
-    public void updateNotifyAt(Integer telegramId, LocalDateTime lastNotifyAt) {
-        User user = userRepository.findByTelegramId(telegramId + "");
-        user.updateNotifyAt(lastNotifyAt);
     }
 
     public void updateEmail(String telegramId, String email) {
