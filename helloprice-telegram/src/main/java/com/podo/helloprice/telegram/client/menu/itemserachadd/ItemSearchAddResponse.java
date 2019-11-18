@@ -10,7 +10,7 @@ public class ItemSearchAddResponse {
                 .toString();
     }
 
-    public static String cantPoolItem() {
+    public static String failPoolItem() {
         return new StringBuilder()
                 .append("죄송합니다.. 상품 상세 정보를 가져올 수가 없습니다..\n")
                 .append("\n")

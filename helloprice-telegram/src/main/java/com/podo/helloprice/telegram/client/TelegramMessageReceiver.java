@@ -55,16 +55,16 @@ public class TelegramMessageReceiver {
 
         if (Objects.isNull(userDetail)) {
             insertNewUser(username, telegramIdStr, messageReceiveAt);
-            telegramMessageSender.send(tMessageVo.newValue(CommonResponse.introduce(appName), km.getHomeKeyboard(Collections.emptyList()), callbackFactory.createDefault(telegramIdStr, Menu.HOME)));
-            telegramMessageSender.send(tMessageVo.newValue(CommonResponse.help(helpUrl), null, callbackFactory.createDefault(telegramIdStr, null)));
-            telegramMessageSender.send(tMessageVo.newValue(CommonResponse.seeKeyboardIcon(), null, callbackFactory.createDefault(telegramIdStr, null)));
+            telegramMessageSender.send(tMessageVo.newMessage(CommonResponse.introduce(appName), km.getHomeKeyboard(Collections.emptyList()), callbackFactory.createDefault(telegramIdStr, Menu.HOME)));
+            telegramMessageSender.send(tMessageVo.newMessage(CommonResponse.help(helpUrl), null, callbackFactory.createDefault(telegramIdStr, null)));
+            telegramMessageSender.send(tMessageVo.newMessage(CommonResponse.seeKeyboardIcon(), null, callbackFactory.createDefault(telegramIdStr, null)));
             return;
         } else if (userDetail.getUserStatus().equals(UserStatus.DEAD)) {
             userService.reviveUser(userDetail.getId());
             userService.updateSendAt(userDetail.getId(), messageReceiveAt);
-            telegramMessageSender.send(tMessageVo.newValue(CommonResponse.introduce(appName), km.getHomeKeyboard(Collections.emptyList()), callbackFactory.createDefault(telegramIdStr, Menu.HOME)));
-            telegramMessageSender.send(tMessageVo.newValue(CommonResponse.help(helpUrl), null, callbackFactory.createDefault(telegramIdStr, null)));
-            telegramMessageSender.send(tMessageVo.newValue(CommonResponse.seeKeyboardIcon(), null, callbackFactory.createDefault(telegramIdStr, null)));
+            telegramMessageSender.send(tMessageVo.newMessage(CommonResponse.introduce(appName), km.getHomeKeyboard(Collections.emptyList()), callbackFactory.createDefault(telegramIdStr, Menu.HOME)));
+            telegramMessageSender.send(tMessageVo.newMessage(CommonResponse.help(helpUrl), null, callbackFactory.createDefault(telegramIdStr, null)));
+            telegramMessageSender.send(tMessageVo.newMessage(CommonResponse.seeKeyboardIcon(), null, callbackFactory.createDefault(telegramIdStr, null)));
             return;
         }
 

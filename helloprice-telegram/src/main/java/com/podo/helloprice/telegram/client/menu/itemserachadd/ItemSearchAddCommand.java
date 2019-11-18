@@ -12,6 +12,7 @@ public enum ItemSearchAddCommand implements Command {
     YES("네  "),
     NO("아니오");
 
+    public static final Integer COMMAND_LENGTH = 3;
     private String value;
 
     public static ItemSearchAddCommand from(String str) {

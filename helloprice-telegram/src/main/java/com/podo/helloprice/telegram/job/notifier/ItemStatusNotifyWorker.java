@@ -139,7 +139,7 @@ public class ItemStatusNotifyWorker implements Worker {
 
         if (unknownCount >= maxUnknownCount) {
             log.info("{} 이상 상품 상태를 확인 할 수 없습니다", unknownCount);
-            globalNotifier.notifyAdmin(NotifyTitle.notifyTooManyUnknown(unknownCount), NotifyTitle.notifyTooManyUnknown(unknownCount));
+            globalNotifier.notifyAdmin(NotifyTitle.notifyTooManyUnknown(unknownCount), NotifyContents.notifyTooManyUnknown(unknownCount));
 
             unknownCount = 0;
         }
@@ -156,8 +156,6 @@ public class ItemStatusNotifyWorker implements Worker {
             globalNotifier.notifyUsers(getNotifyUsersByItemId(item.getId()), NotifyTitle.notifyItemDead(item), item.getItemImage(), NotifyContents.notifyItemDead(item));
 
             userItemNotifyService.deleteNotifies(item.getId());
-
-            itemService.deleteByItemId(item.getId());
         }
     }
 
@@ -166,7 +164,7 @@ public class ItemStatusNotifyWorker implements Worker {
 
         if (deadCount >= maxDeadCount) {
             log.info("{} 이상 상품페이지를 확인 할 수 없습니다", deadCount);
-            globalNotifier.notifyAdmin(NotifyTitle.notifyTooManyDead(unknownCount), NotifyTitle.notifyTooManyDead(unknownCount));
+            globalNotifier.notifyAdmin(NotifyTitle.notifyTooManyDead(unknownCount), NotifyContents.notifyTooManyDead(unknownCount));
             deadCount = 0;
         }
 

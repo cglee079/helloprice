@@ -15,6 +15,6 @@ public class TelegramApi {
     public void send(Integer telegramId, String image, String response) {
         final TMessageVo tMessageVo = new TMessageVo(telegramId, null);
 
-        telegramMessageSender.send(tMessageVo.newValue(response, image, null, callbackFactory.createDefault(telegramId + "", null)));
+        telegramMessageSender.send(tMessageVo.newMessage(response, image, null, callbackFactory.createDefault(telegramId + "", null)));
     }
 }

@@ -43,7 +43,7 @@ public class EmailDeleteMenuHandler extends AbstractMenuHandler {
         //명령어가 아닌 경우
         final EmailDeleteCommand requestCommand = EmailDeleteCommand.from(requestMessage);
         if (Objects.isNull(requestCommand)) {
-            getSender().send(tMessageVo.newValue(CommonResponse.wrongInput(), km.getHomeKeyboard(itemCommands), callbackFactory.createDefault(telegramId, Menu.HOME)));
+            getSender().send(tMessageVo.newMessage(CommonResponse.wrongInput(), km.getHomeKeyboard(itemCommands), callbackFactory.createDefault(telegramId, Menu.HOME)));
             return;
         }
 
@@ -56,7 +56,7 @@ public class EmailDeleteMenuHandler extends AbstractMenuHandler {
                 handleYesCommand(tMessageVo, itemCommands);
                 break;
             case NO:
-                getSender().send(tMessageVo.newValue(CommonResponse.toHome(), km.getHomeKeyboard(itemCommands), callbackFactory.createDefault(tMessageVo.getTelegramId() + "", Menu.HOME)));
+                getSender().send(tMessageVo.newMessage(CommonResponse.toHome(), km.getHomeKeyboard(itemCommands), callbackFactory.createDefault(tMessageVo.getTelegramId() + "", Menu.HOME)));
         }
     }
 
@@ -65,7 +65,7 @@ public class EmailDeleteMenuHandler extends AbstractMenuHandler {
 
         userService.updateEmail(telegramId, null);
 
-        getSender().send(tMessageVo.newValue(EmailDeleteResponse.success(), km.getHomeKeyboard(itemCommands), callbackFactory.createDefault(tMessageVo.getTelegramId() + "", Menu.HOME)));
+        getSender().send(tMessageVo.newMessage(EmailDeleteResponse.success(), km.getHomeKeyboard(itemCommands), callbackFactory.createDefault(tMessageVo.getTelegramId() + "", Menu.HOME)));
     }
 
 }

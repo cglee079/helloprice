@@ -14,7 +14,7 @@ public class PoolerScheduler {
 
     private final List<Worker> workers;
 
-    @Scheduled(cron = "*/10 * * * * *")
+    @Scheduled(cron = "*/5 * * * * *")
     public void schedule() {
         for (Worker worker : workers) {
             worker.run();

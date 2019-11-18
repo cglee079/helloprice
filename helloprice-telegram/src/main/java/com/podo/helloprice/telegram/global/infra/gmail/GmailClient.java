@@ -21,7 +21,7 @@ public class GmailClient {
     private String appName;
 
     @Value("${infra.gmail.send.timeout}")
-    private Integer timeout;
+    private Integer sendTimeout;
 
     @Value("${infra.gmail.admin.email}")
     private String adminEmail;
@@ -51,7 +51,7 @@ public class GmailClient {
     }
 
     private MimeMessage createMessage(String username, String userEmail, String title, String contents, Session msgSession) throws MessagingException, UnsupportedEncodingException {
-        MimeMessage message = new MimeMessage(msgSession);
+        final MimeMessage message = new MimeMessage(msgSession);
 
         message.setFrom(new InternetAddress(adminEmail, appName));
         message.setRecipient(Message.RecipientType.TO, new InternetAddress(userEmail, username));
@@ -69,8 +69,8 @@ public class GmailClient {
         properties.put("mail.debug", "false");
         properties.put("mail.smtp.host", "smtp.gmail.com");
         properties.put("mail.smtp.port", "587");
-        properties.put("mail.smtp.connectiontimeout", timeout);
-        properties.put("mail.smtp.timeout", timeout);
+        properties.put("mail.smtp.connectiontimeout", sendTimeout);
+        properties.put("mail.smtp.timeout", sendTimeout);
         properties.put("mail.smtp.auth", true);
 
         return properties;

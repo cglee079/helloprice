@@ -7,7 +7,7 @@ import lombok.ToString;
 @ToString
 @EqualsAndHashCode
 @Getter
-public class ItemInfoVo {
+public class CrawledItemVo {
     private String itemCode;
     private String itemUrl;
     private String itemDesc;
@@ -17,7 +17,7 @@ public class ItemInfoVo {
     private Integer itemPrice;
 
 
-    public ItemInfoVo(String itemCode, String itemUrl, String itemName, String itemDesc, String itemImage, Integer itemPrice, ItemSaleStatus itemSaleStatus) {
+    public CrawledItemVo(String itemCode, String itemUrl, String itemName, String itemDesc, String itemImage, Integer itemPrice, ItemSaleStatus itemSaleStatus) {
         this.itemCode = itemCode;
         this.itemUrl = itemUrl;
         this.itemDesc = itemDesc;

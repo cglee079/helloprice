@@ -6,7 +6,7 @@ public class DanawaPoolConfig {
         String DANAWA_URL = "http://www.danawa.com";
     }
 
-    public interface GetCode {
+    public interface GetItemCode {
         String DANAWA_REDIRECT_URL = "https://danawa.page.link";
         String[] ITEM_CODE_PARAM_KEYS = {"pcode", "code"};
     }

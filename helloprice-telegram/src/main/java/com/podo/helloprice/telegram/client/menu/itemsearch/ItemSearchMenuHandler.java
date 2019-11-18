@@ -41,7 +41,7 @@ public class ItemSearchMenuHandler extends AbstractMenuHandler {
 
         log.info("{} << 상품 검색 메뉴에서 응답, 받은메세지 '{}'", telegramId, requestMessage);
 
-        getSender().send(tMessageVo.newValue(CommonResponse.justWait(), null, callbackFactory.createDefault(telegramId, null)));
+        getSender().send(tMessageVo.newMessage(CommonResponse.justWait(), null, callbackFactory.createDefaultNoAction(telegramId)));
 
         final String keyword = requestMessage;
 
@@ -50,7 +50,7 @@ public class ItemSearchMenuHandler extends AbstractMenuHandler {
         //검색 결과 없는 경우, 홈으로 이동
         if (itemSearchResults.isEmpty()) {
             final List<String> itemCommands = ItemCommandTranslator.getItemCommands(userItemNotifyService.findNotifyItemsByUserTelegramId(telegramId));
-            getSender().send(tMessageVo.newValue(ItemSearchResponse.noResult(), km.getHomeKeyboard(itemCommands), callbackFactory.createDefault(tMessageVo.getTelegramId() + "", Menu.HOME)));
+            getSender().send(tMessageVo.newMessage(ItemSearchResponse.noResult(), km.getHomeKeyboard(itemCommands), callbackFactory.createDefault(tMessageVo.getTelegramId() + "", Menu.HOME)));
             return;
         }
 
@@ -58,7 +58,7 @@ public class ItemSearchMenuHandler extends AbstractMenuHandler {
         final List<String> itemSearchResultCommands = getItemSearchResultCommands(itemSearchResults);
         final ReplyKeyboard itemSearchResultKeyboard = km.getItemSearchResultKeyboard(itemSearchResultCommands);
         final SentCallback<Message> defaultCallback = callbackFactory.createDefault(telegramId, Menu.ITEM_SEARCH_RESULT);
-        getSender().send(tMessageVo.newValue(ItemSearchResultResponse.explain(), itemSearchResultKeyboard, defaultCallback));
+        getSender().send(tMessageVo.newMessage(ItemSearchResultResponse.explain(), itemSearchResultKeyboard, defaultCallback));
 
     }
 

@@ -1,6 +1,6 @@
 package com.podo.helloprice.pooler.target.danawa;
 
-import com.podo.helloprice.core.domain.item.ItemInfoVo;
+import com.podo.helloprice.core.domain.item.CrawledItemVo;
 import com.podo.helloprice.core.domain.item.ItemSaleStatus;
 import com.podo.helloprice.core.domain.item.ItemSearchResultVo;
 import com.podo.helloprice.core.util.MyCurrencyUtils;
@@ -31,11 +31,11 @@ public class DanawaPooler implements Pooler {
     private final PromptDocumentLoader promptDocumentLoader;
 
     @Override
-    public ItemInfoVo poolItem(String itemCode) {
+    public CrawledItemVo poolItem(String itemCode) {
 
-        final ItemInfoVo existCache = danawaItemCache.get(itemCode);
-        if (Objects.nonNull(existCache)) {
-            return existCache;
+        final CrawledItemVo existItemInCache = danawaItemCache.get(itemCode);
+        if (Objects.nonNull(existItemInCache)) {
+            return existItemInCache;
         }
 
 
@@ -56,18 +56,18 @@ public class DanawaPooler implements Pooler {
 
 
         try {
-            final ItemInfoVo itemInfoVo = getItemInfoVo(document, itemCode, itemUrl);
+            final CrawledItemVo crawledItem = getCrawledItemVo(document, itemCode, itemUrl);
 
-            log.info("상품 정보확인, '{}'", itemInfoVo);
+            log.info("상품 정보확인, '{}'", crawledItem);
 
-            if (StringUtils.isEmpty(itemInfoVo.getItemName())) {
+            if (StringUtils.isEmpty(crawledItem.getItemName())) {
                 log.info("확인 할 수 없는 상품입니다, 상품 코드 : {}", itemCode);
                 return null;
             }
 
-            danawaItemCache.put(itemCode, itemInfoVo);
+            danawaItemCache.put(itemCode, crawledItem);
 
-            return itemInfoVo;
+            return crawledItem;
 
         } catch (RuntimeException e) {
             log.error(e.getMessage());
@@ -76,7 +76,7 @@ public class DanawaPooler implements Pooler {
 
     }
 
-    private ItemInfoVo getItemInfoVo(Document document, String itemCode, String itemUrl) {
+    private CrawledItemVo getCrawledItemVo(Document document, String itemCode, String itemUrl) {
         final String itemName = document.select(ItemPage.ITEM_NAME_SELECTOR).text().replace("[다나와]", "").trim();
         final String itemDesc = document.select(ItemPage.ITEM_DESC_SELECTOR).text().replace("[다나와]", "").trim();
         final String itemImage = document.select(ItemPage.ITEM_IMAGE_SELECTOR).attr("src");
@@ -106,7 +106,7 @@ public class DanawaPooler implements Pooler {
             }
         }
 
-        return new ItemInfoVo(itemCode, itemUrl, itemName, itemDesc, itemImage, itemPrice, itemSaleStatus);
+        return new CrawledItemVo(itemCode, itemUrl, itemName, itemDesc, itemImage, itemPrice, itemSaleStatus);
     }
 
     public String getItemCodeFromUrl(String url) {
@@ -114,11 +114,11 @@ public class DanawaPooler implements Pooler {
             return null;
         }
 
-        if (url.contains(GetCode.DANAWA_REDIRECT_URL)) {
+        if (url.contains(GetItemCode.DANAWA_REDIRECT_URL)) {
             url = getRealUrlFromRedirect(url);
         }
 
-        for (String key : GetCode.ITEM_CODE_PARAM_KEYS) {
+        for (String key : GetItemCode.ITEM_CODE_PARAM_KEYS) {
             final String itemCode = MyHttpUtils.getParamValue(url, key);
             if (Objects.nonNull(itemCode)) {
                 return itemCode;

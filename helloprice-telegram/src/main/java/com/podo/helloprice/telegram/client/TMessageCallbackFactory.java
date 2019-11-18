@@ -19,6 +19,10 @@ public class TMessageCallbackFactory {
 
     private final UserService userService;
 
+    public SentCallback<Message> createDefaultNoAction(String telegramId) {
+        return this.createDefault(telegramId, null);
+    }
+
     public SentCallback<Message> createDefault(String telegramId, Menu menu) {
         return new SentCallback<Message>() {
             @Override

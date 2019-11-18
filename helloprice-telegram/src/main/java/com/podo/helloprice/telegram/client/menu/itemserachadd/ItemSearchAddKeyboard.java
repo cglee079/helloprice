@@ -16,7 +16,7 @@ public class ItemSearchAddKeyboard extends ReplyKeyboardMarkup {
 
         final List<KeyboardRow> keyboard = new ArrayList<>();
 
-        KeyboardRow keyboardRow = new KeyboardRow();
+        final KeyboardRow keyboardRow = new KeyboardRow();
 
         keyboardRow.add(ItemSearchAddCommand.YES.getValue() + "#" + itemCode);
         keyboardRow.add(ItemSearchAddCommand.NO.getValue());

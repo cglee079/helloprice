@@ -1,9 +1,9 @@
 package com.podo.helloprice.pooler;
 
 
-import com.podo.helloprice.core.domain.item.ItemInfoVo;
+import com.podo.helloprice.core.domain.item.CrawledItemVo;
 
 public interface Pooler {
 
-    ItemInfoVo poolItem(String itemCode);
+    CrawledItemVo poolItem(String itemCode);
 }

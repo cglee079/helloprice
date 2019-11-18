@@ -42,14 +42,14 @@ public class ItemSearchAddMenuHandler extends AbstractMenuHandler {
 
         //기본 명령어보다 글자 수가 작을 경우
         if (requestMessage.length() < ItemSearchAddCommand.YES.getValue().length()) {
-            getSender().send(tMessageVo.newValue(CommonResponse.wrongInput(), km.getHomeKeyboard(itemCommands), callbackFactory.createDefault(telegramId, Menu.HOME)));
+            getSender().send(tMessageVo.newMessage(CommonResponse.wrongInput(), km.getHomeKeyboard(itemCommands), callbackFactory.createDefault(telegramId, Menu.HOME)));
             return;
         }
 
         //명령어가 아닌 경우
-        final ItemSearchAddCommand requestCommand = ItemSearchAddCommand.from(requestMessage.substring(0, 3));
+        final ItemSearchAddCommand requestCommand = ItemSearchAddCommand.from(requestMessage.substring(0, ItemSearchAddCommand.COMMAND_LENGTH));
         if (Objects.isNull(requestCommand)) {
-            getSender().send(tMessageVo.newValue(CommonResponse.wrongInput(), km.getHomeKeyboard(itemCommands), callbackFactory.createDefault(telegramId, Menu.HOME)));
+            getSender().send(tMessageVo.newMessage(CommonResponse.wrongInput(), km.getHomeKeyboard(itemCommands), callbackFactory.createDefault(telegramId, Menu.HOME)));
             return;
         }
 
@@ -59,11 +59,12 @@ public class ItemSearchAddMenuHandler extends AbstractMenuHandler {
     private void handleCommand(ItemSearchAddCommand requestCommand, TMessageVo tMessageVo, String requestMessage, List<String> itemCommands) {
         switch (requestCommand) {
             case YES:
-                final String itemCode = requestMessage.substring(4).replace("#", "");
+                final int itemCodeValueBeginIndex = ItemSearchAddCommand.COMMAND_LENGTH + 1;
+                final String itemCode = requestMessage.substring(itemCodeValueBeginIndex).replace("#", "");
                 itemAddHandler.handleItemAdd(tMessageVo, itemCode);
                 break;
             case NO:
-                getSender().send(tMessageVo.newValue(CommonResponse.toHome(), km.getHomeKeyboard(itemCommands), callbackFactory.createDefault(tMessageVo.getTelegramId() + "", Menu.HOME)));
+                getSender().send(tMessageVo.newMessage(CommonResponse.toHome(), km.getHomeKeyboard(itemCommands), callbackFactory.createDefault(tMessageVo.getTelegramId() + "", Menu.HOME)));
         }
     }
 

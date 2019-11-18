@@ -22,7 +22,6 @@ public class TelegramMessageSender {
             sendPhoto(tMessageVo);
         }
 
-
         sendMessage(tMessageVo);
     }
 

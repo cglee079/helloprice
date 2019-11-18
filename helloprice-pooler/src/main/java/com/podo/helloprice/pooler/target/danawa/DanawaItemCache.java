@@ -1,6 +1,6 @@
 package com.podo.helloprice.pooler.target.danawa;
 
-import com.podo.helloprice.core.domain.item.ItemInfoVo;
+import com.podo.helloprice.core.domain.item.CrawledItemVo;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -25,11 +25,11 @@ public class DanawaItemCache {
 
     private final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(10);
 
-    private final Map<String, ItemInfoVo> cache = new ConcurrentHashMap<>();
+    private final Map<String, CrawledItemVo> cache = new ConcurrentHashMap<>();
     private final Map<String, LocalDateTime> cacheTime = new ConcurrentHashMap<>();
 
-    public void put(String itemCode, ItemInfoVo itemInfoVo) {
-        this.cache.put(itemCode, itemInfoVo);
+    public void put(String itemCode, CrawledItemVo crawledItemVo) {
+        this.cache.put(itemCode, crawledItemVo);
         this.cacheTime.put(itemCode, LocalDateTime.now());
 
         scheduleRemoveExpire(itemCode);
@@ -43,15 +43,15 @@ public class DanawaItemCache {
         }, cacheTimeout, TimeUnit.MINUTES);
     }
 
-    public ItemInfoVo get(String itemCode) {
+    public CrawledItemVo get(String itemCode) {
         if (has(itemCode)) {
             log.info("DANAWA 상품 캐시에서 {} 상품을 반환합니다", itemCode);
-            final ItemInfoVo itemInfoVo = cache.get(itemCode);
+            final CrawledItemVo crawledItemVo = cache.get(itemCode);
 
             this.cache.remove(itemCode);
             this.cacheTime.remove(itemCode);
 
-            return itemInfoVo;
+            return crawledItemVo;
         }
 
         return null;

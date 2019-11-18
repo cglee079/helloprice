@@ -10,6 +10,7 @@ spring:
       enabled: false
 
 item:
+  max_deadcount: 10
   pool:
     expire:
       time: 5

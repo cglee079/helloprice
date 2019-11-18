@@ -1,7 +1,6 @@
 package com.podo.helloprice.pooler.loader;
 
 
-import com.podo.helloprice.pooler.target.danawa.DanawaPoolConfig;
 import com.podo.helloprice.pooler.exception.FailGetDocumentException;
 import lombok.extern.slf4j.Slf4j;
 import org.jsoup.Connection;

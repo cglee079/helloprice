@@ -80,14 +80,14 @@ public class Item extends UpdatableBaseEntity {
 
     }
 
-    public void updateInfo(ItemInfoVo itemInfoVo, LocalDateTime lastPoolAt) {
+    public void updateByCrawledItem(CrawledItemVo crawledItemVo, LocalDateTime lastPoolAt) {
         final Integer existPrice = this.itemPrice;
 
-        this.itemName = itemInfoVo.getItemName();
-        this.itemImage = itemInfoVo.getItemImage();
-        this.itemPrice = itemInfoVo.getItemPrice();
+        this.itemName = crawledItemVo.getItemName();
+        this.itemImage = crawledItemVo.getItemImage();
+        this.itemPrice = crawledItemVo.getItemPrice();
         this.lastPoolAt = lastPoolAt;
-        this.itemSaleStatus = itemInfoVo.getItemSaleStatus();
+        this.itemSaleStatus = crawledItemVo.getItemSaleStatus();
 
         this.deadCount = 0;
 

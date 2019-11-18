@@ -1,6 +1,6 @@
 package com.podo.helloprice.telegram.client.menu.global;
 
-import com.podo.helloprice.core.domain.item.ItemInfoVo;
+import com.podo.helloprice.core.domain.item.CrawledItemVo;
 import com.podo.helloprice.core.util.MyCurrencyUtils;
 import com.podo.helloprice.core.util.MyFormatUtils;
 import com.podo.helloprice.telegram.domain.item.ItemDto;
@@ -132,33 +132,33 @@ public class CommonResponse {
     }
 
 
-    public static String descItemInfoVo(ItemInfoVo itemInfoVo) {
+    public static String descCrawledItemVo(CrawledItemVo crawledItemVo) {
         return new StringBuilder()
                 .append("<b>상품코드</b> : ")
-                .append(itemInfoVo.getItemCode())
+                .append(crawledItemVo.getItemCode())
                 .append("\n")
 
                 .append("<b>")
                 .append("상품이름 : ")
-                .append(itemInfoVo.getItemName())
+                .append(crawledItemVo.getItemName())
                 .append("</b>")
                 .append("\n")
 
                 .append("<b>상품설명</b> : ")
                 .append("<i>")
-                .append(itemInfoVo.getItemDesc())
+                .append(crawledItemVo.getItemDesc())
                 .append("</i>")
                 .append("\n")
 
                 .append("<b>")
                 .append("상품상태 : ")
-                .append(itemInfoVo.getItemSaleStatus().getValue())
+                .append(crawledItemVo.getItemSaleStatus().getValue())
                 .append("</b>")
                 .append("\n")
 
                 .append("<b>")
                 .append("상품가격 : ")
-                .append(MyCurrencyUtils.toExchangeRateKRWStr(itemInfoVo.getItemPrice()))
+                .append(MyCurrencyUtils.toExchangeRateKRWStr(crawledItemVo.getItemPrice()))
                 .append("</b>")
                 .append("\n")
 
@@ -174,7 +174,7 @@ public class CommonResponse {
 
 
     public static String justWait() {
-        return "<b>잠시만, 잠시만 기다려주세요!</b>";
+        return "<b>잠시만 기다려주세요!</b>";
     }
 
     public static String seeKeyboardIcon() {
