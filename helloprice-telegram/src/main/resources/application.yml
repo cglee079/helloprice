@@ -3,7 +3,7 @@ server:
 
 spring:
   profiles:
-    include: core, jpa, jpa-secret, pooler, gmail-secret, telegram-secret
+    include: core, jpa, jpa-secret, crawler, gmail-secret, telegram-secret
 
 app:
   name: 헬로프라이스

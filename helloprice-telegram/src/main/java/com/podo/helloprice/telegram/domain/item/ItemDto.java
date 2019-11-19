@@ -76,7 +76,7 @@ public class ItemDto {
             this.itemSaleStatus = item.getItemSaleStatus();
             this.itemBeforePrice = item.getItemBeforePrice();
             this.lastUpdateAt = item.getLastUpdatedAt();
-            this.lastPoolAt = item.getLastPoolAt();
+            this.lastPoolAt = item.getLastCrawledAt();
         }
 
     }

@@ -2,7 +2,7 @@ package com.podo.helloprice.telegram.client.menu.itemsearch;
 
 import com.podo.helloprice.core.domain.item.ItemSearchResultVo;
 import com.podo.helloprice.core.domain.user.Menu;
-import com.podo.helloprice.pooler.target.danawa.DanawaPooler;
+import com.podo.helloprice.crawler.target.danawa.DanawaCrawler;
 import com.podo.helloprice.telegram.client.menu.KeyboardManager;
 import com.podo.helloprice.telegram.client.TMessageCallbackFactory;
 import com.podo.helloprice.telegram.client.TMessageVo;
@@ -27,7 +27,7 @@ import java.util.stream.Collectors;
 public class ItemSearchMenuHandler extends AbstractMenuHandler {
 
     private final UserItemNotifyService userItemNotifyService;
-    private final DanawaPooler danawaPooler;
+    private final DanawaCrawler danawaCrawler;
     private final TMessageCallbackFactory callbackFactory;
     private final KeyboardManager km;
 
@@ -45,7 +45,7 @@ public class ItemSearchMenuHandler extends AbstractMenuHandler {
 
         final String keyword = requestMessage;
 
-        final List<ItemSearchResultVo> itemSearchResults = danawaPooler.poolItemSearchResults(keyword);
+        final List<ItemSearchResultVo> itemSearchResults = danawaCrawler.crawlItemSearchResults(keyword);
 
         //검색 결과 없는 경우, 홈으로 이동
         if (itemSearchResults.isEmpty()) {

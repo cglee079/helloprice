@@ -2,7 +2,7 @@ package com.podo.helloprice.telegram.client.menu.global;
 
 import com.podo.helloprice.core.domain.item.CrawledItemVo;
 import com.podo.helloprice.core.domain.user.Menu;
-import com.podo.helloprice.pooler.target.danawa.DanawaPooler;
+import com.podo.helloprice.crawler.target.danawa.DanawaCrawler;
 import com.podo.helloprice.telegram.client.TMessageCallbackFactory;
 import com.podo.helloprice.telegram.client.TMessageVo;
 import com.podo.helloprice.telegram.client.TelegramMessageSender;
@@ -25,7 +25,7 @@ import java.util.Objects;
 @Component
 public class ItemAddHandler {
 
-    private final DanawaPooler danawaPooler;
+    private final DanawaCrawler danawaCrawler;
     private final UserService userService;
     private final ItemService itemService;
     private final TelegramMessageSender sender;
@@ -35,7 +35,7 @@ public class ItemAddHandler {
 
     public void handleItemAdd(TMessageVo tMessageVo, String itemCode) {
         final String telegramId = tMessageVo.getTelegramId() + "";
-        final CrawledItemVo crawledItem = danawaPooler.poolItem(itemCode);
+        final CrawledItemVo crawledItem = danawaCrawler.crawlItem(itemCode);
 
         final List<String> itemCommands = ItemCommandTranslator.getItemCommands(userItemNotifyService.findNotifyItemsByUserTelegramId(telegramId));
 

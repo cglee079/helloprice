@@ -1,7 +1,7 @@
 package com.podo.helloprice.telegram.client.menu.home;
 
 import com.podo.helloprice.core.domain.user.Menu;
-import com.podo.helloprice.pooler.target.danawa.DanawaPoolConfig;
+import com.podo.helloprice.crawler.target.danawa.DanawaCrawlConfig;
 import com.podo.helloprice.telegram.client.menu.emailadd.EmailAddResponse;
 import com.podo.helloprice.telegram.client.menu.emaildelete.EmailDeleteResponse;
 import com.podo.helloprice.telegram.client.menu.itemsearch.ItemSearchResponse;
@@ -99,7 +99,7 @@ public class HomeMenuHandler extends AbstractMenuHandler {
 
             case ITEM_ADD:
                 log.info("{} << 상품 추가 메뉴로 이동. 받은메세지 '{}'", telegramId, requestMessage);
-                getSender().send(tMessageVo.newMessage(ItemAddResponse.explain(DanawaPoolConfig.Global.DANAWA_URL, helpUrl), km.getDefaultKeyboard(), callbackFactory.createDefault(telegramId, Menu.ITEM_ADD)));
+                getSender().send(tMessageVo.newMessage(ItemAddResponse.explain(DanawaCrawlConfig.Global.DANAWA_URL, helpUrl), km.getDefaultKeyboard(), callbackFactory.createDefault(telegramId, Menu.ITEM_ADD)));
                 break;
 
             case ITEM_DELETE:

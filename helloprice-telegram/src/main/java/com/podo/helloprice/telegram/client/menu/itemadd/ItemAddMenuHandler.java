@@ -1,7 +1,7 @@
 package com.podo.helloprice.telegram.client.menu.itemadd;
 
 import com.podo.helloprice.core.domain.user.Menu;
-import com.podo.helloprice.pooler.target.danawa.DanawaPooler;
+import com.podo.helloprice.crawler.target.danawa.DanawaCrawler;
 import com.podo.helloprice.telegram.client.menu.KeyboardManager;
 import com.podo.helloprice.telegram.client.TMessageCallbackFactory;
 import com.podo.helloprice.telegram.client.TMessageVo;
@@ -24,7 +24,7 @@ public class ItemAddMenuHandler extends AbstractMenuHandler {
 
     private final UserItemNotifyService userItemNotifyService;
 
-    private final DanawaPooler danawaPooler;
+    private final DanawaCrawler danawaCrawler;
     private final TMessageCallbackFactory callbackFactory;
     private final KeyboardManager km;
     private final ItemAddHandler itemAddHandler;
@@ -45,7 +45,7 @@ public class ItemAddMenuHandler extends AbstractMenuHandler {
         final List<String> itemCommands = ItemCommandTranslator.getItemCommands(userItemNotifyService.findNotifyItemsByUserTelegramId(telegramId));
 
         final String url = requestMessage;
-        String itemCode = danawaPooler.getItemCodeFromUrl(url);
+        String itemCode = danawaCrawler.getItemCodeFromUrl(url);
 
         //URL에서 아이템코드를 찾을 수 없음
         if (Objects.isNull(itemCode)) {

@@ -38,7 +38,7 @@ public class Item extends UpdatableBaseEntity {
 
     private Integer itemBeforePrice;
 
-    private LocalDateTime lastPoolAt;
+    private LocalDateTime lastCrawledAt;
 
     private LocalDateTime lastUpdatedAt;
 
@@ -62,7 +62,7 @@ public class Item extends UpdatableBaseEntity {
                 String itemUrl, String itemImage,
                 Integer itemPrice,
                 ItemSaleStatus itemSaleStatus,
-                LocalDateTime lastPoolAt) {
+                LocalDateTime lastCrawledAt) {
 
         this.itemCode = itemCode;
         this.itemUrl = itemUrl;
@@ -71,8 +71,8 @@ public class Item extends UpdatableBaseEntity {
         this.itemImage = itemImage;
         this.itemPrice = itemPrice;
         this.itemBeforePrice = itemPrice;
-        this.lastPoolAt = lastPoolAt;
-        this.lastUpdatedAt = lastPoolAt;
+        this.lastCrawledAt = lastCrawledAt;
+        this.lastUpdatedAt = lastCrawledAt;
         this.itemSaleStatus = itemSaleStatus;
         this.deadCount = 0;
         this.itemStatus = ItemStatus.ALIVE;
@@ -86,7 +86,7 @@ public class Item extends UpdatableBaseEntity {
         this.itemName = crawledItemVo.getItemName();
         this.itemImage = crawledItemVo.getItemImage();
         this.itemPrice = crawledItemVo.getItemPrice();
-        this.lastPoolAt = lastPoolAt;
+        this.lastCrawledAt = lastPoolAt;
         this.itemSaleStatus = crawledItemVo.getItemSaleStatus();
 
         this.deadCount = 0;

@@ -2,7 +2,7 @@ package com.podo.helloprice.telegram.client.menu.itemsearchresult;
 
 import com.podo.helloprice.core.domain.item.CrawledItemVo;
 import com.podo.helloprice.core.domain.user.Menu;
-import com.podo.helloprice.pooler.target.danawa.DanawaPooler;
+import com.podo.helloprice.crawler.target.danawa.DanawaCrawler;
 import com.podo.helloprice.telegram.client.menu.KeyboardManager;
 import com.podo.helloprice.telegram.client.TMessageCallbackFactory;
 import com.podo.helloprice.telegram.client.TMessageVo;
@@ -28,7 +28,7 @@ public class ItemSearchResultMenuHandler extends AbstractMenuHandler {
         return Menu.ITEM_SEARCH_RESULT;
     }
 
-    private final DanawaPooler danawaPooler;
+    private final DanawaCrawler danawaCrawler;
     private final UserItemNotifyService userItemNotifyService;
     private final TMessageCallbackFactory callbackFactory;
     private final KeyboardManager km;
@@ -75,7 +75,7 @@ public class ItemSearchResultMenuHandler extends AbstractMenuHandler {
 
         getSender().send(tMessageVo.newMessage(CommonResponse.justWait(), null, callbackFactory.createDefaultNoAction(telegramId)));
 
-        final CrawledItemVo crawledItemVo = danawaPooler.poolItem(itemCode);
+        final CrawledItemVo crawledItemVo = danawaCrawler.crawlItem(itemCode);
         if (Objects.isNull(crawledItemVo)) {
             getSender().send(tMessageVo.newMessage(ItemSearchAddResponse.failPoolItem(), km.getHomeKeyboard(itemCommands), callbackFactory.createDefault(tMessageVo.getTelegramId() + "", Menu.HOME)));
             return;
