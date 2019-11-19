@@ -55,21 +55,24 @@ public class TelegramMessageReceiver {
 
         if (Objects.isNull(userDetail)) {
             insertNewUser(username, telegramIdStr, messageReceiveAt);
-            telegramMessageSender.send(tMessageVo.newMessage(CommonResponse.introduce(appName), km.getHomeKeyboard(Collections.emptyList()), callbackFactory.createDefault(telegramIdStr, Menu.HOME)));
-            telegramMessageSender.send(tMessageVo.newMessage(CommonResponse.help(helpUrl), null, callbackFactory.createDefault(telegramIdStr, null)));
-            telegramMessageSender.send(tMessageVo.newMessage(CommonResponse.seeKeyboardIcon(), null, callbackFactory.createDefault(telegramIdStr, null)));
+            sendMessageToNewUser(tMessageVo);
             return;
         } else if (userDetail.getUserStatus().equals(UserStatus.DEAD)) {
             userService.reviveUser(userDetail.getId());
             userService.updateSendAt(userDetail.getId(), messageReceiveAt);
-            telegramMessageSender.send(tMessageVo.newMessage(CommonResponse.introduce(appName), km.getHomeKeyboard(Collections.emptyList()), callbackFactory.createDefault(telegramIdStr, Menu.HOME)));
-            telegramMessageSender.send(tMessageVo.newMessage(CommonResponse.help(helpUrl), null, callbackFactory.createDefault(telegramIdStr, null)));
-            telegramMessageSender.send(tMessageVo.newMessage(CommonResponse.seeKeyboardIcon(), null, callbackFactory.createDefault(telegramIdStr, null)));
+            sendMessageToNewUser(tMessageVo);
             return;
         }
 
         userService.updateSendAt(userDetail.getId(), messageReceiveAt);
         handleCommand(tMessageVo, messageText, userDetail.getMenuStatus());
+    }
+
+    private void sendMessageToNewUser(TMessageVo tMessageVo) {
+        final String telegramId = tMessageVo.getTelegramId() + "";
+        telegramMessageSender.send(tMessageVo.newMessage(CommonResponse.introduce(appName), km.getHomeKeyboard(Collections.emptyList()), callbackFactory.createDefault(telegramId, Menu.HOME)));
+        telegramMessageSender.sendWithWebPagePreview(tMessageVo.newMessage(CommonResponse.help(helpUrl), null, callbackFactory.createDefault(telegramId, null)));
+        telegramMessageSender.send(tMessageVo.newMessage(CommonResponse.seeKeyboardIcon(), null, callbackFactory.createDefault(telegramId, null)));
     }
 
 

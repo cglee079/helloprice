@@ -84,8 +84,6 @@ public class HomeMenuHandler extends AbstractMenuHandler {
     }
 
     private void handleItemCommands(TMessageVo tMessageVo, String telegramId, String itemCode) {
-//        final CrawledItemVo crawledItemVo = danawaPooler.poolItem(itemCode);
-//        final Long itemId = itemService.merge(crawledItemVo);
         final ItemDto.detail itemDetail = itemService.findByItemCode(itemCode);
         getSender().send(tMessageVo.newMessage(HomeResponse.itemDetail(itemDetail), itemDetail.getItemImage(), null, callbackFactory.createDefault(telegramId, Menu.HOME)));
     }
@@ -118,7 +116,7 @@ public class HomeMenuHandler extends AbstractMenuHandler {
             case HELP:
                 log.info("{} << 도움말. 받은메세지 '{}'", telegramId, requestMessage);
                 getSender().send(tMessageVo.newMessage(CommonResponse.introduce(appDesc), null, callbackFactory.createDefault(telegramId, Menu.HOME)));
-                getSender().send(tMessageVo.newMessage(CommonResponse.help(helpUrl), null, callbackFactory.createDefault(telegramId, null)));
+                getSender().sendWithWebPagePreview(tMessageVo.newMessage(CommonResponse.help(helpUrl), null, callbackFactory.createDefault(telegramId, null)));
                 break;
         }
     }

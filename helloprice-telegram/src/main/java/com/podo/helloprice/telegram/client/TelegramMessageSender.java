@@ -17,12 +17,20 @@ public class TelegramMessageSender {
         this.telegramBot = telegramBot;
     }
 
+    public void sendWithWebPagePreview(TMessageVo tMessageVo) {
+        if (!StringUtils.isEmpty(tMessageVo.getImage())) {
+            sendPhoto(tMessageVo);
+        }
+
+        sendMessage(tMessageVo, true);
+    }
+
     public void send(TMessageVo tMessageVo) {
         if (!StringUtils.isEmpty(tMessageVo.getImage())) {
             sendPhoto(tMessageVo);
         }
 
-        sendMessage(tMessageVo);
+        sendMessage(tMessageVo, false);
     }
 
     private void sendPhoto(TMessageVo tMessageVo) {
@@ -39,13 +47,18 @@ public class TelegramMessageSender {
         }
     }
 
-    private void sendMessage(TMessageVo tMessageVo) {
+
+    private void sendMessage(TMessageVo tMessageVo, Boolean enabledWebPreview) {
         final String telegramId = tMessageVo.getTelegramId() + "";
         final SendMessage sendMessage = new SendMessage(tMessageVo.getTelegramId().toString(), tMessageVo.getMessage());
 
         sendMessage.setReplyMarkup(tMessageVo.getKeyboard());
         sendMessage.setReplyToMessageId(tMessageVo.getMessageId());
         sendMessage.enableHtml(true);
+
+        if (!enabledWebPreview) {
+            sendMessage.disableWebPagePreview();
+        }
 
         try {
             log.info("{} >> 메세지 전송, 보낸 메세지 : {}", telegramId, tMessageVo.getMessage().replace("\n", " "));
