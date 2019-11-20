@@ -156,6 +156,8 @@ public class ItemStatusNotifyWorker implements Worker {
             globalNotifier.notifyUsers(getNotifyUsersByItemId(item.getId()), NotifyTitle.notifyItemDead(item), item.getItemImage(), NotifyContents.notifyItemDead(item));
 
             userItemNotifyService.deleteNotifies(item.getId());
+
+            itemService.notifiedItem(item.getId());
         }
     }
 

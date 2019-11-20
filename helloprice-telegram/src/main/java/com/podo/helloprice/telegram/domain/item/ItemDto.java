@@ -44,7 +44,7 @@ public class ItemDto {
                     .itemImage(itemImage)
                     .itemPrice(itemPrice)
                     .itemSaleStatus(itemSaleStatus)
-                    .lastPoolAt(LocalDateTime.now())
+                    .lastCrawledAt(LocalDateTime.now())
                     .build();
         }
     }

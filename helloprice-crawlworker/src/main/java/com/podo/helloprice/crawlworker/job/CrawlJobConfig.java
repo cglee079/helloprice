@@ -76,8 +76,8 @@ public class CrawlJobConfig {
                 "SELECT i " +
                 "FROM Item i " +
                 "WHERE i.itemStatus = :itemStatus " +
-                "AND i.lastPoolAt <= :expirePoolAt " +
-                "ORDER BY i.lastPoolAt ";
+                "AND i.lastCrawledAt <= :expirePoolAt " +
+                "ORDER BY i.lastCrawledAt ";
 
         return jpaPagingItemReaderBuilder.name(CRAWL_JOB_NAME + "_reader")
                 .queryString(query)
