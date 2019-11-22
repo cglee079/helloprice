@@ -8,15 +8,18 @@ import com.podo.helloprice.core.domain.user.UserStatus;
 import com.podo.helloprice.core.domain.useritem.UserItemNotify;
 import com.podo.helloprice.core.domain.useritem.UserItemNotifyRepository;
 import com.podo.helloprice.telegram.domain.item.ItemDto;
+import com.podo.helloprice.telegram.domain.item.exception.InvalidItemIdException;
 import com.podo.helloprice.telegram.domain.user.UserDto;
+import com.podo.helloprice.telegram.domain.user.exception.InvalidUserIdException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -25,41 +28,60 @@ import java.util.stream.Collectors;
 @Service
 public class UserItemNotifyService {
 
-    @Value("${user.max_item}")
-    private Integer maxItemsPerUser;
-
     private final UserRepository userRepository;
     private final ItemRepository itemRepository;
     private final UserItemNotifyRepository userItemNotifyRepository;
 
-    public boolean hasNotify(Long userId, Long itemId) {
-        return userItemNotifyRepository.findByUserIdAndItemId(userId, itemId) != null;
-
+    public boolean isExistedNotify(Long userId, Long itemId) {
+        final UserItemNotify existedNotify = userItemNotifyRepository.findByUserIdAndItemId(userId, itemId);
+        return Objects.nonNull(existedNotify);
     }
 
-    public void addNotify(Long userId, Long itemId) {
-        User user = userRepository.findById(userId).get();
-        Item item = itemRepository.findById(itemId).get();
+    public void addNewNotify(Long userId, Long itemId) {
+        final User existedUser = getExistedUser(userId);
+        final Item existedItem = getExistedItem(itemId);
 
-        UserItemNotify userItemNotify = new UserItemNotify(user, item);
+        UserItemNotify userItemNotify = new UserItemNotify(existedUser, existedItem);
         userItemNotifyRepository.save(userItemNotify);
 
-        user.addUserItemNotify(userItemNotify);
-        item.addUserItemNotify(userItemNotify);
+        existedUser.addUserItemNotify(userItemNotify);
+        existedItem.addUserItemNotify(userItemNotify);
     }
 
-    public boolean hasMaxNotifyByUserTelegramId(String telegramId) {
+    private User getExistedUser(Long userId) {
+        final Optional<User> existedUserOptional = userRepository.findById(userId);
 
-        List<UserItemNotify> userItemNotifies = userItemNotifyRepository.findByUserTelegramId(telegramId);
-        if (userItemNotifies.size() > maxItemsPerUser) {
-            return true;
+        if (!existedUserOptional.isPresent()) {
+            throw new InvalidUserIdException(userId);
         }
-        return false;
+        return existedUserOptional.get();
     }
 
-    private void deleteNotify(UserItemNotify userItemNotify) {
-        User user = userItemNotify.getUser();
-        Item item = userItemNotify.getItem();
+    private Item getExistedItem(Long itemId) {
+        final Optional<Item> itemOptional = itemRepository.findById(itemId);
+        if (!itemOptional.isPresent()) {
+            throw new InvalidItemIdException(itemId);
+        }
+        return itemOptional.get();
+    }
+
+
+    public void deleteNotifiesByItemId(Long itemId) {
+        final List<UserItemNotify> userItemNotifies = userItemNotifyRepository.findByItemId(itemId);
+
+        for (UserItemNotify userItemNotify : userItemNotifies) {
+            this.deleteExistedNotify(userItemNotify);
+        }
+    }
+
+    public void deleteNotifyByUserIdAndItemId(Long userId, Long itemId) {
+        final UserItemNotify userItemNotify = userItemNotifyRepository.findByUserIdAndItemId(userId, itemId);
+        deleteExistedNotify(userItemNotify);
+    }
+
+    private void deleteExistedNotify(UserItemNotify userItemNotify) {
+        final User user = userItemNotify.getUser();
+        final Item item = userItemNotify.getItem();
 
         log.info("{}님의 {}({}) 상품 알림을 삭제합니다.", user.getTelegramId(), item.getItemName(), item.getItemCode());
 
@@ -69,40 +91,27 @@ public class UserItemNotifyService {
         userItemNotifyRepository.delete(userItemNotify);
     }
 
-    public void deleteNotifies(Long itemId) {
-        final List<UserItemNotify> userItemNotifies = userItemNotifyRepository.findByItemId(itemId);
 
-        for (UserItemNotify userItemNotify : userItemNotifies) {
-            this.deleteNotify(userItemNotify);
-        }
+    public List<UserDto.detail> findNotifyUsersByItemIdAndUserStatus(Long itemId, UserStatus userStatus) {
+        final List<UserItemNotify> existedUserItemNotifies = userItemNotifyRepository.findByItemIdAndUserStatus(itemId, userStatus);
 
-    }
-
-    public void deleteNotifyByUserIdAndItemId(Long userId, Long itemId) {
-        UserItemNotify userItemNotify = userItemNotifyRepository.findByUserIdAndItemId(userId, itemId);
-        deleteNotify(userItemNotify);
-    }
-
-    public List<UserDto.detail> findNotifyUsersByItemId(Long itemId, UserStatus userStatus) {
-        List<UserItemNotify> userItemNotifies = userItemNotifyRepository.findByItemIdAndUserStatus(itemId, userStatus);
-
-        return userItemNotifies.stream()
+        return existedUserItemNotifies.stream()
                 .map(notify -> new UserDto.detail(notify.getUser()))
                 .collect(Collectors.toList());
     }
 
     public List<ItemDto.detail> findNotifyItemsByUserTelegramId(String telegramId) {
-        List<UserItemNotify> userItemNotifies = userItemNotifyRepository.findByUserTelegramId(telegramId);
+        final List<UserItemNotify> existedUserItemNotifies = userItemNotifyRepository.findByUserTelegramId(telegramId);
 
-        return userItemNotifies.stream()
+        return existedUserItemNotifies.stream()
                 .map(notify -> new ItemDto.detail(notify.getItem()))
                 .collect(Collectors.toList());
     }
 
+    public void updateNotifiedAtByItemId(Long itemId, LocalDateTime notifyAt) {
+        final List<UserItemNotify> existedUserItemNotifies = userItemNotifyRepository.findByItemId(itemId);
 
-    public void updateNotifyAt(Long itemId, LocalDateTime notifyAt) {
-        final List<UserItemNotify> userItemNotifies = userItemNotifyRepository.findByItemId(itemId);
-        for (UserItemNotify userItemNotify : userItemNotifies) {
+        for (UserItemNotify userItemNotify : existedUserItemNotifies) {
             userItemNotify.updateNotifiedAt(notifyAt);
         }
     }

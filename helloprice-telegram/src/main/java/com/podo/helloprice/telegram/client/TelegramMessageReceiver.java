@@ -41,7 +41,7 @@ public class TelegramMessageReceiver {
 
         final User user = message.getFrom();
         final String username = user.getLastName() + " " + user.getFirstName();
-        final Integer telegramId = user.getId();
+        final String telegramId = user.getId() + "";
         final Integer messageId = message.getMessageId();
         final String messageText = message.getText();
         final LocalDateTime messageReceiveAt = LocalDateTime.now();
@@ -50,11 +50,10 @@ public class TelegramMessageReceiver {
 
         final TMessageVo tMessageVo = new TMessageVo(telegramId, messageId);
 
-        final String telegramIdStr = telegramId + "";
-        final UserDto.detail userDetail = userService.findByTelegramId(telegramIdStr);
+        final UserDto.detail userDetail = userService.findByTelegramId(telegramId);
 
         if (Objects.isNull(userDetail)) {
-            insertNewUser(username, telegramIdStr, messageReceiveAt);
+            insertNewUser(username, telegramId, messageReceiveAt);
             sendMessageToNewUser(tMessageVo);
             return;
         } else if (userDetail.getUserStatus().equals(UserStatus.DEAD)) {
@@ -88,11 +87,11 @@ public class TelegramMessageReceiver {
                 .lastSendAt(messageReceiveAt)
                 .build();
 
-        return userService.insert(userInsert);
+        return userService.insertNewUser(userInsert);
     }
 
     private void handleCommand(TMessageVo tMessageVo, String requestMessage, Menu userMenuStatus) {
-        MenuHandler menuHandler = menuHandlers.get(userMenuStatus);
+        final MenuHandler menuHandler = menuHandlers.get(userMenuStatus);
         menuHandler.handle(tMessageVo, requestMessage);
     }
 }

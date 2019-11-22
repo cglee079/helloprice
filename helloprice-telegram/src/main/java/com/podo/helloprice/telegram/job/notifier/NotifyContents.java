@@ -75,6 +75,20 @@ public class NotifyContents {
                 .toString();
     }
 
+    public static String notifyItemResale(ItemDto.detail itemDetail) {
+        return new StringBuilder()
+                .append("<b>")
+                .append("해당 상품은 다시 판매를 시작했습니다!\n")
+                .append("</b>")
+                .append("\n")
+                .append(CommonResponse.descItemDetail(itemDetail))
+                .append("\n")
+                .append("\n")
+                .append(CommonResponse.descItemChange(itemDetail))
+
+                .toString();
+    }
+
     public static String notifyItemDead(ItemDto.detail itemDetail) {
         return new StringBuilder()
                 .append("<b>")

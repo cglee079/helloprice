@@ -34,27 +34,27 @@ public class EmailKeyMenuHandler extends AbstractMenuHandler {
     }
 
     public void handle(TMessageVo tMessageVo, String requestMessage) {
-        final String telegramId = tMessageVo.getTelegramId() + "";
+        final String telegramId = tMessageVo.getTelegramId();
 
         log.info("{} << 이메일 인증 메뉴에서 응답, 받은메세지 '{}'", telegramId, requestMessage);
 
-        final String key = requestMessage;
+        final String emailKey = requestMessage;
 
         final List<String> itemCommands = ItemCommandTranslator.getItemCommands(userItemNotifyService.findNotifyItemsByUserTelegramId(telegramId));
 
         final LocalDateTime now = LocalDateTime.now();
-        final String email = emailKeyStore.certifyKey(key, now);
+        final String email = emailKeyStore.certifyKey(emailKey, now);
 
         if (Objects.isNull(email)) {
-            log.info("{} << 키 값이 잘못되었습니다. 받은메세지 '{}'", telegramId, key);
-            getSender().send(tMessageVo.newMessage(EmailKeyResponse.invalidKey(), km.getHomeKeyboard(itemCommands), callbackFactory.createDefault(telegramId, Menu.HOME)));
+            log.info("{} << 키 값이 잘못되었습니다. 받은메세지 '{}'", telegramId, emailKey);
+            sender().send(tMessageVo.newMessage(EmailKeyResponse.invalidKey(), km.getHomeKeyboard(itemCommands), callbackFactory.createDefault(telegramId, Menu.HOME)));
             return;
         }
 
 
-        log.info("{} << 이메일이 인증되었습니다. 받은메세지 '{}'", telegramId, key);
-        userService.updateEmail(telegramId, email);
-        getSender().send(tMessageVo.newMessage(EmailKeyResponse.success(), km.getHomeKeyboard(itemCommands), callbackFactory.createDefault(telegramId, Menu.HOME)));
+        log.info("{} << 이메일이 인증되었습니다. 받은메세지 '{}'", telegramId, emailKey);
+        userService.updateEmailByTelegramId(telegramId, email);
+        sender().send(tMessageVo.newMessage(EmailKeyResponse.success(), km.getHomeKeyboard(itemCommands), callbackFactory.createDefault(telegramId, Menu.HOME)));
 
     }
 

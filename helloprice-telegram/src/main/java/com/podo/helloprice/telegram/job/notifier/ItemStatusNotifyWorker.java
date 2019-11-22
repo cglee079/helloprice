@@ -52,8 +52,8 @@ public class ItemStatusNotifyWorker implements Worker {
     private void handleItemStatusUpdated(LocalDateTime notifyAt) {
         final List<ItemDto.detail> items = new ArrayList<>();
 
-        items.addAll(itemService.findByItemStatusAndItemUpdateStatus(ItemStatus.ALIVE, ItemUpdateStatus.UPDATED));
-        items.addAll(itemService.findByItemStatusAndItemUpdateStatus(ItemStatus.PAUSE, ItemUpdateStatus.UPDATED));
+        items.addAll(itemService.findByStatusAndUpdateStatus(ItemStatus.ALIVE, ItemUpdateStatus.UPDATED));
+        items.addAll(itemService.findByStatusAndUpdateStatus(ItemStatus.PAUSE, ItemUpdateStatus.UPDATED));
 
         for (ItemDto.detail item : items) {
             switch (item.getItemSaleStatus()) {
@@ -80,31 +80,42 @@ public class ItemStatusNotifyWorker implements Worker {
     }
 
     private List<NotifyUserVo> getNotifyUsersByItemId(Long itemId) {
-        final List<UserDto.detail> users = userItemNotifyService.findNotifyUsersByItemId(itemId, UserStatus.ALIVE);
+        final List<UserDto.detail> users = userItemNotifyService.findNotifyUsersByItemIdAndUserStatus(itemId, UserStatus.ALIVE);
         return users.stream()
                 .map(user -> new NotifyUserVo(user.getUsername(), user.getEmail(), user.getTelegramId()))
                 .collect(toList());
     }
 
     private void handleSale(ItemDto.detail item, LocalDateTime notifyAt) {
-        log.info("{}({}) 상품의 최저가가 갱신되었습니다.", item.getItemName(), item.getItemCode());
 
+        if (item.getItemBeforePrice() == 0) {
+            handleResale(item, notifyAt);
+            return;
+        }
+
+        log.info("{}({}) 상품의 최저가가 갱신되었습니다.", item.getItemName(), item.getItemCode());
         final double changePercent = MyCalculateUtils.getChangePercent(item.getItemPrice(), item.getItemBeforePrice());
 
         if ((Math.abs(changePercent) > 1) && (changePercent < 0)) {
             globalNotifier.notifyUsers(getNotifyUsersByItemId(item.getId()), NotifyTitle.notifyItemSale(item), item.getItemImage(), NotifyContents.notifyItemSale(item));
-            userItemNotifyService.updateNotifyAt(item.getId(), notifyAt);
+            userItemNotifyService.updateNotifiedAtByItemId(item.getId(), notifyAt);
             return;
         }
 
         log.info("{}({}) 상품의 가격변화율('{}%')이 적합하지 않아 알림을 전송하지 않습니다", item.getItemName(), item.getItemCode(), new DecimalFormat("#.##").format(changePercent));
     }
 
+    private void handleResale(ItemDto.detail item, LocalDateTime notifyAt) {
+        log.info("{}({}) 상품은 이전가가, 영원이고, 다시 판매를 시작했습니다", item.getItemName(), item.getItemCode());
+        globalNotifier.notifyUsers(getNotifyUsersByItemId(item.getId()), NotifyTitle.notifyItemReSale(item), item.getItemImage(), NotifyContents.notifyItemResale(item));
+        userItemNotifyService.updateNotifiedAtByItemId(item.getId(), notifyAt);
+    }
+
 
     private void handleEmptyAmount(ItemDto.detail item, LocalDateTime notifyAt) {
         log.info("{}({}) 상품은 재고없음 상태로 변경되었습니다.", item.getItemName(), item.getItemCode());
         globalNotifier.notifyUsers(getNotifyUsersByItemId(item.getId()), NotifyTitle.notifyItemEmptyAccount(item), item.getItemImage(), NotifyContents.notifyItemEmptyAccount(item));
-        userItemNotifyService.updateNotifyAt(item.getId(), notifyAt);
+        userItemNotifyService.updateNotifiedAtByItemId(item.getId(), notifyAt);
     }
 
 
@@ -113,7 +124,7 @@ public class ItemStatusNotifyWorker implements Worker {
 
         globalNotifier.notifyUsers(getNotifyUsersByItemId(item.getId()), NotifyTitle.notifyItemNotSupport(item), item.getItemImage(), NotifyContents.notifyItemNotSupport(item));
 
-        userItemNotifyService.deleteNotifies(item.getId());
+        userItemNotifyService.deleteNotifiesByItemId(item.getId());
     }
 
     private void handleUnknownItem(ItemDto.detail item) {
@@ -123,7 +134,7 @@ public class ItemStatusNotifyWorker implements Worker {
 
         globalNotifier.notifyUsers(getNotifyUsersByItemId(item.getId()), NotifyTitle.notifyItemUnknown(item), item.getItemImage(), NotifyContents.notifyItemUnknown(item));
 
-        userItemNotifyService.deleteNotifies(item.getId());
+        userItemNotifyService.deleteNotifiesByItemId(item.getId());
     }
 
     private void handleDiscontinueItem(ItemDto.detail item) {
@@ -131,7 +142,7 @@ public class ItemStatusNotifyWorker implements Worker {
 
         globalNotifier.notifyUsers(getNotifyUsersByItemId(item.getId()), NotifyTitle.notifyItemDiscontinued(item), item.getItemImage(), NotifyContents.notifyItemDiscontinued(item));
 
-        userItemNotifyService.deleteNotifies(item.getId());
+        userItemNotifyService.deleteNotifiesByItemId(item.getId());
     }
 
     private void increaseUnknownCount() {
@@ -146,7 +157,7 @@ public class ItemStatusNotifyWorker implements Worker {
     }
 
     private void handleItemStatusDead() {
-        List<ItemDto.detail> items = itemService.findByItemStatusAndItemUpdateStatus(ItemStatus.DEAD, ItemUpdateStatus.UPDATED);
+        List<ItemDto.detail> items = itemService.findByStatusAndUpdateStatus(ItemStatus.DEAD, ItemUpdateStatus.UPDATED);
 
         for (ItemDto.detail item : items) {
             increaseDeadCount();
@@ -155,7 +166,7 @@ public class ItemStatusNotifyWorker implements Worker {
 
             globalNotifier.notifyUsers(getNotifyUsersByItemId(item.getId()), NotifyTitle.notifyItemDead(item), item.getItemImage(), NotifyContents.notifyItemDead(item));
 
-            userItemNotifyService.deleteNotifies(item.getId());
+            userItemNotifyService.deleteNotifiesByItemId(item.getId());
 
             itemService.notifiedItem(item.getId());
         }

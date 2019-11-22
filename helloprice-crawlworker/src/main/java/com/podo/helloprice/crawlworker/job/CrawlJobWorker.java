@@ -30,10 +30,9 @@ public class CrawlJobWorker implements Worker {
 
         try {
 
-            JobParameters jobParameters =
-                    new JobParametersBuilder()
-                            .addDate("createAt", new Date())
-                            .toJobParameters();
+            final JobParameters jobParameters = new JobParametersBuilder()
+                    .addDate("createAt", new Date())
+                    .toJobParameters();
 
             jobLauncher.run(crawlJob, jobParameters);
 
@@ -42,7 +41,7 @@ public class CrawlJobWorker implements Worker {
                 | JobInstanceAlreadyCompleteException
                 | JobParametersInvalidException e) {
 
-            log.error("Pooler Job Run Error");
+            log.error("Start Crawler Job Error");
 
         }
 

@@ -36,25 +36,24 @@ public class ItemAddMenuHandler extends AbstractMenuHandler {
     }
 
     public void handle(TMessageVo tMessageVo, String requestMessage) {
-        final String telegramId = tMessageVo.getTelegramId() + "";
+        final String telegramId = tMessageVo.getTelegramId();
 
         log.info("{} << 상품 알림 추가 메뉴에서 응답, 받은메세지 '{}'", telegramId, requestMessage);
 
-        getSender().send(tMessageVo.newMessage(CommonResponse.justWait(), null, callbackFactory.createDefaultNoAction(telegramId)));
+        sender().send(tMessageVo.newMessage(CommonResponse.justWait(), null, callbackFactory.createDefaultNoAction(telegramId)));
 
         final List<String> itemCommands = ItemCommandTranslator.getItemCommands(userItemNotifyService.findNotifyItemsByUserTelegramId(telegramId));
 
         final String url = requestMessage;
-        String itemCode = danawaCrawler.getItemCodeFromUrl(url);
+        final String itemCodeFromUrl = danawaCrawler.getItemCodeFromUrl(url);
 
-        //URL에서 아이템코드를 찾을 수 없음
-        if (Objects.isNull(itemCode)) {
+        if (Objects.isNull(itemCodeFromUrl)) {
             log.info("{} << 링크에서 상품 코드를 찾을 수 없습니다. 받은메세지 '{}'", telegramId, requestMessage);
-            getSender().send(tMessageVo.newMessage(ItemAddResponse.wrongItemUrl(url), km.getHomeKeyboard(itemCommands), callbackFactory.createDefault(telegramId, Menu.HOME)));
+            sender().send(tMessageVo.newMessage(ItemAddResponse.wrongItemUrl(url), km.getHomeKeyboard(itemCommands), callbackFactory.createDefault(telegramId, Menu.HOME)));
             return;
         }
 
-        itemAddHandler.handleItemAdd(tMessageVo, itemCode);
+        itemAddHandler.handleItemAdd(tMessageVo, itemCodeFromUrl);
 
     }
 

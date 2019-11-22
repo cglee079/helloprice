@@ -116,7 +116,11 @@ public class CommonResponse {
         Integer itemPrice = itemDetail.getItemPrice();
         Integer itemBeforePrice = itemDetail.getItemBeforePrice();
 
-        if (itemPrice > itemBeforePrice) {
+        if (itemBeforePrice.equals(0)) {
+            message.append("야호!  <b>")
+                    .append(MyCurrencyUtils.toExchangeRateKRWStr(itemPrice))
+                    .append("</b>으로 다시 판매를 시작했어요!!");
+        } else if (itemPrice > itemBeforePrice) {
             message.append("죄송합니다.. 가격이 <b>")
                     .append(MyCurrencyUtils.toExchangeRateKRWStr(itemPrice - itemBeforePrice))
                     .append("</b> 올랐어요...");

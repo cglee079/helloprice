@@ -73,7 +73,7 @@ public class User extends UpdatableBaseEntity {
         errorCount++;
     }
 
-    public void resetErrorCount() {
+    public void clearErrorCount() {
         this.errorCount = 0;
     }
 
@@ -88,5 +88,9 @@ public class User extends UpdatableBaseEntity {
 
     public void updateEmail(String email) {
         this.email = email;
+    }
+
+    public boolean hasItemNotifiesMoreThan(Integer maxCountOfItemNotifies) {
+        return this.userItemNotifies.size() >= maxCountOfItemNotifies;
     }
 }

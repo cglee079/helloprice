@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
@@ -28,17 +27,17 @@ public class EmailKeyStore {
     private long certifyTimeout;
 
     public String createKey(String email) {
-        final String key = getKey();
+        final String newKey = getNewKey();
 
-        emailKeyStore.put(email, key);
-        keyStoreTimes.put(key, LocalDateTime.now());
+        emailKeyStore.put(email, newKey);
+        keyStoreTimes.put(newKey, LocalDateTime.now());
 
-        scheduleRemoveExpire(email, key);
+        scheduleRemoveExpireKey(email, newKey);
 
-        return key;
+        return newKey;
     }
 
-    private void scheduleRemoveExpire(String email, String key) {
+    private void scheduleRemoveExpireKey(String email, String key) {
         scheduler.schedule(() -> {
             log.info("{}({}) 인증시간이 만료되어 삭제합니다", email, key);
             this.emailKeyStore.remove(email);
@@ -46,12 +45,11 @@ public class EmailKeyStore {
         }, certifyTimeout, TimeUnit.MINUTES);
     }
 
-    private String getKey() {
+    private String getNewKey() {
         final String key = String.format("%06d", MyNumberUtils.rand(999999));
 
-        //이미 적재된 동일한 키가 있는 경우
         if (keyStoreTimes.containsKey(key)) {
-            return getKey();
+            return getNewKey();
         }
 
         return key;
@@ -65,7 +63,7 @@ public class EmailKeyStore {
             return null;
         }
 
-        if (now.minusMinutes(certifyTimeout).compareTo(keyStoreTime) > 0) {
+        if (isExpiredKey(now, keyStoreTime)) {
             log.info("시간이 만료된 KEY 입니다 {}", key);
             return null;
         }
@@ -76,6 +74,10 @@ public class EmailKeyStore {
         keyStoreTimes.remove(key);
 
         return email;
+    }
+
+    private boolean isExpiredKey(LocalDateTime now, LocalDateTime keyStoreTime) {
+        return now.minusMinutes(certifyTimeout).compareTo(keyStoreTime) > 0;
     }
 
     private String getEmailByKey(String key) {

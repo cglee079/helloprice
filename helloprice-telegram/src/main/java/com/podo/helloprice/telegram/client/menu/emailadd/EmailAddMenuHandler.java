@@ -37,7 +37,7 @@ public class EmailAddMenuHandler extends AbstractMenuHandler {
     }
 
     public void handle(TMessageVo tMessageVo, String requestMessage) {
-        final String telegramId = tMessageVo.getTelegramId() + "";
+        final String telegramId = tMessageVo.getTelegramId();
 
         log.info("{} << 이메일 추가 메뉴에서 응답, 받은메세지 '{}'", telegramId, requestMessage);
 
@@ -46,7 +46,7 @@ public class EmailAddMenuHandler extends AbstractMenuHandler {
         if (!EmailValidator.getInstance().isValid(email)) {
             log.info("{} << 이메일 형식이 아닙니다, 받은메세지 '{}'", telegramId, requestMessage);
             final List<String> itemCommands = ItemCommandTranslator.getItemCommands(userItemNotifyService.findNotifyItemsByUserTelegramId(telegramId));
-            getSender().send(tMessageVo.newMessage(EmailAddResponse.invalidEmail(), km.getHomeKeyboard(itemCommands), callbackFactory.createDefault(telegramId, Menu.HOME)));
+            sender().send(tMessageVo.newMessage(EmailAddResponse.invalidEmail(), km.getHomeKeyboard(itemCommands), callbackFactory.createDefault(telegramId, Menu.HOME)));
             return;
         }
 
@@ -58,7 +58,7 @@ public class EmailAddMenuHandler extends AbstractMenuHandler {
 
         log.info("{} << 이메일로 KEY를 전송합니다, 이메일 '{}', KEY '{}'", telegramId, email, key);
         gmailClient.sendEmail(user.getUsername(), email, title, content);
-        getSender().send(tMessageVo.newMessage(EmailKeyResponse.explain(), km.getDefaultKeyboard(), callbackFactory.createDefault(telegramId, Menu.EMAIL_KEY)));
+        sender().send(tMessageVo.newMessage(EmailKeyResponse.explain(), km.getDefaultKeyboard(), callbackFactory.createDefault(telegramId, Menu.EMAIL_KEY)));
     }
 
 }

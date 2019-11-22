@@ -11,7 +11,6 @@ import lombok.extern.slf4j.Slf4j;
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Objects;
 
 @Slf4j
 @Getter
@@ -82,34 +81,37 @@ public class Item extends UpdatableBaseEntity {
 
     public void updateByCrawledItem(CrawledItemVo crawledItemVo, LocalDateTime lastPoolAt) {
         final Integer existPrice = this.itemPrice;
+        final Integer newPrice = crawledItemVo.getItemPrice();
 
         this.itemName = crawledItemVo.getItemName();
         this.itemImage = crawledItemVo.getItemImage();
-        this.itemPrice = crawledItemVo.getItemPrice();
+        this.itemPrice = newPrice;
+        this.itemBeforePrice = existPrice;
         this.lastCrawledAt = lastPoolAt;
         this.itemSaleStatus = crawledItemVo.getItemSaleStatus();
 
         this.deadCount = 0;
 
+        updateItemStatusAndUpdateStatus(lastPoolAt, !existPrice.equals(newPrice));
+    }
+
+    private void updateItemStatusAndUpdateStatus(LocalDateTime lastPoolAt, boolean isChangedPrice) {
         switch (itemSaleStatus) {
             case UNKNOWN:
             case DISCONTINUE:
             case NOT_SUPPORT:
                 this.itemStatus = ItemStatus.PAUSE;
-                this.itemUpdateStatus = ItemUpdateStatus.UPDATED;
-                break;
+                updated(lastPoolAt);
+                return;
 
             case SALE:
             case EMPTY_AMOUNT:
-                if (Objects.equals(existPrice, this.itemPrice)) {
-                    itemUpdateStatus = ItemUpdateStatus.BE;
-                } else {
-                    itemBeforePrice = existPrice;
-                    itemUpdateStatus = ItemUpdateStatus.UPDATED;
-                    lastUpdatedAt = lastPoolAt;
-                }
             default:
-                break;
+                if (!isChangedPrice) {
+                    this.itemUpdateStatus = ItemUpdateStatus.BE;
+                    return;
+                }
+                updated(lastPoolAt);
         }
     }
 
@@ -120,9 +122,13 @@ public class Item extends UpdatableBaseEntity {
     public void died(LocalDateTime lastPoolAt) {
         this.itemBeforePrice = this.itemPrice;
         this.itemPrice = 0;
-        this.itemUpdateStatus = ItemUpdateStatus.UPDATED;
-        this.lastUpdatedAt = lastPoolAt;
         this.itemStatus = ItemStatus.DEAD;
+        updated(lastPoolAt);
+    }
+
+    private void updated(LocalDateTime lastUpdatedAt) {
+        this.itemUpdateStatus = ItemUpdateStatus.UPDATED;
+        this.lastUpdatedAt = lastUpdatedAt;
     }
 
     public void addUserItemNotify(UserItemNotify userItemNotify) {
@@ -133,7 +139,7 @@ public class Item extends UpdatableBaseEntity {
     public void removeUserItemNotify(UserItemNotify userItemNotify) {
         this.userItemNotifies.remove(userItemNotify);
 
-        if (this.userItemNotifies.isEmpty() && this.itemStatus.equals(ItemStatus.ALIVE)) {
+        if (!isNotifiedByAnyUser() && isAlived()) {
             log.info("{}({}) 상품은, 어떤 사용자에게도 알림이 없습니다", this.itemName, this.itemCode);
             log.info("{}({}) 상품을, 더 이상 갱신하지 않습니다.(중지)", this.itemName, this.itemCode);
 
@@ -141,7 +147,19 @@ public class Item extends UpdatableBaseEntity {
         }
     }
 
+    private boolean isNotifiedByAnyUser() {
+        return !this.userItemNotifies.isEmpty();
+    }
+
+    private boolean isAlived() {
+        return this.itemStatus.equals(ItemStatus.ALIVE);
+    }
+
     public void notified() {
         this.itemUpdateStatus = ItemUpdateStatus.BE;
+    }
+
+    public boolean hasDeadCountMoreThan(Integer maxDeadCount) {
+        return this.deadCount > maxDeadCount;
     }
 }

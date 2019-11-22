@@ -38,75 +38,95 @@ public class DanawaCrawler implements Crawler {
             return existItemInCache;
         }
 
-
         log.info("DANAWA '상품' 페이지 크롤을 시작합니다, 상품코드 : {}", itemCode);
 
         final String itemUrl = ItemPage.DANAWA_ITEM_URL + itemCode;
 
         log.info("크롤, URL : {}", itemUrl);
 
-        Document document;
-
-        try {
-            document = promptDocumentLoader.getDocument(itemUrl);
-        } catch (FailGetDocumentException e) {
-            log.error("상품 페이지를 가져올 수 없습니다. {}", e.getMessage());
+        final Document document = getDocumentByPromptDocumentLoader(itemUrl);
+        if (Objects.isNull(document)) {
+            log.error("상품 상세 페이지를 가져올 수 없습니다");
             return null;
         }
 
+        final CrawledItemVo crawledItem = getCrawledItemVoFromDocument(document, itemCode, itemUrl);
+        if (Objects.isNull(crawledItem)) {
+            log.info("확인 할 수 없는 상품입니다, 상품 코드 : {}", itemCode);
+            return null;
+        }
 
+        log.info("상품 정보확인, '{}'", crawledItem);
+        danawaCrawledItemCache.put(itemCode, crawledItem);
+
+        return crawledItem;
+
+    }
+
+    private Document getDocumentByPromptDocumentLoader(String itemUrl) {
         try {
-            final CrawledItemVo crawledItem = getCrawledItemVo(document, itemCode, itemUrl);
+            return promptDocumentLoader.getDocument(itemUrl);
+        } catch (FailGetDocumentException e) {
+            log.error("", e);
+            return null;
+        }
+    }
 
-            log.info("상품 정보확인, '{}'", crawledItem);
+    private CrawledItemVo getCrawledItemVoFromDocument(Document document, String itemCode, String itemUrl) {
+        try {
+            final String itemName = document.select(ItemPage.ITEM_NAME_SELECTOR).text().replace("[다나와]", "").trim();
+            final String itemDesc = document.select(ItemPage.ITEM_DESC_SELECTOR).text().replace("[다나와]", "").trim();
+            final String itemImage = document.select(ItemPage.ITEM_IMAGE_SELECTOR).attr("src");
 
-            if (StringUtils.isEmpty(crawledItem.getItemName())) {
-                log.info("확인 할 수 없는 상품입니다, 상품 코드 : {}", itemCode);
+            final Element itemPriceElement = document.select(ItemPage.ITEM_PRICE_SELECTOR).first();
+            final Integer itemPrice = Objects.isNull(itemPriceElement) ? 0 : Integer.valueOf(itemPriceElement.text().replace(",", ""));
+            final String itemSaleStatusText = document.select(ItemPage.ITEM_SALE_STATUS_SELECTOR).text().trim();
+
+            ItemSaleStatus itemSaleStatus;
+
+            if (itemPrice != 0) {
+                itemSaleStatus = ItemSaleStatus.SALE;
+            } else {
+                itemSaleStatus = getItemSaleStatusByCrawledSaleStatusText(itemSaleStatusText);
+            }
+
+            if (StringUtils.isEmpty(itemName)) {
                 return null;
             }
 
-            danawaCrawledItemCache.put(itemCode, crawledItem);
-
-            return crawledItem;
+            return CrawledItemVo.builder()
+                    .itemCode(itemCode)
+                    .itemUrl(itemUrl)
+                    .itemName(itemName)
+                    .itemDesc(itemDesc)
+                    .itemImage(itemImage)
+                    .itemPrice(itemPrice)
+                    .itemSaleStatus(itemSaleStatus)
+                    .build();
 
         } catch (RuntimeException e) {
             log.error(e.getMessage());
             return null;
         }
-
     }
 
-    private CrawledItemVo getCrawledItemVo(Document document, String itemCode, String itemUrl) {
-        final String itemName = document.select(ItemPage.ITEM_NAME_SELECTOR).text().replace("[다나와]", "").trim();
-        final String itemDesc = document.select(ItemPage.ITEM_DESC_SELECTOR).text().replace("[다나와]", "").trim();
-        final String itemImage = document.select(ItemPage.ITEM_IMAGE_SELECTOR).attr("src");
-
-        final Element itemPriceElement = document.select(ItemPage.ITEM_PRICE_SELECTOR).first();
-        final Integer itemPrice = Objects.isNull(itemPriceElement) ? 0 : Integer.valueOf(itemPriceElement.text().replace(",", ""));
-        final String itemSaleStatusStr = document.select(ItemPage.ITEM_SALE_STATUS_SELECTOR).text();
-
+    private ItemSaleStatus getItemSaleStatusByCrawledSaleStatusText(String itemSaleStatusStr) {
         ItemSaleStatus itemSaleStatus;
-
-        if (itemPrice != 0) {
-            itemSaleStatus = ItemSaleStatus.SALE;
-        } else {
-            switch (itemSaleStatusStr.trim()) {
-                case ItemPage.ITEM_STATUS_DISCONTINUE:
-                    itemSaleStatus = ItemSaleStatus.DISCONTINUE;
-                    break;
-                case ItemPage.ITEM_STATUS_EMPTY_ACCOUNT:
-                    itemSaleStatus = ItemSaleStatus.EMPTY_AMOUNT;
-                    break;
-                case ItemPage.ITEM_STATUS_NO_SUPPORT:
-                    itemSaleStatus = ItemSaleStatus.NOT_SUPPORT;
-                    break;
-                default:
-                    itemSaleStatus = ItemSaleStatus.UNKNOWN;
-                    break;
-            }
+        switch (itemSaleStatusStr) {
+            case ItemPage.ITEM_STATUS_DISCONTINUE:
+                itemSaleStatus = ItemSaleStatus.DISCONTINUE;
+                break;
+            case ItemPage.ITEM_STATUS_EMPTY_ACCOUNT:
+                itemSaleStatus = ItemSaleStatus.EMPTY_AMOUNT;
+                break;
+            case ItemPage.ITEM_STATUS_NO_SUPPORT:
+                itemSaleStatus = ItemSaleStatus.NOT_SUPPORT;
+                break;
+            default:
+                itemSaleStatus = ItemSaleStatus.UNKNOWN;
+                break;
         }
-
-        return new CrawledItemVo(itemCode, itemUrl, itemName, itemDesc, itemImage, itemPrice, itemSaleStatus);
+        return itemSaleStatus;
     }
 
     public String getItemCodeFromUrl(String url) {
@@ -115,7 +135,7 @@ public class DanawaCrawler implements Crawler {
         }
 
         if (url.contains(GetItemCode.DANAWA_REDIRECT_URL)) {
-            url = getRealUrlFromRedirect(url);
+            url = getRealUrlFromRedirectPage(url);
         }
 
         for (String key : GetItemCode.ITEM_CODE_PARAM_KEYS) {
@@ -128,13 +148,11 @@ public class DanawaCrawler implements Crawler {
         return null;
     }
 
-    private String getRealUrlFromRedirect(String url) {
-        Document document;
+    private String getRealUrlFromRedirectPage(String url) {
+        final Document document = getDocumentByPromptDocumentLoader(url);
 
-        try {
-            document = promptDocumentLoader.getDocument(url);
-        } catch (FailGetDocumentException e) {
-            log.error("상품 페이지를 가져올 수 없습니다. {}", e.getMessage(), e);
+        if (Objects.isNull(document)) {
+            log.error("리다이렉트 페이지를 가져올 수 없습니다");
             return "";
         }
 
@@ -146,22 +164,34 @@ public class DanawaCrawler implements Crawler {
     public List<ItemSearchResultVo> crawlItemSearchResults(String keyword) {
         log.info("DANAWA 상품 '검색' 페이지 크롤을 시작합니다, 검색어 : {}", keyword);
 
-        final List<ItemSearchResultVo> itemSearchInfos = new ArrayList<>();
         final String crawlUrl = SearchPage.DANAWA_ITEM_SEARCH_URL + keyword;
 
         log.info("CRAWL URL : {}", crawlUrl);
 
-        Document document;
-
-        try {
-            document = delayDocumentLoader.getDocument(crawlUrl, Collections.singletonList(SearchPage.SEARCH_ITEM_LIST_SELECTOR));
-        } catch (FailGetDocumentException e) {
-            log.error("상품 검색 페이지를 가져올 수 없습니다. {}", e.getMessage(), e);
+        Document document = getDocumentByDelayDocumentLoader(crawlUrl);
+        if (Objects.isNull(document)) {
+            log.error("상품 검색 페이지를 가져올 수 없습니다");
             return Collections.emptyList();
         }
 
-        final Elements items = document.select(SearchPage.SEARCH_ITEM_LIST_SELECTOR);
 
+        final Elements itemSearchResultElements = document.select(SearchPage.SEARCH_ITEM_LIST_SELECTOR);
+        final List<ItemSearchResultVo> itemSearchResults = getItemSearchResultsFromSearchItemResultElements(itemSearchResultElements);
+
+        return itemSearchResults;
+    }
+
+    private Document getDocumentByDelayDocumentLoader(String crawlUrl) {
+        try {
+            return delayDocumentLoader.getDocument(crawlUrl, Collections.singletonList(SearchPage.SEARCH_ITEM_LIST_SELECTOR));
+        } catch (FailGetDocumentException e) {
+            log.error("", e);
+            return null;
+        }
+    }
+
+    private List<ItemSearchResultVo> getItemSearchResultsFromSearchItemResultElements(Elements items) {
+        final List<ItemSearchResultVo> itemSearchInfos = new ArrayList<>();
         for (Element item : items) {
             final String itemUrl = item.select(SearchPage.SEARCH_ITEM_URL_SELECTOR).attr("href");
             final String itemName = item.select(SearchPage.SEARCH_ITEM_NAME_SELECTOR).text();
@@ -175,7 +205,6 @@ public class DanawaCrawler implements Crawler {
                 itemSearchInfos.add(itemSearchResultVo);
             }
         }
-
         return itemSearchInfos;
     }
 

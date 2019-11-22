@@ -31,7 +31,7 @@ public class DelayDocumentLoader {
 
     public final Document getDocument(String url, List<String> waitElementSelectors) throws FailGetDocumentException {
 
-        WebDriver randDriver = delayWebDriverManager.getRandDriver();
+        WebDriver randDriver = delayWebDriverManager.getRandomWebDriver();
 
         try {
             randDriver.get(url);
@@ -40,12 +40,12 @@ public class DelayDocumentLoader {
         } catch (NoSuchSessionException e2) {
             //세션 에러면, WebDriver 재연결후, 문서를 다시 요청함.
             log.error("WebDriver 세션을 찾을 수 없습니다", e2);
-            delayWebDriverManager.clearDrivers();
+            delayWebDriverManager.clearAllWebDrivers();
             return getDocument(url, waitElementSelectors);
         } catch (Exception e3) {
             //알 수 없는 에러면, 초기화하고, 서버에러 메세지 전송
             log.error("WebDriver 알수 없는 에러", e3);
-            delayWebDriverManager.clearDrivers();
+            delayWebDriverManager.clearAllWebDrivers();
             throw new FailGetDocumentException(e3);
         }
 

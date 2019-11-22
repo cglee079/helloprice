@@ -28,7 +28,7 @@ public class GmailClient {
 
     private final Authenticator gmailAuth;
 
-    public void sendAdmin(String title, String contents) {
+    public void sendEmailToAdmin(String title, String contents) {
         sendEmail(appName, adminEmail, title, contents);
     }
 
@@ -36,7 +36,7 @@ public class GmailClient {
         log.info("'{}({})'로 메일을 발송합니다, 메일제목 : {}", userEmail, username, title);
 
         try {
-            final Properties mailProperties = this.getMailProperties();
+            final Properties mailProperties = getMailProperties();
             final Session messageSession = Session.getInstance(mailProperties, gmailAuth);
             final Transport transport = messageSession.getTransport("smtp");
             transport.connect();

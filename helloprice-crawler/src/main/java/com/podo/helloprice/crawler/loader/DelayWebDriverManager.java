@@ -31,45 +31,47 @@ public class DelayWebDriverManager {
 
     private Map<Integer, WebDriver> drivers = new HashMap<>();
 
-    public WebDriver getRandDriver() {
-        int driverNumber = MyNumberUtils.rand(webDriverRemoteUrls.size());
+    public WebDriver getRandomWebDriver() {
+        int randomIndexOfWebDrivers = MyNumberUtils.rand(webDriverRemoteUrls.size());
 
-        if (Objects.isNull(drivers.get(driverNumber))) {
-            initDriver(driverNumber);
+        final WebDriver randomWebDriver = drivers.get(randomIndexOfWebDrivers);
+        if (Objects.isNull(randomWebDriver)) {
+            initNewWebDriverOnIndex(randomIndexOfWebDrivers);
+            return drivers.get(randomIndexOfWebDrivers);
         }
 
-        log.info("WebDriver{} 에서 응답합니다", driverNumber);
-        return drivers.get(driverNumber);
+        log.info("WebDriver{} 에서 응답합니다", randomIndexOfWebDrivers);
+        return randomWebDriver;
     }
 
-    public void clearDrivers() {
-        log.info("모든 Webdriver를 Clear 합니다");
+    public void clearAllWebDrivers() {
+        log.info("모든 WebDriver를 Clear 합니다");
 
         this.drivers = new HashMap<>();
     }
 
 
-    private void initDriver(int driverNumber) {
-        final String webDriverRemoteUrlStr = webDriverRemoteUrls.get(driverNumber);
+    private void initNewWebDriverOnIndex(int webDriverIndex) {
+        final String webDriverRemoteUrl = webDriverRemoteUrls.get(webDriverIndex);
 
-        log.info("WebDriver{} 을 초기화 합니다, RemoteUrl : {}", driverNumber, webDriverRemoteUrlStr);
+        log.info("WebDriver{} 을 초기화 합니다, RemoteUrl : {}", webDriverIndex, webDriverRemoteUrl);
 
-        final ChromeOptions chromeOptions = getChromeOptions();
+        final ChromeOptions chromeOptions = getDefaultChromeOptions();
 
         try {
-            WebDriver driver = new RemoteWebDriver(new URL(webDriverRemoteUrlStr), chromeOptions);
+            final WebDriver driver = new RemoteWebDriver(new URL(webDriverRemoteUrl), chromeOptions);
 
             driver.manage().timeouts().pageLoadTimeout(timeout, TimeUnit.MILLISECONDS);
             driver.manage().timeouts().implicitlyWait(timeout, TimeUnit.MILLISECONDS);
             driver.manage().timeouts().setScriptTimeout(timeout, TimeUnit.MILLISECONDS);
 
-            this.drivers.put(driverNumber, driver);
+            this.drivers.put(webDriverIndex, driver);
         } catch (MalformedURLException e) {
             log.error("WebDriver URL이 잘못되었습니다", e);
         }
     }
 
-    private ChromeOptions getChromeOptions() {
+    private ChromeOptions getDefaultChromeOptions() {
         final ChromeOptions chromeOptions = new ChromeOptions();
         chromeOptions.addArguments("headless");
         chromeOptions.addArguments("disable-gpu");

@@ -9,7 +9,7 @@ public abstract class AbstractMenuHandler implements MenuHandler {
     private TelegramMessageSender telegramMessageSender;
 
     @Override
-    public TelegramMessageSender getSender() {
+    public TelegramMessageSender sender() {
         return telegramMessageSender;
     }
 

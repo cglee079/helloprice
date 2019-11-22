@@ -37,32 +37,28 @@ public class ItemSearchMenuHandler extends AbstractMenuHandler {
     }
 
     public void handle(TMessageVo tMessageVo, String requestMessage) {
-        final String telegramId = tMessageVo.getTelegramId() + "";
+        final String telegramId = tMessageVo.getTelegramId();
 
         log.info("{} << 상품 검색 메뉴에서 응답, 받은메세지 '{}'", telegramId, requestMessage);
 
-        getSender().send(tMessageVo.newMessage(CommonResponse.justWait(), null, callbackFactory.createDefaultNoAction(telegramId)));
+        sender().send(tMessageVo.newMessage(CommonResponse.justWait(), null, callbackFactory.createDefaultNoAction(telegramId)));
 
-        final String keyword = requestMessage;
+        final String requestSearchKeyword = requestMessage;
+        final List<ItemSearchResultVo> itemSearchResults = danawaCrawler.crawlItemSearchResults(requestSearchKeyword);
 
-        final List<ItemSearchResultVo> itemSearchResults = danawaCrawler.crawlItemSearchResults(keyword);
-
-        //검색 결과 없는 경우, 홈으로 이동
         if (itemSearchResults.isEmpty()) {
             final List<String> itemCommands = ItemCommandTranslator.getItemCommands(userItemNotifyService.findNotifyItemsByUserTelegramId(telegramId));
-            getSender().send(tMessageVo.newMessage(ItemSearchResponse.noResult(), km.getHomeKeyboard(itemCommands), callbackFactory.createDefault(tMessageVo.getTelegramId() + "", Menu.HOME)));
+            sender().send(tMessageVo.newMessage(ItemSearchResponse.noResult(), km.getHomeKeyboard(itemCommands), callbackFactory.createDefault(tMessageVo.getTelegramId() + "", Menu.HOME)));
             return;
         }
 
-        //아이템 검색 결과 응답
-        final List<String> itemSearchResultCommands = getItemSearchResultCommands(itemSearchResults);
+        final List<String> itemSearchResultCommands = toItemSearchResultCommands(itemSearchResults);
         final ReplyKeyboard itemSearchResultKeyboard = km.getItemSearchResultKeyboard(itemSearchResultCommands);
         final SentCallback<Message> defaultCallback = callbackFactory.createDefault(telegramId, Menu.ITEM_SEARCH_RESULT);
-        getSender().send(tMessageVo.newMessage(ItemSearchResultResponse.explain(), itemSearchResultKeyboard, defaultCallback));
-
+        sender().send(tMessageVo.newMessage(ItemSearchResultResponse.explain(), itemSearchResultKeyboard, defaultCallback));
     }
 
-    private List<String> getItemSearchResultCommands(List<ItemSearchResultVo> itemSearchResults) {
+    private List<String> toItemSearchResultCommands(List<ItemSearchResultVo> itemSearchResults) {
         return itemSearchResults.stream()
                 .map(item -> ItemCommandTranslator.getItemCommand(item.getItemCode(), item.getItemDesc()))
                 .collect(Collectors.toList());

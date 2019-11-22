@@ -15,12 +15,10 @@ public class ItemSearchResultKeyboard extends ReplyKeyboardMarkup {
         this.setResizeKeyboard(true);
         this.setOneTimeKeyboard(false);
 
-        List<KeyboardRow> keyboard = new ArrayList<>();
+        final List<KeyboardRow> keyboard = new ArrayList<>();
 
-        KeyboardRow keyboardRow = new KeyboardRow();
-
+        final KeyboardRow keyboardRow = new KeyboardRow();
         keyboardRow.add(ItemSearchResultCommand.EXIT.getValue());
-
         keyboard.add(keyboardRow);
 
         for (String item : itemCommands) {

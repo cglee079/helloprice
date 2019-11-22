@@ -39,17 +39,14 @@ public class ItemSearchAddMenuHandler extends AbstractMenuHandler {
 
         final List<String> itemCommands = ItemCommandTranslator.getItemCommands(userItemNotifyService.findNotifyItemsByUserTelegramId(telegramId));
 
-
-        //기본 명령어보다 글자 수가 작을 경우
         if (requestMessage.length() < ItemSearchAddCommand.YES.getValue().length()) {
-            getSender().send(tMessageVo.newMessage(CommonResponse.wrongInput(), km.getHomeKeyboard(itemCommands), callbackFactory.createDefault(telegramId, Menu.HOME)));
+            sender().send(tMessageVo.newMessage(CommonResponse.wrongInput(), km.getHomeKeyboard(itemCommands), callbackFactory.createDefault(telegramId, Menu.HOME)));
             return;
         }
 
-        //명령어가 아닌 경우
         final ItemSearchAddCommand requestCommand = ItemSearchAddCommand.from(requestMessage.substring(0, ItemSearchAddCommand.COMMAND_LENGTH));
         if (Objects.isNull(requestCommand)) {
-            getSender().send(tMessageVo.newMessage(CommonResponse.wrongInput(), km.getHomeKeyboard(itemCommands), callbackFactory.createDefault(telegramId, Menu.HOME)));
+            sender().send(tMessageVo.newMessage(CommonResponse.wrongInput(), km.getHomeKeyboard(itemCommands), callbackFactory.createDefault(telegramId, Menu.HOME)));
             return;
         }
 
@@ -64,7 +61,7 @@ public class ItemSearchAddMenuHandler extends AbstractMenuHandler {
                 itemAddHandler.handleItemAdd(tMessageVo, itemCode);
                 break;
             case NO:
-                getSender().send(tMessageVo.newMessage(CommonResponse.toHome(), km.getHomeKeyboard(itemCommands), callbackFactory.createDefault(tMessageVo.getTelegramId() + "", Menu.HOME)));
+                sender().send(tMessageVo.newMessage(CommonResponse.toHome(), km.getHomeKeyboard(itemCommands), callbackFactory.createDefault(tMessageVo.getTelegramId() + "", Menu.HOME)));
         }
     }
 

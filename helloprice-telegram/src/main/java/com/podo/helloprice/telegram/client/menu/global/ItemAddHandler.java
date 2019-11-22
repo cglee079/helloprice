@@ -34,11 +34,10 @@ public class ItemAddHandler {
     private final KeyboardManager km;
 
     public void handleItemAdd(TMessageVo tMessageVo, String itemCode) {
-        final String telegramId = tMessageVo.getTelegramId() + "";
-        final CrawledItemVo crawledItem = danawaCrawler.crawlItem(itemCode);
-
+        final String telegramId = tMessageVo.getTelegramId();
         final List<String> itemCommands = ItemCommandTranslator.getItemCommands(userItemNotifyService.findNotifyItemsByUserTelegramId(telegramId));
 
+        final CrawledItemVo crawledItem = danawaCrawler.crawlItem(itemCode);
         if (Objects.isNull(crawledItem)) {
             log.info("{} << 상품 정보를 가져 올 수 없습니다. 상품코드 '{}'", telegramId, itemCode);
             sender.send(tMessageVo.newMessage(ItemAddResponse.wrongItemCode(itemCode), km.getHomeKeyboard(itemCommands), callbackFactory.createDefault(telegramId, Menu.HOME)));
@@ -49,12 +48,12 @@ public class ItemAddHandler {
             return;
         }
 
-        final Long itemId = itemService.merge(crawledItem);
+        final Long itemId = itemService.writeCrawledItem(crawledItem);
 
         final UserDto.detail userDetail = userService.findByTelegramId(telegramId);
         final ItemDto.detail itemDetail = itemService.findByItemId(itemId);
 
-        if (userItemNotifyService.hasNotify(userDetail.getId(), itemDetail.getId())) {
+        if (userItemNotifyService.isExistedNotify(userDetail.getId(), itemDetail.getId())) {
             log.info("{} << {}({}) 상품 알림이 이미 등록되었습니다.", telegramId, crawledItem.getItemName(), itemCode);
             sender.send(tMessageVo.newMessage(CommonResponse.descItemDetail(itemDetail), itemDetail.getItemImage(), km.getHomeKeyboard(itemCommands), callbackFactory.createDefault(telegramId, Menu.HOME)));
             sender.send(tMessageVo.newMessage(ItemAddResponse.alreadySetNotifyItem(), null, null, callbackFactory.createDefault(telegramId, null)));
@@ -63,7 +62,7 @@ public class ItemAddHandler {
 
         log.info("{} << {}({}) 상품 알림을 등록합니다.", telegramId, crawledItem.getItemName(), itemCode);
 
-        if (userItemNotifyService.hasMaxNotifyByUserTelegramId(telegramId)) {
+        if (userService.hasMaxNotifyByUserTelegramId(telegramId)) {
             log.info("{} << 사용자는 이미 최대 상품알림 개수를 초과했습니다", telegramId);
             sender.send(tMessageVo.newMessage(ItemAddResponse.hasMaxItem(), null, km.getHomeKeyboard(itemCommands), callbackFactory.createDefault(telegramId, Menu.HOME)));
             return;
@@ -73,7 +72,7 @@ public class ItemAddHandler {
     }
 
     private void handleItemCommand(TMessageVo tMessageVo, String telegramId, CrawledItemVo crawledItemVo, Long itemId, UserDto.detail userDetail, ItemDto.detail itemDetail) {
-        userItemNotifyService.addNotify(userDetail.getId(), itemId);
+        userItemNotifyService.addNewNotify(userDetail.getId(), itemId);
 
         final List<String> reloadItemCommands = ItemCommandTranslator.getItemCommands(userItemNotifyService.findNotifyItemsByUserTelegramId(telegramId)); // 갱신
         sender.send(tMessageVo.newMessage(CommonResponse.descItemDetail(itemDetail), crawledItemVo.getItemImage(), km.getHomeKeyboard(reloadItemCommands), callbackFactory.createDefault(telegramId, Menu.HOME)));

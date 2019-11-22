@@ -1,6 +1,7 @@
 package com.podo.helloprice.telegram.domain.item;
 
 import com.podo.helloprice.core.domain.item.*;
+import com.podo.helloprice.telegram.domain.item.exception.InvalidItemIdException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -9,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -19,13 +21,13 @@ public class ItemService {
 
     private final ItemRepository itemRepository;
 
-    public Long merge(CrawledItemVo crawledItemVo) {
+    public Long writeCrawledItem(CrawledItemVo crawledItemVo) {
 
-        Item item = itemRepository.findByItemCode(crawledItemVo.getItemCode());
+        final Item existedItem = itemRepository.findByItemCode(crawledItemVo.getItemCode());
 
-        if (Objects.nonNull(item)) {
-            item.updateByCrawledItem(crawledItemVo, LocalDateTime.now());
-            return item.getId();
+        if (Objects.nonNull(existedItem)) {
+            existedItem.updateByCrawledItem(crawledItemVo, LocalDateTime.now());
+            return existedItem.getId();
         }
 
         final ItemDto.insert itemInsert = ItemDto.insert.builder()
@@ -38,42 +40,54 @@ public class ItemService {
                 .itemSaleStatus(crawledItemVo.getItemSaleStatus())
                 .build();
 
-        return this.insert(itemInsert);
+        return insertNewItem(itemInsert);
     }
 
-    public Long insert(ItemDto.insert itemInsert) {
-
-        Item item = itemRepository.save(itemInsert.toEntity());
-
-        return item.getId();
+    public Long insertNewItem(ItemDto.insert itemInsert) {
+        final Item newItem = itemInsert.toEntity();
+        final Item savedItem = itemRepository.save(newItem);
+        return savedItem.getId();
     }
 
     public ItemDto.detail findByItemCode(String itemCode) {
-        final Item item = itemRepository.findByItemCode(itemCode);
+        final Item existedItem = itemRepository.findByItemCode(itemCode);
 
-        if (Objects.isNull(item)) {
+        if (Objects.isNull(existedItem)) {
             return null;
         }
 
-        return new ItemDto.detail(item);
+        return new ItemDto.detail(existedItem);
     }
 
     public ItemDto.detail findByItemId(Long itemId) {
-        final Item item = itemRepository.findById(itemId).get();
-        return new ItemDto.detail(item);
+        final Optional<Item> existedItemOptional = itemRepository.findById(itemId);
+
+        if (!existedItemOptional.isPresent()) {
+            throw new InvalidItemIdException(itemId);
+        }
+
+        return new ItemDto.detail(existedItemOptional.get());
     }
 
-    public boolean existByItemCode(String itemCode) {
-        return Objects.isNull(itemRepository.findByItemCode(itemCode));
+    public boolean isExistedByItemCode(String itemCode) {
+        final Item existedItem = itemRepository.findByItemCode(itemCode);
+        return Objects.nonNull(existedItem);
     }
 
     public void notifiedItem(Long itemId) {
-        Item item = itemRepository.findById(itemId).get();
-        item.notified();
+        final Optional<Item> existedItemOptional = itemRepository.findById(itemId);
+
+        if (!existedItemOptional.isPresent()) {
+            throw new InvalidItemIdException(itemId);
+        }
+
+        final Item existedItem = existedItemOptional.get();
+        existedItem.notified();
     }
 
-    public List<ItemDto.detail> findByItemStatusAndItemUpdateStatus(ItemStatus itemStatus, ItemUpdateStatus itemUpdateStatus) {
-        List<Item> items = itemRepository.findByItemStatusAndItemUpdateStatus(itemStatus, itemUpdateStatus);
+    public List<ItemDto.detail> findByStatusAndUpdateStatus(ItemStatus itemStatus, ItemUpdateStatus itemUpdateStatus) {
+        final List<Item> items = itemRepository.findByItemStatusAndItemUpdateStatus(itemStatus, itemUpdateStatus);
+
         return items.stream()
                 .map(ItemDto.detail::new)
                 .collect(Collectors.toList());

@@ -26,30 +26,31 @@ public class CrawlJobProcessor implements ItemProcessor<Item, Item> {
 
     @Override
     public Item process(Item item) {
-        log.info("{}({}) 상품의 정보 갱신을 실행합니다", item.getItemName(), item.getItemCode());
+        final String existedItemName = item.getItemName();
+        final String existedItemCode = item.getItemCode();
+        final LocalDateTime now = LocalDateTime.now();
 
-        final String itemCode = item.getItemCode();
+        log.info("{}({}) 상품의 정보 갱신을 실행합니다", existedItemName, existedItemCode);
 
-        final LocalDateTime crawledAt = LocalDateTime.now();
-        final CrawledItemVo crawledItem = danawaCrawler.crawlItem(itemCode);
+        final CrawledItemVo crawledItem = danawaCrawler.crawlItem(existedItemCode);
 
         if (Objects.isNull(crawledItem)) {
-            log.info("{}({}) 상품의 정보 갱신 에러 발생", item.getItemName(), item.getItemCode());
+            log.info("{}({}) 상품의 정보 갱신 에러 발생", existedItemName, existedItemCode);
 
             item.increaseDeadCount();
 
-            if (item.getDeadCount() > maxDeadCount) {
-                log.info("{}({}) 상품의 에러카운트 초과, DEAD 상태 변경", item.getItemName(), item.getItemCode());
-
-                item.died(crawledAt);
+            if (item.hasDeadCountMoreThan(maxDeadCount)) {
+                log.info("{}({}) 상품의 에러카운트 초과, DEAD 상태 변경", existedItemName, existedItemCode);
+                item.died(now);
             }
 
             return item;
         }
 
-        item.updateByCrawledItem(crawledItem, crawledAt);
+        item.updateByCrawledItem(crawledItem, now);
 
-        log.info("{}({}), 가격 : `{}`, 상품판매상태 : `{}`, 상품상태 `{}`", item.getItemName(), item.getItemCode(), item.getItemPrice(), item.getItemSaleStatus().getValue(), item.getItemStatus());
+        log.info("{}({}), 가격 : `{}`, 상품판매상태 : `{}`, 상품상태 `{}`", existedItemName, existedItemCode, item.getItemPrice(), item.getItemSaleStatus().getValue(), item.getItemStatus());
+
         return item;
     }
 }

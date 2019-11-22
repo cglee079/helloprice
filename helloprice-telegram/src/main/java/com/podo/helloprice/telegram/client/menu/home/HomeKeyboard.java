@@ -16,14 +16,13 @@ public class HomeKeyboard extends ReplyKeyboardMarkup {
         this.setResizeKeyboard(true);
         this.setOneTimeKeyboard(false);
 
-        List<KeyboardRow> keyboard = new ArrayList<>();
+        final List<KeyboardRow> keyboard = new ArrayList<>();
 
         KeyboardRow keyboardRow = new KeyboardRow();
 
         keyboardRow.add(HomeCommand.ITEM_SEARCH_ADD.getValue());
         keyboardRow.add(HomeCommand.ITEM_ADD.getValue());
         keyboardRow.add(HomeCommand.ITEM_DELETE.getValue());
-
         keyboard.add(keyboardRow);
 
         keyboardRow = new KeyboardRow();
@@ -34,7 +33,7 @@ public class HomeKeyboard extends ReplyKeyboardMarkup {
 
 
         for (String item : itemList) {
-            KeyboardRow keyboardItemRow = new KeyboardRow();
+            final KeyboardRow keyboardItemRow = new KeyboardRow();
             keyboardItemRow.add(item);
             keyboard.add(keyboardItemRow);
         }

@@ -35,7 +35,7 @@ public class TelegramMessageSender {
 
     private void sendPhoto(TMessageVo tMessageVo) {
         final SendPhoto sendPhoto = new SendPhoto();
-        sendPhoto.setChatId(tMessageVo.getTelegramId().toString());
+        sendPhoto.setChatId(tMessageVo.getTelegramId());
         sendPhoto.setPhoto(tMessageVo.getImage());
         sendPhoto.setReplyMarkup(tMessageVo.getKeyboard());
         sendPhoto.setReplyToMessageId(tMessageVo.getMessageId());
@@ -50,7 +50,7 @@ public class TelegramMessageSender {
 
     private void sendMessage(TMessageVo tMessageVo, Boolean enabledWebPreview) {
         final String telegramId = tMessageVo.getTelegramId() + "";
-        final SendMessage sendMessage = new SendMessage(tMessageVo.getTelegramId().toString(), tMessageVo.getMessage());
+        final SendMessage sendMessage = new SendMessage(tMessageVo.getTelegramId(), tMessageVo.getMessage());
 
         sendMessage.setReplyMarkup(tMessageVo.getKeyboard());
         sendMessage.setReplyToMessageId(tMessageVo.getMessageId());
@@ -65,7 +65,6 @@ public class TelegramMessageSender {
             telegramBot.executeAsync(sendMessage, tMessageVo.getCallback());
         } catch (TelegramApiException e) {
             log.error("{} >> 메시지를 전송 할 수 없습니다 '{}'", telegramId, e.getMessage());
-
             tMessageVo.getCallback().onException(null, null);
         }
 

@@ -40,6 +40,6 @@ public class GmailNotifier {
     }
 
     public void notifyAdmin(String emailTitle, String contents) {
-        gmailClient.sendAdmin(emailTitle, contents);
+        gmailClient.sendEmailToAdmin(emailTitle, contents);
     }
 }

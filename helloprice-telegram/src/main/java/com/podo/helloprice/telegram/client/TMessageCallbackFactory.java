@@ -29,22 +29,22 @@ public class TMessageCallbackFactory {
             public void onResult(BotApiMethod<Message> method, Message response) {
                 //log.info("RESULT : " + Thread.currentThread());
                 if (!Objects.isNull(menu)) {
-                    userService.updateMenuStatus(telegramId, menu);
+                    userService.updateMenuStatusByTelegramId(telegramId, menu);
                 }
-                userService.resetUserErrorCount(telegramId);
+                userService.clearUserErrorCountByTelegramId(telegramId);
             }
 
             @Override
             public void onError(BotApiMethod<Message> method, TelegramApiRequestException e) {
-                userService.updateMenuStatus(telegramId, Menu.HOME);
-                userService.increaseUserErrorCount(telegramId);
+                userService.updateMenuStatusByTelegramId(telegramId, Menu.HOME);
+                userService.increaseUserErrorCountByTelegramId(telegramId);
                 log.error("{} >> Send Error, 메시지를 전송 할 수 없습니다 '{}'", telegramId, e.getMessage());
             }
 
             @Override
             public void onException(BotApiMethod<Message> method, Exception e) {
-                userService.updateMenuStatus(telegramId, Menu.HOME);
-                userService.increaseUserErrorCount(telegramId);
+                userService.updateMenuStatusByTelegramId(telegramId, Menu.HOME);
+                userService.increaseUserErrorCountByTelegramId(telegramId);
                 log.error("{} >> Send Exception, 메시지를 전송 할 수 없습니다 '{}'", telegramId, e.getMessage());
             }
         };

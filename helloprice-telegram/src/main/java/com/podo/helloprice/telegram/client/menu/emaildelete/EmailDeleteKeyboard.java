@@ -16,7 +16,7 @@ public class EmailDeleteKeyboard extends ReplyKeyboardMarkup {
 
         final List<KeyboardRow> keyboard = new ArrayList<>();
 
-        KeyboardRow keyboardRow = new KeyboardRow();
+        final KeyboardRow keyboardRow = new KeyboardRow();
 
         keyboardRow.add(EmailDeleteCommand.YES.getValue());
         keyboardRow.add(EmailDeleteCommand.NO.getValue());
