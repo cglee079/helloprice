@@ -81,37 +81,34 @@ public class Item extends UpdatableBaseEntity {
 
     public void updateByCrawledItem(CrawledItemVo crawledItemVo, LocalDateTime lastPoolAt) {
         final Integer existPrice = this.itemPrice;
-        final Integer newPrice = crawledItemVo.getItemPrice();
 
         this.itemName = crawledItemVo.getItemName();
         this.itemImage = crawledItemVo.getItemImage();
-        this.itemPrice = newPrice;
-        this.itemBeforePrice = existPrice;
+        this.itemPrice = crawledItemVo.getItemPrice();
         this.lastCrawledAt = lastPoolAt;
         this.itemSaleStatus = crawledItemVo.getItemSaleStatus();
 
         this.deadCount = 0;
 
-        updateItemStatusAndUpdateStatus(lastPoolAt, !existPrice.equals(newPrice));
-    }
-
-    private void updateItemStatusAndUpdateStatus(LocalDateTime lastPoolAt, boolean isChangedPrice) {
         switch (itemSaleStatus) {
             case UNKNOWN:
             case DISCONTINUE:
             case NOT_SUPPORT:
                 this.itemStatus = ItemStatus.PAUSE;
-                updated(lastPoolAt);
-                return;
+                this.itemUpdateStatus = ItemUpdateStatus.UPDATED;
+                break;
 
             case SALE:
             case EMPTY_AMOUNT:
-            default:
-                if (!isChangedPrice) {
-                    this.itemUpdateStatus = ItemUpdateStatus.BE;
-                    return;
+                if (existPrice.equals(this.itemPrice)) {
+                    itemUpdateStatus = ItemUpdateStatus.BE;
+                } else {
+                    itemBeforePrice = existPrice;
+                    itemUpdateStatus = ItemUpdateStatus.UPDATED;
+                    lastUpdatedAt = lastPoolAt;
                 }
-                updated(lastPoolAt);
+            default:
+                break;
         }
     }
 
