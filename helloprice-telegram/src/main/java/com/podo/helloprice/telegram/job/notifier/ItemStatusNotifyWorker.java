@@ -106,7 +106,7 @@ public class ItemStatusNotifyWorker implements Worker {
     }
 
     private void handleResale(ItemDto.detail item, LocalDateTime notifyAt) {
-        log.info("{}({}) 상품은 이전가가, 영원이고, 다시 판매를 시작했습니다", item.getItemName(), item.getItemCode());
+        log.info("{}({}) 상품은 이전가가 0원이고, 다시 판매를 시작했습니다", item.getItemName(), item.getItemCode());
         globalNotifier.notifyUsers(getNotifyUsersByItemId(item.getId()), NotifyTitle.notifyItemReSale(item), item.getItemImage(), NotifyContents.notifyItemResale(item));
         userItemNotifyService.updateNotifiedAtByItemId(item.getId(), notifyAt);
     }

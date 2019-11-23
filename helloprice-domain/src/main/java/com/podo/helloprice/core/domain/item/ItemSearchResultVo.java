@@ -1,6 +1,6 @@
 package com.podo.helloprice.core.domain.item;
 
-import com.podo.helloprice.core.util.MyStringUtils;
+import com.podo.helloprice.core.util.MyNumberUtils;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.ToString;
@@ -27,7 +27,7 @@ public class ItemSearchResultVo {
             return false;
         }
 
-        if (!MyStringUtils.isStringInteger(itemCode)) {
+        if (!MyNumberUtils.isInteger(itemCode)) {
             return false;
         }
 

@@ -5,7 +5,7 @@ import com.podo.helloprice.core.domain.item.ItemSaleStatus;
 import com.podo.helloprice.core.domain.item.ItemSearchResultVo;
 import com.podo.helloprice.core.util.MyCurrencyUtils;
 import com.podo.helloprice.core.util.MyHttpUtils;
-import com.podo.helloprice.core.util.MyStringUtils;
+import com.podo.helloprice.core.util.MyNumberUtils;
 import com.podo.helloprice.crawler.Crawler;
 import com.podo.helloprice.crawler.exception.FailGetDocumentException;
 import com.podo.helloprice.crawler.loader.DelayDocumentLoader;
@@ -139,7 +139,7 @@ public class DanawaCrawler implements Crawler {
         }
 
         for (String key : GetItemCode.ITEM_CODE_PARAM_KEYS) {
-            final String itemCode = MyHttpUtils.getParamValue(url, key);
+            final String itemCode = MyHttpUtils.getParamValueFromUrl(url, key);
             if (Objects.nonNull(itemCode)) {
                 return itemCode;
             }
@@ -211,8 +211,8 @@ public class DanawaCrawler implements Crawler {
     private String getSearchItemPriceDesc(String itemPriceStr) {
         final String itemPrice = itemPriceStr.replaceAll(",", "");
 
-        if (MyStringUtils.isStringInteger(itemPrice)) {
-            return MyCurrencyUtils.toExchangeRateKRWStr(Integer.valueOf(itemPrice));
+        if (MyNumberUtils.isInteger(itemPrice)) {
+            return MyCurrencyUtils.toKrw(Integer.valueOf(itemPrice));
         }
 
         return itemPriceStr;

@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
+import org.telegram.telegrambots.bots.DefaultBotOptions;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.Update;
@@ -12,16 +13,29 @@ import org.telegram.telegrambots.meta.api.objects.Update;
 import javax.annotation.PostConstruct;
 import java.util.List;
 import java.util.Objects;
+import java.util.concurrent.Executors;
 
 import static java.util.stream.Collectors.toMap;
 
-@RequiredArgsConstructor
 @Slf4j
+
 @Component
 public class TelegramBot extends TelegramLongPollingBot {
 
     private final TelegramMessageReceiver telegramMessageReceiver;
     private final TelegramMessageSender telegramMessageSender;
+
+    public TelegramBot(TelegramMessageReceiver telegramMessageReceiver, TelegramMessageSender telegramMessageSender) {
+        super(getMyBotOptions());
+        this.telegramMessageReceiver = telegramMessageReceiver;
+        this.telegramMessageSender = telegramMessageSender;
+    }
+
+    private static DefaultBotOptions getMyBotOptions() {
+        final DefaultBotOptions myBotOptions = new DefaultBotOptions();
+        myBotOptions.setMaxThreads(5);
+        return myBotOptions;
+    }
 
     @PostConstruct
     public void init() {
@@ -49,13 +63,13 @@ public class TelegramBot extends TelegramLongPollingBot {
 
     @Override
     public void onUpdateReceived(Update update) {
-        Message message = update.getMessage();
 
         if (Objects.nonNull(update.getEditedMessage())) {
-            message = update.getEditedMessage();
+            telegramMessageReceiver.receive(update.getEditedMessage());
+            return;
         }
 
-        telegramMessageReceiver.receive(message);
+        telegramMessageReceiver.receive(update.getMessage());
     }
 
 

@@ -46,7 +46,7 @@ public class EmailKeyStore {
     }
 
     private String getNewKey() {
-        final String key = String.format("%06d", MyNumberUtils.rand(999999));
+        final String key = String.format("%06d", MyNumberUtils.getRandomInt(999999));
 
         if (keyStoreTimes.containsKey(key)) {
             return getNewKey();

@@ -31,33 +31,29 @@ public class DelayDocumentLoader {
 
     public final Document getDocument(String url, List<String> waitElementSelectors) throws FailGetDocumentException {
 
-        WebDriver randDriver = delayWebDriverManager.getRandomWebDriver();
+        WebDriver webDriver = delayWebDriverManager.getRandomWebDriver();
 
         try {
-            randDriver.get(url);
+            webDriver.get(url);
         } catch (org.openqa.selenium.TimeoutException e1) {
             throw new FailGetDocumentException(e1);
         } catch (NoSuchSessionException e2) {
-            //세션 에러면, WebDriver 재연결후, 문서를 다시 요청함.
             log.error("WebDriver 세션을 찾을 수 없습니다", e2);
             delayWebDriverManager.clearAllWebDrivers();
             return getDocument(url, waitElementSelectors);
         } catch (Exception e3) {
-            //알 수 없는 에러면, 초기화하고, 서버에러 메세지 전송
             log.error("WebDriver 알수 없는 에러", e3);
             delayWebDriverManager.clearAllWebDrivers();
             throw new FailGetDocumentException(e3);
         }
 
-        //Wait Element Loading Complete.
-        waitElement(randDriver, waitElementSelectors);
+        waitByElementCssSelectors(webDriver, waitElementSelectors);
 
-        WebElement html = randDriver.findElement(By.cssSelector("html"));
-        return Jsoup.parse(html.getAttribute("innerHTML"));
+        return Jsoup.parse(webDriver.getPageSource());
     }
 
-    private void waitElement(final WebDriver webDriver, final List<String> waitElementSelectors) throws FailGetDocumentException {
-        if (Objects.isNull(waitElementSelectors)) {
+    private void waitByElementCssSelectors(final WebDriver webDriver, final List<String> waitElementCssSelectors) throws FailGetDocumentException {
+        if (Objects.isNull(waitElementCssSelectors)) {
             return;
         }
 
@@ -67,8 +63,7 @@ public class DelayDocumentLoader {
                 driver -> ((JavascriptExecutor) driver).executeScript(
                         "return document.readyState").equals("complete");
 
-        //Wait.. Loading Element..
-        final List<ExpectedCondition<Boolean>> waitElements = waitElementSelectors.stream()
+        final List<ExpectedCondition<Boolean>> waitElements = waitElementCssSelectors.stream()
                 .map(w -> ExpectedConditions.and(ExpectedConditions.presenceOfElementLocated(By.cssSelector(w))))
                 .collect(Collectors.toList());
 

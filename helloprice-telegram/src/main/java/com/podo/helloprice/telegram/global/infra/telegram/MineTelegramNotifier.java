@@ -15,11 +15,11 @@ import java.time.LocalDateTime;
 public class MineTelegramNotifier {
 
     @Value("${telegram.podo_helloprice.admin.id}")
-    private Integer adminTelegramId;
+    private String adminTelegramId;
 
     private final TelegramApi telegramApi;
 
-    public void notifyUser(Integer telegramId, String image, String response) {
+    public void notifyUser(String telegramId, String image, String response) {
         telegramApi.send(telegramId, image, response);
     }
 

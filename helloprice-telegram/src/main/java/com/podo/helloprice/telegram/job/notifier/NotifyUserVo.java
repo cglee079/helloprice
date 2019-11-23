@@ -9,9 +9,9 @@ public class NotifyUserVo {
 
     private String username;
     private String email;
-    private Integer telegramId;
+    private String telegramId;
 
-    public NotifyUserVo(String username, String email, Integer telegramId) {
+    public NotifyUserVo(String username, String email, String telegramId) {
         this.username = username;
         this.email = email;
         this.telegramId = telegramId;

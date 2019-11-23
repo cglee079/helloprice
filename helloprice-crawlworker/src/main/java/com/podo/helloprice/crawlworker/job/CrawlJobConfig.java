@@ -68,7 +68,7 @@ public class CrawlJobConfig {
     public JpaPagingItemReader crawlJobReader() {
         final JpaPagingItemReaderBuilder jpaPagingItemReaderBuilder = new JpaPagingItemReaderBuilder();
 
-        Map<String, Object> params = new HashMap<>();
+        final Map<String, Object> params = new HashMap<>();
         params.put("itemStatus", ItemStatus.ALIVE);
         params.put("expirePoolAt", jobParameter.getCreateAt().minusMinutes(itemCrawlExpireTime));
 

@@ -29,15 +29,15 @@ public class DelayWebDriverManager {
     @Value("${crawler.webdriver.servers}")
     private List<String> webDriverRemoteUrls;
 
-    private Map<Integer, WebDriver> drivers = new HashMap<>();
+    private Map<Integer, WebDriver> webDrivers = new HashMap<>();
 
     public WebDriver getRandomWebDriver() {
-        int randomIndexOfWebDrivers = MyNumberUtils.rand(webDriverRemoteUrls.size());
+        int randomIndexOfWebDrivers = MyNumberUtils.getRandomInt(webDriverRemoteUrls.size());
 
-        final WebDriver randomWebDriver = drivers.get(randomIndexOfWebDrivers);
+        final WebDriver randomWebDriver = webDrivers.get(randomIndexOfWebDrivers);
         if (Objects.isNull(randomWebDriver)) {
             initNewWebDriverOnIndex(randomIndexOfWebDrivers);
-            return drivers.get(randomIndexOfWebDrivers);
+            return webDrivers.get(randomIndexOfWebDrivers);
         }
 
         log.info("WebDriver{} 에서 응답합니다", randomIndexOfWebDrivers);
@@ -47,7 +47,7 @@ public class DelayWebDriverManager {
     public void clearAllWebDrivers() {
         log.info("모든 WebDriver를 Clear 합니다");
 
-        this.drivers = new HashMap<>();
+        this.webDrivers = new HashMap<>();
     }
 
 
@@ -65,7 +65,7 @@ public class DelayWebDriverManager {
             driver.manage().timeouts().implicitlyWait(timeout, TimeUnit.MILLISECONDS);
             driver.manage().timeouts().setScriptTimeout(timeout, TimeUnit.MILLISECONDS);
 
-            this.drivers.put(webDriverIndex, driver);
+            this.webDrivers.put(webDriverIndex, driver);
         } catch (MalformedURLException e) {
             log.error("WebDriver URL이 잘못되었습니다", e);
         }

@@ -1,5 +1,7 @@
 package com.podo.helloprice.core.util;
 
+import java.text.DecimalFormat;
+
 public class MyCalculateUtils {
 
     public static Double getChangePercent(double a, double b) {
@@ -16,5 +18,18 @@ public class MyCalculateUtils {
         }
 
         return percent;
+    }
+
+    public static String getPercentStringWithPlusMinusSign(double a, double b) {
+        String prefix = "";
+
+        double percent = MyCalculateUtils.getChangePercent(a, b);
+
+        if (percent > 0) {
+            prefix = "+";
+        }
+
+        DecimalFormat df = new DecimalFormat("#.##");
+        return prefix + df.format(percent) + "%";
     }
 }

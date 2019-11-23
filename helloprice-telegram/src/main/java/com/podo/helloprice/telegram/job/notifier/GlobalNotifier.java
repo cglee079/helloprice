@@ -24,7 +24,7 @@ public class GlobalNotifier {
     }
 
     public void notifyUser(NotifyUserVo notifyUser, String title, String image, String contents) {
-        final Integer telegramId = notifyUser.getTelegramId();
+        final String telegramId = notifyUser.getTelegramId();
         final String username = notifyUser.getUsername();
 
         log.info("{}({})님에게 상품 변경 알림을 전송합니다", telegramId, username);
