@@ -2,7 +2,7 @@ package com.podo.helloprice.telegram.client.menu.itemadd;
 
 import com.podo.helloprice.core.domain.user.Menu;
 import com.podo.helloprice.crawler.target.danawa.DanawaCrawler;
-import com.podo.helloprice.telegram.client.menu.KeyboardManager;
+import com.podo.helloprice.telegram.client.menu.Keyboard;
 import com.podo.helloprice.telegram.client.TMessageCallbackFactory;
 import com.podo.helloprice.telegram.client.TMessageVo;
 import com.podo.helloprice.telegram.client.menu.AbstractMenuHandler;
@@ -26,7 +26,6 @@ public class ItemAddMenuHandler extends AbstractMenuHandler {
 
     private final DanawaCrawler danawaCrawler;
     private final TMessageCallbackFactory callbackFactory;
-    private final KeyboardManager km;
     private final ItemAddHandler itemAddHandler;
 
 
@@ -49,7 +48,7 @@ public class ItemAddMenuHandler extends AbstractMenuHandler {
 
         if (Objects.isNull(itemCodeFromUrl)) {
             log.info("{} << 링크에서 상품 코드를 찾을 수 없습니다. 받은메세지 '{}'", telegramId, requestMessage);
-            sender().send(tMessageVo.newMessage(ItemAddResponse.wrongItemUrl(url), km.getHomeKeyboard(itemCommands), callbackFactory.createDefault(telegramId, Menu.HOME)));
+            sender().send(tMessageVo.newMessage(ItemAddResponse.wrongItemUrl(url), Keyboard.getHomeKeyboard(itemCommands), callbackFactory.createDefault(telegramId, Menu.HOME)));
             return;
         }
 

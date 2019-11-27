@@ -1,13 +1,13 @@
 package com.podo.helloprice.telegram.client.menu.itemserachadd;
 
 import com.podo.helloprice.core.domain.user.Menu;
-import com.podo.helloprice.telegram.client.menu.KeyboardManager;
 import com.podo.helloprice.telegram.client.TMessageCallbackFactory;
 import com.podo.helloprice.telegram.client.TMessageVo;
-import com.podo.helloprice.telegram.client.menu.global.ItemCommandTranslator;
 import com.podo.helloprice.telegram.client.menu.AbstractMenuHandler;
-import com.podo.helloprice.telegram.client.menu.global.ItemAddHandler;
+import com.podo.helloprice.telegram.client.menu.Keyboard;
 import com.podo.helloprice.telegram.client.menu.global.CommonResponse;
+import com.podo.helloprice.telegram.client.menu.global.ItemAddHandler;
+import com.podo.helloprice.telegram.client.menu.global.ItemCommandTranslator;
 import com.podo.helloprice.telegram.domain.useritem.UserItemNotifyService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -29,24 +29,23 @@ public class ItemSearchAddMenuHandler extends AbstractMenuHandler {
     private final ItemAddHandler itemAddHandler;
     private final UserItemNotifyService userItemNotifyService;
     private final TMessageCallbackFactory callbackFactory;
-    private final KeyboardManager km;
 
     public void handle(TMessageVo tMessageVo, String requestMessage) {
 
-        final String telegramId = tMessageVo.getTelegramId() + "";
+        final String telegramId = tMessageVo.getTelegramId();
 
         log.info("{} << 상품 검색 추가 메뉴에서 응답, 받은메세지 '{}'", telegramId, requestMessage);
 
         final List<String> itemCommands = ItemCommandTranslator.getItemCommands(userItemNotifyService.findNotifyItemsByUserTelegramId(telegramId));
 
         if (requestMessage.length() < ItemSearchAddCommand.YES.getValue().length()) {
-            sender().send(tMessageVo.newMessage(CommonResponse.wrongInput(), km.getHomeKeyboard(itemCommands), callbackFactory.createDefault(telegramId, Menu.HOME)));
+            sender().send(tMessageVo.newMessage(CommonResponse.wrongInput(), Keyboard.getHomeKeyboard(itemCommands), callbackFactory.createDefault(telegramId, Menu.HOME)));
             return;
         }
 
         final ItemSearchAddCommand requestCommand = ItemSearchAddCommand.from(requestMessage.substring(0, ItemSearchAddCommand.COMMAND_LENGTH));
         if (Objects.isNull(requestCommand)) {
-            sender().send(tMessageVo.newMessage(CommonResponse.wrongInput(), km.getHomeKeyboard(itemCommands), callbackFactory.createDefault(telegramId, Menu.HOME)));
+            sender().send(tMessageVo.newMessage(CommonResponse.wrongInput(), Keyboard.getHomeKeyboard(itemCommands), callbackFactory.createDefault(telegramId, Menu.HOME)));
             return;
         }
 
@@ -61,7 +60,7 @@ public class ItemSearchAddMenuHandler extends AbstractMenuHandler {
                 itemAddHandler.handleItemAdd(tMessageVo, itemCode);
                 break;
             case NO:
-                sender().send(tMessageVo.newMessage(CommonResponse.toHome(), km.getHomeKeyboard(itemCommands), callbackFactory.createDefault(tMessageVo.getTelegramId() + "", Menu.HOME)));
+                sender().send(tMessageVo.newMessage(CommonResponse.toHome(), Keyboard.getHomeKeyboard(itemCommands), callbackFactory.createDefault(tMessageVo.getTelegramId(), Menu.HOME)));
         }
     }
 

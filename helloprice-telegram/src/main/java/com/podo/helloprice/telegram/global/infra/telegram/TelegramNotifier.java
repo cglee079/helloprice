@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 @Slf4j
 @RequiredArgsConstructor
 @Component
-public class MineTelegramNotifier {
+public class TelegramNotifier {
 
     @Value("${telegram.podo_helloprice.admin.id}")
     private String adminTelegramId;
@@ -23,7 +23,7 @@ public class MineTelegramNotifier {
         telegramApi.send(telegramId, image, response);
     }
 
-    public void notifyAdmin(String message) {
-        this.notifyUser(adminTelegramId, null, message);
+    public void notifyAdmin(String image, String message) {
+        this.notifyUser(adminTelegramId, image, message);
     }
 }

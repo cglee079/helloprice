@@ -1,7 +1,7 @@
 package com.podo.helloprice.telegram.job.notifier;
 
 import com.podo.helloprice.telegram.global.infra.gmail.GmailNotifier;
-import com.podo.helloprice.telegram.global.infra.telegram.MineTelegramNotifier;
+import com.podo.helloprice.telegram.global.infra.telegram.TelegramNotifier;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -15,7 +15,7 @@ import java.util.Objects;
 public class GlobalNotifier {
 
     private final GmailNotifier gmailNotifier;
-    private final MineTelegramNotifier mineTelegramNotifier;
+    private final TelegramNotifier telegramNotifier;
 
     public void notifyUsers(List<NotifyUserVo> notifyUsers, String title, String image, String contents) {
         for (NotifyUserVo notifyUser : notifyUsers) {
@@ -33,11 +33,15 @@ public class GlobalNotifier {
             gmailNotifier.notifyUser(username, notifyUser.getEmail(), title, image, contents);
         }
 
-        mineTelegramNotifier.notifyUser(telegramId, image, contents);
+        telegramNotifier.notifyUser(telegramId, image, contents);
+    }
+
+    public void notifyAdmin(String title, String image, String contents) {
+        //gmailNotifier.notifyAdmin(title, contents);
+        telegramNotifier.notifyAdmin(image, contents);
     }
 
     public void notifyAdmin(String title, String contents) {
-        gmailNotifier.notifyAdmin(title, contents);
-        mineTelegramNotifier.notifyAdmin(contents);
+        this.notifyAdmin(title, null, contents);
     }
 }

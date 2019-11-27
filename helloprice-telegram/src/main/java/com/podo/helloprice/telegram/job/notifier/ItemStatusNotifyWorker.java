@@ -6,6 +6,8 @@ import com.podo.helloprice.core.domain.user.UserStatus;
 import com.podo.helloprice.core.util.MyCalculateUtils;
 import com.podo.helloprice.telegram.domain.item.ItemDto;
 import com.podo.helloprice.telegram.domain.item.ItemService;
+import com.podo.helloprice.telegram.domain.notifylog.NotifyLogDto;
+import com.podo.helloprice.telegram.domain.notifylog.NotifyLogService;
 import com.podo.helloprice.telegram.domain.user.UserDto;
 import com.podo.helloprice.telegram.domain.useritem.UserItemNotifyService;
 import com.podo.helloprice.telegram.job.Worker;
@@ -37,6 +39,7 @@ public class ItemStatusNotifyWorker implements Worker {
 
     private final GlobalNotifier globalNotifier;
     private final ItemService itemService;
+    private final NotifyLogService notifyLogService;
     private final UserItemNotifyService userItemNotifyService;
 
     @Override
@@ -45,17 +48,19 @@ public class ItemStatusNotifyWorker implements Worker {
 
         final LocalDateTime now = LocalDateTime.now();
 
-        handleItemStatusUpdated(now);
+        handleItemUpdateStatusUpdated(now);
         handleItemStatusDead();
     }
 
-    private void handleItemStatusUpdated(LocalDateTime notifyAt) {
+    private void handleItemUpdateStatusUpdated(LocalDateTime notifyAt) {
         final List<ItemDto.detail> items = new ArrayList<>();
 
         items.addAll(itemService.findByStatusAndUpdateStatus(ItemStatus.ALIVE, ItemUpdateStatus.UPDATED));
         items.addAll(itemService.findByStatusAndUpdateStatus(ItemStatus.PAUSE, ItemUpdateStatus.UPDATED));
 
         for (ItemDto.detail item : items) {
+            logging(item);
+
             switch (item.getItemSaleStatus()) {
                 case DISCONTINUE:
                     handleDiscontinueItem(item);
@@ -97,6 +102,11 @@ public class ItemStatusNotifyWorker implements Worker {
         final double changePercent = MyCalculateUtils.getChangePercent(item.getItemPrice(), item.getItemBeforePrice());
 
         if ((Math.abs(changePercent) > 1) && (changePercent < 0)) {
+            //이스터에그
+            if(changePercent < -30){
+                globalNotifier.notifyAdmin(NotifyTitle.notifyItemSale(item), item.getItemImage(), NotifyContents.notifyItemSale(item));
+            }
+
             globalNotifier.notifyUsers(getNotifyUsersByItemId(item.getId()), NotifyTitle.notifyItemSale(item), item.getItemImage(), NotifyContents.notifyItemSale(item));
             userItemNotifyService.updateNotifiedAtByItemId(item.getId(), notifyAt);
             return;
@@ -160,6 +170,8 @@ public class ItemStatusNotifyWorker implements Worker {
         List<ItemDto.detail> items = itemService.findByStatusAndUpdateStatus(ItemStatus.DEAD, ItemUpdateStatus.UPDATED);
 
         for (ItemDto.detail item : items) {
+            logging(item);
+
             increaseDeadCount();
 
             log.info("{}({}) 상품은 페이지를 확인 할 수 없는 상태로 변경되었습니다.", item.getItemName(), item.getItemCode());
@@ -182,6 +194,12 @@ public class ItemStatusNotifyWorker implements Worker {
         }
 
     }
+
+    private void logging(ItemDto.detail item) {
+        notifyLogService.insertNewNotifyLog(NotifyLogDto.createByItem(item));
+    }
+
+
 
 
 }

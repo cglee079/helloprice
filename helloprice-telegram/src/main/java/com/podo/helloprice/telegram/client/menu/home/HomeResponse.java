@@ -31,7 +31,7 @@ public class HomeResponse {
                 .toString();
     }
 
-    public static String rejectEmailDelete() {
+    public static String dontHaveEmail() {
         return new StringBuilder()
                 .append("<b>등록되어있는 이메일이 없습니다.</b>\n")
                 .toString();

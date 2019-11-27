@@ -3,7 +3,7 @@ package com.podo.helloprice.telegram.client.menu.itemsearch;
 import com.podo.helloprice.core.domain.item.ItemSearchResultVo;
 import com.podo.helloprice.core.domain.user.Menu;
 import com.podo.helloprice.crawler.target.danawa.DanawaCrawler;
-import com.podo.helloprice.telegram.client.menu.KeyboardManager;
+import com.podo.helloprice.telegram.client.menu.Keyboard;
 import com.podo.helloprice.telegram.client.TMessageCallbackFactory;
 import com.podo.helloprice.telegram.client.TMessageVo;
 import com.podo.helloprice.telegram.client.menu.global.ItemCommandTranslator;
@@ -29,7 +29,6 @@ public class ItemSearchMenuHandler extends AbstractMenuHandler {
     private final UserItemNotifyService userItemNotifyService;
     private final DanawaCrawler danawaCrawler;
     private final TMessageCallbackFactory callbackFactory;
-    private final KeyboardManager km;
 
     @Override
     public Menu getHandleMenu() {
@@ -48,12 +47,12 @@ public class ItemSearchMenuHandler extends AbstractMenuHandler {
 
         if (itemSearchResults.isEmpty()) {
             final List<String> itemCommands = ItemCommandTranslator.getItemCommands(userItemNotifyService.findNotifyItemsByUserTelegramId(telegramId));
-            sender().send(tMessageVo.newMessage(ItemSearchResponse.noResult(), km.getHomeKeyboard(itemCommands), callbackFactory.createDefault(tMessageVo.getTelegramId() + "", Menu.HOME)));
+            sender().send(tMessageVo.newMessage(ItemSearchResponse.noResult(), Keyboard.getHomeKeyboard(itemCommands), callbackFactory.createDefault(tMessageVo.getTelegramId(), Menu.HOME)));
             return;
         }
 
         final List<String> itemSearchResultCommands = toItemSearchResultCommands(itemSearchResults);
-        final ReplyKeyboard itemSearchResultKeyboard = km.getItemSearchResultKeyboard(itemSearchResultCommands);
+        final ReplyKeyboard itemSearchResultKeyboard = Keyboard.getItemSearchResultKeyboard(itemSearchResultCommands);
         final SentCallback<Message> defaultCallback = callbackFactory.createDefault(telegramId, Menu.ITEM_SEARCH_RESULT);
         sender().send(tMessageVo.newMessage(ItemSearchResultResponse.explain(), itemSearchResultKeyboard, defaultCallback));
     }

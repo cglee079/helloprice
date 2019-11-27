@@ -4,7 +4,7 @@ import com.podo.helloprice.core.domain.user.Menu;
 import com.podo.helloprice.telegram.client.TMessageCallbackFactory;
 import com.podo.helloprice.telegram.client.TMessageVo;
 import com.podo.helloprice.telegram.client.menu.AbstractMenuHandler;
-import com.podo.helloprice.telegram.client.menu.KeyboardManager;
+import com.podo.helloprice.telegram.client.menu.Keyboard;
 import com.podo.helloprice.telegram.client.menu.global.ItemCommandTranslator;
 import com.podo.helloprice.telegram.domain.user.UserService;
 import com.podo.helloprice.telegram.domain.useritem.UserItemNotifyService;
@@ -26,7 +26,6 @@ public class EmailKeyMenuHandler extends AbstractMenuHandler {
     private final UserItemNotifyService userItemNotifyService;
     private final UserService userService;
     private final TMessageCallbackFactory callbackFactory;
-    private final KeyboardManager km;
 
     @Override
     public Menu getHandleMenu() {
@@ -47,14 +46,14 @@ public class EmailKeyMenuHandler extends AbstractMenuHandler {
 
         if (Objects.isNull(email)) {
             log.info("{} << 키 값이 잘못되었습니다. 받은메세지 '{}'", telegramId, emailKey);
-            sender().send(tMessageVo.newMessage(EmailKeyResponse.invalidKey(), km.getHomeKeyboard(itemCommands), callbackFactory.createDefault(telegramId, Menu.HOME)));
+            sender().send(tMessageVo.newMessage(EmailKeyResponse.invalidKey(), Keyboard.getHomeKeyboard(itemCommands), callbackFactory.createDefault(telegramId, Menu.HOME)));
             return;
         }
 
 
         log.info("{} << 이메일이 인증되었습니다. 받은메세지 '{}'", telegramId, emailKey);
         userService.updateEmailByTelegramId(telegramId, email);
-        sender().send(tMessageVo.newMessage(EmailKeyResponse.success(), km.getHomeKeyboard(itemCommands), callbackFactory.createDefault(telegramId, Menu.HOME)));
+        sender().send(tMessageVo.newMessage(EmailKeyResponse.success(), Keyboard.getHomeKeyboard(itemCommands), callbackFactory.createDefault(telegramId, Menu.HOME)));
 
     }
 

@@ -3,7 +3,7 @@ package com.podo.helloprice.telegram.client.menu.itemsearchresult;
 import com.podo.helloprice.core.domain.item.CrawledItemVo;
 import com.podo.helloprice.core.domain.user.Menu;
 import com.podo.helloprice.crawler.target.danawa.DanawaCrawler;
-import com.podo.helloprice.telegram.client.menu.KeyboardManager;
+import com.podo.helloprice.telegram.client.menu.Keyboard;
 import com.podo.helloprice.telegram.client.TMessageCallbackFactory;
 import com.podo.helloprice.telegram.client.TMessageVo;
 import com.podo.helloprice.telegram.client.menu.global.ItemCommandTranslator;
@@ -31,7 +31,6 @@ public class ItemSearchResultMenuHandler extends AbstractMenuHandler {
     private final DanawaCrawler danawaCrawler;
     private final UserItemNotifyService userItemNotifyService;
     private final TMessageCallbackFactory callbackFactory;
-    private final KeyboardManager km;
 
     public void handle(TMessageVo tMessageVo, String requestMessage) {
         final String telegramId = tMessageVo.getTelegramId();
@@ -48,7 +47,7 @@ public class ItemSearchResultMenuHandler extends AbstractMenuHandler {
         final String itemCode = ItemCommandTranslator.getItemCodeFromCommand(requestMessage);
         if (Objects.isNull(itemCode)) {
             log.info("{} << 응답 할 수 없는 메세지 입니다 받은메세지 '{}'", telegramId, requestMessage);
-            sender().send(tMessageVo.newMessage(CommonResponse.wrongInput(), km.getHomeKeyboard(itemCommands), callbackFactory.createDefault(telegramId, Menu.HOME)));
+            sender().send(tMessageVo.newMessage(CommonResponse.wrongInput(), Keyboard.getHomeKeyboard(itemCommands), callbackFactory.createDefault(telegramId, Menu.HOME)));
             return;
         }
 
@@ -59,7 +58,7 @@ public class ItemSearchResultMenuHandler extends AbstractMenuHandler {
     private void handleCommand(ItemSearchResultCommand requestCommand, TMessageVo tMessageVo, List<String> itemCommands) {
         switch (requestCommand) {
             case EXIT:
-                sender().send(tMessageVo.newMessage(CommonResponse.toHome(), km.getHomeKeyboard(itemCommands), callbackFactory.createDefault(tMessageVo.getTelegramId() + "", Menu.HOME)));
+                sender().send(tMessageVo.newMessage(CommonResponse.toHome(), Keyboard.getHomeKeyboard(itemCommands), callbackFactory.createDefault(tMessageVo.getTelegramId(), Menu.HOME)));
         }
     }
 
@@ -70,11 +69,11 @@ public class ItemSearchResultMenuHandler extends AbstractMenuHandler {
 
         final CrawledItemVo crawledItemVo = danawaCrawler.crawlItem(itemCode);
         if (Objects.isNull(crawledItemVo)) {
-            sender().send(tMessageVo.newMessage(ItemSearchAddResponse.failPoolItem(), km.getHomeKeyboard(itemCommands), callbackFactory.createDefault(tMessageVo.getTelegramId() + "", Menu.HOME)));
+            sender().send(tMessageVo.newMessage(ItemSearchAddResponse.failPoolItem(), Keyboard.getHomeKeyboard(itemCommands), callbackFactory.createDefault(tMessageVo.getTelegramId(), Menu.HOME)));
             return;
         }
 
-        sender().send(tMessageVo.newMessage(CommonResponse.descCrawledItemVo(crawledItemVo), crawledItemVo.getItemImage(), km.getItemSearchAddKeyboard(itemCode), callbackFactory.createDefault(telegramId, Menu.ITEM_SEARCH_ADD)));
+        sender().send(tMessageVo.newMessage(CommonResponse.descCrawledItemVo(crawledItemVo), crawledItemVo.getItemImage(), Keyboard.getItemSearchAddKeyboard(itemCode), callbackFactory.createDefault(telegramId, Menu.ITEM_SEARCH_ADD)));
         sender().send(tMessageVo.newMessage(ItemSearchAddResponse.explain(), null, null, callbackFactory.createDefaultNoAction(telegramId)));
     }
 

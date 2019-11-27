@@ -4,7 +4,7 @@ import com.podo.helloprice.core.domain.user.Menu;
 import com.podo.helloprice.telegram.client.TMessageCallbackFactory;
 import com.podo.helloprice.telegram.client.TMessageVo;
 import com.podo.helloprice.telegram.client.menu.AbstractMenuHandler;
-import com.podo.helloprice.telegram.client.menu.KeyboardManager;
+import com.podo.helloprice.telegram.client.menu.Keyboard;
 import com.podo.helloprice.telegram.client.menu.global.ItemCommandTranslator;
 import com.podo.helloprice.telegram.domain.user.UserService;
 import com.podo.helloprice.telegram.domain.useritem.UserItemNotifyService;
@@ -29,7 +29,6 @@ public class EmailDeleteMenuHandler extends AbstractMenuHandler {
     private final UserService userService;
     private final UserItemNotifyService userItemNotifyService;
     private final TMessageCallbackFactory callbackFactory;
-    private final KeyboardManager km;
 
     public void handle(TMessageVo tMessageVo, String requestMessage) {
 
@@ -41,7 +40,7 @@ public class EmailDeleteMenuHandler extends AbstractMenuHandler {
 
         final EmailDeleteCommand requestCommand = EmailDeleteCommand.from(requestMessage);
         if (Objects.isNull(requestCommand)) {
-            sender().send(tMessageVo.newMessage(CommonResponse.wrongInput(), km.getHomeKeyboard(itemCommands), callbackFactory.createDefault(telegramId, Menu.HOME)));
+            sender().send(tMessageVo.newMessage(CommonResponse.wrongInput(), Keyboard.getHomeKeyboard(itemCommands), callbackFactory.createDefault(telegramId, Menu.HOME)));
             return;
         }
 
@@ -54,16 +53,16 @@ public class EmailDeleteMenuHandler extends AbstractMenuHandler {
                 handleYesCommand(tMessageVo, itemCommands);
                 break;
             case NO:
-                sender().send(tMessageVo.newMessage(CommonResponse.toHome(), km.getHomeKeyboard(itemCommands), callbackFactory.createDefault(tMessageVo.getTelegramId() + "", Menu.HOME)));
+                sender().send(tMessageVo.newMessage(CommonResponse.toHome(), Keyboard.getHomeKeyboard(itemCommands), callbackFactory.createDefault(tMessageVo.getTelegramId(), Menu.HOME)));
         }
     }
 
     private void handleYesCommand(TMessageVo tMessageVo, List<String> itemCommands) {
-        final String telegramId = tMessageVo.getTelegramId() + "";
+        final String telegramId = tMessageVo.getTelegramId();
 
         userService.updateEmailByTelegramId(telegramId, null);
 
-        sender().send(tMessageVo.newMessage(EmailDeleteResponse.success(), km.getHomeKeyboard(itemCommands), callbackFactory.createDefault(tMessageVo.getTelegramId() + "", Menu.HOME)));
+        sender().send(tMessageVo.newMessage(EmailDeleteResponse.success(), Keyboard.getHomeKeyboard(itemCommands), callbackFactory.createDefault(tMessageVo.getTelegramId(), Menu.HOME)));
     }
 
 }

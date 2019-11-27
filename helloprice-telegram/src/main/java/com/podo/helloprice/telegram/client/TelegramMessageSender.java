@@ -49,7 +49,7 @@ public class TelegramMessageSender {
 
 
     private void sendMessage(TMessageVo tMessageVo, Boolean enabledWebPreview) {
-        final String telegramId = tMessageVo.getTelegramId() + "";
+        final String telegramId = tMessageVo.getTelegramId();
         final SendMessage sendMessage = new SendMessage(tMessageVo.getTelegramId(), tMessageVo.getMessage());
 
         sendMessage.setReplyMarkup(tMessageVo.getKeyboard());
