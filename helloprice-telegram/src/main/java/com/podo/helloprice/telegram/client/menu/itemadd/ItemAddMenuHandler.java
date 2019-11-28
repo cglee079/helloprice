@@ -1,6 +1,6 @@
 package com.podo.helloprice.telegram.client.menu.itemadd;
 
-import com.podo.helloprice.core.domain.user.Menu;
+import com.podo.helloprice.core.domain.model.Menu;
 import com.podo.helloprice.crawler.target.danawa.DanawaCrawler;
 import com.podo.helloprice.telegram.client.menu.Keyboard;
 import com.podo.helloprice.telegram.client.TMessageCallbackFactory;
@@ -43,12 +43,12 @@ public class ItemAddMenuHandler extends AbstractMenuHandler {
 
         final List<String> itemCommands = ItemCommandTranslator.getItemCommands(userItemNotifyService.findNotifyItemsByUserTelegramId(telegramId));
 
-        final String url = requestMessage;
-        final String itemCodeFromUrl = danawaCrawler.getItemCodeFromUrl(url);
+        final String requestUrl = requestMessage;
+        final String itemCodeFromUrl = danawaCrawler.getItemCodeFromUrl(requestUrl);
 
         if (Objects.isNull(itemCodeFromUrl)) {
             log.info("{} << 링크에서 상품 코드를 찾을 수 없습니다. 받은메세지 '{}'", telegramId, requestMessage);
-            sender().send(tMessageVo.newMessage(ItemAddResponse.wrongItemUrl(url), Keyboard.getHomeKeyboard(itemCommands), callbackFactory.createDefault(telegramId, Menu.HOME)));
+            sender().send(tMessageVo.newMessage(ItemAddResponse.wrongItemUrl(requestUrl), Keyboard.getHomeKeyboard(itemCommands), callbackFactory.createDefault(telegramId, Menu.HOME)));
             return;
         }
 

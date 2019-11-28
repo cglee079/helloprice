@@ -46,13 +46,13 @@ public class EmailKeyStore {
     }
 
     private String getNewKey() {
-        final String key = String.format("%06d", MyNumberUtils.getRandomInt(999999));
+        final String newKey = String.format("%06d", MyNumberUtils.getRandomInt(999999));
 
-        if (keyStoreTimes.containsKey(key)) {
+        if (keyStoreTimes.containsKey(newKey)) {
             return getNewKey();
         }
 
-        return key;
+        return newKey;
     }
 
     public String certifyKey(String key, LocalDateTime now) {

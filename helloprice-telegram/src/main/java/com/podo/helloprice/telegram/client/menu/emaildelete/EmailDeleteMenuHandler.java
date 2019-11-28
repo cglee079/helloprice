@@ -1,6 +1,6 @@
 package com.podo.helloprice.telegram.client.menu.emaildelete;
 
-import com.podo.helloprice.core.domain.user.Menu;
+import com.podo.helloprice.core.domain.model.Menu;
 import com.podo.helloprice.telegram.client.TMessageCallbackFactory;
 import com.podo.helloprice.telegram.client.TMessageVo;
 import com.podo.helloprice.telegram.client.menu.AbstractMenuHandler;
@@ -23,7 +23,7 @@ public class EmailDeleteMenuHandler extends AbstractMenuHandler {
 
     @Override
     public Menu getHandleMenu() {
-        return Menu.EMAILL_DELETE;
+        return Menu.EMAIL_DELETE;
     }
 
     private final UserService userService;
@@ -44,10 +44,10 @@ public class EmailDeleteMenuHandler extends AbstractMenuHandler {
             return;
         }
 
-        handleCommand(requestCommand, tMessageVo, itemCommands);
+        handleEmailDeleteCommand(requestCommand, tMessageVo, itemCommands);
     }
 
-    private void handleCommand(EmailDeleteCommand requestCommand, TMessageVo tMessageVo, List<String> itemCommands) {
+    private void handleEmailDeleteCommand(EmailDeleteCommand requestCommand, TMessageVo tMessageVo, List<String> itemCommands) {
         switch (requestCommand) {
             case YES:
                 handleYesCommand(tMessageVo, itemCommands);

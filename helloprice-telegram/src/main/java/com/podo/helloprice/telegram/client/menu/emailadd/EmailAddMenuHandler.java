@@ -1,6 +1,6 @@
 package com.podo.helloprice.telegram.client.menu.emailadd;
 
-import com.podo.helloprice.core.domain.user.Menu;
+import com.podo.helloprice.core.domain.model.Menu;
 import com.podo.helloprice.telegram.client.TMessageCallbackFactory;
 import com.podo.helloprice.telegram.client.TMessageVo;
 import com.podo.helloprice.telegram.client.menu.AbstractMenuHandler;
@@ -38,10 +38,10 @@ public class EmailAddMenuHandler extends AbstractMenuHandler {
 
     public void handle(TMessageVo tMessageVo, String requestMessage) {
         final String telegramId = tMessageVo.getTelegramId();
+        final String email = requestMessage;
 
         log.info("{} << 이메일 추가 메뉴에서 응답, 받은메세지 '{}'", telegramId, requestMessage);
 
-        final String email = requestMessage;
 
         if (!EmailValidator.getInstance().isValid(email)) {
             log.info("{} << 이메일 형식이 아닙니다, 받은메세지 '{}'", telegramId, requestMessage);
@@ -50,14 +50,20 @@ public class EmailAddMenuHandler extends AbstractMenuHandler {
             return;
         }
 
-        final UserDto.detail user = userService.findByTelegramId(telegramId);
+        handleEmailAdd(tMessageVo, email);
+    }
+
+    private void handleEmailAdd(TMessageVo tMessageVo, String email) {
+        final String telegramId = tMessageVo.getTelegramId();
+
+        final UserDto.detail existedUser = userService.findByTelegramId(telegramId);
 
         final String key = emailKeyStore.createKey(email);
         final String title = "이메일 인증을 해주세요!";
         final String content = "KEY : " + key;
 
         log.info("{} << 이메일로 KEY를 전송합니다, 이메일 '{}', KEY '{}'", telegramId, email, key);
-        gmailClient.sendEmail(user.getUsername(), email, title, content);
+        gmailClient.sendEmail(existedUser.getUsername(), email, title, content);
         sender().send(tMessageVo.newMessage(EmailKeyResponse.explain(), Keyboard.getDefaultKeyboard(), callbackFactory.createDefault(telegramId, Menu.EMAIL_KEY)));
     }
 

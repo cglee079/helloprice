@@ -7,9 +7,9 @@ import org.telegram.telegrambots.meta.exceptions.TelegramApiRequestException;
 import java.util.List;
 
 @Configuration
-public class TelegramRegister {
+public class TelegramBotRegisterConfig {
 
-    public TelegramRegister(List<TelegramBot> telegramBots) throws TelegramApiRequestException {
+    public TelegramBotRegisterConfig(List<TelegramBot> telegramBots) throws TelegramApiRequestException {
         final TelegramBotsApi api = new TelegramBotsApi();
 
         for (TelegramBot telegramBot : telegramBots) {

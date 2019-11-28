@@ -108,11 +108,11 @@ public class UserItemNotifyService {
                 .collect(Collectors.toList());
     }
 
-    public void updateNotifiedAtByItemId(Long itemId, LocalDateTime notifyAt) {
+    public void updateNotifiedAtByItemId(Long itemId, LocalDateTime notifiedAt) {
         final List<UserItemNotify> existedUserItemNotifies = userItemNotifyRepository.findByItemId(itemId);
 
         for (UserItemNotify userItemNotify : existedUserItemNotifies) {
-            userItemNotify.updateNotifiedAt(notifyAt);
+            userItemNotify.updateNotifiedAt(notifiedAt);
         }
     }
 }

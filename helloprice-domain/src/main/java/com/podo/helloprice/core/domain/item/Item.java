@@ -87,9 +87,12 @@ public class Item extends UpdatableBaseEntity {
         this.itemPrice = crawledItemVo.getItemPrice();
         this.lastCrawledAt = lastPoolAt;
         this.itemSaleStatus = crawledItemVo.getItemSaleStatus();
-
         this.deadCount = 0;
 
+        defineValueByItemSaleStatus(existPrice, lastPoolAt);
+    }
+
+    private void defineValueByItemSaleStatus(Integer existPrice, LocalDateTime lastPoolAt) {
         switch (itemSaleStatus) {
             case UNKNOWN:
             case DISCONTINUE:

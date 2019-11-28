@@ -1,6 +1,7 @@
 package com.podo.helloprice.core.domain.user;
 
 import com.podo.helloprice.core.domain.UpdatableBaseEntity;
+import com.podo.helloprice.core.domain.model.Menu;
 import com.podo.helloprice.core.domain.useritem.UserItemNotify;
 import lombok.AccessLevel;
 import lombok.Builder;

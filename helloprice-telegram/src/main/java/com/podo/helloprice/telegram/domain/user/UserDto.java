@@ -1,6 +1,6 @@
 package com.podo.helloprice.telegram.domain.user;
 
-import com.podo.helloprice.core.domain.user.Menu;
+import com.podo.helloprice.core.domain.model.Menu;
 import com.podo.helloprice.core.domain.user.User;
 import com.podo.helloprice.core.domain.user.UserStatus;
 import lombok.Builder;

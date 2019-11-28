@@ -1,6 +1,6 @@
 package com.podo.helloprice.telegram.client.menu.home;
 
-import com.podo.helloprice.core.domain.user.Menu;
+import com.podo.helloprice.core.domain.model.Menu;
 import com.podo.helloprice.crawler.target.danawa.DanawaCrawlConfig;
 import com.podo.helloprice.telegram.client.menu.emailadd.EmailAddResponse;
 import com.podo.helloprice.telegram.client.menu.emaildelete.EmailDeleteResponse;
@@ -147,6 +147,6 @@ public class HomeMenuHandler extends AbstractMenuHandler {
         }
 
         log.info("{} << 이메일 삭제 메뉴로 이동", telegramId);
-        sender().send(tMessageVo.newMessage(EmailDeleteResponse.explain(userEmail), Keyboard.getEmailDeleteKeyboard(), callbackFactory.createDefault(telegramId, Menu.EMAILL_DELETE)));
+        sender().send(tMessageVo.newMessage(EmailDeleteResponse.explain(userEmail), Keyboard.getEmailDeleteKeyboard(), callbackFactory.createDefault(telegramId, Menu.EMAIL_DELETE)));
     }
 }

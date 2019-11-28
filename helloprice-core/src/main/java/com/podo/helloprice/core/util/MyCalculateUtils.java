@@ -6,18 +6,16 @@ public class MyCalculateUtils {
 
     public static Double getChangePercent(double a, double b) {
 
-        double percent;
-
-        if (b == 0) {
-            percent = 100;
-        } else if (a == 0) {
-            percent = -100;
-        } else {
-            double gap = a - b;
-            percent = (gap / b) * 100;
+        if (Double.compare(b, 0) == 0) {
+            return 100.0;
         }
 
-        return percent;
+        if (Double.compare(a, 0) == 0) {
+            return -100.0;
+        }
+
+        double gap = a - b;
+        return (gap / b) * 100;
     }
 
     public static String getPercentStringWithPlusMinusSign(double a, double b) {
@@ -29,7 +27,6 @@ public class MyCalculateUtils {
             prefix = "+";
         }
 
-        DecimalFormat df = new DecimalFormat("#.##");
-        return prefix + df.format(percent) + "%";
+        return prefix + new DecimalFormat("#.##").format(percent) + "%";
     }
 }

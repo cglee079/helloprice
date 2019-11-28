@@ -10,11 +10,11 @@ public class MyNumberUtils {
         return rand.nextInt(size);
     }
 
-    public static boolean isInteger(String integerString) {
+    public static boolean isInteger(String strOfInteger) {
         try {
-            Integer.parseInt(integerString);
+            Integer.parseInt(strOfInteger);
             return true;
-        } catch (NumberFormatException ex) {
+        } catch (NumberFormatException e) {
             return false;
         }
     }

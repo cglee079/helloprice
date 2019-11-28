@@ -84,11 +84,7 @@ public class DanawaCrawler implements Crawler {
 
             ItemSaleStatus itemSaleStatus;
 
-            if (itemPrice != 0) {
-                itemSaleStatus = ItemSaleStatus.SALE;
-            } else {
-                itemSaleStatus = getItemSaleStatusByCrawledSaleStatusText(itemSaleStatusText);
-            }
+            itemSaleStatus = getItemSaleStatus(itemPrice, itemSaleStatusText);
 
             if (StringUtils.isEmpty(itemName)) {
                 return null;
@@ -108,6 +104,14 @@ public class DanawaCrawler implements Crawler {
             log.error(e.getMessage());
             return null;
         }
+    }
+
+    private ItemSaleStatus getItemSaleStatus(Integer itemPrice, String itemSaleStatusText) {
+        if (itemPrice != 0) {
+            return ItemSaleStatus.SALE;
+        }
+
+        return getItemSaleStatusByCrawledSaleStatusText(itemSaleStatusText);
     }
 
     private ItemSaleStatus getItemSaleStatusByCrawledSaleStatusText(String itemSaleStatusStr) {
@@ -168,7 +172,7 @@ public class DanawaCrawler implements Crawler {
 
         log.info("CRAWL URL : {}", crawlUrl);
 
-        Document document = getDocumentByDelayDocumentLoader(crawlUrl);
+        final Document document = getDocumentByDelayDocumentLoader(crawlUrl);
         if (Objects.isNull(document)) {
             log.error("상품 검색 페이지를 가져올 수 없습니다");
             return Collections.emptyList();
@@ -176,7 +180,7 @@ public class DanawaCrawler implements Crawler {
 
 
         final Elements itemSearchResultElements = document.select(SearchPage.SEARCH_ITEM_LIST_SELECTOR);
-        final List<ItemSearchResultVo> itemSearchResults = getItemSearchResultsFromSearchItemResultElements(itemSearchResultElements);
+        final List<ItemSearchResultVo> itemSearchResults = getItemSearchResultsFromElements(itemSearchResultElements);
 
         return itemSearchResults;
     }
@@ -190,13 +194,12 @@ public class DanawaCrawler implements Crawler {
         }
     }
 
-    private List<ItemSearchResultVo> getItemSearchResultsFromSearchItemResultElements(Elements items) {
+    private List<ItemSearchResultVo> getItemSearchResultsFromElements(Elements items) {
         final List<ItemSearchResultVo> itemSearchInfos = new ArrayList<>();
         for (Element item : items) {
             final String itemUrl = item.select(SearchPage.SEARCH_ITEM_URL_SELECTOR).attr("href");
             final String itemName = item.select(SearchPage.SEARCH_ITEM_NAME_SELECTOR).text();
             final String itemPriceDesc = getSearchItemPriceDesc(item.select(SearchPage.SEARCH_ITEM_PRICE_SELECTOR).text());
-
             final String itemCode = getItemCodeFromUrl(itemUrl);
             final String itemDesc = itemName + " [" + itemPriceDesc + "]";
             final ItemSearchResultVo itemSearchResultVo = new ItemSearchResultVo(itemCode, itemDesc);

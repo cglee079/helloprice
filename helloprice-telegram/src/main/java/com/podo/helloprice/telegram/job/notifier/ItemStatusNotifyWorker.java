@@ -59,36 +59,30 @@ public class ItemStatusNotifyWorker implements Worker {
         items.addAll(itemService.findByStatusAndUpdateStatus(ItemStatus.PAUSE, ItemUpdateStatus.UPDATED));
 
         for (ItemDto.detail item : items) {
-            logging(item);
-
-            switch (item.getItemSaleStatus()) {
-                case DISCONTINUE:
-                    handleDiscontinueItem(item);
-                    break;
-                case UNKNOWN:
-                    handleUnknownItem(item);
-                    break;
-                case EMPTY_AMOUNT:
-                    handleEmptyAmount(item, notifyAt);
-                    break;
-                case NOT_SUPPORT:
-                    handleNotSupport(item);
-                    break;
-                case SALE:
-                    handleSale(item, notifyAt);
-                    break;
-            }
-
+            handleByItemSaleStatus(notifyAt, item);
             itemService.notifiedItem(item.getId());
         }
 
     }
 
-    private List<NotifyUserVo> getNotifyUsersByItemId(Long itemId) {
-        final List<UserDto.detail> users = userItemNotifyService.findNotifyUsersByItemIdAndUserStatus(itemId, UserStatus.ALIVE);
-        return users.stream()
-                .map(user -> new NotifyUserVo(user.getUsername(), user.getEmail(), user.getTelegramId()))
-                .collect(toList());
+    private void handleByItemSaleStatus(LocalDateTime notifyAt, ItemDto.detail item) {
+        switch (item.getItemSaleStatus()) {
+            case DISCONTINUE:
+                handleDiscontinueItem(item);
+                break;
+            case UNKNOWN:
+                handleUnknownItem(item);
+                break;
+            case EMPTY_AMOUNT:
+                handleEmptyAmount(item, notifyAt);
+                break;
+            case NOT_SUPPORT:
+                handleNotSupport(item);
+                break;
+            case SALE:
+                handleSale(item, notifyAt);
+                break;
+        }
     }
 
     private void handleSale(ItemDto.detail item, LocalDateTime notifyAt) {
@@ -102,13 +96,13 @@ public class ItemStatusNotifyWorker implements Worker {
         final double changePercent = MyCalculateUtils.getChangePercent(item.getItemPrice(), item.getItemBeforePrice());
 
         if ((Math.abs(changePercent) > 1) && (changePercent < 0)) {
-            //이스터에그
-            if(changePercent < -30){
+            logging(item);
+
+            if (changePercent < -30) { //이스터에그
                 globalNotifier.notifyAdmin(NotifyTitle.notifyItemSale(item), item.getItemImage(), NotifyContents.notifyItemSale(item));
             }
 
-            globalNotifier.notifyUsers(getNotifyUsersByItemId(item.getId()), NotifyTitle.notifyItemSale(item), item.getItemImage(), NotifyContents.notifyItemSale(item));
-            userItemNotifyService.updateNotifiedAtByItemId(item.getId(), notifyAt);
+            notify(item, NotifyTitle.notifyItemSale(item), NotifyContents.notifyItemSale(item), notifyAt);
             return;
         }
 
@@ -116,43 +110,36 @@ public class ItemStatusNotifyWorker implements Worker {
     }
 
     private void handleResale(ItemDto.detail item, LocalDateTime notifyAt) {
+        logging(item);
         log.info("{}({}) 상품은 이전가가 0원이고, 다시 판매를 시작했습니다", item.getItemName(), item.getItemCode());
-        globalNotifier.notifyUsers(getNotifyUsersByItemId(item.getId()), NotifyTitle.notifyItemReSale(item), item.getItemImage(), NotifyContents.notifyItemResale(item));
-        userItemNotifyService.updateNotifiedAtByItemId(item.getId(), notifyAt);
+        notify(item, NotifyTitle.notifyItemReSale(item), NotifyContents.notifyItemResale(item), notifyAt);
     }
 
 
     private void handleEmptyAmount(ItemDto.detail item, LocalDateTime notifyAt) {
+        logging(item);
         log.info("{}({}) 상품은 재고없음 상태로 변경되었습니다.", item.getItemName(), item.getItemCode());
-        globalNotifier.notifyUsers(getNotifyUsersByItemId(item.getId()), NotifyTitle.notifyItemEmptyAccount(item), item.getItemImage(), NotifyContents.notifyItemEmptyAccount(item));
-        userItemNotifyService.updateNotifiedAtByItemId(item.getId(), notifyAt);
+        notify(item, NotifyTitle.notifyItemEmptyAccount(item), NotifyContents.notifyItemEmptyAccount(item), notifyAt);
     }
 
-
     private void handleNotSupport(ItemDto.detail item) {
+        logging(item);
         log.info("{}({}) 상품은 가격격비교중지 상태로 변경되었습니다.", item.getItemName(), item.getItemCode());
-
-        globalNotifier.notifyUsers(getNotifyUsersByItemId(item.getId()), NotifyTitle.notifyItemNotSupport(item), item.getItemImage(), NotifyContents.notifyItemNotSupport(item));
-
-        userItemNotifyService.deleteNotifiesByItemId(item.getId());
+        notifyAndRemoveNotify(item, NotifyTitle.notifyItemNotSupport(item), NotifyContents.notifyItemNotSupport(item));
     }
 
     private void handleUnknownItem(ItemDto.detail item) {
+        logging(item);
         log.info("{}({}) 상품은 알 수 없는 상태로 변경되었습니다.", item.getItemName(), item.getItemCode());
-
         increaseUnknownCount();
-
-        globalNotifier.notifyUsers(getNotifyUsersByItemId(item.getId()), NotifyTitle.notifyItemUnknown(item), item.getItemImage(), NotifyContents.notifyItemUnknown(item));
-
-        userItemNotifyService.deleteNotifiesByItemId(item.getId());
+        notifyAndRemoveNotify(item, NotifyTitle.notifyItemUnknown(item), NotifyContents.notifyItemUnknown(item));
     }
 
     private void handleDiscontinueItem(ItemDto.detail item) {
+        logging(item);
         log.info("{}({}) 상품은 단종 상태로 변경되었습니다.", item.getItemName(), item.getItemCode());
 
-        globalNotifier.notifyUsers(getNotifyUsersByItemId(item.getId()), NotifyTitle.notifyItemDiscontinued(item), item.getItemImage(), NotifyContents.notifyItemDiscontinued(item));
-
-        userItemNotifyService.deleteNotifiesByItemId(item.getId());
+        notifyAndRemoveNotify(item, NotifyTitle.notifyItemDiscontinued(item), NotifyContents.notifyItemDiscontinued(item));
     }
 
     private void increaseUnknownCount() {
@@ -176,9 +163,7 @@ public class ItemStatusNotifyWorker implements Worker {
 
             log.info("{}({}) 상품은 페이지를 확인 할 수 없는 상태로 변경되었습니다.", item.getItemName(), item.getItemCode());
 
-            globalNotifier.notifyUsers(getNotifyUsersByItemId(item.getId()), NotifyTitle.notifyItemDead(item), item.getItemImage(), NotifyContents.notifyItemDead(item));
-
-            userItemNotifyService.deleteNotifiesByItemId(item.getId());
+            notifyAndRemoveNotify(item, NotifyTitle.notifyItemDead(item), NotifyContents.notifyItemDead(item));
 
             itemService.notifiedItem(item.getId());
         }
@@ -195,11 +180,27 @@ public class ItemStatusNotifyWorker implements Worker {
 
     }
 
-    private void logging(ItemDto.detail item) {
-        notifyLogService.insertNewNotifyLog(NotifyLogDto.createByItem(item));
+    private void notify(ItemDto.detail item, String title, String contents, LocalDateTime notifiedAt) {
+        globalNotifier.notifyUsers(getNotifyUsersByItemId(item.getId()), title, item.getItemImage(), contents);
+        userItemNotifyService.updateNotifiedAtByItemId(item.getId(), notifiedAt);
     }
 
 
+    private void notifyAndRemoveNotify(ItemDto.detail item, String title, String contents) {
+        globalNotifier.notifyUsers(getNotifyUsersByItemId(item.getId()), title, item.getItemImage(), contents);
+        userItemNotifyService.deleteNotifiesByItemId(item.getId());
+    }
+
+    private List<NotifyUserVo> getNotifyUsersByItemId(Long itemId) {
+        final List<UserDto.detail> users = userItemNotifyService.findNotifyUsersByItemIdAndUserStatus(itemId, UserStatus.ALIVE);
+        return users.stream()
+                .map(user -> new NotifyUserVo(user.getUsername(), user.getEmail(), user.getTelegramId()))
+                .collect(toList());
+    }
+
+    private void logging(ItemDto.detail item) {
+        notifyLogService.insertNewNotifyLog(NotifyLogDto.createByItem(item));
+    }
 
 
 }

@@ -1,6 +1,6 @@
 package com.podo.helloprice.telegram.client;
 
-import com.podo.helloprice.core.domain.user.Menu;
+import com.podo.helloprice.core.domain.model.Menu;
 import com.podo.helloprice.telegram.domain.user.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -27,8 +27,7 @@ public class TMessageCallbackFactory {
         return new SentCallback<Message>() {
             @Override
             public void onResult(BotApiMethod<Message> method, Message response) {
-                //log.info("RESULT : " + Thread.currentThread());
-                if (!Objects.isNull(menu)) {
+                if (Objects.nonNull(menu)) {
                     userService.updateMenuStatusByTelegramId(telegramId, menu);
                 }
                 userService.clearUserErrorCountByTelegramId(telegramId);

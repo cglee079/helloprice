@@ -4,13 +4,13 @@ package com.podo.helloprice.core.util;
 
 public class MyCurrencyUtils {
 
-    private static final DecimalFormat df = new DecimalFormat("#,###");
+    private static final DecimalFormat CURRENCY_FORMAT = new DecimalFormat("#,###");
 
     public static String toKrw(double krw) {
-        df.setMinimumFractionDigits(0);
-        df.setMaximumFractionDigits(0);
-        df.setPositiveSuffix("원");
-        df.setNegativeSuffix("원");
-        return df.format(krw);
+        CURRENCY_FORMAT.setMinimumFractionDigits(0);
+        CURRENCY_FORMAT.setMaximumFractionDigits(0);
+        CURRENCY_FORMAT.setPositiveSuffix("원");
+        CURRENCY_FORMAT.setNegativeSuffix("원");
+        return CURRENCY_FORMAT.format(krw);
     }
 }

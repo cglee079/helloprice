@@ -23,14 +23,10 @@ public class ItemSearchResultVo {
             return false;
         }
 
-        if (StringUtils.isEmpty(itemDesc)) {
-            return false;
-        }
-
         if (!MyNumberUtils.isInteger(itemCode)) {
             return false;
         }
 
-        return true;
+        return !StringUtils.isEmpty(itemDesc);
     }
 }
