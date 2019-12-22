@@ -9,10 +9,7 @@ public class HomeResponse {
         return new StringBuilder()
                 .append("현재 상품정보는 다음과 같습니다\n")
                 .append("\n")
-                .append(CommonResponse.descItemDetail(itemDetail))
-                .append("\n")
-                .append("\n")
-                .append(CommonResponse.descItemChange(itemDetail))
+                .append(CommonResponse.descItemDetailWithChangeMessage(itemDetail))
                 .toString();
     }
 

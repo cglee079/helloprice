@@ -58,7 +58,7 @@ public class EmailAddMenuHandler extends AbstractMenuHandler {
 
         final UserDto.detail existedUser = userService.findByTelegramId(telegramId);
 
-        final String key = emailKeyStore.createKey(email);
+        final String key = emailKeyStore.createAuthKey(email);
         final String title = "이메일 인증을 해주세요!";
         final String content = "KEY : " + key;
 

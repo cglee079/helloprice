@@ -13,10 +13,7 @@ public class NotifyContents {
                 .append("더 이상 해당 상품은 알림이 전송되지 않습니다\n")
                 .append("</b>")
                 .append("\n")
-                .append(CommonResponse.descItemDetail(itemDetail))
-                .append("\n")
-                .append("\n")
-                .append("죄송합니다.. <b>상품이 단종 됬어요..</b>")
+                .append(CommonResponse.descItemDetailWithChangeMessage(itemDetail))
                 .toString();
     }
 
@@ -27,10 +24,7 @@ public class NotifyContents {
                 .append("더 이상 해당 상품은 알림이 전송되지 않습니다\n")
                 .append("</b>")
                 .append("\n")
-                .append(CommonResponse.descItemDetail(itemDetail))
-                .append("\n")
-                .append("\n")
-                .append("죄송합니다.. <b>상품의 상태를 알 수 없어요..</b>")
+                .append(CommonResponse.descItemDetailWithChangeMessage(itemDetail))
                 .toString();
     }
 
@@ -40,10 +34,7 @@ public class NotifyContents {
                 .append("해당 상품은 '재고없음' 상태로 변경되었습니다\n")
                 .append("</b>")
                 .append("\n")
-                .append(CommonResponse.descItemDetail(itemDetail))
-                .append("\n")
-                .append("\n")
-                .append("죄송합니다.. <b>상품의 재고가 없어요..</b>")
+                .append(CommonResponse.descItemDetailWithChangeMessage(itemDetail))
                 .toString();
     }
 
@@ -53,10 +44,7 @@ public class NotifyContents {
                 .append("해당 상품은 '가격비교중비' 상태로 변경되었습니다\n")
                 .append("</b>")
                 .append("\n")
-                .append(CommonResponse.descItemDetail(itemDetail))
-                .append("\n")
-                .append("\n")
-                .append("죄송합니다.. <b>상품의 가격비교가 중지되었어요..</b>")
+                .append(CommonResponse.descItemDetailWithChangeMessage(itemDetail))
                 .toString();
     }
 
@@ -67,11 +55,7 @@ public class NotifyContents {
                 .append("해당 상품은 최저가가 갱신되었습니다!!\n")
                 .append("</b>")
                 .append("\n")
-                .append(CommonResponse.descItemDetail(itemDetail))
-                .append("\n")
-                .append("\n")
-                .append(CommonResponse.descItemChange(itemDetail))
-
+                .append(CommonResponse.descItemDetailWithChangeMessage(itemDetail))
                 .toString();
     }
 
@@ -81,11 +65,7 @@ public class NotifyContents {
                 .append("해당 상품은 다시 판매를 시작했습니다!\n")
                 .append("</b>")
                 .append("\n")
-                .append(CommonResponse.descItemDetail(itemDetail))
-                .append("\n")
-                .append("\n")
-                .append(CommonResponse.descItemChange(itemDetail))
-
+                .append(CommonResponse.descItemDetailWithChangeMessage(itemDetail))
                 .toString();
     }
 
@@ -96,10 +76,7 @@ public class NotifyContents {
                 .append("더 이상 해당 상품은 알림이 전송되지 않습니다\n")
                 .append("</b>")
                 .append("\n")
-                .append(CommonResponse.descItemDetail(itemDetail))
-                .append("\n")
-                .append("\n")
-                .append("죄송합니다.. <b>상품의 페이지를 확인 할 수 없어요..</b>")
+                .append(CommonResponse.descItemDetailWithChangeMessage(itemDetail))
                 .toString();
     }
 

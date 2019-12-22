@@ -23,10 +23,10 @@ public class EmailKeyStore {
     private Map<String, String> emailKeyStore = new ConcurrentHashMap<>();
     private Map<String, LocalDateTime> keyStoreTimes = new ConcurrentHashMap<>();
 
-    @Value("${email.key.auth_timeout}")
+    @Value("${email.key.expire_minutes}")
     private long certifyTimeout;
 
-    public String createKey(String email) {
+    public String createAuthKey(String email) {
         final String newKey = getNewKey();
 
         emailKeyStore.put(email, newKey);
@@ -55,7 +55,7 @@ public class EmailKeyStore {
         return newKey;
     }
 
-    public String certifyKey(String key, LocalDateTime now) {
+    public String getEmailIfCertifiedByAuthKey(String key, LocalDateTime now) {
         final LocalDateTime keyStoreTime = keyStoreTimes.get(key);
 
         if (Objects.isNull(keyStoreTime)) {

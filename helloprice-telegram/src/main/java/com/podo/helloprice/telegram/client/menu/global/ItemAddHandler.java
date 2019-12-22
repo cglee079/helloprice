@@ -2,7 +2,6 @@ package com.podo.helloprice.telegram.client.menu.global;
 
 import com.podo.helloprice.core.domain.item.CrawledItemVo;
 import com.podo.helloprice.core.domain.model.Menu;
-import com.podo.helloprice.crawler.target.danawa.DanawaCrawler;
 import com.podo.helloprice.telegram.client.TMessageCallbackFactory;
 import com.podo.helloprice.telegram.client.TMessageVo;
 import com.podo.helloprice.telegram.client.TelegramMessageSender;
@@ -13,6 +12,7 @@ import com.podo.helloprice.telegram.domain.item.ItemService;
 import com.podo.helloprice.telegram.domain.user.UserDto;
 import com.podo.helloprice.telegram.domain.user.UserService;
 import com.podo.helloprice.telegram.domain.useritem.UserItemNotifyService;
+import com.podo.helloprice.telegram.global.cache.DanawaItemCache;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -25,7 +25,7 @@ import java.util.Objects;
 @Component
 public class ItemAddHandler {
 
-    private final DanawaCrawler danawaCrawler;
+    private final DanawaItemCache danawaItemCache;
     private final UserService userService;
     private final ItemService itemService;
     private final TelegramMessageSender sender;
@@ -36,7 +36,7 @@ public class ItemAddHandler {
         final String telegramId = tMessageVo.getTelegramId();
         final List<String> itemCommands = ItemCommandTranslator.getItemCommands(userItemNotifyService.findNotifyItemsByUserTelegramId(telegramId));
 
-        final CrawledItemVo crawledItem = danawaCrawler.crawlItem(itemCode);
+        final CrawledItemVo crawledItem = danawaItemCache.get(itemCode);
         if (Objects.isNull(crawledItem)) {
             log.info("{} << 상품 정보를 가져 올 수 없습니다. 상품코드 '{}'", telegramId, itemCode);
             sender.send(tMessageVo.newMessage(ItemAddResponse.wrongItemCode(itemCode), Keyboard.getHomeKeyboard(itemCommands), callbackFactory.createDefault(telegramId, Menu.HOME)));

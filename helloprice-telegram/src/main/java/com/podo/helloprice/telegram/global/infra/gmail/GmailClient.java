@@ -10,6 +10,9 @@ import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 import java.io.UnsupportedEncodingException;
 import java.util.Properties;
+import java.util.concurrent.Executor;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 
 @Slf4j
@@ -28,25 +31,32 @@ public class GmailClient {
 
     private final Authenticator gmailAuth;
 
+    private ExecutorService executorService = Executors.newFixedThreadPool(5);
+
     public void sendEmailToAdmin(String title, String contents) {
         sendEmail(appName, adminEmail, title, contents);
     }
 
     public void sendEmail(String username, String userEmail, String title, String contents) {
-        log.info("'{}({})'로 메일을 발송합니다, 메일제목 : {}", userEmail, username, title);
 
-        try {
-            final Properties mailProperties = getMailProperties();
-            final Session messageSession = Session.getInstance(mailProperties, gmailAuth);
-            final Transport transport = messageSession.getTransport("smtp");
-            transport.connect();
+        executorService.execute(() -> {
 
-            final MimeMessage message = createMessage(username, userEmail, title, contents, messageSession);
-            transport.sendMessage(message, message.getAllRecipients());
+            log.info("'{}({})'로 메일을 발송합니다, 메일제목 : {}", userEmail, username, title);
 
-        } catch (Exception e) {
-            log.error("메일 전송에 문제가 발생하였습니다 {}", e.getMessage());
-        }
+            try {
+                final Properties mailProperties = getMailProperties();
+                final Session messageSession = Session.getInstance(mailProperties, gmailAuth);
+                final Transport transport = messageSession.getTransport("smtp");
+                transport.connect();
+
+                final MimeMessage message = createMessage(username, userEmail, title, contents, messageSession);
+                transport.sendMessage(message, message.getAllRecipients());
+
+            } catch (Exception e) {
+                log.error("메일 전송에 문제가 발생하였습니다 {}", e.getMessage());
+            }
+
+        });
 
     }
 

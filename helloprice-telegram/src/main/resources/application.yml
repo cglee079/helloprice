@@ -18,10 +18,13 @@ user:
 item:
   max_unknown_count: 1
   max_dead_count: 10
+  cache:
+    expire_minutes: 1
+
 
 email:
   key:
-    auth_timeout: 5 #Minutes
+    expire_minutes: 5 #Minutes
 
 
 ## Log

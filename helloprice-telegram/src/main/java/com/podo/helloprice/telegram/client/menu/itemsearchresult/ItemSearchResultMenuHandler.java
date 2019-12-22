@@ -11,6 +11,7 @@ import com.podo.helloprice.telegram.client.menu.AbstractMenuHandler;
 import com.podo.helloprice.telegram.client.menu.itemserachadd.ItemSearchAddResponse;
 import com.podo.helloprice.telegram.client.menu.global.CommonResponse;
 import com.podo.helloprice.telegram.domain.useritem.UserItemNotifyService;
+import com.podo.helloprice.telegram.global.cache.DanawaItemCache;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -28,7 +29,7 @@ public class ItemSearchResultMenuHandler extends AbstractMenuHandler {
         return Menu.ITEM_SEARCH_RESULT;
     }
 
-    private final DanawaCrawler danawaCrawler;
+    private final DanawaItemCache danawaItemCache;
     private final UserItemNotifyService userItemNotifyService;
     private final TMessageCallbackFactory callbackFactory;
 
@@ -67,7 +68,7 @@ public class ItemSearchResultMenuHandler extends AbstractMenuHandler {
 
         sender().send(tMessageVo.newMessage(CommonResponse.justWait(), null, callbackFactory.createDefaultNoAction(telegramId)));
 
-        final CrawledItemVo crawledItemVo = danawaCrawler.crawlItem(itemCode);
+        final CrawledItemVo crawledItemVo = danawaItemCache.get(itemCode);
         if (Objects.isNull(crawledItemVo)) {
             sender().send(tMessageVo.newMessage(ItemSearchAddResponse.failPoolItem(), Keyboard.getHomeKeyboard(itemCommands), callbackFactory.createDefault(tMessageVo.getTelegramId(), Menu.HOME)));
             return;

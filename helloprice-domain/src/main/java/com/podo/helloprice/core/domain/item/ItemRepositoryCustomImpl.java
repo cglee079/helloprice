@@ -16,15 +16,4 @@ public class ItemRepositoryCustomImpl extends QuerydslRepositorySupport implemen
         this.item = QItem.item;
         this.queryFactory = queryFactory;
     }
-
-    @Override
-    public List<Item> findByUserTelegramId(String telegramId) {
-
-        return queryFactory.select(QUserItemNotify.userItemNotify.item)
-                .from(QUserItemNotify.userItemNotify)
-                .where(QUserItemNotify.userItemNotify.user.telegramId.eq(telegramId))
-                .orderBy(QUserItemNotify.userItemNotify.createAt.desc())
-                .fetch();
-
-    }
 }

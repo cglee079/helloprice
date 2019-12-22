@@ -1,10 +1,11 @@
 package com.podo.helloprice.telegram.client.menu.global;
 
 import com.podo.helloprice.core.domain.item.CrawledItemVo;
+import com.podo.helloprice.core.domain.item.ItemSaleStatus;
+import com.podo.helloprice.core.domain.item.ItemStatus;
 import com.podo.helloprice.core.util.MyCalculateUtils;
 import com.podo.helloprice.core.util.MyCurrencyUtils;
 import com.podo.helloprice.core.util.MyDateTimeUtils;
-import com.podo.helloprice.core.util.MyFormatUtils;
 import com.podo.helloprice.telegram.domain.item.ItemDto;
 
 public class CommonResponse {
@@ -80,12 +81,6 @@ public class CommonResponse {
                 .append("</b>")
                 .append("\n")
 
-//                .append("<b>상품설명</b> : ")
-//                .append("<i>")
-//                .append(itemDetail.getItemDesc())
-//                .append("</i>")
-//                .append("\n")
-
                 .append("<b>")
                 .append("상품상태 : ")
                 .append(itemDetail.getItemSaleStatus().getValue())
@@ -112,27 +107,66 @@ public class CommonResponse {
         return message.toString();
     }
 
+    public static String descItemDetailWithChangeMessage(ItemDto.detail itemDetail) {
+        return new StringBuilder()
+                .append(descItemDetail(itemDetail))
+                .append("\n")
+                .append("\n")
+                .append(descItemChange(itemDetail))
+                .toString();
+    }
+
     public static String descItemChange(ItemDto.detail itemDetail) {
+        if (itemDetail.getItemStatus().equals(ItemStatus.DEAD)) {
+            return "죄송합니다.. <b>상품의 페이지를 확인 할 수 없어요..</b>";
+        }
+
+        return descChangeBySaleStatus(itemDetail);
+        }
+
+    private static String descChangeBySaleStatus(ItemDto.detail itemDetail) {
+
+        final ItemSaleStatus itemSaleStatus = itemDetail.getItemSaleStatus();
+        switch (itemSaleStatus) {
+            case UNKNOWN:
+                return "죄송합니다.. <b>상품의 상태를 알 수 없어요..</b>";
+            case DISCONTINUE:
+                return "죄송합니다.. <b>상품이 단종 됬어요..</b>";
+            case NOT_SUPPORT:
+                return "죄송합니다.. <b>상품의 가격비교가 중지되었어요..</b>";
+            case EMPTY_AMOUNT:
+                return "죄송합니다.. <b>상품의 재고가 없어요..</b>";
+            case  SALE:
+                return descSaleStatusChange(itemDetail.getItemPrice(), itemDetail.getItemBeforePrice());
+        }
+
+        return "";
+    }
+
+    private static String descSaleStatusChange(Integer itemPrice, Integer itemBeforePrice) {
         final StringBuilder message = new StringBuilder();
-
-        final Integer itemPrice = itemDetail.getItemPrice();
-        final Integer itemBeforePrice = itemDetail.getItemBeforePrice();
-
         if (itemBeforePrice.equals(0)) {
             message.append("야호!  <b>")
                     .append(MyCurrencyUtils.toKrw(itemPrice))
                     .append("</b>으로 다시 판매를 시작했어요!!");
-        } else if (itemPrice > itemBeforePrice) {
+            return message.toString();
+        }
+
+        if (itemPrice > itemBeforePrice) {
             message.append("죄송합니다.. 가격이 <b>")
                     .append(MyCurrencyUtils.toKrw(itemPrice - itemBeforePrice))
                     .append("</b> 올랐어요...");
-        } else if (itemPrice.equals(itemBeforePrice)) {
-            message.append("<i>아직 가격이 똑같아요! 좀만 더 기다려보세요!</i>");
-        } else {
-            message.append("야호! 가격이 <b>")
-                    .append(MyCurrencyUtils.toKrw(itemBeforePrice - itemPrice))
-                    .append("</b> 떨어졌어요!!");
+            return message.toString();
         }
+
+        if (itemPrice.equals(itemBeforePrice)) {
+            message.append("<i>아직 가격이 똑같아요! 좀만 더 기다려보세요!</i>");
+            return message.toString();
+        }
+
+        message.append("야호! 가격이 <b>")
+                .append(MyCurrencyUtils.toKrw(itemBeforePrice - itemPrice))
+                .append("</b> 떨어졌어요!!");
 
         return message.toString();
     }

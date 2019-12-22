@@ -6,6 +6,10 @@ public class MyCalculateUtils {
 
     public static Double getChangePercent(double a, double b) {
 
+        if (Double.compare(a, 0) == 0 && Double.compare(b, 0) == 0) {
+            return 0.0;
+        }
+
         if (Double.compare(b, 0) == 0) {
             return 100.0;
         }

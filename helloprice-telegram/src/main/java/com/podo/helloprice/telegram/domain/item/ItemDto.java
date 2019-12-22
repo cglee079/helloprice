@@ -2,6 +2,7 @@ package com.podo.helloprice.telegram.domain.item;
 
 import com.podo.helloprice.core.domain.item.Item;
 import com.podo.helloprice.core.domain.item.ItemSaleStatus;
+import com.podo.helloprice.core.domain.item.ItemStatus;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -60,6 +61,7 @@ public class ItemDto {
         private String itemImage;
         private Integer itemPrice;
         private Integer itemBeforePrice;
+        private ItemStatus itemStatus;
         private ItemSaleStatus itemSaleStatus;
         private LocalDateTime lastUpdateAt;
         private LocalDateTime lastPoolAt;
@@ -67,6 +69,7 @@ public class ItemDto {
         @Builder
         public detail(Item item) {
             this.id = item.getId();
+            itemStatus = item.getItemStatus();
             this.itemCode = item.getItemCode();
             this.itemName = item.getItemName();
             this.itemUrl = item.getItemUrl();

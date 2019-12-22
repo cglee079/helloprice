@@ -26,17 +26,11 @@ import java.util.*;
 @Component
 public class DanawaCrawler implements Crawler {
 
-    private final DanawaCrawledItemCache danawaCrawledItemCache;
     private final DelayDocumentLoader delayDocumentLoader;
     private final PromptDocumentLoader promptDocumentLoader;
 
     @Override
     public CrawledItemVo crawlItem(String itemCode) {
-
-        final CrawledItemVo existItemInCache = danawaCrawledItemCache.get(itemCode);
-        if (Objects.nonNull(existItemInCache)) {
-            return existItemInCache;
-        }
 
         log.info("DANAWA '상품' 페이지 크롤을 시작합니다, 상품코드 : {}", itemCode);
 
@@ -57,7 +51,6 @@ public class DanawaCrawler implements Crawler {
         }
 
         log.info("상품 정보확인, '{}'", crawledItem);
-        danawaCrawledItemCache.put(itemCode, crawledItem);
 
         return crawledItem;
 

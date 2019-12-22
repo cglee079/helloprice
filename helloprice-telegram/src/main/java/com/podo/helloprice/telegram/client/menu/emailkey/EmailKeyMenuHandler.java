@@ -34,21 +34,21 @@ public class EmailKeyMenuHandler extends AbstractMenuHandler {
 
     public void handle(TMessageVo tMessageVo, String requestMessage) {
         final String telegramId = tMessageVo.getTelegramId();
-        final String emailKey = requestMessage;
+        final String authKey = requestMessage;
 
         log.info("{} << 이메일 인증 메뉴에서 응답, 받은메세지 '{}'", telegramId, requestMessage);
 
         final List<String> itemCommands = ItemCommandTranslator.getItemCommands(userItemNotifyService.findNotifyItemsByUserTelegramId(telegramId));
 
-        final String email = emailKeyStore.certifyKey(emailKey, LocalDateTime.now());
+        final String email = emailKeyStore.getEmailIfCertifiedByAuthKey(authKey, LocalDateTime.now());
 
         if (Objects.isNull(email)) {
-            log.info("{} << 키 값이 잘못되었습니다. 받은메세지 '{}'", telegramId, emailKey);
+            log.info("{} << 키 값이 잘못되었습니다. 받은메세지 '{}'", telegramId, authKey);
             sender().send(tMessageVo.newMessage(EmailKeyResponse.invalidKey(), Keyboard.getHomeKeyboard(itemCommands), callbackFactory.createDefault(telegramId, Menu.HOME)));
             return;
         }
 
-        handleEmailKey(tMessageVo, emailKey, itemCommands, email);
+        handleEmailKey(tMessageVo, authKey, itemCommands, email);
     }
 
     private void handleEmailKey(TMessageVo tMessageVo, String emailKey, List<String> itemCommands, String email) {

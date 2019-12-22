@@ -3,9 +3,6 @@ crawler:
   timeout: 10000
   webdriver:
     servers: http://192.168.219.103:4443/wd/hub
-  item:
-    cache:
-      timeout: 1
 
 
 ---
@@ -15,4 +12,4 @@ spring:
 
 crawler:
   webdriver:
-    servers: http://192.168.219.103:4441/wd/hub, http://192.168.219.103:4442/wd/hub
+    servers: http://192.168.219.103:4441/wd/hub
