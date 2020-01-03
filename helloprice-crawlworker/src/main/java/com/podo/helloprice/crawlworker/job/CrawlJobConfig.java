@@ -8,6 +8,7 @@ import org.springframework.batch.core.Step;
 import org.springframework.batch.core.configuration.annotation.JobBuilderFactory;
 import org.springframework.batch.core.configuration.annotation.StepBuilderFactory;
 import org.springframework.batch.core.configuration.annotation.StepScope;
+import org.springframework.batch.core.repository.support.MapJobRepositoryFactoryBean;
 import org.springframework.batch.item.database.JpaItemWriter;
 import org.springframework.batch.item.database.JpaPagingItemReader;
 import org.springframework.batch.item.database.builder.JpaItemWriterBuilder;
@@ -27,11 +28,12 @@ public class CrawlJobConfig {
     @Value("${item.crawl.expire.time}")
     private Integer itemCrawlExpireTime;
 
-    public static final String CRAWL_JOB_BEAN_NAME = "crawlWorkerJob";
-    public static final String CRAWL_JOB_NAME = "crawl_worker_job";
-    public static final Integer CHUNK_SIZE = 1;
+    static final String CRAWL_JOB_BEAN_NAME = "crawlWorkerJob";
+    private static final String CRAWL_JOB_NAME = "crawl_worker_job";
+    private static final Integer CHUNK_SIZE = 1;
 
     private final EntityManagerFactory entityManagerFactory;
+    private final CrawlJobListener crawlJobListener;
     private final JobBuilderFactory jobBuilderFactory;
     private final StepBuilderFactory stepBuilderFactory;
     private final CrawlJobProcessor crawlJobProcessor;
@@ -48,14 +50,14 @@ public class CrawlJobConfig {
     @Bean(CRAWL_JOB_BEAN_NAME + "Step")
     public Step step() {
         return stepBuilderFactory.get(CRAWL_JOB_NAME + "_step")
+                .listener(crawlJobListener)
                 .<Item, Item>chunk(CHUNK_SIZE)
                 .reader(crawlJobReader())
                 .processor(crawlJobProcessor)
                 .writer(crawlJobWriter())
                 .build();
-        //.listener(crawlJobWriter())
-    }
 
+    }
 
     @Bean
     @StepScope
