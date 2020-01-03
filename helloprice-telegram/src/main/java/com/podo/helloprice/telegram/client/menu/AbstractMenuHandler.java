@@ -1,18 +1,15 @@
 package com.podo.helloprice.telegram.client.menu;
 
 import com.podo.helloprice.telegram.client.TelegramMessageSender;
+import org.springframework.beans.factory.annotation.Autowired;
 
 public abstract class AbstractMenuHandler implements MenuHandler {
 
+    @Autowired
     private TelegramMessageSender telegramMessageSender;
 
     @Override
-    public void setSender(TelegramMessageSender telegramMessageSender) {
-        this.telegramMessageSender = telegramMessageSender;
-    }
-
-    @Override
-    public TelegramMessageSender getSender() {
+    public TelegramMessageSender sender() {
         return telegramMessageSender;
     }
 

@@ -1,9 +1,9 @@
 package com.podo.helloprice.telegram.client.menu.itemsearch;
 
 import com.podo.helloprice.core.domain.item.ItemSearchResultVo;
-import com.podo.helloprice.core.domain.user.Menu;
-import com.podo.helloprice.pooler.target.danawa.DanawaPooler;
-import com.podo.helloprice.telegram.client.menu.KeyboardManager;
+import com.podo.helloprice.core.domain.model.Menu;
+import com.podo.helloprice.crawler.target.danawa.DanawaCrawler;
+import com.podo.helloprice.telegram.client.menu.Keyboard;
 import com.podo.helloprice.telegram.client.TMessageCallbackFactory;
 import com.podo.helloprice.telegram.client.TMessageVo;
 import com.podo.helloprice.telegram.client.menu.global.ItemCommandTranslator;
@@ -27,9 +27,8 @@ import java.util.stream.Collectors;
 public class ItemSearchMenuHandler extends AbstractMenuHandler {
 
     private final UserItemNotifyService userItemNotifyService;
-    private final DanawaPooler danawaPooler;
+    private final DanawaCrawler danawaCrawler;
     private final TMessageCallbackFactory callbackFactory;
-    private final KeyboardManager km;
 
     @Override
     public Menu getHandleMenu() {
@@ -37,32 +36,28 @@ public class ItemSearchMenuHandler extends AbstractMenuHandler {
     }
 
     public void handle(TMessageVo tMessageVo, String requestMessage) {
-        final String telegramId = tMessageVo.getTelegramId() + "";
+        final String telegramId = tMessageVo.getTelegramId();
 
         log.info("{} << 상품 검색 메뉴에서 응답, 받은메세지 '{}'", telegramId, requestMessage);
 
-        getSender().send(tMessageVo.newValue(CommonResponse.justWait(), null, callbackFactory.createDefault(telegramId, null)));
+        sender().send(tMessageVo.newMessage(CommonResponse.justWait(), null, callbackFactory.createDefaultNoAction(telegramId)));
 
-        final String keyword = requestMessage;
+        final String requestSearchKeyword = requestMessage;
+        final List<ItemSearchResultVo> itemSearchResults = danawaCrawler.crawlItemSearchResults(requestSearchKeyword);
 
-        final List<ItemSearchResultVo> itemSearchResults = danawaPooler.poolItemSearchResults(keyword);
-
-        //검색 결과 없는 경우, 홈으로 이동
         if (itemSearchResults.isEmpty()) {
             final List<String> itemCommands = ItemCommandTranslator.getItemCommands(userItemNotifyService.findNotifyItemsByUserTelegramId(telegramId));
-            getSender().send(tMessageVo.newValue(ItemSearchResponse.noResult(), km.getHomeKeyboard(itemCommands), callbackFactory.createDefault(tMessageVo.getTelegramId() + "", Menu.HOME)));
+            sender().send(tMessageVo.newMessage(ItemSearchResponse.noResult(), Keyboard.getHomeKeyboard(itemCommands), callbackFactory.createDefault(tMessageVo.getTelegramId(), Menu.HOME)));
             return;
         }
 
-        //아이템 검색 결과 응답
-        final List<String> itemSearchResultCommands = getItemSearchResultCommands(itemSearchResults);
-        final ReplyKeyboard itemSearchResultKeyboard = km.getItemSearchResultKeyboard(itemSearchResultCommands);
+        final List<String> itemSearchResultCommands = toItemSearchResultCommands(itemSearchResults);
+        final ReplyKeyboard itemSearchResultKeyboard = Keyboard.getItemSearchResultKeyboard(itemSearchResultCommands);
         final SentCallback<Message> defaultCallback = callbackFactory.createDefault(telegramId, Menu.ITEM_SEARCH_RESULT);
-        getSender().send(tMessageVo.newValue(ItemSearchResultResponse.explain(), itemSearchResultKeyboard, defaultCallback));
-
+        sender().send(tMessageVo.newMessage(ItemSearchResultResponse.explain(), itemSearchResultKeyboard, defaultCallback));
     }
 
-    private List<String> getItemSearchResultCommands(List<ItemSearchResultVo> itemSearchResults) {
+    private List<String> toItemSearchResultCommands(List<ItemSearchResultVo> itemSearchResults) {
         return itemSearchResults.stream()
                 .map(item -> ItemCommandTranslator.getItemCommand(item.getItemCode(), item.getItemDesc()))
                 .collect(Collectors.toList());

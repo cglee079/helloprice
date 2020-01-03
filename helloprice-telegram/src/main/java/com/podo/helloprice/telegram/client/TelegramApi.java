@@ -12,9 +12,9 @@ public class TelegramApi {
     private final TelegramMessageSender telegramMessageSender;
     private final TMessageCallbackFactory callbackFactory;
 
-    public void send(Integer telegramId, String image, String response) {
+    public void send(String telegramId, String image, String response) {
         final TMessageVo tMessageVo = new TMessageVo(telegramId, null);
 
-        telegramMessageSender.send(tMessageVo.newValue(response, image, null, callbackFactory.createDefault(telegramId + "", null)));
+        telegramMessageSender.send(tMessageVo.newMessage(response, image, null, callbackFactory.createDefault(telegramId + "", null)));
     }
 }

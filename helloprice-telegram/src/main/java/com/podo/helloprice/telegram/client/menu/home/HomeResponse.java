@@ -9,10 +9,7 @@ public class HomeResponse {
         return new StringBuilder()
                 .append("현재 상품정보는 다음과 같습니다\n")
                 .append("\n")
-                .append(CommonResponse.descItemDetail(itemDetail))
-                .append("\n")
-                .append("\n")
-                .append(CommonResponse.descItemChange(itemDetail))
+                .append(CommonResponse.descItemDetailWithChangeMessage(itemDetail))
                 .toString();
     }
 
@@ -31,7 +28,7 @@ public class HomeResponse {
                 .toString();
     }
 
-    public static String rejectEmailDelete() {
+    public static String dontHaveEmail() {
         return new StringBuilder()
                 .append("<b>등록되어있는 이메일이 없습니다.</b>\n")
                 .toString();

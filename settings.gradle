@@ -8,6 +8,6 @@ rootProject.name = 'podo-helloprice'
 
 include 'helloprice-core',
         'helloprice-domain',
-        'helloprice-poolworker',
-        'helloprice-pooler',
+        'helloprice-crawlworker',
+        'helloprice-crawler',
         'helloprice-telegram'

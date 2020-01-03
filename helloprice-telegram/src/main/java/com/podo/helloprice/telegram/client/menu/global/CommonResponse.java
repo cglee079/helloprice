@@ -1,8 +1,11 @@
 package com.podo.helloprice.telegram.client.menu.global;
 
-import com.podo.helloprice.core.domain.item.ItemInfoVo;
+import com.podo.helloprice.core.domain.item.CrawledItemVo;
+import com.podo.helloprice.core.domain.item.ItemSaleStatus;
+import com.podo.helloprice.core.domain.item.ItemStatus;
+import com.podo.helloprice.core.util.MyCalculateUtils;
 import com.podo.helloprice.core.util.MyCurrencyUtils;
-import com.podo.helloprice.core.util.MyFormatUtils;
+import com.podo.helloprice.core.util.MyDateTimeUtils;
 import com.podo.helloprice.telegram.domain.item.ItemDto;
 
 public class CommonResponse {
@@ -55,12 +58,12 @@ public class CommonResponse {
 
         message.append("<b>")
                 .append("최종확인시간 : ")
-                .append(MyFormatUtils.dateTimeToString(itemDetail.getLastPoolAt(), DATE_TIME_FORMAT))
+                .append(MyDateTimeUtils.dateTimeToString(itemDetail.getLastPoolAt(), DATE_TIME_FORMAT))
                 .append("</b>")
                 .append("\n")
 
                 .append("<b>가격변동시간</b> : ")
-                .append(MyFormatUtils.dateTimeToString(itemDetail.getLastUpdateAt(), DATE_TIME_FORMAT))
+                .append(MyDateTimeUtils.dateTimeToString(itemDetail.getLastUpdateAt(), DATE_TIME_FORMAT))
                 .append("\n")
                 .append("\n")
 
@@ -78,12 +81,6 @@ public class CommonResponse {
                 .append("</b>")
                 .append("\n")
 
-//                .append("<b>상품설명</b> : ")
-//                .append("<i>")
-//                .append(itemDetail.getItemDesc())
-//                .append("</i>")
-//                .append("\n")
-
                 .append("<b>")
                 .append("상품상태 : ")
                 .append(itemDetail.getItemSaleStatus().getValue())
@@ -92,73 +89,116 @@ public class CommonResponse {
 
                 .append("<b>")
                 .append("이전가격 : ")
-                .append(MyCurrencyUtils.toExchangeRateKRWStr(itemBeforePrice))
+                .append(MyCurrencyUtils.toKrw(itemBeforePrice))
                 .append("</b>")
                 .append("\n")
 
                 .append("<b>")
                 .append("현재가격 : ")
-                .append(MyCurrencyUtils.toExchangeRateKRWStr(itemPrice))
+                .append(MyCurrencyUtils.toKrw(itemPrice))
                 .append("</b>")
                 .append("\n")
 
                 .append("<b>")
                 .append("가격변화 : ")
-                .append(MyFormatUtils.toSignPercentStr(itemPrice, itemBeforePrice))
+                .append(MyCalculateUtils.getPercentStringWithPlusMinusSign(itemPrice, itemBeforePrice))
                 .append("</b>");
 
         return message.toString();
     }
 
-    public static String descItemChange(ItemDto.detail itemDetail) {
-        StringBuilder message = new StringBuilder();
+    public static String descItemDetailWithChangeMessage(ItemDto.detail itemDetail) {
+        return new StringBuilder()
+                .append(descItemDetail(itemDetail))
+                .append("\n")
+                .append("\n")
+                .append(descItemChange(itemDetail))
+                .toString();
+    }
 
-        Integer itemPrice = itemDetail.getItemPrice();
-        Integer itemBeforePrice = itemDetail.getItemBeforePrice();
+    public static String descItemChange(ItemDto.detail itemDetail) {
+        if (itemDetail.getItemStatus().equals(ItemStatus.DEAD)) {
+            return "죄송합니다.. <b>상품의 페이지를 확인 할 수 없어요..</b>";
+        }
+
+        return descChangeBySaleStatus(itemDetail);
+        }
+
+    private static String descChangeBySaleStatus(ItemDto.detail itemDetail) {
+
+        final ItemSaleStatus itemSaleStatus = itemDetail.getItemSaleStatus();
+        switch (itemSaleStatus) {
+            case UNKNOWN:
+                return "죄송합니다.. <b>상품의 상태를 알 수 없어요..</b>";
+            case DISCONTINUE:
+                return "죄송합니다.. <b>상품이 단종 됬어요..</b>";
+            case NOT_SUPPORT:
+                return "죄송합니다.. <b>상품의 가격비교가 중지되었어요..</b>";
+            case EMPTY_AMOUNT:
+                return "죄송합니다.. <b>상품의 재고가 없어요..</b>";
+            case  SALE:
+                return descSaleStatusChange(itemDetail.getItemPrice(), itemDetail.getItemBeforePrice());
+        }
+
+        return "";
+    }
+
+    private static String descSaleStatusChange(Integer itemPrice, Integer itemBeforePrice) {
+        final StringBuilder message = new StringBuilder();
+        if (itemBeforePrice.equals(0)) {
+            message.append("야호!  <b>")
+                    .append(MyCurrencyUtils.toKrw(itemPrice))
+                    .append("</b>으로 다시 판매를 시작했어요!!");
+            return message.toString();
+        }
 
         if (itemPrice > itemBeforePrice) {
             message.append("죄송합니다.. 가격이 <b>")
-                    .append(MyCurrencyUtils.toExchangeRateKRWStr(itemPrice - itemBeforePrice))
+                    .append(MyCurrencyUtils.toKrw(itemPrice - itemBeforePrice))
                     .append("</b> 올랐어요...");
-        } else if (itemPrice.equals(itemBeforePrice)) {
-            message.append("<i>아직 가격이 똑같아요! 좀만 더 기다려보세요!</i>");
-        } else {
-            message.append("야호! 가격이 <b>")
-                    .append(MyCurrencyUtils.toExchangeRateKRWStr(itemBeforePrice - itemPrice))
-                    .append("</b> 떨어졌어요!!");
+            return message.toString();
         }
+
+        if (itemPrice.equals(itemBeforePrice)) {
+            message.append("<i>아직 가격이 똑같아요! 좀만 더 기다려보세요!</i>");
+            return message.toString();
+        }
+
+        message.append("야호! 가격이 <b>")
+                .append(MyCurrencyUtils.toKrw(itemBeforePrice - itemPrice))
+                .append("</b> 떨어졌어요!!");
 
         return message.toString();
     }
 
 
-    public static String descItemInfoVo(ItemInfoVo itemInfoVo) {
+    public static String descCrawledItemVo(CrawledItemVo crawledItemVo) {
         return new StringBuilder()
                 .append("<b>상품코드</b> : ")
-                .append(itemInfoVo.getItemCode())
+                .append(crawledItemVo.getItemCode())
                 .append("\n")
 
                 .append("<b>")
                 .append("상품이름 : ")
-                .append(itemInfoVo.getItemName())
+                .append(crawledItemVo.getItemName())
                 .append("</b>")
                 .append("\n")
 
                 .append("<b>상품설명</b> : ")
                 .append("<i>")
-                .append(itemInfoVo.getItemDesc())
+                .append(crawledItemVo.getItemDesc())
                 .append("</i>")
                 .append("\n")
 
                 .append("<b>")
                 .append("상품상태 : ")
-                .append(itemInfoVo.getItemSaleStatus().getValue())
+                .append(crawledItemVo.getItemSaleStatus().getValue())
                 .append("</b>")
                 .append("\n")
 
                 .append("<b>")
                 .append("상품가격 : ")
-                .append(MyCurrencyUtils.toExchangeRateKRWStr(itemInfoVo.getItemPrice()))
+                .append(MyCurrencyUtils.toKrw(crawledItemVo.getItemPrice()))
                 .append("</b>")
                 .append("\n")
 
@@ -168,13 +208,13 @@ public class CommonResponse {
 
     public static String toHome() {
         return new StringBuilder()
-                .append("<b>홈 메뉴로 돌아갑니다!!!!</b>\n")
+                .append("<b>홈 메뉴로 돌아갑니다!</b>\n")
                 .toString();
     }
 
 
     public static String justWait() {
-        return "<b>잠시만, 잠시만 기다려주세요!</b>";
+        return "<b>잠시만 기다려주세요!</b>";
     }
 
     public static String seeKeyboardIcon() {

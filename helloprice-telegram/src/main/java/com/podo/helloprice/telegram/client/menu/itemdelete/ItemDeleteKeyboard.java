@@ -17,13 +17,11 @@ public class ItemDeleteKeyboard extends ReplyKeyboardMarkup {
         final List<KeyboardRow> keyboard = new ArrayList<>();
 
         KeyboardRow keyboardRow = new KeyboardRow();
-
         keyboardRow.add(ItemDeleteCommand.EXIT.getValue());
-
         keyboard.add(keyboardRow);
 
         for (String item : itemList) {
-            KeyboardRow keyboardItemRow = new KeyboardRow();
+            final KeyboardRow keyboardItemRow = new KeyboardRow();
             keyboardItemRow.add(item);
             keyboard.add(keyboardItemRow);
         }

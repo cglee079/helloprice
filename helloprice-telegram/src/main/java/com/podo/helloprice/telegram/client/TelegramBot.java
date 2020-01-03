@@ -1,38 +1,22 @@
 package com.podo.helloprice.telegram.client;
 
-import com.podo.helloprice.telegram.client.menu.MenuHandler;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
+import org.telegram.telegrambots.bots.DefaultBotOptions;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
-import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.Update;
 
 import javax.annotation.PostConstruct;
-import java.util.List;
 import java.util.Objects;
 
-import static java.util.stream.Collectors.toMap;
-
-@RequiredArgsConstructor
 @Slf4j
+
 @Component
 public class TelegramBot extends TelegramLongPollingBot {
 
     private final TelegramMessageReceiver telegramMessageReceiver;
     private final TelegramMessageSender telegramMessageSender;
-    private final List<MenuHandler> menuHandlers;
-
-    @PostConstruct
-    public void init() {
-        telegramMessageSender.setBot(this);
-
-        for (MenuHandler menuHandler : menuHandlers) {
-            menuHandler.setSender(telegramMessageSender);
-        }
-
-    }
 
     @Value("${telegram.podo_helloprice.bot.token}")
     private String botToken;
@@ -42,6 +26,23 @@ public class TelegramBot extends TelegramLongPollingBot {
 
     @Value("${telegram.podo_helloprice.admin.id}")
     private String adminId;
+
+    public TelegramBot(TelegramMessageReceiver telegramMessageReceiver, TelegramMessageSender telegramMessageSender) {
+        super(getMyBotOptions());
+        this.telegramMessageReceiver = telegramMessageReceiver;
+        this.telegramMessageSender = telegramMessageSender;
+    }
+
+    private static DefaultBotOptions getMyBotOptions() {
+        final DefaultBotOptions myBotOptions = new DefaultBotOptions();
+        myBotOptions.setMaxThreads(5);
+        return myBotOptions;
+    }
+
+    @PostConstruct
+    public void init() {
+        telegramMessageSender.setBot(this);
+    }
 
     @Override
     public String getBotUsername() {
@@ -55,13 +56,13 @@ public class TelegramBot extends TelegramLongPollingBot {
 
     @Override
     public void onUpdateReceived(Update update) {
-        Message message = update.getMessage();
 
         if (Objects.nonNull(update.getEditedMessage())) {
-            message = update.getEditedMessage();
+            telegramMessageReceiver.receive(update.getEditedMessage());
+            return;
         }
 
-        telegramMessageReceiver.receive(message);
+        telegramMessageReceiver.receive(update.getMessage());
     }
 
 

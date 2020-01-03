@@ -44,8 +44,18 @@ public class NotifyTitle {
                 .append("'")
                 .append(itemDetail.getItemName())
                 .append("' 상품의 최저가격이  ")
-                .append(MyCurrencyUtils.toExchangeRateKRWStr(itemDetail.getItemPrice()))
+                .append(MyCurrencyUtils.toKrw(itemDetail.getItemPrice()))
                 .append(" 으로 갱신되었습니다.")
+                .toString();
+    }
+
+    public static String notifyItemReSale(ItemDto.detail itemDetail) {
+        return new StringBuilder()
+                .append("'")
+                .append(itemDetail.getItemName())
+                .append("' 상품이 ")
+                .append(MyCurrencyUtils.toKrw(itemDetail.getItemPrice()))
+                .append(" 으로 다시 판매를 시작했습니다.")
                 .toString();
     }
 

@@ -5,7 +5,7 @@ import org.springframework.data.jpa.repository.support.QuerydslRepositorySupport
 
 public class UserRepositoryCustomImpl extends QuerydslRepositorySupport implements UserRepositoryCustom {
 
-    private final QUser user;
+    private final  QUser user;
     private final JPAQueryFactory queryFactory;
 
     public UserRepositoryCustomImpl(JPAQueryFactory queryFactory) {

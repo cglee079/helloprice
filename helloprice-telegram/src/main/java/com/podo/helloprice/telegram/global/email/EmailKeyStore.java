@@ -1,43 +1,70 @@
 package com.podo.helloprice.telegram.global.email;
 
+import com.podo.helloprice.core.util.MyNumberUtils;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
-import java.util.Random;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 
+@Slf4j
 @Component
 public class EmailKeyStore {
 
-    private Map<String, String> emailKeyStore = new HashMap<>();
-    private Map<String, LocalDateTime> keyStoreTimes = new HashMap<>();
-    private long cretifyTimeout = 1000 * 60 * 5;
+    private final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(10);
 
-    public String createKey(String email) {
+    private Map<String, String> emailKeyStore = new ConcurrentHashMap<>();
+    private Map<String, LocalDateTime> keyStoreTimes = new ConcurrentHashMap<>();
 
-        final long seed = System.currentTimeMillis();
+    @Value("${email.key.expire_minutes}")
+    private long certifyTimeout;
 
-        final Random rand = new Random(seed);
+    public String createAuthKey(String email) {
+        final String newKey = getNewKey();
 
-        final String key = String.format("%06d", rand.nextInt(999999));
+        emailKeyStore.put(email, newKey);
+        keyStoreTimes.put(newKey, LocalDateTime.now());
 
-        emailKeyStore.put(email, key);
-        keyStoreTimes.put(key, LocalDateTime.now());
+        scheduleRemoveExpireKey(email, newKey);
 
-        return key;
+        return newKey;
     }
 
-    public String certifyKey(String key, LocalDateTime now) {
+    private void scheduleRemoveExpireKey(String email, String key) {
+        scheduler.schedule(() -> {
+            log.info("{}({}) 인증시간이 만료되어 삭제합니다", email, key);
+            this.emailKeyStore.remove(email);
+            this.keyStoreTimes.remove(key);
+        }, certifyTimeout, TimeUnit.MINUTES);
+    }
+
+    private String getNewKey() {
+        final String newKey = String.format("%06d", MyNumberUtils.getRandomInt(999999));
+
+        if (keyStoreTimes.containsKey(newKey)) {
+            return getNewKey();
+        }
+
+        return newKey;
+    }
+
+    public String getEmailIfCertifiedByAuthKey(String key, LocalDateTime now) {
         final LocalDateTime keyStoreTime = keyStoreTimes.get(key);
 
         if (Objects.isNull(keyStoreTime)) {
+            log.info("저장되어있지 않은 KEY 입니다 {}", key);
             return null;
         }
 
-        if (now.minusMinutes(cretifyTimeout).compareTo(keyStoreTime) > 0) {
+        if (isExpiredKey(now, keyStoreTime)) {
+            log.info("시간이 만료된 KEY 입니다 {}", key);
             return null;
         }
 
@@ -47,6 +74,10 @@ public class EmailKeyStore {
         keyStoreTimes.remove(key);
 
         return email;
+    }
+
+    private boolean isExpiredKey(LocalDateTime now, LocalDateTime keyStoreTime) {
+        return now.minusMinutes(certifyTimeout).compareTo(keyStoreTime) > 0;
     }
 
     private String getEmailByKey(String key) {

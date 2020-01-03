@@ -8,6 +8,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -27,9 +28,14 @@ public class UserItemNotify extends BaseEntity {
     @JoinColumn(name = "item_id")
     private Item item;
 
+    private LocalDateTime lastNotifiedAt;
 
     public UserItemNotify(User user, Item item) {
         this.user = user;
         this.item = item;
+    }
+
+    public void updateNotifiedAt(LocalDateTime notifyAt) {
+        this.lastNotifiedAt = notifyAt;
     }
 }

@@ -11,7 +11,6 @@ import lombok.extern.slf4j.Slf4j;
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Objects;
 
 @Slf4j
 @Getter
@@ -38,7 +37,7 @@ public class Item extends UpdatableBaseEntity {
 
     private Integer itemBeforePrice;
 
-    private LocalDateTime lastPoolAt;
+    private LocalDateTime lastCrawledAt;
 
     private LocalDateTime lastUpdatedAt;
 
@@ -62,7 +61,7 @@ public class Item extends UpdatableBaseEntity {
                 String itemUrl, String itemImage,
                 Integer itemPrice,
                 ItemSaleStatus itemSaleStatus,
-                LocalDateTime lastPoolAt) {
+                LocalDateTime lastCrawledAt) {
 
         this.itemCode = itemCode;
         this.itemUrl = itemUrl;
@@ -71,8 +70,8 @@ public class Item extends UpdatableBaseEntity {
         this.itemImage = itemImage;
         this.itemPrice = itemPrice;
         this.itemBeforePrice = itemPrice;
-        this.lastPoolAt = lastPoolAt;
-        this.lastUpdatedAt = lastPoolAt;
+        this.lastCrawledAt = lastCrawledAt;
+        this.lastUpdatedAt = lastCrawledAt;
         this.itemSaleStatus = itemSaleStatus;
         this.deadCount = 0;
         this.itemStatus = ItemStatus.ALIVE;
@@ -80,17 +79,21 @@ public class Item extends UpdatableBaseEntity {
 
     }
 
-    public void updateInfo(ItemInfoVo itemInfoVo, LocalDateTime lastPoolAt) {
+    public void updateByCrawledItem(CrawledItemVo crawledItemVo, LocalDateTime lastPoolAt) {
         final Integer existPrice = this.itemPrice;
+        final Integer newPrice = crawledItemVo.getItemPrice();
 
-        this.itemName = itemInfoVo.getItemName();
-        this.itemImage = itemInfoVo.getItemImage();
-        this.itemPrice = itemInfoVo.getItemPrice();
-        this.lastPoolAt = lastPoolAt;
-        this.itemSaleStatus = itemInfoVo.getItemSaleStatus();
-
+        this.itemName = crawledItemVo.getItemName();
+        this.itemImage = crawledItemVo.getItemImage();
+        this.itemPrice = newPrice;
+        this.lastCrawledAt = lastPoolAt;
+        this.itemSaleStatus = crawledItemVo.getItemSaleStatus();
         this.deadCount = 0;
 
+        defineValueByItemSaleStatus(existPrice, newPrice, lastPoolAt);
+    }
+
+    private void defineValueByItemSaleStatus(Integer existPrice, Integer newPrice, LocalDateTime lastPoolAt) {
         switch (itemSaleStatus) {
             case UNKNOWN:
             case DISCONTINUE:
@@ -101,7 +104,7 @@ public class Item extends UpdatableBaseEntity {
 
             case SALE:
             case EMPTY_AMOUNT:
-                if (Objects.equals(existPrice, this.itemPrice)) {
+                if (existPrice.equals(newPrice)) {
                     itemUpdateStatus = ItemUpdateStatus.BE;
                 } else {
                     itemBeforePrice = existPrice;
@@ -120,9 +123,13 @@ public class Item extends UpdatableBaseEntity {
     public void died(LocalDateTime lastPoolAt) {
         this.itemBeforePrice = this.itemPrice;
         this.itemPrice = 0;
-        this.itemUpdateStatus = ItemUpdateStatus.UPDATED;
-        this.lastUpdatedAt = lastPoolAt;
         this.itemStatus = ItemStatus.DEAD;
+        updated(lastPoolAt);
+    }
+
+    private void updated(LocalDateTime lastUpdatedAt) {
+        this.itemUpdateStatus = ItemUpdateStatus.UPDATED;
+        this.lastUpdatedAt = lastUpdatedAt;
     }
 
     public void addUserItemNotify(UserItemNotify userItemNotify) {
@@ -133,7 +140,7 @@ public class Item extends UpdatableBaseEntity {
     public void removeUserItemNotify(UserItemNotify userItemNotify) {
         this.userItemNotifies.remove(userItemNotify);
 
-        if (this.userItemNotifies.isEmpty() && this.itemStatus.equals(ItemStatus.ALIVE)) {
+        if (!isNotifiedByAnyUser() && isAlived()) {
             log.info("{}({}) 상품은, 어떤 사용자에게도 알림이 없습니다", this.itemName, this.itemCode);
             log.info("{}({}) 상품을, 더 이상 갱신하지 않습니다.(중지)", this.itemName, this.itemCode);
 
@@ -141,7 +148,19 @@ public class Item extends UpdatableBaseEntity {
         }
     }
 
+    private boolean isNotifiedByAnyUser() {
+        return !this.userItemNotifies.isEmpty();
+    }
+
+    private boolean isAlived() {
+        return this.itemStatus.equals(ItemStatus.ALIVE);
+    }
+
     public void notified() {
         this.itemUpdateStatus = ItemUpdateStatus.BE;
+    }
+
+    public boolean hasDeadCountMoreThan(Integer maxDeadCount) {
+        return this.deadCount > maxDeadCount;
     }
 }
