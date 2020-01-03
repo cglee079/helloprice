@@ -1,9 +1,7 @@
 package com.podo.helloprice.telegram.domain.item;
 
 import com.podo.helloprice.core.domain.item.*;
-import com.podo.helloprice.core.domain.useritem.UserItemNotifyRepository;
-import com.podo.helloprice.pooler.target.danawa.DanawaPoolConfig;
-import com.podo.helloprice.pooler.target.danawa.DanawaPooler;
+import com.podo.helloprice.telegram.domain.item.exception.InvalidItemIdException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -22,81 +20,74 @@ import java.util.stream.Collectors;
 public class ItemService {
 
     private final ItemRepository itemRepository;
-    private final UserItemNotifyRepository userItemNotifyRepository;
 
-    public Long merge(ItemInfoVo itemInfoVo) {
+    public Long writeCrawledItem(CrawledItemVo crawledItemVo) {
 
-        Item item = itemRepository.findByItemCode(itemInfoVo.getItemCode());
+        final Item existedItem = itemRepository.findByItemCode(crawledItemVo.getItemCode());
 
-        if (Objects.nonNull(item)) {
-            item.updateInfo(itemInfoVo, LocalDateTime.now());
-            return item.getId();
+        if (Objects.nonNull(existedItem)) {
+            existedItem.updateByCrawledItem(crawledItemVo, LocalDateTime.now());
+            return existedItem.getId();
         }
 
         final ItemDto.insert itemInsert = ItemDto.insert.builder()
-                .itemCode(itemInfoVo.getItemCode())
-                .itemUrl(itemInfoVo.getItemUrl())
-                .itemName(itemInfoVo.getItemName())
-                .itemDesc(itemInfoVo.getItemDesc())
-                .itemImage(itemInfoVo.getItemImage())
-                .itemPrice(itemInfoVo.getItemPrice())
-                .itemSaleStatus(itemInfoVo.getItemSaleStatus())
+                .itemCode(crawledItemVo.getItemCode())
+                .itemUrl(crawledItemVo.getItemUrl())
+                .itemName(crawledItemVo.getItemName())
+                .itemDesc(crawledItemVo.getItemDesc())
+                .itemImage(crawledItemVo.getItemImage())
+                .itemPrice(crawledItemVo.getItemPrice())
+                .itemSaleStatus(crawledItemVo.getItemSaleStatus())
                 .build();
 
-        return this.insert(itemInsert);
+        return insertNewItem(itemInsert);
     }
 
-    public Long insert(ItemDto.insert itemInsert) {
-
-        Item item = itemRepository.save(itemInsert.toEntity());
-
-        return item.getId();
+    public Long insertNewItem(ItemDto.insert itemInsert) {
+        final Item newItem = itemInsert.toEntity();
+        final Item savedItem = itemRepository.save(newItem);
+        return savedItem.getId();
     }
 
     public ItemDto.detail findByItemCode(String itemCode) {
-        final Item item = itemRepository.findByItemCode(itemCode);
+        final Item existedItem = itemRepository.findByItemCode(itemCode);
 
-        if (Objects.isNull(item)) {
+        if (Objects.isNull(existedItem)) {
             return null;
         }
 
-        return new ItemDto.detail(item);
+        return new ItemDto.detail(existedItem);
     }
 
     public ItemDto.detail findByItemId(Long itemId) {
-        final Item item = itemRepository.findById(itemId).get();
-        return new ItemDto.detail(item);
-    }
+        final Optional<Item> existedItemOptional = itemRepository.findById(itemId);
 
-    public boolean existByItemCode(String itemCode) {
-        return Objects.isNull(itemRepository.findByItemCode(itemCode));
-    }
-
-    public List<ItemDto.detail> findByItemUpdateStatus(ItemUpdateStatus itemUpdateStatus) {
-        List<Item> items = itemRepository.findByItemUpdateStatus(itemUpdateStatus);
-        return items.stream()
-                .map(ItemDto.detail::new)
-                .collect(Collectors.toList());
-    }
-
-    public void deleteByItemId(Long itemId) {
-        Optional<Item> itemOptional = itemRepository.findById(itemId);
-
-        if (itemOptional.isPresent()) {
-            Item item = itemOptional.get();
-            userItemNotifyRepository.deleteAll(item.getUserItemNotifies());
-
-            itemRepository.delete(item);
+        if (!existedItemOptional.isPresent()) {
+            throw new InvalidItemIdException(itemId);
         }
+
+        return new ItemDto.detail(existedItemOptional.get());
+    }
+
+    public boolean isExistedByItemCode(String itemCode) {
+        final Item existedItem = itemRepository.findByItemCode(itemCode);
+        return Objects.nonNull(existedItem);
     }
 
     public void notifiedItem(Long itemId) {
-        Item item = itemRepository.findById(itemId).get();
-        item.notified();
+        final Optional<Item> existedItemOptional = itemRepository.findById(itemId);
+
+        if (!existedItemOptional.isPresent()) {
+            throw new InvalidItemIdException(itemId);
+        }
+
+        final Item existedItem = existedItemOptional.get();
+        existedItem.notified();
     }
 
-    public List<ItemDto.detail> findByItemStatusAndItemUpdateStatus(ItemStatus itemStatus, ItemUpdateStatus itemUpdateStatus) {
-        List<Item> items = itemRepository.findByItemStatusAndItemUpdateStatus(itemStatus, itemUpdateStatus);
+    public List<ItemDto.detail> findByStatusAndUpdateStatus(ItemStatus itemStatus, ItemUpdateStatus itemUpdateStatus) {
+        final List<Item> items = itemRepository.findByItemStatusAndItemUpdateStatus(itemStatus, itemUpdateStatus);
+
         return items.stream()
                 .map(ItemDto.detail::new)
                 .collect(Collectors.toList());

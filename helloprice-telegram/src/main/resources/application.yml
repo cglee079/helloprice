@@ -3,7 +3,7 @@ server:
 
 spring:
   profiles:
-    include: core, jpa, jpa-secret, pooler, gmail-secret, telegram-secret
+    include: core, jpa, jpa-secret, crawler, gmail-secret, telegram-secret
 
 app:
   name: 헬로프라이스
@@ -18,6 +18,14 @@ user:
 item:
   max_unknown_count: 1
   max_dead_count: 10
+  cache:
+    expire_minutes: 1
+
+
+email:
+  key:
+    expire_minutes: 5 #Minutes
+
 
 ## Log
 logging:

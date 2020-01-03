@@ -17,48 +17,55 @@ public class TelegramMessageSender {
         this.telegramBot = telegramBot;
     }
 
-
-    public void send(TMessageVo tMessageVo) {
-
-        final String image = tMessageVo.getImage();
-
-        if (StringUtils.isEmpty(image)) {
-            sendMessage(tMessageVo);
-            return;
+    public void sendWithWebPagePreview(TMessageVo tMessageVo) {
+        if (!StringUtils.isEmpty(tMessageVo.getImage())) {
+            sendPhoto(tMessageVo);
         }
 
+        sendMessage(tMessageVo, true);
+    }
+
+    public void send(TMessageVo tMessageVo) {
+        if (!StringUtils.isEmpty(tMessageVo.getImage())) {
+            sendPhoto(tMessageVo);
+        }
+
+        sendMessage(tMessageVo, false);
+    }
+
+    private void sendPhoto(TMessageVo tMessageVo) {
         final SendPhoto sendPhoto = new SendPhoto();
-        sendPhoto.setChatId(tMessageVo.getTelegramId().toString());
-        sendPhoto.setPhoto(image);
+        sendPhoto.setChatId(tMessageVo.getTelegramId());
+        sendPhoto.setPhoto(tMessageVo.getImage());
         sendPhoto.setReplyMarkup(tMessageVo.getKeyboard());
         sendPhoto.setReplyToMessageId(tMessageVo.getMessageId());
 
         try {
             telegramBot.execute(sendPhoto);
         } catch (TelegramApiException e) {
-            log.error("{} >> 이미지를 전송 할 수 없습니다. Image : {}", tMessageVo.getTelegramId(), image);
+            log.error("{} >> 이미지를 전송 할 수 없습니다. Image : {}", tMessageVo.getTelegramId(), tMessageVo.getImage());
         }
-
-        sendMessage(tMessageVo);
     }
 
-    private void sendMessage(TMessageVo tMessageVo) {
-        final String telegramId = tMessageVo.getTelegramId() + "";
-        final SendMessage sendMessage = new SendMessage(tMessageVo.getTelegramId().toString(), tMessageVo.getMessage());
+
+    private void sendMessage(TMessageVo tMessageVo, Boolean enabledWebPreview) {
+        final String telegramId = tMessageVo.getTelegramId();
+        final SendMessage sendMessage = new SendMessage(tMessageVo.getTelegramId(), tMessageVo.getMessage());
 
         sendMessage.setReplyMarkup(tMessageVo.getKeyboard());
         sendMessage.setReplyToMessageId(tMessageVo.getMessageId());
         sendMessage.enableHtml(true);
+
+        if (!enabledWebPreview) {
+            sendMessage.disableWebPagePreview();
+        }
 
         try {
             log.info("{} >> 메세지 전송, 보낸 메세지 : {}", telegramId, tMessageVo.getMessage().replace("\n", " "));
             telegramBot.executeAsync(sendMessage, tMessageVo.getCallback());
         } catch (TelegramApiException e) {
             log.error("{} >> 메시지를 전송 할 수 없습니다 '{}'", telegramId, e.getMessage());
-
             tMessageVo.getCallback().onException(null, null);
-//            userService.updateMenuStatus(telegramId, Menu.HOME);
-//            userService.increaseUserErrorCount(telegramId);
         }
 
     }

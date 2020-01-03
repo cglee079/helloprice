@@ -4,8 +4,10 @@ import com.podo.helloprice.telegram.domain.item.ItemDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
+import org.springframework.util.StringUtils;
 
 import java.util.List;
+import java.util.Objects;
 
 import static java.util.stream.Collectors.toList;
 
@@ -26,6 +28,10 @@ public class ItemCommandTranslator {
     }
 
     public static String getItemCodeFromCommand(String message) {
+        if (StringUtils.isEmpty(message)) {
+            return null;
+        }
+
         int index = message.indexOf(",");
 
         if (index == -1) {

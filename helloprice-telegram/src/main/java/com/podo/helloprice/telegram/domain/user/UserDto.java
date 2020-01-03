@@ -1,6 +1,6 @@
 package com.podo.helloprice.telegram.domain.user;
 
-import com.podo.helloprice.core.domain.user.Menu;
+import com.podo.helloprice.core.domain.model.Menu;
 import com.podo.helloprice.core.domain.user.User;
 import com.podo.helloprice.core.domain.user.UserStatus;
 import lombok.Builder;
@@ -45,7 +45,7 @@ public class UserDto {
     @Getter
     public static class detail {
         private Long id;
-        private Integer telegramId;
+        private String telegramId;
         private String username;
         private String email;
         private Menu menuStatus;
@@ -53,7 +53,7 @@ public class UserDto {
 
         public detail(User user) {
             this.id = user.getId();
-            this.telegramId = Integer.valueOf(user.getTelegramId());
+            this.telegramId = user.getTelegramId();
             this.username = user.getUsername();
             this.email = user.getEmail();
             this.menuStatus = user.getMenuStatus();

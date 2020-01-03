@@ -1,6 +1,7 @@
 package com.podo.helloprice.core.domain.user;
 
 import com.podo.helloprice.core.domain.UpdatableBaseEntity;
+import com.podo.helloprice.core.domain.model.Menu;
 import com.podo.helloprice.core.domain.useritem.UserItemNotify;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -37,8 +38,6 @@ public class User extends UpdatableBaseEntity {
 
     private LocalDateTime lastSendAt;
 
-    private LocalDateTime lastNotifyAt;
-
     @OneToMany(mappedBy = "user")
     List<UserItemNotify> userItemNotifies;
 
@@ -52,10 +51,7 @@ public class User extends UpdatableBaseEntity {
         this.errorCount = errorCount;
         this.menuStatus = menuStatus;
         this.userStatus = userStatus;
-    }
-
-    public void updateNotifyAt(LocalDateTime lastNotifyAt) {
-        this.lastNotifyAt = lastNotifyAt;
+        this.lastSendAt = lastSendAt;
     }
 
     public void updateSendAt(LocalDateTime lastSendAt) {
@@ -78,7 +74,7 @@ public class User extends UpdatableBaseEntity {
         errorCount++;
     }
 
-    public void resetErrorCount() {
+    public void clearErrorCount() {
         this.errorCount = 0;
     }
 
@@ -93,5 +89,9 @@ public class User extends UpdatableBaseEntity {
 
     public void updateEmail(String email) {
         this.email = email;
+    }
+
+    public boolean hasItemNotifiesMoreThan(Integer maxCountOfItemNotifies) {
+        return this.userItemNotifies.size() >= maxCountOfItemNotifies;
     }
 }

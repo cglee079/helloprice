@@ -13,17 +13,17 @@ public class GmailNotifier {
 
     private final GmailClient gmailClient;
 
-    public void notifyUser(String userName, String userEmail, String title, String image, String contents) {
-        log.info("{}({})님에게 이메일로 알림을 전송합니다, 보낸이메일 {}", userName, userEmail, title);
+    public void notifyUser(String username, String userEmail, String emailTitle, String contentImage, String contents) {
+        log.info("{}({})님에게 이메일로 알림을 전송합니다, 보낸이메일 {}", username, userEmail, emailTitle);
 
         final StringBuilder htmlContents = new StringBuilder();
 
         htmlContents.append("<div>");
 
-        if (Objects.nonNull(image)) {
+        if (Objects.nonNull(contentImage)) {
             htmlContents.append("<div>")
                     .append("<img src='")
-                    .append(image)
+                    .append(contentImage)
                     .append("'/>")
                     .append("<br/>")
                     .append("<br/>")
@@ -36,10 +36,10 @@ public class GmailNotifier {
 
         htmlContents.append("</div>");
 
-        gmailClient.sendEmail(userName, userEmail, title, htmlContents.toString());
+        gmailClient.sendEmail(username, userEmail, emailTitle, htmlContents.toString());
     }
 
-    public void notifyAdmin(String title, String contents) {
-        gmailClient.sendAdmin(title, contents);
+    public void notifyAdmin(String emailTitle, String contents) {
+        gmailClient.sendEmailToAdmin(emailTitle, contents);
     }
 }
