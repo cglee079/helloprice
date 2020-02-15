@@ -1,0 +1,34 @@
+server:
+  port: 17070
+
+spring:
+  profiles:
+    include: core,  crawl-core, jpa, jpa-secret
+
+  batch:
+    job:
+      enabled: false
+
+item:
+  max_deadcount: 10
+  crawl:
+    expire:
+      time: 5
+
+## Log
+logging:
+  file.name: helloprice-crawl-worker.%d{yyyy-MM-dd}-%i.log
+  file.path: c://helloprice/logs/helloprice-crawl-worker
+
+---
+
+spring:
+  profiles: deploy
+
+server:
+  port: 8080
+
+## Log
+logging:
+  file.path: /data/logs
+

@@ -3,7 +3,7 @@ server:
 
 spring:
   profiles:
-    include: core, jpa, jpa-secret, crawler, gmail-secret, telegram-secret
+    include: core, crawl-core, jpa, jpa-secret,  gmail-secret, telegram-secret
 
 app:
   name: 헬로프라이스
@@ -29,8 +29,8 @@ email:
 
 ## Log
 logging:
-  file: helloprice-telegram.%d{yyyy-MM-dd}-%i.log
-  path: c://helloprice/logs/helloprice-telegram
+  file.name: helloprice-telegram.%d{yyyy-MM-dd}-%i.log
+  file.path: c://helloprice/logs/helloprice-telegram
 
 
 
@@ -44,4 +44,4 @@ server:
 
 ## Log
 logging:
-  path: /data/logs
+  file.path: /data/logs

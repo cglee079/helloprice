@@ -4,7 +4,7 @@ import com.github.benmanes.caffeine.cache.Caffeine;
 import com.github.benmanes.caffeine.cache.LoadingCache;
 import com.github.benmanes.caffeine.cache.RemovalListener;
 import com.podo.helloprice.core.domain.item.CrawledItemVo;
-import com.podo.helloprice.crawler.target.danawa.DanawaCrawler;
+import com.podo.helloprice.crawl.core.target.danawa.DanawaCrawler;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;

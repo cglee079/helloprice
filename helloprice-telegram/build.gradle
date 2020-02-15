@@ -11,7 +11,7 @@ jar {
 
 dependencies {
     implementation project(':helloprice-core')
-    implementation project(':helloprice-crawler')
+    implementation project(':helloprice-crawl-core')
     implementation project(':helloprice-domain')
 
     implementation group: 'org.telegram', name: 'telegrambots', version: '4.0.0'

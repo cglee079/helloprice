@@ -1,7 +1,7 @@
 package com.podo.helloprice.telegram.client.menu.home;
 
 import com.podo.helloprice.core.domain.model.Menu;
-import com.podo.helloprice.crawler.target.danawa.DanawaCrawlConfig;
+import com.podo.helloprice.crawl.core.target.danawa.DanawaCrawlConfig;
 import com.podo.helloprice.telegram.client.menu.emailadd.EmailAddResponse;
 import com.podo.helloprice.telegram.client.menu.emaildelete.EmailDeleteResponse;
 import com.podo.helloprice.telegram.client.menu.itemsearch.ItemSearchResponse;

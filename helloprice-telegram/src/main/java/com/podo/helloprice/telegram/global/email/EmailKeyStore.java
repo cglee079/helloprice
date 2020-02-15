@@ -18,7 +18,7 @@ import java.util.concurrent.TimeUnit;
 @Component
 public class EmailKeyStore {
 
-    private final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(10);
+    private final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(3);
 
     private Map<String, String> emailKeyStore = new ConcurrentHashMap<>();
     private Map<String, LocalDateTime> keyStoreTimes = new ConcurrentHashMap<>();

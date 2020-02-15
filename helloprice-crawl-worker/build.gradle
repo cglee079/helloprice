@@ -1,0 +1,19 @@
+archivesBaseName = 'podo-helloprice-crawlworker'
+version = ''
+
+bootJar {
+    enabled = true
+}
+
+jar {
+    enabled = false
+}
+
+dependencies {
+    implementation project(':helloprice-core')
+    implementation project(':helloprice-crawl-core')
+    implementation project(':helloprice-domain')
+
+    implementation 'org.springframework.boot:spring-boot-starter-batch'
+    testImplementation 'org.springframework.batch:spring-batch-test'
+}
