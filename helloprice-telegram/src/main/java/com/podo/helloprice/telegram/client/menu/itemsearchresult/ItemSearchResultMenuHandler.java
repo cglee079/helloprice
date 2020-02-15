@@ -1,6 +1,6 @@
 package com.podo.helloprice.telegram.client.menu.itemsearchresult;
 
-import com.podo.helloprice.core.domain.item.CrawledItemVo;
+import com.podo.helloprice.core.domain.item.CrawledItem;
 import com.podo.helloprice.core.domain.model.Menu;
 import com.podo.helloprice.telegram.client.menu.Keyboard;
 import com.podo.helloprice.telegram.client.TMessageCallbackFactory;
@@ -67,13 +67,13 @@ public class ItemSearchResultMenuHandler extends AbstractMenuHandler {
 
         sender().send(tMessageVo.newMessage(CommonResponse.justWait(), null, callbackFactory.createDefaultNoAction(telegramId)));
 
-        final CrawledItemVo crawledItemVo = danawaItemCache.get(itemCode);
-        if (Objects.isNull(crawledItemVo)) {
+        final CrawledItem crawledItem = danawaItemCache.get(itemCode);
+        if (Objects.isNull(crawledItem)) {
             sender().send(tMessageVo.newMessage(ItemSearchAddResponse.failPoolItem(), Keyboard.getHomeKeyboard(itemCommands), callbackFactory.createDefault(tMessageVo.getTelegramId(), Menu.HOME)));
             return;
         }
 
-        sender().send(tMessageVo.newMessage(CommonResponse.descCrawledItemVo(crawledItemVo), crawledItemVo.getItemImage(), Keyboard.getItemSearchAddKeyboard(itemCode), callbackFactory.createDefault(telegramId, Menu.ITEM_SEARCH_ADD)));
+        sender().send(tMessageVo.newMessage(CommonResponse.descCrawledItemVo(crawledItem), crawledItem.getItemImage(), Keyboard.getItemSearchAddKeyboard(itemCode), callbackFactory.createDefault(telegramId, Menu.ITEM_SEARCH_ADD)));
         sender().send(tMessageVo.newMessage(ItemSearchAddResponse.explain(), null, null, callbackFactory.createDefaultNoAction(telegramId)));
     }
 

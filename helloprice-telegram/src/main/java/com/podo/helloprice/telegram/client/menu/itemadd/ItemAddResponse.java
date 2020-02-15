@@ -1,6 +1,6 @@
 package com.podo.helloprice.telegram.client.menu.itemadd;
 
-import com.podo.helloprice.core.domain.item.CrawledItemVo;
+import com.podo.helloprice.core.domain.item.CrawledItem;
 import com.podo.helloprice.telegram.client.menu.global.CommonResponse;
 
 public class ItemAddResponse {
@@ -61,9 +61,9 @@ public class ItemAddResponse {
     }
 
 
-    public static String isDiscontinueItem(CrawledItemVo crawledItemVo) {
+    public static String isDiscontinueItem(CrawledItem crawledItem) {
         return new StringBuilder()
-                .append(CommonResponse.descCrawledItemVo(crawledItemVo))
+                .append(CommonResponse.descCrawledItemVo(crawledItem))
                 .append("\n")
                 .append("죄송합니다, 페이지에서 단종된 상품입니다")
                 .append("\n")
@@ -71,9 +71,9 @@ public class ItemAddResponse {
                 .toString();
     }
 
-    public static String isErrorItem(CrawledItemVo crawledItemVo) {
+    public static String isErrorItem(CrawledItem crawledItem) {
         return new StringBuilder()
-                .append(CommonResponse.descCrawledItemVo(crawledItemVo))
+                .append(CommonResponse.descCrawledItemVo(crawledItem))
                 .append("\n")
                 .append("죄송합니다, 페이지에서 알 수 없는 상태의 상품입니다")
                 .append("\n")
@@ -82,9 +82,9 @@ public class ItemAddResponse {
                 .toString();
     }
 
-    public static String isNotSupportItem(CrawledItemVo crawledItemVo) {
+    public static String isNotSupportItem(CrawledItem crawledItem) {
         return new StringBuilder()
-                .append(CommonResponse.descCrawledItemVo(crawledItemVo))
+                .append(CommonResponse.descCrawledItemVo(crawledItem))
                 .append("\n")
                 .append("죄송합니다, 페이지에서 가격비교를 제공하지 않는 상품입니다")
                 .append("\n")

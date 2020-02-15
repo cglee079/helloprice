@@ -1,6 +1,6 @@
 package com.podo.helloprice.telegram.client.menu.global;
 
-import com.podo.helloprice.core.domain.item.CrawledItemVo;
+import com.podo.helloprice.core.domain.item.CrawledItem;
 import com.podo.helloprice.core.domain.item.ItemSaleStatus;
 import com.podo.helloprice.core.domain.item.ItemStatus;
 import com.podo.helloprice.core.util.MyCalculateUtils;
@@ -172,33 +172,33 @@ public class CommonResponse {
     }
 
 
-    public static String descCrawledItemVo(CrawledItemVo crawledItemVo) {
+    public static String descCrawledItemVo(CrawledItem crawledItem) {
         return new StringBuilder()
                 .append("<b>상품코드</b> : ")
-                .append(crawledItemVo.getItemCode())
+                .append(crawledItem.getItemCode())
                 .append("\n")
 
                 .append("<b>")
                 .append("상품이름 : ")
-                .append(crawledItemVo.getItemName())
+                .append(crawledItem.getItemName())
                 .append("</b>")
                 .append("\n")
 
                 .append("<b>상품설명</b> : ")
                 .append("<i>")
-                .append(crawledItemVo.getItemDesc())
+                .append(crawledItem.getItemDesc())
                 .append("</i>")
                 .append("\n")
 
                 .append("<b>")
                 .append("상품상태 : ")
-                .append(crawledItemVo.getItemSaleStatus().getValue())
+                .append(crawledItem.getItemSaleStatus().getValue())
                 .append("</b>")
                 .append("\n")
 
                 .append("<b>")
                 .append("상품가격 : ")
-                .append(MyCurrencyUtils.toKrw(crawledItemVo.getItemPrice()))
+                .append(MyCurrencyUtils.toKrw(crawledItem.getItemPrice()))
                 .append("</b>")
                 .append("\n")
 

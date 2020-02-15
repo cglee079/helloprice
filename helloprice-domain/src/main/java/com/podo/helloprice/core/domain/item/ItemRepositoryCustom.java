@@ -1,8 +1,8 @@
 package com.podo.helloprice.core.domain.item;
 
-import org.springframework.data.repository.query.Param;
-
-import java.util.List;
+import java.time.LocalDateTime;
 
 public interface ItemRepositoryCustom {
+
+    Item findOneByLastCrawledBeforePublishAt(ItemStatus itemStatus, LocalDateTime expirePoolAt);
 }

@@ -21,23 +21,23 @@ public class ItemService {
 
     private final ItemRepository itemRepository;
 
-    public Long writeCrawledItem(CrawledItemVo crawledItemVo) {
+    public Long writeCrawledItem(CrawledItem crawledItem) {
 
-        final Item existedItem = itemRepository.findByItemCode(crawledItemVo.getItemCode());
+        final Item existedItem = itemRepository.findByItemCode(crawledItem.getItemCode());
 
         if (Objects.nonNull(existedItem)) {
-            existedItem.updateByCrawledItem(crawledItemVo, LocalDateTime.now());
+            existedItem.updateByCrawledItem(crawledItem, LocalDateTime.now());
             return existedItem.getId();
         }
 
         final ItemDto.insert itemInsert = ItemDto.insert.builder()
-                .itemCode(crawledItemVo.getItemCode())
-                .itemUrl(crawledItemVo.getItemUrl())
-                .itemName(crawledItemVo.getItemName())
-                .itemDesc(crawledItemVo.getItemDesc())
-                .itemImage(crawledItemVo.getItemImage())
-                .itemPrice(crawledItemVo.getItemPrice())
-                .itemSaleStatus(crawledItemVo.getItemSaleStatus())
+                .itemCode(crawledItem.getItemCode())
+                .itemUrl(crawledItem.getItemUrl())
+                .itemName(crawledItem.getItemName())
+                .itemDesc(crawledItem.getItemDesc())
+                .itemImage(crawledItem.getItemImage())
+                .itemPrice(crawledItem.getItemPrice())
+                .itemSaleStatus(crawledItem.getItemSaleStatus())
                 .build();
 
         return insertNewItem(itemInsert);

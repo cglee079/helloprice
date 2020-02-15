@@ -39,6 +39,8 @@ public class Item extends UpdatableBaseEntity {
 
     private LocalDateTime lastCrawledAt;
 
+    private LocalDateTime lastPublishAt;
+
     private LocalDateTime lastUpdatedAt;
 
     private Integer deadCount;
@@ -72,6 +74,7 @@ public class Item extends UpdatableBaseEntity {
         this.itemBeforePrice = itemPrice;
         this.lastCrawledAt = lastCrawledAt;
         this.lastUpdatedAt = lastCrawledAt;
+        this.lastPublishAt = lastCrawledAt;
         this.itemSaleStatus = itemSaleStatus;
         this.deadCount = 0;
         this.itemStatus = ItemStatus.ALIVE;
@@ -79,21 +82,21 @@ public class Item extends UpdatableBaseEntity {
 
     }
 
-    public void updateByCrawledItem(CrawledItemVo crawledItemVo, LocalDateTime lastPoolAt) {
+    public void updateByCrawledItem(CrawledItem crawledItem, LocalDateTime lastCrawledAt) {
         final Integer existPrice = this.itemPrice;
-        final Integer newPrice = crawledItemVo.getItemPrice();
+        final Integer newPrice = crawledItem.getItemPrice();
 
-        this.itemName = crawledItemVo.getItemName();
-        this.itemImage = crawledItemVo.getItemImage();
+        this.itemName = crawledItem.getItemName();
+        this.itemImage = crawledItem.getItemImage();
         this.itemPrice = newPrice;
-        this.lastCrawledAt = lastPoolAt;
-        this.itemSaleStatus = crawledItemVo.getItemSaleStatus();
+        this.lastCrawledAt = lastCrawledAt;
+        this.itemSaleStatus = crawledItem.getItemSaleStatus();
         this.deadCount = 0;
 
-        defineValueByItemSaleStatus(existPrice, newPrice, lastPoolAt);
+        defineValueByItemSaleStatus(existPrice, newPrice, lastCrawledAt);
     }
 
-    private void defineValueByItemSaleStatus(Integer existPrice, Integer newPrice, LocalDateTime lastPoolAt) {
+    private void defineValueByItemSaleStatus(Integer existPrice, Integer newPrice, LocalDateTime lastCrawledAt) {
         switch (itemSaleStatus) {
             case UNKNOWN:
             case DISCONTINUE:
@@ -109,7 +112,7 @@ public class Item extends UpdatableBaseEntity {
                 } else {
                     itemBeforePrice = existPrice;
                     itemUpdateStatus = ItemUpdateStatus.UPDATED;
-                    lastUpdatedAt = lastPoolAt;
+                    lastUpdatedAt = lastCrawledAt;
                 }
             default:
                 break;
@@ -162,5 +165,9 @@ public class Item extends UpdatableBaseEntity {
 
     public boolean hasDeadCountMoreThan(Integer maxDeadCount) {
         return this.deadCount > maxDeadCount;
+    }
+
+    public void updateLastPublishAt(LocalDateTime lastPublishAt){
+        this.lastPublishAt = lastPublishAt;
     }
 }
