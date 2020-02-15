@@ -23,7 +23,7 @@ public class TestUtil {
         return readFileToString(file);
     }
 
-    public static String readFileToString(File file) {
+    private static String readFileToString(File file) {
         StringBuilder contentBuilder = new StringBuilder();
         try (BufferedReader br = new BufferedReader(new FileReader(file))) {
 

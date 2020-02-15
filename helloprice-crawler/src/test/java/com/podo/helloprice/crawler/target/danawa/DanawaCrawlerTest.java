@@ -49,7 +49,7 @@ class DanawaCrawlerTest {
         //then
         assertThat(crawledItemVo.getItemCode()).isEqualTo(itemCode);
         assertThat(crawledItemVo.getItemSaleStatus()).isEqualTo(ItemSaleStatus.SALE);
-        assertThat(crawledItemVo.getItemPrice()).isNotNull();
+        assertThat(crawledItemVo.getItemPrice()).isGreaterThan(0);
         assertThat(crawledItemVo.getItemName()).isNotEmpty();
     }
 
@@ -95,4 +95,24 @@ class DanawaCrawlerTest {
         assertThat(crawledItemVo.getItemName()).isNotEmpty();
     }
 
+    @DisplayName("가격비교 중지 상품 크롤링")
+    @Test
+    void testCrawlNotSupportItem() throws FailGetDocumentException {
+
+        //given
+        final String itemCode = "7852171";
+        final String html = TestUtil.getStringFromResource("document", "danawa_itempage_not_support.html");
+
+        final Document document = Jsoup.parse(html);
+        given(promptDocumentLoader.getDocument(DanawaCrawlConfig.ItemPage.DANAWA_ITEM_URL + itemCode)).willReturn(document);
+
+        //when
+        final CrawledItemVo crawledItemVo = danawaCrawler.crawlItem(itemCode);
+
+        //then
+        assertThat(crawledItemVo.getItemCode()).isEqualTo(itemCode);
+        assertThat(crawledItemVo.getItemSaleStatus()).isEqualTo(ItemSaleStatus.NOT_SUPPORT);
+        assertThat(crawledItemVo.getItemPrice()).isZero();
+        assertThat(crawledItemVo.getItemName()).isNotEmpty();
+    }
 }
