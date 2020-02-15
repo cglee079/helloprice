@@ -1,6 +1,5 @@
 package com.podo.helloprice.crawlworker.job.config;
 
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.batch.core.configuration.annotation.BatchConfigurer;
 import org.springframework.batch.core.explore.JobExplorer;
@@ -8,55 +7,62 @@ import org.springframework.batch.core.explore.support.MapJobExplorerFactoryBean;
 import org.springframework.batch.core.launch.JobLauncher;
 import org.springframework.batch.core.launch.support.SimpleJobLauncher;
 import org.springframework.batch.core.repository.JobRepository;
-import org.springframework.batch.core.repository.support.MapJobRepositoryFactoryBean;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.orm.jpa.JpaTransactionManager;
+import org.springframework.stereotype.Component;
 import org.springframework.transaction.PlatformTransactionManager;
 
-import javax.annotation.PostConstruct;
 import javax.persistence.EntityManagerFactory;
 
-/**
- * Remove Logging In Database
- * Logging -> NO INSERT DB
- * Transactional -> JPA
- */
 @Slf4j
-@RequiredArgsConstructor
-@Configuration
+@Component
 public class CustomBatchConfigurer implements BatchConfigurer {
 
-    private final JpaTransactionManager jpaTransactionManager;
-    private final MapJobRepositoryFactoryBean mapJobRepositoryFactoryBean;
+    private PlatformTransactionManager transactionManager;
+    private JobRepository jobRepository;
+    private JobLauncher jobLauncher;
+    private JobExplorer jobExplorer;
+
+    @Autowired
+    public CustomBatchConfigurer(EntityManagerFactory entityManagerFactory, CustomMapJobRepositoryFactoryBean mapJobRepositoryFactoryBean) throws Exception {
+
+        if (entityManagerFactory == null) {
+            throw new Exception("EntityManagerFactory is null!");
+        }
+        this.transactionManager = new JpaTransactionManager(entityManagerFactory);
+
+        mapJobRepositoryFactoryBean.afterPropertiesSet();
+        this.jobRepository = mapJobRepositoryFactoryBean.getObject();
+
+        final SimpleJobLauncher jobLauncher = new SimpleJobLauncher();
+        jobLauncher.setJobRepository(getJobRepository());
+        jobLauncher.afterPropertiesSet();
+        this.jobLauncher = jobLauncher;
+
+        final MapJobExplorerFactoryBean mapJobExplorerFactoryBean = new MapJobExplorerFactoryBean(mapJobRepositoryFactoryBean);
+        mapJobExplorerFactoryBean.afterPropertiesSet();
+        this.jobExplorer = mapJobExplorerFactoryBean.getObject();
+    }
 
 
     @Override
     public JobRepository getJobRepository() throws Exception {
-        return mapJobRepositoryFactoryBean.getObject();
+        return this.jobRepository;
     }
 
     @Override
-    public PlatformTransactionManager getTransactionManager() {
-        return this.jpaTransactionManager;
+    public PlatformTransactionManager getTransactionManager() throws Exception {
+        return this.transactionManager;
     }
 
     @Override
     public JobLauncher getJobLauncher() throws Exception {
-        SimpleJobLauncher jobLauncher = new SimpleJobLauncher();
-        jobLauncher.setJobRepository(this.getJobRepository());
-        jobLauncher.afterPropertiesSet();
-        return jobLauncher;
+        return this.jobLauncher;
     }
 
     @Override
     public JobExplorer getJobExplorer() throws Exception {
-        MapJobExplorerFactoryBean jobExplorerFactory = new MapJobExplorerFactoryBean(mapJobRepositoryFactoryBean);
-        jobExplorerFactory.afterPropertiesSet();
-        return jobExplorerFactory.getObject();
+        return this.jobExplorer;
     }
-
-
 }
 

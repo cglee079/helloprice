@@ -11,6 +11,6 @@ public class JpaConfig {
 
     @Bean
     AuditorAware auditorAware() {
-        return (AuditorAware<String>) () -> Optional.of("Helloprice.PoolWorker@" + Thread.currentThread());
+        return (AuditorAware<String>) () -> Optional.of("Helloprice.CrawlWorker@" + Thread.currentThread());
     }
 }

@@ -35,7 +35,7 @@ public class DelayDocumentLoader {
 
         try {
             webDriver.get(url);
-        } catch (org.openqa.selenium.TimeoutException e1) {
+        } catch (TimeoutException e1) {
             throw new FailGetDocumentException(e1);
         } catch (NoSuchSessionException e2) {
             log.error("WebDriver 세션을 찾을 수 없습니다", e2);
@@ -60,8 +60,7 @@ public class DelayDocumentLoader {
         final WebDriverWait wait = new WebDriverWait(webDriver, timeout / 1000);
 
         final ExpectedCondition<Boolean> documentComplete =
-                driver -> ((JavascriptExecutor) driver).executeScript(
-                        "return document.readyState").equals("complete");
+                driver -> ((JavascriptExecutor) driver).executeScript("return document.readyState").equals("complete");
 
         final List<ExpectedCondition<Boolean>> waitElements = waitElementCssSelectors.stream()
                 .map(w -> ExpectedConditions.and(ExpectedConditions.presenceOfElementLocated(By.cssSelector(w))))
