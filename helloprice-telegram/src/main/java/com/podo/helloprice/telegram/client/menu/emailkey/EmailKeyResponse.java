@@ -1,7 +1,9 @@
 package com.podo.helloprice.telegram.client.menu.emailkey;
 
 import com.podo.helloprice.telegram.client.menu.global.CommonResponse;
+import lombok.experimental.UtilityClass;
 
+@UtilityClass
 public class EmailKeyResponse {
 
     public static String explain() {

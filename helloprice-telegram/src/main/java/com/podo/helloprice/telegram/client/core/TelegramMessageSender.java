@@ -40,6 +40,7 @@ public class TelegramMessageSender {
         sendPhoto.setPhoto(tMessageVo.getImage());
         sendPhoto.setReplyMarkup(tMessageVo.getKeyboard());
         sendPhoto.setReplyToMessageId(tMessageVo.getMessageId());
+        sendPhoto.disableNotification();
 
         try {
             telegramBot.execute(sendPhoto);

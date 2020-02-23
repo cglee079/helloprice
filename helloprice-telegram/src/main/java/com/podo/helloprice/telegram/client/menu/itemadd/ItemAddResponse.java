@@ -2,7 +2,9 @@ package com.podo.helloprice.telegram.client.menu.itemadd;
 
 import com.podo.helloprice.core.domain.item.vo.CrawledItem;
 import com.podo.helloprice.telegram.client.menu.global.CommonResponse;
+import lombok.experimental.UtilityClass;
 
+@UtilityClass
 public class ItemAddResponse {
 
     public static String explain(String url, String helpUrl) {

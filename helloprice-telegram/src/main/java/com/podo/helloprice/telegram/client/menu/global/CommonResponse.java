@@ -1,14 +1,17 @@
 package com.podo.helloprice.telegram.client.menu.global;
 
-import com.podo.helloprice.core.domain.item.vo.CrawledItem;
 import com.podo.helloprice.core.domain.item.model.ItemSaleStatus;
 import com.podo.helloprice.core.domain.item.model.ItemStatus;
+import com.podo.helloprice.core.domain.item.vo.CrawledItem;
 import com.podo.helloprice.core.util.MyCalculateUtils;
 import com.podo.helloprice.core.util.MyCurrencyUtils;
 import com.podo.helloprice.core.util.MyDateTimeUtils;
 import com.podo.helloprice.telegram.domain.item.ItemDto;
+import lombok.experimental.UtilityClass;
 
+@UtilityClass
 public class CommonResponse {
+
     public static final String DATE_TIME_FORMAT = "yyyy년 MM월 dd일 HH시 mm분";
 
     public static String introduce(String appDesc) {
@@ -104,6 +107,7 @@ public class CommonResponse {
                 .append(MyCalculateUtils.getPercentStringWithPlusMinusSign(itemPrice, itemBeforePrice))
                 .append("</b>");
 
+
         return message.toString();
     }
 
@@ -122,7 +126,7 @@ public class CommonResponse {
         }
 
         return descChangeBySaleStatus(itemDetail);
-        }
+    }
 
     private static String descChangeBySaleStatus(ItemDto.detail itemDetail) {
 
@@ -136,7 +140,7 @@ public class CommonResponse {
                 return "죄송합니다.. <b>상품의 가격비교가 중지되었어요..</b>";
             case EMPTY_AMOUNT:
                 return "죄송합니다.. <b>상품의 재고가 없어요..</b>";
-            case  SALE:
+            case SALE:
                 return descSaleStatusChange(itemDetail.getItemPrice(), itemDetail.getItemBeforePrice());
         }
 
