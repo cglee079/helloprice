@@ -4,10 +4,12 @@ pluginManagement {
     }
 }
 
-rootProject.name = 'podo-helloprice'
+rootProject.name = 'helloprice'
 
 include 'helloprice-core',
         'helloprice-domain',
-        'helloprice-crawlworker',
-        'helloprice-crawler',
+        'helloprice-crawl-agent',
+        'helloprice-crawl-core',
+        'helloprice-crawl-worker',
+        'helloprice-crawl-scheduler',
         'helloprice-telegram'

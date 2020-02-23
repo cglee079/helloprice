@@ -1,14 +1,17 @@
 package com.podo.helloprice.telegram.client.menu.global;
 
-import com.podo.helloprice.core.domain.item.CrawledItemVo;
-import com.podo.helloprice.core.domain.item.ItemSaleStatus;
-import com.podo.helloprice.core.domain.item.ItemStatus;
+import com.podo.helloprice.core.domain.item.model.ItemSaleStatus;
+import com.podo.helloprice.core.domain.item.model.ItemStatus;
+import com.podo.helloprice.core.domain.item.vo.CrawledItem;
 import com.podo.helloprice.core.util.MyCalculateUtils;
 import com.podo.helloprice.core.util.MyCurrencyUtils;
 import com.podo.helloprice.core.util.MyDateTimeUtils;
 import com.podo.helloprice.telegram.domain.item.ItemDto;
+import lombok.experimental.UtilityClass;
 
+@UtilityClass
 public class CommonResponse {
+
     public static final String DATE_TIME_FORMAT = "yyyy년 MM월 dd일 HH시 mm분";
 
     public static String introduce(String appDesc) {
@@ -104,6 +107,7 @@ public class CommonResponse {
                 .append(MyCalculateUtils.getPercentStringWithPlusMinusSign(itemPrice, itemBeforePrice))
                 .append("</b>");
 
+
         return message.toString();
     }
 
@@ -122,7 +126,7 @@ public class CommonResponse {
         }
 
         return descChangeBySaleStatus(itemDetail);
-        }
+    }
 
     private static String descChangeBySaleStatus(ItemDto.detail itemDetail) {
 
@@ -136,7 +140,7 @@ public class CommonResponse {
                 return "죄송합니다.. <b>상품의 가격비교가 중지되었어요..</b>";
             case EMPTY_AMOUNT:
                 return "죄송합니다.. <b>상품의 재고가 없어요..</b>";
-            case  SALE:
+            case SALE:
                 return descSaleStatusChange(itemDetail.getItemPrice(), itemDetail.getItemBeforePrice());
         }
 
@@ -172,33 +176,33 @@ public class CommonResponse {
     }
 
 
-    public static String descCrawledItemVo(CrawledItemVo crawledItemVo) {
+    public static String descCrawledItemVo(CrawledItem crawledItem) {
         return new StringBuilder()
                 .append("<b>상품코드</b> : ")
-                .append(crawledItemVo.getItemCode())
+                .append(crawledItem.getItemCode())
                 .append("\n")
 
                 .append("<b>")
                 .append("상품이름 : ")
-                .append(crawledItemVo.getItemName())
+                .append(crawledItem.getItemName())
                 .append("</b>")
                 .append("\n")
 
                 .append("<b>상품설명</b> : ")
                 .append("<i>")
-                .append(crawledItemVo.getItemDesc())
+                .append(crawledItem.getItemDesc())
                 .append("</i>")
                 .append("\n")
 
                 .append("<b>")
                 .append("상품상태 : ")
-                .append(crawledItemVo.getItemSaleStatus().getValue())
+                .append(crawledItem.getItemSaleStatus().getValue())
                 .append("</b>")
                 .append("\n")
 
                 .append("<b>")
                 .append("상품가격 : ")
-                .append(MyCurrencyUtils.toKrw(crawledItemVo.getItemPrice()))
+                .append(MyCurrencyUtils.toKrw(crawledItem.getItemPrice()))
                 .append("</b>")
                 .append("\n")
 

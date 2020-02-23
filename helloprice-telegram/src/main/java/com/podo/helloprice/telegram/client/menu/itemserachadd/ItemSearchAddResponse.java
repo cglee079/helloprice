@@ -1,7 +1,9 @@
 package com.podo.helloprice.telegram.client.menu.itemserachadd;
 
 import com.podo.helloprice.telegram.client.menu.global.CommonResponse;
+import lombok.experimental.UtilityClass;
 
+@UtilityClass
 public class ItemSearchAddResponse {
 
     public static String explain() {

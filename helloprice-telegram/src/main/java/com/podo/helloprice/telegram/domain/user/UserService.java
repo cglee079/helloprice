@@ -1,10 +1,12 @@
 package com.podo.helloprice.telegram.domain.user;
 
-import com.podo.helloprice.core.domain.model.Menu;
+import com.podo.helloprice.core.domain.user.model.UserStatus;
+import com.podo.helloprice.core.model.Menu;
 import com.podo.helloprice.core.domain.user.User;
-import com.podo.helloprice.core.domain.user.UserRepository;
+import com.podo.helloprice.core.domain.user.repository.UserRepository;
 import com.podo.helloprice.core.domain.useritem.UserItemNotify;
-import com.podo.helloprice.core.domain.useritem.UserItemNotifyRepository;
+import com.podo.helloprice.core.domain.useritem.repository.UserItemNotifyRepository;
+import com.podo.helloprice.telegram.domain.user.exception.InvalidTelegramIdException;
 import com.podo.helloprice.telegram.domain.user.exception.InvalidUserIdException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -15,12 +17,11 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
-import java.util.Optional;
 
 @Slf4j
+@Service
 @Transactional
 @RequiredArgsConstructor
-@Service
 public class UserService {
 
     @Value("${user.max_error_count}")
@@ -33,42 +34,28 @@ public class UserService {
     private final UserItemNotifyRepository userItemNotifyRepository;
 
     public UserDto.detail findByTelegramId(String telegramId) {
-        final User existedUser = userRepository.findByTelegramId(telegramId);
-
-        if (Objects.isNull(existedUser)) {
+        try {
+            return new UserDto.detail(findUserByTelegramId(telegramId));
+        } catch (InvalidTelegramIdException e) {
             return null;
         }
-
-        return new UserDto.detail(existedUser);
     }
 
     public Long insertNewUser(UserDto.insert userInsert) {
         final User newUser = userInsert.toEntity();
         final User savedUser = userRepository.save(newUser);
+
         return savedUser.getId();
     }
 
-    public void updateMenuStatusByTelegramId(String telegramId, Menu menu) {
-        final User existedUser = userRepository.findByTelegramId(telegramId);
-        existedUser.updateMenuStatus(menu);
-    }
-
     public void increaseUserErrorCountByTelegramId(String telegramId) {
-        final User existedUser = userRepository.findByTelegramId(telegramId);
+        final User existedUser = findUserByTelegramId(telegramId);
 
-        existedUser.increaseErrorCount();
+        existedUser.increaseErrorCount(userMaxErrorCount);
 
-        final boolean isErrorCountThanMaximum = existedUser.getErrorCount() > userMaxErrorCount;
-
-        if (isErrorCountThanMaximum) {
-            existedUser.died();
+        if (existedUser.getUserStatus().equals(UserStatus.DEAD)) {
             removeUserItemNotifies(existedUser.getUserItemNotifies());
         }
-    }
-
-    public void clearUserErrorCountByTelegramId(String telegramId) {
-        final User user = userRepository.findByTelegramId(telegramId);
-        user.clearErrorCount();
     }
 
     private void removeUserItemNotifies(List<UserItemNotify> userItemNotifies) {
@@ -80,39 +67,36 @@ public class UserService {
         }
     }
 
+    public void updateMenuStatusByTelegramId(String telegramId, Menu menu) {
+        findUserByTelegramId(telegramId).updateMenuStatus(menu);
+    }
+
+    public void clearUserErrorCountByTelegramId(String telegramId) {
+        findUserByTelegramId(telegramId).clearErrorCount();
+    }
+
     public void reviveUser(Long userId) {
-        final Optional<User> existedUserOptional = userRepository.findById(userId);
-
-        if (!existedUserOptional.isPresent()) {
-            throw new InvalidUserIdException(userId);
-        }
-
-        final User existedUser = existedUserOptional.get();
-        existedUser.revive();
+        findUserByUserId(userId).revive();
     }
 
     public void updateSendAt(Long userId, LocalDateTime lastSendAt) {
-        final Optional<User> existedUserOptional = userRepository.findById(userId);
-
-        if (!existedUserOptional.isPresent()) {
-            throw new InvalidUserIdException(userId);
-        }
-
-        final User existedUser = existedUserOptional.get();
-        existedUser.updateSendAt(lastSendAt);
+        findUserByUserId(userId).updateLastSendAt(lastSendAt);
     }
 
     public void updateEmailByTelegramId(String telegramId, String email) {
-        final User existedUser = userRepository.findByTelegramId(telegramId);
-        existedUser.updateEmail(email);
+        findUserByTelegramId(telegramId).updateEmail(email);
     }
 
     public boolean hasMaxNotifyByUserTelegramId(String telegramId) {
-        final User existedUser = userRepository.findByTelegramId(telegramId);
-        if (existedUser.hasItemNotifiesMoreThan(maxCountOfItemNotifies)) {
-            return true;
-        }
-        return false;
+        return findUserByTelegramId(telegramId).hasItemNotifiesMoreThan(maxCountOfItemNotifies);
+    }
+
+    private User findUserByTelegramId(String telegramId) {
+        return userRepository.findByTelegramId(telegramId).orElseThrow(() -> new InvalidTelegramIdException(telegramId));
+    }
+
+    private User findUserByUserId(Long userId) {
+        return userRepository.findById(userId).orElseThrow(() -> new InvalidUserIdException(userId));
     }
 
 

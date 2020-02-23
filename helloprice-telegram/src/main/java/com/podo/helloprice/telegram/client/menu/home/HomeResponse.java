@@ -2,7 +2,9 @@ package com.podo.helloprice.telegram.client.menu.home;
 
 import com.podo.helloprice.telegram.domain.item.ItemDto;
 import com.podo.helloprice.telegram.client.menu.global.CommonResponse;
+import lombok.experimental.UtilityClass;
 
+@UtilityClass
 public class HomeResponse {
 
     public static String itemDetail(ItemDto.detail itemDetail) {
