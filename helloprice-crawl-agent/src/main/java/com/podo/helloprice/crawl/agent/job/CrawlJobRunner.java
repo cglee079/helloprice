@@ -31,7 +31,6 @@ public class CrawlJobRunner {
         try {
 
             final JobParameters jobParameters = new JobParametersBuilder()
-                    .add
                     .addDate("createAt", new Date())
                     .addString("lastPublishedItem", lastPublishedItem)
                     .toJobParameters();

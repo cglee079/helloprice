@@ -49,7 +49,7 @@ public class CrawlJobWriter implements ItemWriter<CrawledItem> {
             item.increaseDeadCount(maxDeadCount, now);
         }
 
-        item.updateByCrawledItem(crawledItem, now);
+        item.updateByCrawledItem(crawledItem);
 
         log.info("{}({}), 가격 : `{}`, 상품판매상태 : `{}`, 상품상태 `{}`", existedItemName, existedItemCode, item.getItemPrice(), item.getItemSaleStatus().getValue(), item.getItemStatus());
 

@@ -11,15 +11,11 @@ import java.util.TimeZone;
 @SpringBootApplication
 public class HellopriceTelegramApplication {
 
-    public HellopriceTelegramApplication() {
+    public static void main(String[] args) {
         //Telegram Api Initial
         ApiContextInitializer.init();
-
-
         TimeZone.setDefault(TimeZone.getTimeZone("Asia/Seoul"));
-    }
 
-    public static void main(String[] args) {
         SpringApplication.run(HellopriceTelegramApplication.class, args);
     }
 

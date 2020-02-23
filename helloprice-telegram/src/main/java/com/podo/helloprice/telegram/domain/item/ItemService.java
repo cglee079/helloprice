@@ -30,7 +30,7 @@ public class ItemService {
         final Item existedItem = itemRepository.findByItemCode(crawledItem.getItemCode());
 
         if (Objects.nonNull(existedItem)) {
-            existedItem.updateByCrawledItem(crawledItem, LocalDateTime.now());
+            existedItem.updateByCrawledItem(crawledItem);
             return existedItem.getId();
         }
 
