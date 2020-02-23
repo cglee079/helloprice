@@ -1,6 +1,7 @@
 # HelloPrice (헬로프라이스)
 
-- 프로젝트 상세 [헬로프라이스](https://www.podo-dev.com/blogs/185)
+- [프로젝트 상세](https://www.podo-dev.com/blogs?tag=%ED%97%AC%EB%A1%9C%ED%94%84%EB%9D%BC%EC%9D%B4%EC%8A%A4)
+- [헬로프라이스 도움말](https://www.podo-dev.com/blogs/185)
 - 다나와 최저가 가격 갱신 알림을 주는 텔레그램 봇
 
 <br>
