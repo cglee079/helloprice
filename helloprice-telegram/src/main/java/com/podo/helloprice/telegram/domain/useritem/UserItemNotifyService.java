@@ -1,12 +1,12 @@
 package com.podo.helloprice.telegram.domain.useritem;
 
 import com.podo.helloprice.core.domain.item.Item;
-import com.podo.helloprice.core.domain.item.ItemRepository;
+import com.podo.helloprice.core.domain.item.repository.ItemRepository;
 import com.podo.helloprice.core.domain.user.User;
-import com.podo.helloprice.core.domain.user.UserRepository;
-import com.podo.helloprice.core.domain.user.UserStatus;
+import com.podo.helloprice.core.domain.user.repository.UserRepository;
+import com.podo.helloprice.core.domain.user.model.UserStatus;
 import com.podo.helloprice.core.domain.useritem.UserItemNotify;
-import com.podo.helloprice.core.domain.useritem.UserItemNotifyRepository;
+import com.podo.helloprice.core.domain.useritem.repository.UserItemNotifyRepository;
 import com.podo.helloprice.telegram.domain.item.ItemDto;
 import com.podo.helloprice.telegram.domain.item.exception.InvalidItemIdException;
 import com.podo.helloprice.telegram.domain.user.UserDto;

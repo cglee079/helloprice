@@ -1,6 +1,10 @@
 package com.podo.helloprice.core.domain.item;
 
-import com.podo.helloprice.core.domain.UpdatableBaseEntity;
+import com.podo.helloprice.core.domain.BaseEntity;
+import com.podo.helloprice.core.domain.item.model.ItemSaleStatus;
+import com.podo.helloprice.core.domain.item.model.ItemStatus;
+import com.podo.helloprice.core.domain.item.model.ItemUpdateStatus;
+import com.podo.helloprice.core.domain.item.vo.CrawledItem;
 import com.podo.helloprice.core.domain.useritem.UserItemNotify;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -10,6 +14,7 @@ import lombok.extern.slf4j.Slf4j;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Slf4j
@@ -17,7 +22,7 @@ import java.util.List;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "item")
 @Entity
-public class Item extends UpdatableBaseEntity {
+public class Item extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -39,6 +44,8 @@ public class Item extends UpdatableBaseEntity {
 
     private LocalDateTime lastCrawledAt;
 
+    private LocalDateTime lastPublishAt;
+
     private LocalDateTime lastUpdatedAt;
 
     private Integer deadCount;
@@ -53,7 +60,7 @@ public class Item extends UpdatableBaseEntity {
     private ItemUpdateStatus itemUpdateStatus;
 
     @OneToMany(mappedBy = "item")
-    List<UserItemNotify> userItemNotifies;
+    private List<UserItemNotify> userItemNotifies = new ArrayList<>();
 
     @Builder
     public Item(String itemCode,
@@ -72,62 +79,59 @@ public class Item extends UpdatableBaseEntity {
         this.itemBeforePrice = itemPrice;
         this.lastCrawledAt = lastCrawledAt;
         this.lastUpdatedAt = lastCrawledAt;
+        this.lastPublishAt = lastCrawledAt;
         this.itemSaleStatus = itemSaleStatus;
         this.deadCount = 0;
         this.itemStatus = ItemStatus.ALIVE;
         this.itemUpdateStatus = ItemUpdateStatus.BE;
 
     }
-
-    public void updateByCrawledItem(CrawledItemVo crawledItemVo, LocalDateTime lastPoolAt) {
+    public void updateByCrawledItem(CrawledItem crawledItem) {
         final Integer existPrice = this.itemPrice;
-        final Integer newPrice = crawledItemVo.getItemPrice();
+        final Integer crawledPrice = crawledItem.getItemPrice();
 
-        this.itemName = crawledItemVo.getItemName();
-        this.itemImage = crawledItemVo.getItemImage();
-        this.itemPrice = newPrice;
-        this.lastCrawledAt = lastPoolAt;
-        this.itemSaleStatus = crawledItemVo.getItemSaleStatus();
+        this.itemPrice = crawledPrice;
         this.deadCount = 0;
 
-        defineValueByItemSaleStatus(existPrice, newPrice, lastPoolAt);
-    }
+        this.itemName = crawledItem.getItemName();
+        this.itemImage = crawledItem.getItemImage();
+        this.lastCrawledAt = crawledItem.getCrawledAt();
+        this.itemSaleStatus = crawledItem.getItemSaleStatus();
 
-    private void defineValueByItemSaleStatus(Integer existPrice, Integer newPrice, LocalDateTime lastPoolAt) {
-        switch (itemSaleStatus) {
+        switch (crawledItem.getItemSaleStatus()) {
             case UNKNOWN:
             case DISCONTINUE:
             case NOT_SUPPORT:
                 this.itemStatus = ItemStatus.PAUSE;
-                this.itemUpdateStatus = ItemUpdateStatus.UPDATED;
+                updateItemUpdateInfo(lastCrawledAt);
                 break;
 
             case SALE:
             case EMPTY_AMOUNT:
-                if (existPrice.equals(newPrice)) {
+                if (existPrice.equals(crawledPrice)) {
                     itemUpdateStatus = ItemUpdateStatus.BE;
                 } else {
                     itemBeforePrice = existPrice;
-                    itemUpdateStatus = ItemUpdateStatus.UPDATED;
-                    lastUpdatedAt = lastPoolAt;
+                    updateItemUpdateInfo(lastCrawledAt);
                 }
             default:
                 break;
         }
     }
 
-    public void increaseDeadCount() {
+    public void increaseDeadCount(Integer maxDeadCount, LocalDateTime lastCrawledAt) {
         this.deadCount++;
+
+        if(this.deadCount > maxDeadCount){
+            log.info("{}({}) 상품 DEAD_COUNT 초과, DEAD 상태로 변경", this.itemName, this.itemCode);
+            this.itemBeforePrice = this.itemPrice;
+            this.itemPrice = 0;
+            this.itemStatus = ItemStatus.DEAD;
+            updateItemUpdateInfo(lastCrawledAt);
+        }
     }
 
-    public void died(LocalDateTime lastPoolAt) {
-        this.itemBeforePrice = this.itemPrice;
-        this.itemPrice = 0;
-        this.itemStatus = ItemStatus.DEAD;
-        updated(lastPoolAt);
-    }
-
-    private void updated(LocalDateTime lastUpdatedAt) {
+    private void updateItemUpdateInfo(LocalDateTime lastUpdatedAt) {
         this.itemUpdateStatus = ItemUpdateStatus.UPDATED;
         this.lastUpdatedAt = lastUpdatedAt;
     }
@@ -140,7 +144,7 @@ public class Item extends UpdatableBaseEntity {
     public void removeUserItemNotify(UserItemNotify userItemNotify) {
         this.userItemNotifies.remove(userItemNotify);
 
-        if (!isNotifiedByAnyUser() && isAlived()) {
+        if (!hasAnyNotify() && isAlive()) {
             log.info("{}({}) 상품은, 어떤 사용자에게도 알림이 없습니다", this.itemName, this.itemCode);
             log.info("{}({}) 상품을, 더 이상 갱신하지 않습니다.(중지)", this.itemName, this.itemCode);
 
@@ -148,11 +152,11 @@ public class Item extends UpdatableBaseEntity {
         }
     }
 
-    private boolean isNotifiedByAnyUser() {
+    private boolean hasAnyNotify() {
         return !this.userItemNotifies.isEmpty();
     }
 
-    private boolean isAlived() {
+    private boolean isAlive() {
         return this.itemStatus.equals(ItemStatus.ALIVE);
     }
 
@@ -160,7 +164,7 @@ public class Item extends UpdatableBaseEntity {
         this.itemUpdateStatus = ItemUpdateStatus.BE;
     }
 
-    public boolean hasDeadCountMoreThan(Integer maxDeadCount) {
-        return this.deadCount > maxDeadCount;
+    public void updateLastPublishAt(LocalDateTime lastPublishAt){
+        this.lastPublishAt = lastPublishAt;
     }
 }

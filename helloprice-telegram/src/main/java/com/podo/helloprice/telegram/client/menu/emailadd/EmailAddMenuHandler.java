@@ -1,8 +1,8 @@
 package com.podo.helloprice.telegram.client.menu.emailadd;
 
-import com.podo.helloprice.core.domain.model.Menu;
+import com.podo.helloprice.core.model.Menu;
 import com.podo.helloprice.telegram.client.TMessageCallbackFactory;
-import com.podo.helloprice.telegram.client.TMessageVo;
+import com.podo.helloprice.telegram.client.vo.TMessageVo;
 import com.podo.helloprice.telegram.client.menu.AbstractMenuHandler;
 import com.podo.helloprice.telegram.client.menu.Keyboard;
 import com.podo.helloprice.telegram.client.menu.emailkey.EmailKeyResponse;
@@ -46,7 +46,7 @@ public class EmailAddMenuHandler extends AbstractMenuHandler {
         if (!EmailValidator.getInstance().isValid(email)) {
             log.info("{} << 이메일 형식이 아닙니다, 받은메세지 '{}'", telegramId, requestMessage);
             final List<String> itemCommands = ItemCommandTranslator.getItemCommands(userItemNotifyService.findNotifyItemsByUserTelegramId(telegramId));
-            sender().send(tMessageVo.newMessage(EmailAddResponse.invalidEmail(), Keyboard.getHomeKeyboard(itemCommands), callbackFactory.createDefault(telegramId, Menu.HOME)));
+            sender().send(tMessageVo.newMessage(EmailAddResponse.invalidEmail(), Keyboard.getHomeKeyboard(itemCommands), callbackFactory.create(telegramId, Menu.HOME)));
             return;
         }
 
@@ -64,7 +64,7 @@ public class EmailAddMenuHandler extends AbstractMenuHandler {
 
         log.info("{} << 이메일로 KEY를 전송합니다, 이메일 '{}', KEY '{}'", telegramId, email, key);
         gmailClient.sendEmail(existedUser.getUsername(), email, title, content);
-        sender().send(tMessageVo.newMessage(EmailKeyResponse.explain(), Keyboard.getDefaultKeyboard(), callbackFactory.createDefault(telegramId, Menu.EMAIL_KEY)));
+        sender().send(tMessageVo.newMessage(EmailKeyResponse.explain(), Keyboard.getDefaultKeyboard(), callbackFactory.create(telegramId, Menu.EMAIL_KEY)));
     }
 
 }

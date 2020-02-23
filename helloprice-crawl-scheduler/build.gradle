@@ -1,0 +1,29 @@
+archivesBaseName = 'helloprice-crawl-scheduler'
+version = ''
+
+bootJar {
+    enabled = true
+}
+
+jar {
+    enabled = false
+}
+
+
+dependencies {
+    implementation project(':helloprice-domain')
+    implementation project(':helloprice-crawl-core')
+
+    implementation 'org.springframework.boot:spring-boot-starter'
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.springframework.cloud:spring-cloud-stream'
+    implementation 'org.springframework.cloud:spring-cloud-stream-binder-kafka'
+    testImplementation 'org.springframework.cloud:spring-cloud-stream-test-support'
+}
+
+dependencyManagement {
+    imports {
+        mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
+    }
+}
+

@@ -2,7 +2,9 @@ package com.podo.helloprice.telegram.client.menu.itemdelete;
 
 import com.podo.helloprice.telegram.client.menu.global.CommonResponse;
 import com.podo.helloprice.telegram.domain.item.ItemDto;
+import lombok.experimental.UtilityClass;
 
+@UtilityClass
 public class ItemDeleteResponse {
 
     public static String explain() {

@@ -1,8 +1,8 @@
 package com.podo.helloprice.telegram.job.notifier;
 
-import com.podo.helloprice.core.domain.item.ItemStatus;
-import com.podo.helloprice.core.domain.item.ItemUpdateStatus;
-import com.podo.helloprice.core.domain.user.UserStatus;
+import com.podo.helloprice.core.domain.item.model.ItemStatus;
+import com.podo.helloprice.core.domain.item.model.ItemUpdateStatus;
+import com.podo.helloprice.core.domain.user.model.UserStatus;
 import com.podo.helloprice.core.util.MyCalculateUtils;
 import com.podo.helloprice.telegram.domain.item.ItemDto;
 import com.podo.helloprice.telegram.domain.item.ItemService;
@@ -11,6 +11,8 @@ import com.podo.helloprice.telegram.domain.notifylog.NotifyLogService;
 import com.podo.helloprice.telegram.domain.user.UserDto;
 import com.podo.helloprice.telegram.domain.useritem.UserItemNotifyService;
 import com.podo.helloprice.telegram.job.Worker;
+import com.podo.helloprice.telegram.job.notifier.message.NotifyContents;
+import com.podo.helloprice.telegram.job.notifier.message.NotifyTitle;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;

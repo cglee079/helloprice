@@ -1,7 +1,8 @@
 package com.podo.helloprice.core.domain.user;
 
-import com.podo.helloprice.core.domain.UpdatableBaseEntity;
-import com.podo.helloprice.core.domain.model.Menu;
+import com.podo.helloprice.core.domain.BaseEntity;
+import com.podo.helloprice.core.domain.user.model.UserStatus;
+import com.podo.helloprice.core.model.Menu;
 import com.podo.helloprice.core.domain.useritem.UserItemNotify;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -16,7 +17,7 @@ import java.util.List;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "user")
 @Entity
-public class User extends UpdatableBaseEntity {
+public class User extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -54,7 +55,7 @@ public class User extends UpdatableBaseEntity {
         this.lastSendAt = lastSendAt;
     }
 
-    public void updateSendAt(LocalDateTime lastSendAt) {
+    public void updateLastSendAt(LocalDateTime lastSendAt) {
         this.lastSendAt = lastSendAt;
     }
 
@@ -70,16 +71,16 @@ public class User extends UpdatableBaseEntity {
         this.userItemNotifies.remove(userItemNotify);
     }
 
-    public void increaseErrorCount() {
+    public void increaseErrorCount(Integer userMaxErrorCount) {
         errorCount++;
+
+        if ( this.errorCount > userMaxErrorCount) {
+            this.userStatus = UserStatus.DEAD;
+        }
     }
 
     public void clearErrorCount() {
         this.errorCount = 0;
-    }
-
-    public void died() {
-        this.userStatus = UserStatus.DEAD;
     }
 
     public void revive() {

@@ -1,5 +1,8 @@
 package com.podo.helloprice.telegram.client.menu.itemsearchresult;
 
+import lombok.experimental.UtilityClass;
+
+@UtilityClass
 public class ItemSearchResultResponse {
 
     public static String explain() {

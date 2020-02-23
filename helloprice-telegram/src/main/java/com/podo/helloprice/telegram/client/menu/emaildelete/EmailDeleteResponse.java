@@ -1,7 +1,9 @@
 package com.podo.helloprice.telegram.client.menu.emaildelete;
 
 import com.podo.helloprice.telegram.client.menu.global.CommonResponse;
+import lombok.experimental.UtilityClass;
 
+@UtilityClass
 public class EmailDeleteResponse {
 
     public static String explain(String email) {
