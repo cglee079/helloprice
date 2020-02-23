@@ -32,8 +32,8 @@ item:
 
 ## Log
 logging:
-  file.name: helloprice-crawl-worker.%d{yyyy-MM-dd}-%i.log
-  file.path: c://helloprice/logs/helloprice-crawl-worker
+  file.name: helloprice-crawl-agent.%d{yyyy-MM-dd}-%i.log
+  file.path: c://helloprice/logs/helloprice-crawl-agent
 
 ---
 

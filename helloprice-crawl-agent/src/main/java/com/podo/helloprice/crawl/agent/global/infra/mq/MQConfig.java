@@ -15,9 +15,9 @@ public class MQConfig {
 
     @Bean
     public Consumer<String> lastCrawledItem(CrawlJobRunner crawlJobRunner) {
-        return (lastCrawledItem) ->{
-            log.info("메세지 수신 : " + lastCrawledItem);
-            crawlJobRunner.run(lastCrawledItem);
+        return (lastPublishedItem) ->{
+            log.info("메세지 수신 : " + lastPublishedItem);
+            crawlJobRunner.run(lastPublishedItem);
         };
     }
 }

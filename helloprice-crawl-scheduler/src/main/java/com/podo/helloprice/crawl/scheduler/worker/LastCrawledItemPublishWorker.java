@@ -1,7 +1,7 @@
 package com.podo.helloprice.crawl.scheduler.worker;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.podo.helloprice.crawl.core.vo.LastCrawledItem;
+import com.podo.helloprice.crawl.core.vo.LastPublishedItem;
 import com.podo.helloprice.crawl.scheduler.Worker;
 import com.podo.helloprice.crawl.scheduler.service.LastCrawledItemService;
 import lombok.RequiredArgsConstructor;
@@ -29,27 +29,27 @@ public class LastCrawledItemPublishWorker implements Worker {
     public void run() {
         final LocalDateTime now = LocalDateTime.now();
 
-        final LastCrawledItem lastCrawledItem = lastCrawledItemService.getLastCrawledItem(now.minusMinutes(crawlExpireMinute));
+        final LastPublishedItem lastPublishedItem = lastCrawledItemService.getLastCrawledItem(now.minusMinutes(crawlExpireMinute));
 
-        if (Objects.isNull(lastCrawledItem)) {
+        if (Objects.isNull(lastPublishedItem)) {
             return;
         }
 
-        publish(lastCrawledItem, now);
+        publish(lastPublishedItem, now);
     }
 
-    private void publish(LastCrawledItem lastCrawledItem, LocalDateTime lastPublishAt) {
+    private void publish(LastPublishedItem lastPublishedItem, LocalDateTime lastPublishAt) {
         try {
-            log.info("메세지 전송 : {}", lastCrawledItem);
-            processor.onNext(toMessage(lastCrawledItem));
+            log.info("메세지 전송 : {}", lastPublishedItem);
+            processor.onNext(toMessage(lastPublishedItem));
 
-            lastCrawledItemService.updateLastPublishAt(lastCrawledItem.getItemCode(), lastPublishAt);
+            lastCrawledItemService.updateLastPublishAt(lastPublishedItem.getItemCode(), lastPublishAt);
         } catch (Exception e) {
-            log.error("Fail Publish {}", lastCrawledItem, e);
+            log.error("Fail Publish {}", lastPublishedItem, e);
         }
     }
 
-    private String toMessage(LastCrawledItem lastCrawledItem) throws Exception {
-        return objectMapper.writeValueAsString(lastCrawledItem);
+    private String toMessage(LastPublishedItem lastPublishedItem) throws Exception {
+        return objectMapper.writeValueAsString(lastPublishedItem);
     }
 }

@@ -1,6 +1,6 @@
 package com.podo.helloprice.telegram.client;
 
-import com.podo.helloprice.core.domain.model.Menu;
+import com.podo.helloprice.core.model.Menu;
 import com.podo.helloprice.telegram.domain.user.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -20,10 +20,10 @@ public class TMessageCallbackFactory {
     private final UserService userService;
 
     public SentCallback<Message> createDefaultNoAction(String telegramId) {
-        return this.createDefault(telegramId, null);
+        return this.create(telegramId, null);
     }
 
-    public SentCallback<Message> createDefault(String telegramId, Menu menu) {
+    public SentCallback<Message> create(String telegramId, Menu menu) {
         return new SentCallback<Message>() {
             @Override
             public void onResult(BotApiMethod<Message> method, Message response) {

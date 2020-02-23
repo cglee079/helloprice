@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
-cd /volume1/docker-build/podo-helloprice/podo-helloprice-crawlworker
-docker stop podo-helloprice-crawlworker
-docker rm podo-helloprice-crawlworker
-docker rmi podo-helloprice-crawlworker:2.0
-docker build --tag podo-helloprice-crawlworker:2.0 .
-docker run -it -v /volume1/docker/podo-helloprice/podo-helloprice-crawlworker/logs:/data/logs --name=podo-helloprice-crawlworker podo-helloprice-crawlworker:2.0
+cd /volume1/docker-build/helloprice/helloprice-crawl-agent
+docker stop helloprice-crawl-agent
+docker rm helloprice-crawl-agent
+docker rmi helloprice-crawl-agent:2.1
+docker build --tag helloprice-crawl-agent:2.1 .
+docker run -it -v /volume1/docker/helloprice/helloprice-crawl-agent/logs:/data/logs --name=helloprice-crawl-agent helloprice-crawl-agent:2.1

@@ -1,6 +1,6 @@
 package com.podo.helloprice.core.domain.useritem;
 
-import com.podo.helloprice.core.domain.BaseEntity;
+import com.podo.helloprice.core.domain.BaseTimeEntity;
 import com.podo.helloprice.core.domain.item.Item;
 import com.podo.helloprice.core.domain.user.User;
 import lombok.AccessLevel;
@@ -14,7 +14,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "user_item_notify")
 @Entity
-public class UserItemNotify extends BaseEntity {
+public class UserItemNotify extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

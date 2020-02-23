@@ -25,14 +25,15 @@ public class CrawlJobRunner {
     @Qualifier(value = CrawlJobConfig.CRAWL_JOB_BEAN_NAME)
     private final Job crawlJob;
 
-    public void run(String lastCrawledItem) {
+    public void run(String lastPublishedItem) {
         log.info("상품 정보 갱신 작업을 실행합니다");
 
         try {
 
             final JobParameters jobParameters = new JobParametersBuilder()
+                    .add
                     .addDate("createAt", new Date())
-                    .addString("lastCrawledItem", lastCrawledItem)
+                    .addString("lastPublishedItem", lastPublishedItem)
                     .toJobParameters();
 
             jobLauncher.run(crawlJob, jobParameters);

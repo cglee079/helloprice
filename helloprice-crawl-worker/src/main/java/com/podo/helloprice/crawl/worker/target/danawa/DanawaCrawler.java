@@ -1,8 +1,8 @@
 package com.podo.helloprice.crawl.worker.target.danawa;
 
-import com.podo.helloprice.core.domain.item.CrawledItem;
-import com.podo.helloprice.core.domain.item.ItemSaleStatus;
-import com.podo.helloprice.core.domain.item.ItemSearchResultVo;
+import com.podo.helloprice.core.domain.item.vo.CrawledItem;
+import com.podo.helloprice.core.domain.item.model.ItemSaleStatus;
+import com.podo.helloprice.core.domain.item.vo.ItemSearchResultVo;
 import com.podo.helloprice.core.util.MyCurrencyUtils;
 import com.podo.helloprice.core.util.MyHttpUtils;
 import com.podo.helloprice.core.util.MyNumberUtils;
@@ -19,6 +19,7 @@ import org.jsoup.select.Elements;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
+import java.time.LocalDateTime;
 import java.util.*;
 
 @Slf4j
@@ -30,7 +31,7 @@ public class DanawaCrawler implements Crawler {
     private final PromptDocumentLoader promptDocumentLoader;
 
     @Override
-    public CrawledItem crawlItem(String itemCode) {
+    public CrawledItem crawlItem(String itemCode, LocalDateTime crawledAt) {
 
         log.info("DANAWA '상품' 페이지 크롤을 시작합니다, 상품코드 : {}", itemCode);
 
@@ -44,7 +45,7 @@ public class DanawaCrawler implements Crawler {
             return null;
         }
 
-        final CrawledItem crawledItem = getCrawledItemVoFromDocument(document, itemCode, itemUrl);
+        final CrawledItem crawledItem = getCrawledItemFromDocument(document, itemCode, itemUrl, crawledAt);
         if (Objects.isNull(crawledItem)) {
             log.info("확인 할 수 없는 상품입니다, 상품 코드 : {}", itemCode);
             return null;
@@ -65,7 +66,7 @@ public class DanawaCrawler implements Crawler {
         }
     }
 
-    private CrawledItem getCrawledItemVoFromDocument(Document document, String itemCode, String itemUrl) {
+    private CrawledItem getCrawledItemFromDocument(Document document, String itemCode, String itemUrl, LocalDateTime crawledAt) {
         try {
             final String itemName = document.select(ItemPage.ITEM_NAME_SELECTOR).text().replace("[다나와]", "").trim();
             final String itemDesc = document.select(ItemPage.ITEM_DESC_SELECTOR).text().replace("[다나와]", "").trim();
@@ -91,6 +92,7 @@ public class DanawaCrawler implements Crawler {
                     .itemImage(itemImage)
                     .itemPrice(itemPrice)
                     .itemSaleStatus(itemSaleStatus)
+                    .crawledAt(crawledAt)
                     .build();
 
         } catch (RuntimeException e) {

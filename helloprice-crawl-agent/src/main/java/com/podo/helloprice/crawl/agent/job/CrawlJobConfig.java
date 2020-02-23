@@ -1,22 +1,15 @@
 package com.podo.helloprice.crawl.agent.job;
 
-import com.podo.helloprice.core.domain.item.CrawledItem;
-import com.podo.helloprice.core.domain.item.Item;
-import com.podo.helloprice.crawl.core.vo.LastCrawledItem;
+import com.podo.helloprice.core.domain.item.vo.CrawledItem;
+import com.podo.helloprice.crawl.core.vo.LastPublishedItem;
 import lombok.RequiredArgsConstructor;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.Step;
 import org.springframework.batch.core.configuration.annotation.JobBuilderFactory;
 import org.springframework.batch.core.configuration.annotation.JobScope;
 import org.springframework.batch.core.configuration.annotation.StepBuilderFactory;
-import org.springframework.batch.core.configuration.annotation.StepScope;
-import org.springframework.batch.item.database.JpaItemWriter;
-import org.springframework.batch.item.database.builder.JpaItemWriterBuilder;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-
-import javax.persistence.EntityManagerFactory;
 
 @RequiredArgsConstructor
 @Configuration
@@ -43,7 +36,7 @@ public class CrawlJobConfig {
     @Bean(CRAWL_JOB_BEAN_NAME + "Step")
     public Step step() {
         return stepBuilderFactory.get(CRAWL_JOB_NAME + "_step")
-                .<LastCrawledItem, CrawledItem>chunk(CHUNK_SIZE)
+                .<LastPublishedItem, CrawledItem>chunk(CHUNK_SIZE)
                 .reader(crawlJobReader)
                 .processor(crawlJobProcessor)
                 .writer(crawlJobWriter)

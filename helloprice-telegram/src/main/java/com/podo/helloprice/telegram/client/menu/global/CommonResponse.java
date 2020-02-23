@@ -1,8 +1,8 @@
 package com.podo.helloprice.telegram.client.menu.global;
 
-import com.podo.helloprice.core.domain.item.CrawledItem;
-import com.podo.helloprice.core.domain.item.ItemSaleStatus;
-import com.podo.helloprice.core.domain.item.ItemStatus;
+import com.podo.helloprice.core.domain.item.vo.CrawledItem;
+import com.podo.helloprice.core.domain.item.model.ItemSaleStatus;
+import com.podo.helloprice.core.domain.item.model.ItemStatus;
 import com.podo.helloprice.core.util.MyCalculateUtils;
 import com.podo.helloprice.core.util.MyCurrencyUtils;
 import com.podo.helloprice.core.util.MyDateTimeUtils;

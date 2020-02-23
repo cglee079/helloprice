@@ -1,6 +1,6 @@
 package com.podo.helloprice.telegram.client.menu.itemadd;
 
-import com.podo.helloprice.core.domain.item.CrawledItem;
+import com.podo.helloprice.core.domain.item.vo.CrawledItem;
 import com.podo.helloprice.telegram.client.menu.global.CommonResponse;
 
 public class ItemAddResponse {

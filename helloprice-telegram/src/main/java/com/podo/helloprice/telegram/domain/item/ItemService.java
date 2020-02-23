@@ -1,6 +1,10 @@
 package com.podo.helloprice.telegram.domain.item;
 
 import com.podo.helloprice.core.domain.item.*;
+import com.podo.helloprice.core.domain.item.model.ItemStatus;
+import com.podo.helloprice.core.domain.item.model.ItemUpdateStatus;
+import com.podo.helloprice.core.domain.item.repository.ItemRepository;
+import com.podo.helloprice.core.domain.item.vo.CrawledItem;
 import com.podo.helloprice.telegram.domain.item.exception.InvalidItemIdException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

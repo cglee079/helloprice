@@ -1,8 +1,8 @@
 package com.podo.helloprice.telegram.client.menu.emaildelete;
 
-import com.podo.helloprice.core.domain.model.Menu;
+import com.podo.helloprice.core.model.Menu;
 import com.podo.helloprice.telegram.client.TMessageCallbackFactory;
-import com.podo.helloprice.telegram.client.TMessageVo;
+import com.podo.helloprice.telegram.client.vo.TMessageVo;
 import com.podo.helloprice.telegram.client.menu.AbstractMenuHandler;
 import com.podo.helloprice.telegram.client.menu.Keyboard;
 import com.podo.helloprice.telegram.client.menu.global.ItemCommandTranslator;
@@ -40,7 +40,7 @@ public class EmailDeleteMenuHandler extends AbstractMenuHandler {
 
         final EmailDeleteCommand requestCommand = EmailDeleteCommand.from(requestMessage);
         if (Objects.isNull(requestCommand)) {
-            sender().send(tMessageVo.newMessage(CommonResponse.wrongInput(), Keyboard.getHomeKeyboard(itemCommands), callbackFactory.createDefault(telegramId, Menu.HOME)));
+            sender().send(tMessageVo.newMessage(CommonResponse.wrongInput(), Keyboard.getHomeKeyboard(itemCommands), callbackFactory.create(telegramId, Menu.HOME)));
             return;
         }
 
@@ -53,7 +53,7 @@ public class EmailDeleteMenuHandler extends AbstractMenuHandler {
                 handleYesCommand(tMessageVo, itemCommands);
                 break;
             case NO:
-                sender().send(tMessageVo.newMessage(CommonResponse.toHome(), Keyboard.getHomeKeyboard(itemCommands), callbackFactory.createDefault(tMessageVo.getTelegramId(), Menu.HOME)));
+                sender().send(tMessageVo.newMessage(CommonResponse.toHome(), Keyboard.getHomeKeyboard(itemCommands), callbackFactory.create(tMessageVo.getTelegramId(), Menu.HOME)));
         }
     }
 
@@ -62,7 +62,7 @@ public class EmailDeleteMenuHandler extends AbstractMenuHandler {
 
         userService.updateEmailByTelegramId(telegramId, null);
 
-        sender().send(tMessageVo.newMessage(EmailDeleteResponse.success(), Keyboard.getHomeKeyboard(itemCommands), callbackFactory.createDefault(tMessageVo.getTelegramId(), Menu.HOME)));
+        sender().send(tMessageVo.newMessage(EmailDeleteResponse.success(), Keyboard.getHomeKeyboard(itemCommands), callbackFactory.create(tMessageVo.getTelegramId(), Menu.HOME)));
     }
 
 }

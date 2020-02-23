@@ -3,7 +3,7 @@ package com.podo.helloprice.telegram.global.cache;
 import com.github.benmanes.caffeine.cache.Caffeine;
 import com.github.benmanes.caffeine.cache.LoadingCache;
 import com.github.benmanes.caffeine.cache.RemovalListener;
-import com.podo.helloprice.core.domain.item.CrawledItem;
+import com.podo.helloprice.core.domain.item.vo.CrawledItem;
 import com.podo.helloprice.crawl.worker.target.danawa.DanawaCrawler;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDateTime;
 import java.util.concurrent.TimeUnit;
 
 @Slf4j
@@ -32,7 +33,7 @@ public class DanawaItemCache {
                 })
                 .build(
                         key -> {
-                            final CrawledItem crawledItem = danawaCrawler.crawlItem(key);
+                            final CrawledItem crawledItem = danawaCrawler.crawlItem(key, LocalDateTime.now());
                             return crawledItem;
                         }
                 );
