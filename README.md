@@ -1,4 +1,4 @@
-# Hello Price (헬로 프라이스)
+# HelloPrice (헬로프라이스)
 
 - 프로젝트 상세 [헬로프라이스](https://www.podo-dev.com/blogs/185)
 - 다나와 최저가 가격 갱신 알림을 주는 텔레그램 봇
@@ -10,22 +10,33 @@
 - Java 1.8
 - Spring Boot 2.2.0
 - Spring Batch
-- Spring JPA
+- Spring Cloud Stream
+- Spring Data JPA
+- QueryDsl
 - MySql
+- Kafka
 - Jsoup
 - Selenium 
+- Gradle
 - [Telegram Java lib](https://github.com/rubenlagus/TelegramBots)
 
+<br>
+
+## Structure
+
+![structure](./docs/image/helloprice-structure.png)
 
 <br>
 
 ## Module
 
-- **helloprice-crawlworker** - 주기적으로 상품을 가져와 갱신하는 배치작업을 수행
-- **helloprice-crawler** - 다나와 가격 정보를 가져오는 모듈
+- **helloprice-core** - 유틸리티 구현
+- **helloprice-crawl-scheduler** - 주기적으로 가격 확인이 필요한 상품을 조회, MQ 퍼플리시.
+- **helloprice-crawl-agent** - MQ 수신 후, 상품 갱신하는 배치작업을 수행
+- **helloprice-crawl-worker** - 다나와 가격 정보를 가져오는 모듈
 - **helloprice-domain** - 도메인 (entity, repository)
 - **helloprice-telegram** - 텔레그램 봇 구현
-- **helloprice-core** - 핵심 유틸리티 구현
+
 
 
 <br>
@@ -56,6 +67,12 @@
 ###### v2.0.4
 * 2019-12-03
 * 상품 변화메세지 버그 수정 (기존에 단종, 재고없음 등 판매가아닌 상태에서도, 가격 변화율 메세지를 보여줌)
+
+###### v2.0.5
+* 2019-02-23
+* MQ를 적용하면서 구조 변경
+* 사용자 메세지 전송 시, 이미지 파일엔 알림 음소거 처리
+* 사용자 가격 알림 시, 최상단에 요약정보 추가 (텔레그램앱 알림으로 확인 할 수 있도록)
 
 <br>
 
