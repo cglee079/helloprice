@@ -14,7 +14,6 @@ public class HellopriceTelegramApplication {
     public static void main(String[] args) {
         //Telegram Api Initial
         ApiContextInitializer.init();
-        TimeZone.setDefault(TimeZone.getTimeZone("Asia/Seoul"));
 
         SpringApplication.run(HellopriceTelegramApplication.class, args);
     }

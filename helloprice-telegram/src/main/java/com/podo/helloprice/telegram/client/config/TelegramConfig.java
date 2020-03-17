@@ -17,7 +17,6 @@ import static java.util.stream.Collectors.toMap;
 @Configuration
 public class TelegramConfig {
 
-
     private final List<MenuHandler> menuHandlers;
 
     @Bean
