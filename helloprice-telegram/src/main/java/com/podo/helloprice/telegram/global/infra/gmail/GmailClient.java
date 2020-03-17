@@ -3,6 +3,7 @@ package com.podo.helloprice.telegram.global.infra.gmail;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 
 import javax.mail.*;
@@ -21,13 +22,13 @@ import java.util.concurrent.Executors;
 public class GmailClient {
 
     @Value("${app.name}")
-    private String appName;
+    private final String appName;
 
     @Value("${infra.gmail.send.timeout}")
-    private Integer sendTimeout;
+    private final Integer sendTimeout;
 
     @Value("${infra.gmail.admin.email}")
-    private String adminEmail;
+    private final String adminEmail;
 
     private final Authenticator gmailAuth;
 
