@@ -18,13 +18,13 @@ public class TelegramBot extends TelegramLongPollingBot {
     private final TelegramMessageReceiver telegramMessageReceiver;
     private final TelegramMessageSender telegramMessageSender;
 
-    @Value("${telegram.podo_helloprice.bot.token}")
+    @Value("${infra.telegram.bot.token}")
     private String botToken;
 
-    @Value("${telegram.podo_helloprice.bot.name}")
+    @Value("${infra.telegram.bot.name}")
     private String botUsername;
 
-    @Value("${telegram.podo_helloprice.admin.id}")
+    @Value("${infra.telegram.admin.id}")
     private String adminId;
 
     public TelegramBot(TelegramMessageReceiver telegramMessageReceiver, TelegramMessageSender telegramMessageSender) {

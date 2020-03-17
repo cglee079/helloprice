@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class TelegramNotifier {
 
-    @Value("${telegram.podo_helloprice.admin.id}")
+    @Value("${infra.telegram.admin.id}")
     private String adminTelegramId;
 
     private final TelegramApi telegramApi;
