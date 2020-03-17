@@ -21,7 +21,6 @@ item:
   cache:
     expire_minutes: 1
 
-
 email:
   key:
     expire_minutes: 5 #Minutes

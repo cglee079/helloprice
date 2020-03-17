@@ -14,11 +14,11 @@ dependencies {
     implementation project(':helloprice-crawl-worker')
     implementation project(':helloprice-domain')
 
-    implementation 'org.springframework.boot:spring-boot-starter'
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation group: 'org.telegram', name: 'telegrambots', version: '4.0.0'
     implementation group: 'javax.mail', name: 'mail', version: '1.4.7'
     implementation 'commons-validator:commons-validator:1.4.1'
     implementation group: 'com.github.ben-manes.caffeine', name: 'caffeine', version: '2.8.0'
 
+    testCompile group: 'com.h2database', name: 'h2', version: '1.4.200'
 }
