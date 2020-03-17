@@ -12,7 +12,6 @@ spring:
 
   # Hibernate config
   jpa:
-    database: MYSQL
     hibernate:
       dialect: org.hibernate.dialect.MySQL5Dialect
     properties:
