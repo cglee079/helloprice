@@ -24,9 +24,7 @@ subprojects {
     apply plugin: 'io.spring.dependency-management'
 
     group = 'com.podo'
-    version = '1.0'
     sourceCompatibility = '1.8'
-    libsDirName = "../../libs"
     
     bootJar {
         enabled = false

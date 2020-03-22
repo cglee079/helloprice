@@ -1,5 +1,5 @@
 archivesBaseName = 'helloprice-crawl-agent'
-version = ''
+version = '2.0.5'
 
 bootJar {
     enabled = true
