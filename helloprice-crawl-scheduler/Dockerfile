@@ -2,7 +2,7 @@ FROM java:8
 WORKDIR /
 
 RUN mkdir -p /app
-COPY . /app
+COPY ./ /app/
 
 RUN echo "Asia/Seoul" > /etc/timezone
 
@@ -15,5 +15,5 @@ CMD java \
     -XX:NewSize=256m \
     -XX:MaxNewSize=256m \
     -XX:MetaspaceSize=50M \
-    /app/$(ls .| grep -E '.*\.jar')
+    /app/$(ls /app | grep -E '.*\.jar')
 
