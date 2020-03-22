@@ -8,7 +8,7 @@ RUN echo "Asia/Seoul" > /etc/timezone
 CMD java \
     -jar \
     -Dspring.profiles.active=deploy \
-    -Dspring.config.additional-location=file:. \
+    -Dspring.config.additional-location=file:./ \
     -Xms512m \
     -Xmx512m \
     -XX:NewSize=256m \
