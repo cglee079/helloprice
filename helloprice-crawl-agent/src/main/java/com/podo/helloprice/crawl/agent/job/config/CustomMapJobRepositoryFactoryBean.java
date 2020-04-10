@@ -50,7 +50,6 @@ public class CustomMapJobRepositoryFactoryBean extends MapJobRepositoryFactoryBe
             public void updateJobExecution(JobExecution jobExecution) {
                 //Job 실행 후 가장 마지막에 호출되는 메소드
                 //모든 InMemory Job Log를 삭제
-                //좋지 않은 코딩. 임시로 사용.
                 CustomMapJobRepositoryFactoryBean.this.clear();
             }
         };

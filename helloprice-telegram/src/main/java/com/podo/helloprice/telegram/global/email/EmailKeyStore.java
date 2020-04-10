@@ -1,6 +1,6 @@
 package com.podo.helloprice.telegram.global.email;
 
-import com.podo.helloprice.core.util.MyNumberUtils;
+import com.podo.helloprice.core.util.NumberUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -46,7 +46,7 @@ public class EmailKeyStore {
     }
 
     private String getNewKey() {
-        final String newKey = String.format("%06d", MyNumberUtils.getRandomInt(999999));
+        final String newKey = String.format("%06d", NumberUtil.getRandomInt(999999));
 
         if (keyStoreTimes.containsKey(newKey)) {
             return getNewKey();

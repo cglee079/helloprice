@@ -44,7 +44,7 @@ public class ItemAddMenuHandler extends AbstractMenuHandler {
         final List<String> itemCommands = ItemCommandTranslator.getItemCommands(userItemNotifyService.findNotifyItemsByUserTelegramId(telegramId));
 
         final String requestUrl = requestMessage;
-        final String itemCodeFromUrl = danawaCrawler.getItemCodeFromUrl(requestUrl);
+        final String itemCodeFromUrl = danawaCrawler.crawlItemCode(requestUrl);
 
         if (Objects.isNull(itemCodeFromUrl)) {
             log.info("{} << 링크에서 상품 코드를 찾을 수 없습니다. 받은메세지 '{}'", telegramId, requestMessage);

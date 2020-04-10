@@ -1,9 +1,9 @@
 package com.podo.helloprice.crawl.scheduler.service;
 
-import com.podo.helloprice.core.domain.item.Item;
-import com.podo.helloprice.core.domain.item.repository.ItemRepository;
-import com.podo.helloprice.core.domain.item.model.ItemStatus;
-import com.podo.helloprice.crawl.core.vo.LastPublishedItem;
+import com.podo.helloprice.code.model.ProductAliveStatus;
+import com.podo.helloprice.crawl.scheduler.domain.product.Product;
+import com.podo.helloprice.crawl.scheduler.domain.product.ProductQuerydslRepository;
+import com.podo.helloprice.crawl.scheduler.infra.mq.message.LastPublishedProduct;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -11,26 +11,25 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
-@Service
-@Transactional
 @RequiredArgsConstructor
+@Transactional
+@Service
 public class LastCrawledItemService {
 
-    private final ItemRepository itemRepository;
+    private final ProductQuerydslRepository productQuerydslRepository;
 
-    public LastPublishedItem getLastCrawledItem(LocalDateTime expirePublishAt){
-        final Item item = itemRepository.findOneByLastCrawledBeforePublishAt(ItemStatus.ALIVE, expirePublishAt);
+    public LastPublishedProduct getLastCrawledItem(LocalDateTime expirePublishAt){
+        final Product product = productQuerydslRepository.findOneByLastCrawledBeforePublishAt(ProductAliveStatus.ALIVE, expirePublishAt);
 
-        if(Objects.isNull(item)){
+        if(Objects.isNull(product)){
             return null;
         }
 
-        return new LastPublishedItem(item.getItemName(), item.getItemCode());
-
+        return new LastPublishedProduct(product.getProductName(), product.getProductCode());
     }
 
     public void updateLastPublishAt(String itemCode, LocalDateTime lastPublishAt) {
-        final Item item = itemRepository.findByItemCode(itemCode);
-        item.updateLastPublishAt(lastPublishAt);
+        final Product product = productQuerydslRepository.findByItemCode(itemCode);
+        product.updateLastPublishAt(lastPublishAt);
     }
 }

@@ -1,6 +1,6 @@
 package com.podo.helloprice.crawl.agent.global.infra.mq;
 
-import com.podo.helloprice.crawl.agent.job.CrawlJobRunner;
+import com.podo.helloprice.crawl.agent.job.CrawlProductJobRunner;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
@@ -14,10 +14,10 @@ import java.util.function.Consumer;
 public class MQConfig {
 
     @Bean
-    public Consumer<String> lastCrawledItem(CrawlJobRunner crawlJobRunner) {
+    public Consumer<String> lastCrawledItem(CrawlProductJobRunner crawlProductJobRunner) {
         return (lastPublishedItem) ->{
-            log.info("메세지 수신 : " + lastPublishedItem);
-            crawlJobRunner.run(lastPublishedItem);
+            log.debug("MQ :: CONSUME :: payload : {}", lastPublishedItem);
+            crawlProductJobRunner.run(lastPublishedItem);
         };
     }
 }

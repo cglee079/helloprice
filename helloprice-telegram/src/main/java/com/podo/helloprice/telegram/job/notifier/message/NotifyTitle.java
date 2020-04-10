@@ -1,6 +1,6 @@
 package com.podo.helloprice.telegram.job.notifier.message;
 
-import com.podo.helloprice.core.util.MyCurrencyUtils;
+import com.podo.helloprice.core.util.CurrencyUtil;
 import com.podo.helloprice.telegram.domain.item.ItemDto;
 import lombok.experimental.UtilityClass;
 
@@ -45,7 +45,7 @@ public class NotifyTitle {
                 .append("'")
                 .append(itemDetail.getItemName())
                 .append("' 상품의 최저가격이  ")
-                .append(MyCurrencyUtils.toKrw(itemDetail.getItemPrice()))
+                .append(CurrencyUtil.toKrw(itemDetail.getItemPrice()))
                 .append(" 으로 갱신되었습니다.")
                 .toString();
     }
@@ -55,7 +55,7 @@ public class NotifyTitle {
                 .append("'")
                 .append(itemDetail.getItemName())
                 .append("' 상품이 ")
-                .append(MyCurrencyUtils.toKrw(itemDetail.getItemPrice()))
+                .append(CurrencyUtil.toKrw(itemDetail.getItemPrice()))
                 .append(" 으로 다시 판매를 시작했습니다.")
                 .toString();
     }

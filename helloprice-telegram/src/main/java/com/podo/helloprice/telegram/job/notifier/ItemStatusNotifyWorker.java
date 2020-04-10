@@ -3,7 +3,7 @@ package com.podo.helloprice.telegram.job.notifier;
 import com.podo.helloprice.core.domain.item.model.ItemStatus;
 import com.podo.helloprice.core.domain.item.model.ItemUpdateStatus;
 import com.podo.helloprice.core.domain.user.model.UserStatus;
-import com.podo.helloprice.core.util.MyCalculateUtils;
+import com.podo.helloprice.core.util.CalculateUtil;
 import com.podo.helloprice.telegram.domain.item.ItemDto;
 import com.podo.helloprice.telegram.domain.item.ItemService;
 import com.podo.helloprice.telegram.domain.notifylog.NotifyLogDto;
@@ -95,7 +95,7 @@ public class ItemStatusNotifyWorker implements Worker {
         }
 
         log.info("{}({}) 상품의 최저가가 갱신되었습니다.", item.getItemName(), item.getItemCode());
-        final double changePercent = MyCalculateUtils.getChangePercent(item.getItemPrice(), item.getItemBeforePrice());
+        final double changePercent = CalculateUtil.getChangePercent(item.getItemPrice(), item.getItemBeforePrice());
 
         if ((Math.abs(changePercent) > 1) && (changePercent < 0)) {
             logging(item);

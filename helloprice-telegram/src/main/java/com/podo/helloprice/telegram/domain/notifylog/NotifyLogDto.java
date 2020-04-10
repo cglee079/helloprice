@@ -2,7 +2,7 @@ package com.podo.helloprice.telegram.domain.notifylog;
 
 
 import com.podo.helloprice.core.domain.notifylog.NotifyLog;
-import com.podo.helloprice.core.util.MyCalculateUtils;
+import com.podo.helloprice.core.util.CalculateUtil;
 import com.podo.helloprice.telegram.domain.item.ItemDto;
 import lombok.Builder;
 import lombok.Getter;
@@ -32,7 +32,7 @@ public class NotifyLogDto {
     }
 
     public static NotifyLogDto createByItem(ItemDto.detail itemDetail) {
-        final Double changePercent = MyCalculateUtils.getChangePercent(itemDetail.getItemPrice(), itemDetail.getItemBeforePrice());
+        final Double changePercent = CalculateUtil.getChangePercent(itemDetail.getItemPrice(), itemDetail.getItemBeforePrice());
 
         return NotifyLogDto.builder()
                 .itemName(itemDetail.getItemName())

@@ -9,7 +9,6 @@ rootProject.name = 'helloprice'
 include 'helloprice-core',
         'helloprice-domain',
         'helloprice-crawl-agent',
-        'helloprice-crawl-core',
         'helloprice-crawl-worker',
         'helloprice-crawl-scheduler',
         'helloprice-telegram'

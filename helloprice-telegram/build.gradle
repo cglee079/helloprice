@@ -1,3 +1,20 @@
+buildscript {
+    ext {
+        querydslPluginVersion = '1.0.10'
+    }
+
+    repositories {
+        mavenCentral()
+        maven { url "https://plugins.gradle.org/m2/" } // plugin 저장소
+    }
+
+    dependencies {
+        classpath "gradle.plugin.com.ewerk.gradle.plugins:querydsl-plugin:${querydslPluginVersion}"
+    }
+}
+
+apply plugin: "com.ewerk.gradle.plugins.querydsl"
+
 archivesBaseName = 'helloprice-telegram'
 version = '2.0.5'
 
@@ -20,5 +37,35 @@ dependencies {
     implementation 'commons-validator:commons-validator:1.4.1'
     implementation group: 'com.github.ben-manes.caffeine', name: 'caffeine', version: '2.8.0'
 
-    testCompile group: 'com.h2database', name: 'h2', version: '1.4.200'
+
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    implementation "com.querydsl:querydsl-jpa"
+    implementation 'com.github.gavlyukovskiy:p6spy-spring-boot-starter:1.5.7'
+    implementation 'mysql:mysql-connector-java'
+    testImplementation group: 'com.h2database', name: 'h2', version: '1.4.200'
 }
+
+apply plugin: "com.ewerk.gradle.plugins.querydsl"
+
+configurations {
+    querydsl.extendsFrom compileClasspath
+}
+
+def querydslDir = "$buildDir/generated/querydsl"
+querydsl {
+    jpa = true
+    querydslSourcesDir = querydslDir
+}
+sourceSets {
+    main.java.srcDir querydslDir
+}
+configurations {
+    querydsl.extendsFrom compileClasspath
+}
+compileQuerydsl {
+    options.annotationProcessorPath = configurations.querydsl
+}
+
+
+
+

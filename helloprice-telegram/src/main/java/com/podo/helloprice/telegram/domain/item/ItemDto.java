@@ -69,7 +69,7 @@ public class ItemDto {
         @Builder
         public detail(Item item) {
             this.id = item.getId();
-            itemStatus = item.getItemStatus();
+            itemStatus = item.getProductAliveStatus();
             this.itemCode = item.getItemCode();
             this.itemName = item.getItemName();
             this.itemUrl = item.getItemUrl();

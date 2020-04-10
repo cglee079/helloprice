@@ -16,7 +16,7 @@ public class MQConfig {
     }
 
     @Bean
-    public Supplier<Flux<String>> lastCrawledItem() {
+    public Supplier<Flux<String>> publishProduct() {
         return this::processor;
     }
 }

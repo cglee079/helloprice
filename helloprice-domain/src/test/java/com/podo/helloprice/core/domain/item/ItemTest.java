@@ -54,7 +54,7 @@ class ItemTest {
         assertThat(item.getItemSaleStatus()).isEqualTo(itemSaleStatus);
 
         assertThat(item.getDeadCount()).isEqualTo(0);
-        assertThat(item.getItemStatus()).isEqualTo(ALIVE);
+        assertThat(item.getProductAliveStatus()).isEqualTo(ALIVE);
         assertThat(item.getItemUpdateStatus()).isEqualTo(BE);
 
         assertThat(item.getItemBeforePrice()).isEqualTo(itemPrice);
@@ -95,7 +95,7 @@ class ItemTest {
         assertThat(item.getDeadCount()).isEqualTo(1);
         assertThat(item.getItemBeforePrice()).isEqualTo(itemPrice);
         assertThat(item.getItemPrice()).isEqualTo(0);
-        assertThat(item.getItemStatus()).isEqualTo(DEAD);
+        assertThat(item.getProductAliveStatus()).isEqualTo(DEAD);
         assertThat(item.getItemUpdateStatus()).isEqualTo(UPDATED);
         assertThat(item.getLastUpdatedAt()).isEqualTo(lastCrawledAt);
     }
@@ -126,7 +126,7 @@ class ItemTest {
         item.addUserItemNotify(userItemNotify);
 
         assertThat(item.getUserItemNotifies()).containsExactly(userItemNotify);
-        assertThat(item.getItemStatus()).isEqualTo(ALIVE);
+        assertThat(item.getProductAliveStatus()).isEqualTo(ALIVE);
     }
 
     @DisplayName("사용자 알림 삭제")
@@ -142,7 +142,7 @@ class ItemTest {
         item.removeUserItemNotify(userItemNotify);
 
         //then
-        assertThat(item.getItemStatus()).isEqualTo(ALIVE);
+        assertThat(item.getProductAliveStatus()).isEqualTo(ALIVE);
         assertThat(item.getUserItemNotifies().size()).isEqualTo(1);
     }
 
@@ -158,7 +158,7 @@ class ItemTest {
         item.removeUserItemNotify(userItemNotify);
 
         //then
-        assertThat(item.getItemStatus()).isEqualTo(PAUSE);
+        assertThat(item.getProductAliveStatus()).isEqualTo(PAUSE);
     }
 
     @DisplayName("메세지 퍼블리시 시간 갱신")

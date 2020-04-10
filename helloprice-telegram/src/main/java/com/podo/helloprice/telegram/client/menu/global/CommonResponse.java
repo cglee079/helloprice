@@ -3,9 +3,9 @@ package com.podo.helloprice.telegram.client.menu.global;
 import com.podo.helloprice.core.domain.item.model.ItemSaleStatus;
 import com.podo.helloprice.core.domain.item.model.ItemStatus;
 import com.podo.helloprice.core.domain.item.vo.CrawledItem;
-import com.podo.helloprice.core.util.MyCalculateUtils;
-import com.podo.helloprice.core.util.MyCurrencyUtils;
-import com.podo.helloprice.core.util.MyDateTimeUtils;
+import com.podo.helloprice.core.util.CalculateUtil;
+import com.podo.helloprice.core.util.CurrencyUtil;
+import com.podo.helloprice.core.util.DateTimeUtil;
 import com.podo.helloprice.telegram.domain.item.ItemDto;
 import lombok.experimental.UtilityClass;
 
@@ -61,12 +61,12 @@ public class CommonResponse {
 
         message.append("<b>")
                 .append("최종확인시간 : ")
-                .append(MyDateTimeUtils.dateTimeToString(itemDetail.getLastPoolAt(), DATE_TIME_FORMAT))
+                .append(DateTimeUtil.dateTimeToString(itemDetail.getLastPoolAt(), DATE_TIME_FORMAT))
                 .append("</b>")
                 .append("\n")
 
                 .append("<b>가격변동시간</b> : ")
-                .append(MyDateTimeUtils.dateTimeToString(itemDetail.getLastUpdateAt(), DATE_TIME_FORMAT))
+                .append(DateTimeUtil.dateTimeToString(itemDetail.getLastUpdateAt(), DATE_TIME_FORMAT))
                 .append("\n")
                 .append("\n")
 
@@ -92,19 +92,19 @@ public class CommonResponse {
 
                 .append("<b>")
                 .append("이전가격 : ")
-                .append(MyCurrencyUtils.toKrw(itemBeforePrice))
+                .append(CurrencyUtil.toKrw(itemBeforePrice))
                 .append("</b>")
                 .append("\n")
 
                 .append("<b>")
                 .append("현재가격 : ")
-                .append(MyCurrencyUtils.toKrw(itemPrice))
+                .append(CurrencyUtil.toKrw(itemPrice))
                 .append("</b>")
                 .append("\n")
 
                 .append("<b>")
                 .append("가격변화 : ")
-                .append(MyCalculateUtils.getPercentStringWithPlusMinusSign(itemPrice, itemBeforePrice))
+                .append(CalculateUtil.getPercentStringWithPlusMinusSign(itemPrice, itemBeforePrice))
                 .append("</b>");
 
 
@@ -151,14 +151,14 @@ public class CommonResponse {
         final StringBuilder message = new StringBuilder();
         if (itemBeforePrice.equals(0)) {
             message.append("야호!  <b>")
-                    .append(MyCurrencyUtils.toKrw(itemPrice))
+                    .append(CurrencyUtil.toKrw(itemPrice))
                     .append("</b>으로 다시 판매를 시작했어요!!");
             return message.toString();
         }
 
         if (itemPrice > itemBeforePrice) {
             message.append("죄송합니다.. 가격이 <b>")
-                    .append(MyCurrencyUtils.toKrw(itemPrice - itemBeforePrice))
+                    .append(CurrencyUtil.toKrw(itemPrice - itemBeforePrice))
                     .append("</b> 올랐어요...");
             return message.toString();
         }
@@ -169,7 +169,7 @@ public class CommonResponse {
         }
 
         message.append("야호! 가격이 <b>")
-                .append(MyCurrencyUtils.toKrw(itemBeforePrice - itemPrice))
+                .append(CurrencyUtil.toKrw(itemBeforePrice - itemPrice))
                 .append("</b> 떨어졌어요!!");
 
         return message.toString();
@@ -202,7 +202,7 @@ public class CommonResponse {
 
                 .append("<b>")
                 .append("상품가격 : ")
-                .append(MyCurrencyUtils.toKrw(crawledItem.getItemPrice()))
+                .append(CurrencyUtil.toKrw(crawledItem.getItemPrice()))
                 .append("</b>")
                 .append("\n")
 

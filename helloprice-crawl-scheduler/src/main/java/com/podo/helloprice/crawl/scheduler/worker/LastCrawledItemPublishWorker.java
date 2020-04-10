@@ -1,7 +1,7 @@
 package com.podo.helloprice.crawl.scheduler.worker;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.podo.helloprice.crawl.core.vo.LastPublishedItem;
+import com.podo.helloprice.core.util.JsonUtil;
+import com.podo.helloprice.crawl.scheduler.infra.mq.message.LastPublishedProduct;
 import com.podo.helloprice.crawl.scheduler.Worker;
 import com.podo.helloprice.crawl.scheduler.service.LastCrawledItemService;
 import lombok.RequiredArgsConstructor;
@@ -14,42 +14,37 @@ import java.time.LocalDateTime;
 import java.util.Objects;
 
 @Slf4j
-@Component
 @RequiredArgsConstructor
+@Component
 public class LastCrawledItemPublishWorker implements Worker {
 
-    @Value("${item.publish.expire.minute}")
+    @Value("${product.publish.expire.minute}")
     private Integer crawlExpireMinute;
 
     private final EmitterProcessor<String> processor;
     private final LastCrawledItemService lastCrawledItemService;
-    private final ObjectMapper objectMapper;
 
     @Override
-    public void run() {
-        final LocalDateTime now = LocalDateTime.now();
+    public void run(LocalDateTime now) {
+        final LastPublishedProduct lastPublishedProduct = lastCrawledItemService.getLastCrawledItem(now.minusMinutes(crawlExpireMinute));
 
-        final LastPublishedItem lastPublishedItem = lastCrawledItemService.getLastCrawledItem(now.minusMinutes(crawlExpireMinute));
-
-        if (Objects.isNull(lastPublishedItem)) {
+        if (Objects.isNull(lastPublishedProduct)) {
             return;
         }
 
-        publish(lastPublishedItem, now);
+        publish(lastPublishedProduct, now);
     }
 
-    private void publish(LastPublishedItem lastPublishedItem, LocalDateTime lastPublishAt) {
+    private void publish(LastPublishedProduct lastPublishedProduct, LocalDateTime lastPublishAt) {
         try {
-            log.info("메세지 전송 : {}", lastPublishedItem);
-            processor.onNext(toMessage(lastPublishedItem));
+            log.debug("MQ :: PUBLISH :: payload : {}", lastPublishedProduct);
 
-            lastCrawledItemService.updateLastPublishAt(lastPublishedItem.getItemCode(), lastPublishAt);
+            processor.onNext(JsonUtil.toJSON(lastPublishedProduct));
+            lastCrawledItemService.updateLastPublishAt(lastPublishedProduct.getProductCode(), lastPublishAt);
+
         } catch (Exception e) {
-            log.error("Fail Publish {}", lastPublishedItem, e);
+            log.error("MQ :: PUBLISH :: ERROR :: {}", lastPublishedProduct, e);
         }
     }
 
-    private String toMessage(LastPublishedItem lastPublishedItem) throws Exception {
-        return objectMapper.writeValueAsString(lastPublishedItem);
-    }
 }

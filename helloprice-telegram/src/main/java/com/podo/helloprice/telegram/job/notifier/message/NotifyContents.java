@@ -1,7 +1,7 @@
 package com.podo.helloprice.telegram.job.notifier.message;
 
-import com.podo.helloprice.core.util.MyCalculateUtils;
-import com.podo.helloprice.core.util.MyCurrencyUtils;
+import com.podo.helloprice.core.util.CalculateUtil;
+import com.podo.helloprice.core.util.CurrencyUtil;
 import com.podo.helloprice.telegram.client.menu.global.CommonResponse;
 import com.podo.helloprice.telegram.domain.item.ItemDto;
 import lombok.experimental.UtilityClass;
@@ -80,13 +80,13 @@ public class NotifyContents {
 
                 .append("<b>")
                 .append("현재가격 : ")
-                .append(MyCurrencyUtils.toKrw(itemPrice))
+                .append(CurrencyUtil.toKrw(itemPrice))
                 .append("</b>")
                 .append("\n")
 
                 .append("<b>")
                 .append("가격변화 : ")
-                .append(MyCalculateUtils.getPercentStringWithPlusMinusSign(itemPrice, itemBeforePrice))
+                .append(CalculateUtil.getPercentStringWithPlusMinusSign(itemPrice, itemBeforePrice))
                 .append("</b>")
                 .toString();
     }

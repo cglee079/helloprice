@@ -1,5 +1,6 @@
 package com.podo.helloprice.core.domain.item;
 
+import com.podo.helloprice.code.model.ProductAliveStatus;
 import com.podo.helloprice.core.domain.BaseEntity;
 import com.podo.helloprice.core.domain.item.model.ItemSaleStatus;
 import com.podo.helloprice.core.domain.item.model.ItemStatus;
@@ -51,7 +52,7 @@ public class Item extends BaseEntity {
     private Integer deadCount;
 
     @Enumerated(EnumType.STRING)
-    private ItemStatus itemStatus;
+    private ProductAliveStatus productAliveStatus;
 
     @Enumerated(EnumType.STRING)
     private ItemSaleStatus itemSaleStatus;
@@ -82,7 +83,7 @@ public class Item extends BaseEntity {
         this.lastPublishAt = lastCrawledAt;
         this.itemSaleStatus = itemSaleStatus;
         this.deadCount = 0;
-        this.itemStatus = ItemStatus.ALIVE;
+        this.productAliveStatus = ProductAliveStatus.ALIVE;
         this.itemUpdateStatus = ItemUpdateStatus.BE;
 
     }
@@ -102,7 +103,7 @@ public class Item extends BaseEntity {
             case UNKNOWN:
             case DISCONTINUE:
             case NOT_SUPPORT:
-                this.itemStatus = ItemStatus.PAUSE;
+                this.productAliveStatus = ProductAliveStatus.PAUSE;
                 updateItemUpdateInfo(lastCrawledAt);
                 break;
 
@@ -126,7 +127,7 @@ public class Item extends BaseEntity {
             log.info("{}({}) 상품 DEAD_COUNT 초과, DEAD 상태로 변경", this.itemName, this.itemCode);
             this.itemBeforePrice = this.itemPrice;
             this.itemPrice = 0;
-            this.itemStatus = ItemStatus.DEAD;
+            this.productAliveStatus = ProductAliveStatus.DEAD;
             updateItemUpdateInfo(lastCrawledAt);
         }
     }
@@ -138,7 +139,7 @@ public class Item extends BaseEntity {
 
     public void addUserItemNotify(UserItemNotify userItemNotify) {
         this.userItemNotifies.add(userItemNotify);
-        this.itemStatus = ItemStatus.ALIVE;
+        this.productAliveStatus = ProductAliveStatus.ALIVE;
     }
 
     public void removeUserItemNotify(UserItemNotify userItemNotify) {
@@ -148,7 +149,7 @@ public class Item extends BaseEntity {
             log.info("{}({}) 상품은, 어떤 사용자에게도 알림이 없습니다", this.itemName, this.itemCode);
             log.info("{}({}) 상품을, 더 이상 갱신하지 않습니다.(중지)", this.itemName, this.itemCode);
 
-            this.itemStatus = ItemStatus.PAUSE;
+            this.productAliveStatus = ProductAliveStatus.PAUSE;
         }
     }
 
@@ -157,7 +158,7 @@ public class Item extends BaseEntity {
     }
 
     private boolean isAlive() {
-        return this.itemStatus.equals(ItemStatus.ALIVE);
+        return this.productAliveStatus.equals(ProductAliveStatus.ALIVE);
     }
 
     public void notified() {

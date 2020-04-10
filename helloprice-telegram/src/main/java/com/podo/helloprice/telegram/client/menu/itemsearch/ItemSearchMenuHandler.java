@@ -1,6 +1,6 @@
 package com.podo.helloprice.telegram.client.menu.itemsearch;
 
-import com.podo.helloprice.core.domain.item.vo.ItemSearchResultVo;
+import com.podo.helloprice.crawl.worker.vo.ProductSearchVo;
 import com.podo.helloprice.core.model.Menu;
 import com.podo.helloprice.crawl.worker.target.danawa.DanawaCrawler;
 import com.podo.helloprice.telegram.client.menu.Keyboard;
@@ -43,7 +43,7 @@ public class ItemSearchMenuHandler extends AbstractMenuHandler {
         sender().send(tMessageVo.newMessage(CommonResponse.justWait(), null, callbackFactory.createDefaultNoAction(telegramId)));
 
         final String requestSearchKeyword = requestMessage;
-        final List<ItemSearchResultVo> itemSearchResults = danawaCrawler.crawlItemSearchResults(requestSearchKeyword);
+        final List<ProductSearchVo> itemSearchResults = danawaCrawler.crawlItemSearchResults(requestSearchKeyword);
 
         if (itemSearchResults.isEmpty()) {
             final List<String> itemCommands = ItemCommandTranslator.getItemCommands(userItemNotifyService.findNotifyItemsByUserTelegramId(telegramId));
@@ -57,7 +57,7 @@ public class ItemSearchMenuHandler extends AbstractMenuHandler {
         sender().send(tMessageVo.newMessage(ItemSearchResultResponse.explain(), itemSearchResultKeyboard, defaultCallback));
     }
 
-    private List<String> toItemSearchResultCommands(List<ItemSearchResultVo> itemSearchResults) {
+    private List<String> toItemSearchResultCommands(List<ProductSearchVo> itemSearchResults) {
         return itemSearchResults.stream()
                 .map(item -> ItemCommandTranslator.getItemCommand(item.getItemCode(), item.getItemDesc()))
                 .collect(Collectors.toList());

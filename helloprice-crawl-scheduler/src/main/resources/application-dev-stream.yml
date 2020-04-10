@@ -1,0 +1,14 @@
+spring.cloud:
+  function:
+    definition: publishProduct
+  stream:
+    bindings:
+      publishProduct-out-0:
+        destination: com.podo.helloprice.crawl.test.crawl-items
+        binder: kafka
+    kafka:
+      binder:
+        brokers: 192.168.219.103:9092
+        auto-add-partitions: true
+        min-partition-count: 1
+        auto-create-topics: true
