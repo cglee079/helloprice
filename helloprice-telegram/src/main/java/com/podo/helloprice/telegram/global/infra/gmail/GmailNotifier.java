@@ -14,7 +14,7 @@ public class GmailNotifier {
     private final GmailClient gmailClient;
 
     public void notifyUser(String username, String userEmail, String emailTitle, String contentImage, String contents) {
-        log.info("{}({})님에게 이메일로 알림을 전송합니다, 보낸이메일 {}", username, userEmail, emailTitle);
+        log.debug("EMAIL :: {}({})님에게 이메일로 알림을 전송합니다, 보낸이메일 {}", username, userEmail, emailTitle);
 
         final StringBuilder htmlContents = new StringBuilder();
 

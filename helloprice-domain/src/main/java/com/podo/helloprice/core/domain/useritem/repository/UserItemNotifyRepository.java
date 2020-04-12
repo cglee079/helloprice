@@ -1,14 +1,14 @@
 package com.podo.helloprice.core.domain.useritem.repository;
 
-import com.podo.helloprice.core.domain.useritem.UserItemNotify;
+import com.podo.helloprice.core.domain.useritem.UserProductNotify;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
 
-public interface UserItemNotifyRepository extends JpaRepository<UserItemNotify, Long>, UserItemNotifyRepositoryCustom{
+public interface UserProductNotifyRepository extends JpaRepository<UserProductNotify, Long>, UserProductNotifyRepositoryCustom{
 
-    UserItemNotify findByUserIdAndItemId(Long userId, Long itemId);
+    UserProductNotify findByUserIdAndProductId(Long userId, Long itemId);
 
 
-    List<UserItemNotify> findByItemId(Long itemId);
+    List<UserProductNotify> findByProductId(Long itemId);
 }

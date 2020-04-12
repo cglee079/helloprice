@@ -21,11 +21,11 @@ public class CrawlProductJobProcessor implements ItemProcessor<LastPublishedProd
 
     @Override
     public CrawledProduct process(LastPublishedProduct lastPublishedProduct) {
-        final String existedItemName = lastPublishedProduct.getProductName();
-        final String existedItemCode = lastPublishedProduct.getProductCode();
+        final String existedProductName = lastPublishedProduct.getProductName();
+        final String existedProductCode = lastPublishedProduct.getProductCode();
 
-        log.debug("STEP :: PROCESSOR :: {}({}) 상품의 정보 갱신을 실행합니다", existedItemName, existedItemCode);
+        log.debug("STEP :: PROCESSOR :: {}({}) 상품의 정보 갱신을 실행합니다", existedProductName, existedProductCode);
 
-        return danawaProductCrawler.crawl(existedItemCode, LocalDateTime.now());
+        return danawaProductCrawler.crawl(existedProductCode, LocalDateTime.now());
     }
 }

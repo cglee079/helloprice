@@ -1,0 +1,24 @@
+package com.podo.helloprice.telegram.domain.product.application.helper;
+
+import com.podo.helloprice.telegram.domain.product.Product;
+import com.podo.helloprice.telegram.domain.product.exception.InvalidProductCodeException;
+import com.podo.helloprice.telegram.domain.product.exception.InvalidProductIdException;
+import com.podo.helloprice.telegram.domain.product.repository.ProductRepository;
+import lombok.experimental.UtilityClass;
+
+import java.util.Optional;
+
+@UtilityClass
+public class ProductReadHelper {
+
+    public static Product findProductById(ProductRepository productRepository, Long productId) {
+        return productRepository.findById(productId)
+                .orElseThrow(() -> new InvalidProductIdException(productId));
+    }
+
+    public static Product findByProductCode(ProductRepository productRepository, String productCode) {
+        return productRepository.findByProductCode(productCode)
+                .orElseThrow(() -> new InvalidProductCodeException(productCode));
+    }
+
+}

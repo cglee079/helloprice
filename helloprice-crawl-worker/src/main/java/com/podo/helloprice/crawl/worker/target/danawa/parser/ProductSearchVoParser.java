@@ -27,11 +27,11 @@ public class ProductSearchVoParser {
         for (Element product : products) {
             final String productUrl = product.select(SELECTOR_SEARCH_PRODUCT_URL).attr("href");
             final String productName = product.select(SELECTOR_SEARCH_PRODUCT_NAME).text();
-            final String productPriceDesc = getSearchItemPriceDesc(product.select(SELECTOR_SEARCH_PRODUCT_PRICE).text());
+            final String productPriceDesc = getSearchProductPriceDesc(product.select(SELECTOR_SEARCH_PRODUCT_PRICE).text());
             final String productCode = danawaProductCodeCrawler.crawl(productUrl);
             final String productDesc = productName + " [" + productPriceDesc + "]";
 
-            if (validateItemInfo(productCode, productDesc) && !productPriceDesc.equals(TEXT_SEARCH_PRODUCT_STATUS_VALUE_DISCONTINUE)) {
+            if (validateProductInfo(productCode, productDesc) && !productPriceDesc.equals(TEXT_SEARCH_PRODUCT_STATUS_VALUE_DISCONTINUE)) {
                 productSearchInfos.add(new ProductSearchVo(productCode, productDesc));
             }
         }
@@ -39,7 +39,7 @@ public class ProductSearchVoParser {
         return productSearchInfos;
     }
 
-    private String getSearchItemPriceDesc(String productPriceText) {
+    private String getSearchProductPriceDesc(String productPriceText) {
         final String productPrice = productPriceText.replaceAll(",", "");
 
         if (NumberUtil.isInteger(productPrice)) {
@@ -49,7 +49,7 @@ public class ProductSearchVoParser {
         return productPriceText;
     }
 
-    private boolean validateItemInfo(String productCode, String description) {
+    private boolean validateProductInfo(String productCode, String description) {
         if (StringUtil.isEmpty(productCode)) {
             return false;
         }

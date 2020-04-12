@@ -1,12 +1,12 @@
 package com.podo.helloprice.core.domain.useritem.repository;
 
 import com.podo.helloprice.core.domain.user.model.UserStatus;
-import com.podo.helloprice.core.domain.useritem.UserItemNotify;
+import com.podo.helloprice.core.domain.useritem.UserProductNotify;
 
 import java.util.List;
 
-public interface UserItemNotifyRepositoryCustom {
+public interface UserProductNotifyRepositoryCustom {
 
-    List<UserItemNotify> findByUserTelegramId(String telegramId);
-    List<UserItemNotify> findByItemIdAndUserStatus(Long itemId, UserStatus userStatus);
+    List<UserProductNotify> findByUserTelegramId(String telegramId);
+    List<UserProductNotify> findByProductIdAndUserStatus(Long itemId, UserStatus userStatus);
 }

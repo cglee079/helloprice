@@ -42,7 +42,7 @@ public class GmailClient {
 
         executorService.execute(() -> {
 
-            log.info("'{}({})'로 메일을 발송합니다, 메일제목 : {}", userEmail, username, title);
+            log.debug("EMAIL :: '{}({})'로 메일을 발송합니다, 메일제목 : {}", userEmail, username, title);
 
             try {
                 final Properties mailProperties = getMailProperties();

@@ -1,7 +1,7 @@
 package com.podo.helloprice.core.domain.item;
 
-import com.podo.helloprice.core.domain.item.model.ItemSaleStatus;
-import com.podo.helloprice.core.domain.useritem.UserItemNotify;
+import com.podo.helloprice.core.domain.item.model.ProductSaleStatus;
+import com.podo.helloprice.core.domain.product.Product;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -9,14 +9,14 @@ import org.springframework.test.util.ReflectionTestUtils;
 
 import java.time.LocalDateTime;
 
-import static com.podo.helloprice.core.domain.item.model.ItemSaleStatus.SALE;
-import static com.podo.helloprice.core.domain.item.model.ItemStatus.*;
-import static com.podo.helloprice.core.domain.item.model.ItemUpdateStatus.BE;
-import static com.podo.helloprice.core.domain.item.model.ItemUpdateStatus.UPDATED;
+import static com.podo.helloprice.core.domain.item.model.ProductSaleStatus.SALE;
+import static com.podo.helloprice.core.domain.item.model.ProductStatus.*;
+import static com.podo.helloprice.core.domain.item.model.ProductUpdateStatus.BE;
+import static com.podo.helloprice.core.domain.item.model.ProductUpdateStatus.UPDATED;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @DisplayName("상품 테스트")
-class ItemTest {
+class ProductTest {
 
 
     @DisplayName("생성, By Builder")
@@ -29,11 +29,11 @@ class ItemTest {
         final String itemDesc = "itemDesc";
         final String itemUrl = "http://itemUrl";
         final int itemPrice = 1;
-        final ItemSaleStatus itemSaleStatus = SALE;
+        final ProductSaleStatus itemSaleStatus = SALE;
         final LocalDateTime lastCrawledAt = LocalDateTime.now();
 
         //when
-        final Item item = Item.builder()
+        final Product item = Product.builder()
                 .lastCrawledAt(lastCrawledAt)
                 .itemDesc(itemDesc)
                 .itemCode(itemCode)
@@ -45,20 +45,20 @@ class ItemTest {
                 .build();
 
         //then
-        assertThat(item.getItemName()).isEqualTo(itemName);
-        assertThat(item.getItemCode()).isEqualTo(itemCode);
-        assertThat(item.getItemDesc()).isEqualTo(itemDesc);
-        assertThat(item.getItemCode()).isEqualTo(itemCode);
-        assertThat(item.getItemImage()).isEqualTo(itemImage);
-        assertThat(item.getItemUrl()).isEqualTo(itemUrl);
-        assertThat(item.getItemSaleStatus()).isEqualTo(itemSaleStatus);
+        assertThat(item.getProductName()).isEqualTo(itemName);
+        assertThat(item.getProductCode()).isEqualTo(itemCode);
+        assertThat(item.getProductDesc()).isEqualTo(itemDesc);
+        assertThat(item.getProductCode()).isEqualTo(itemCode);
+        assertThat(item.getProductImage()).isEqualTo(itemImage);
+        assertThat(item.getProductUrl()).isEqualTo(itemUrl);
+        assertThat(item.getProductSaleStatus()).isEqualTo(itemSaleStatus);
 
         assertThat(item.getDeadCount()).isEqualTo(0);
         assertThat(item.getProductAliveStatus()).isEqualTo(ALIVE);
-        assertThat(item.getItemUpdateStatus()).isEqualTo(BE);
+        assertThat(item.getProductUpdateStatus()).isEqualTo(BE);
 
-        assertThat(item.getItemBeforePrice()).isEqualTo(itemPrice);
-        assertThat(item.getItemPrice()).isEqualTo(itemPrice);
+        assertThat(item.getProductBeforePrice()).isEqualTo(itemPrice);
+        assertThat(item.getProductPrice()).isEqualTo(itemPrice);
 
         assertThat(item.getLastCrawledAt()).isEqualTo(lastCrawledAt);
         assertThat(item.getLastUpdatedAt()).isEqualTo(lastCrawledAt);
@@ -70,7 +70,7 @@ class ItemTest {
     @Test
     void testIncreaseDeadCount(){
         //given
-        final Item item = Item.builder().build();
+        final Product item = Product.builder().build();
         final LocalDateTime lastCrawledAt = LocalDateTime.now();
 
         //when
@@ -85,7 +85,7 @@ class ItemTest {
     void testIncreaseDeadCountOverMax(){
         //given
         final int itemPrice = 1000;
-        final Item item = Item.builder().itemPrice(itemPrice).build();
+        final Product item = Product.builder().itemPrice(itemPrice).build();
         final LocalDateTime lastCrawledAt = LocalDateTime.now();
 
         //when
@@ -93,69 +93,69 @@ class ItemTest {
 
         //then
         assertThat(item.getDeadCount()).isEqualTo(1);
-        assertThat(item.getItemBeforePrice()).isEqualTo(itemPrice);
-        assertThat(item.getItemPrice()).isEqualTo(0);
+        assertThat(item.getProductBeforePrice()).isEqualTo(itemPrice);
+        assertThat(item.getProductPrice()).isEqualTo(0);
         assertThat(item.getProductAliveStatus()).isEqualTo(DEAD);
-        assertThat(item.getItemUpdateStatus()).isEqualTo(UPDATED);
+        assertThat(item.getProductUpdateStatus()).isEqualTo(UPDATED);
         assertThat(item.getLastUpdatedAt()).isEqualTo(lastCrawledAt);
     }
 
     @DisplayName("사용자 알림 추가")
     @Test
-    void testAddItemNotify01(){
+    void testAddProductNotify01(){
         //given
-        final Item item = Item.builder().build();
-        final UserItemNotify userItemNotify = Mockito.mock(UserItemNotify.class);
+        final Product item = Product.builder().build();
+        final UserProductNotify userProductNotify = Mockito.mock(UserProductNotify.class);
 
         //when
-        item.addUserItemNotify(userItemNotify);
+        item.addUserProductNotify(userProductNotify);
 
-        assertThat(item.getUserItemNotifies()).containsExactly(userItemNotify);
+        assertThat(item.getUserProductNotifies()).containsExactly(userProductNotify);
     }
 
     @DisplayName("사용자 알림 추가, 상품 PAUSE 상태였을때")
     @Test
-    void testAddItemNotify02(){
+    void testAddProductNotify02(){
         //given
-        final Item item = Item.builder().build();
+        final Product item = Product.builder().build();
         ReflectionTestUtils.setField(item, "itemStatus", PAUSE);
 
-        final UserItemNotify userItemNotify = Mockito.mock(UserItemNotify.class);
+        final UserProductNotify userProductNotify = Mockito.mock(UserProductNotify.class);
 
         //when
-        item.addUserItemNotify(userItemNotify);
+        item.addUserProductNotify(userProductNotify);
 
-        assertThat(item.getUserItemNotifies()).containsExactly(userItemNotify);
+        assertThat(item.getUserProductNotifies()).containsExactly(userProductNotify);
         assertThat(item.getProductAliveStatus()).isEqualTo(ALIVE);
     }
 
     @DisplayName("사용자 알림 삭제")
     @Test
-    void testRemoveItemNotify01(){
+    void testRemoveProductNotify01(){
         //given
-        final Item item = Item.builder().build();
-        final UserItemNotify userItemNotify = Mockito.mock(UserItemNotify.class);
-        item.addUserItemNotify(userItemNotify);
-        item.addUserItemNotify(Mockito.mock(UserItemNotify.class));
+        final Product item = Product.builder().build();
+        final UserProductNotify userProductNotify = Mockito.mock(UserProductNotify.class);
+        item.addUserProductNotify(userProductNotify);
+        item.addUserProductNotify(Mockito.mock(UserProductNotify.class));
 
         //when
-        item.removeUserItemNotify(userItemNotify);
+        item.removeUserProductNotify(userProductNotify);
 
         //then
         assertThat(item.getProductAliveStatus()).isEqualTo(ALIVE);
-        assertThat(item.getUserItemNotifies().size()).isEqualTo(1);
+        assertThat(item.getUserProductNotifies().size()).isEqualTo(1);
     }
 
     @DisplayName("사용자 알림 삭제후, 어떤 사용자 알림도 없을 때")
     @Test
-    void testRemoveItemNotify02(){
+    void testRemoveProductNotify02(){
         //given
-        final Item item = Item.builder().build();
-        final UserItemNotify userItemNotify = Mockito.mock(UserItemNotify.class);
-        item.addUserItemNotify(userItemNotify);
+        final Product item = Product.builder().build();
+        final UserProductNotify userProductNotify = Mockito.mock(UserProductNotify.class);
+        item.addUserProductNotify(userProductNotify);
 
         //when
-        item.removeUserItemNotify(userItemNotify);
+        item.removeUserProductNotify(userProductNotify);
 
         //then
         assertThat(item.getProductAliveStatus()).isEqualTo(PAUSE);
@@ -166,7 +166,7 @@ class ItemTest {
     void testUpdateLastPublishAt(){
         //given
         final LocalDateTime lastPublishAt = LocalDateTime.now();
-        final Item item = Item.builder().build();
+        final Product item = Product.builder().build();
 
         //when
         item.updateLastPublishAt(lastPublishAt);

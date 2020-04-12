@@ -62,10 +62,10 @@ public class CrawledProductParser {
             return ProductSaleStatus.SALE;
         }
 
-        return getItemSaleStatusByCrawledSaleStatusText(saleStatusText);
+        return getProductSaleStatusByCrawledSaleStatusText(saleStatusText);
     }
 
-    private ProductSaleStatus getItemSaleStatusByCrawledSaleStatusText(String saleStatusText) {
+    private ProductSaleStatus getProductSaleStatusByCrawledSaleStatusText(String saleStatusText) {
         switch (saleStatusText) {
             case TEXT_PRODUCT_STATUS_DISCONTINUE:
                 return DISCONTINUE;

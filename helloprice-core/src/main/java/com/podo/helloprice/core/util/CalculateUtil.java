@@ -2,38 +2,45 @@ package com.podo.helloprice.core.util;
 
 import lombok.experimental.UtilityClass;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.text.DecimalFormat;
+
+import static java.math.BigDecimal.ZERO;
 
 @UtilityClass
 public class CalculateUtil {
 
-    public static Double getChangePercent(double a, double b) {
+    public static final DecimalFormat DECIMAL_FORMAT = new DecimalFormat("#.##");
 
-        if (Double.compare(a, 0) == 0 && Double.compare(b, 0) == 0) {
-            return 0.0;
+    public static BigDecimal getChangePercent(Integer x, Integer y) {
+        final BigDecimal ax = BigDecimal.valueOf(x);
+        final BigDecimal ay = BigDecimal.valueOf(y);
+
+        if (ax.compareTo(ZERO) == 0 && ay.compareTo(ZERO) == 0) {
+            return ZERO;
         }
 
-        if (Double.compare(b, 0) == 0) {
-            return 100.0;
+        if (ay.compareTo(ZERO) == 0) {
+            return BigDecimal.valueOf(100);
         }
 
-        if (Double.compare(a, 0) == 0) {
-            return -100.0;
+        if (ax.compareTo(ZERO) == 0) {
+            return BigDecimal.valueOf(-100);
         }
 
-        double gap = a - b;
-        return (gap / b) * 100;
+        return ax.subtract(ay).divide(ay, 4, RoundingMode.HALF_UP).multiply(BigDecimal.valueOf(100));
     }
 
-    public static String getPercentStringWithPlusMinusSign(double a, double b) {
+    public static String getPercentStringWithPlusMinusSign(Integer a, Integer b) {
         String prefix = "";
 
-        double percent = CalculateUtil.getChangePercent(a, b);
+        final BigDecimal changePercent = CalculateUtil.getChangePercent(a, b);
 
-        if (percent > 0) {
+        if (changePercent.compareTo(ZERO) > 0) {
             prefix = "+";
         }
 
-        return prefix + new DecimalFormat("#.##").format(percent) + "%";
+        return prefix + DECIMAL_FORMAT.format(changePercent.doubleValue()) + "%";
     }
 }

@@ -30,13 +30,13 @@ public class CrawlProductJobWriter implements ItemWriter<CrawledProduct> {
     private final ProductRepository productRepository;
 
     @Override
-    public void write(List<? extends CrawledProduct> crawledItems) {
-        for (CrawledProduct crawledProduct : crawledItems) {
-            updateItem(crawledProduct);
+    public void write(List<? extends CrawledProduct> crawledProducts) {
+        for (CrawledProduct crawledProduct : crawledProducts) {
+            updateProduct(crawledProduct);
         }
     }
 
-    private void updateItem(CrawledProduct crawledProduct) {
+    private void updateProduct(CrawledProduct crawledProduct) {
         final LocalDateTime now = LocalDateTime.now();
         final LastPublishedProduct lastPublishedProduct = crawlProductJobParameter.getLastPublishedProduct();
         final String productName = lastPublishedProduct.getProductName();
@@ -49,7 +49,7 @@ public class CrawlProductJobWriter implements ItemWriter<CrawledProduct> {
             product.increaseDeadCount(maxDeadCount, now);
         }
 
-        product.updateByCrawledItem(crawledProduct);
+        product.updateByCrawledProduct(crawledProduct);
 
         log.debug("STEP :: WRITER :: {}({}) ::  가격 : `{}`, 상품판매상태 : `{}`, 상품상태 `{}`", productName, productCode, product.getPrice(), product.getSaleStatus().getValue(), product.getAliveStatus());
     }

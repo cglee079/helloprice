@@ -27,7 +27,7 @@ public class GlobalNotifier {
         final String telegramId = notifyUser.getTelegramId();
         final String username = notifyUser.getUsername();
 
-        log.info("{}({})님에게 상품 변경 알림을 전송합니다", telegramId, username);
+        log.debug("NOTIFY :: {}({})님에게 상품 변경 알림을 전송합니다", telegramId, username);
 
         if (Objects.nonNull(notifyUser.getEmail())) {
             gmailNotifier.notifyUser(username, notifyUser.getEmail(), title, image, contents);

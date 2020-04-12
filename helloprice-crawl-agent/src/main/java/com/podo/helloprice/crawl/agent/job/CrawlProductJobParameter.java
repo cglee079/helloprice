@@ -23,7 +23,7 @@ public class CrawlProductJobParameter {
         this.createAt = DateTimeUtil.dateToLocalDateTime(createAt);
     }
 
-    @Value("#{jobParameters[lastPublishedItem]}")
+    @Value("#{jobParameters[lastPublishedProduct]}")
     public void setLastPublishedProduct(String lastPublishedProduct) {
         this.lastPublishedProduct = JsonUtil.toObject(lastPublishedProduct, LastPublishedProduct.class);
     }

@@ -64,7 +64,7 @@ public class Product{
     @LastModifiedBy
     private String updateBy;
 
-    public void updateByCrawledItem(CrawledProduct crawledProduct) {
+    public void updateByCrawledProduct(CrawledProduct crawledProduct) {
         final Integer existPrice = this.price;
         final Integer crawledPrice = crawledProduct.getPrice();
 

@@ -8,11 +8,11 @@ import lombok.ToString;
 @EqualsAndHashCode
 @Getter
 public class ProductSearchVo {
-    private String itemCode;
-    private String itemDesc;
+    private String productCode;
+    private String description;
 
-    public ProductSearchVo(String itemCode, String itemDesc) {
-        this.itemCode = itemCode;
-        this.itemDesc = itemDesc;
+    public ProductSearchVo(String productCode, String description) {
+        this.productCode = productCode;
+        this.description = description;
     }
 }

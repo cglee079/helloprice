@@ -1,6 +1,6 @@
 package com.podo.helloprice.telegram.global.infra.telegram;
 
-import com.podo.helloprice.telegram.client.api.TelegramApi;
+import com.podo.helloprice.telegram.api.TelegramApi;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;

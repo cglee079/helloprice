@@ -2,8 +2,8 @@ package com.podo.helloprice.core.domain.user;
 
 import com.podo.helloprice.core.domain.BaseEntity;
 import com.podo.helloprice.core.domain.user.model.UserStatus;
-import com.podo.helloprice.core.model.Menu;
-import com.podo.helloprice.core.domain.useritem.UserItemNotify;
+
+import com.podo.helloprice.core.domain.useritem.UserProductNotify;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -40,7 +40,7 @@ public class User extends BaseEntity {
     private LocalDateTime lastSendAt;
 
     @OneToMany(mappedBy = "user")
-    List<UserItemNotify> userItemNotifies;
+    List<UserProductNotify> userProductNotifies;
 
     @Builder
     public User(String username,
@@ -63,12 +63,12 @@ public class User extends BaseEntity {
         this.menuStatus = menuStatus;
     }
 
-    public void addUserItemNotify(UserItemNotify userItemNotify) {
-        this.userItemNotifies.add(userItemNotify);
+    public void addUserProductNotify(UserProductNotify userProductNotify) {
+        this.userProductNotifies.add(userProductNotify);
     }
 
-    public void removeUserItemNotify(UserItemNotify userItemNotify) {
-        this.userItemNotifies.remove(userItemNotify);
+    public void removeUserProductNotify(UserProductNotify userProductNotify) {
+        this.userProductNotifies.remove(userProductNotify);
     }
 
     public void increaseErrorCount(Integer userMaxErrorCount) {
@@ -92,7 +92,7 @@ public class User extends BaseEntity {
         this.email = email;
     }
 
-    public boolean hasItemNotifiesMoreThan(Integer maxCountOfItemNotifies) {
-        return this.userItemNotifies.size() >= maxCountOfItemNotifies;
+    public boolean hasProductNotifiesMoreThan(Integer maxCountOfProductNotifies) {
+        return this.userProductNotifies.size() >= maxCountOfProductNotifies;
     }
 }

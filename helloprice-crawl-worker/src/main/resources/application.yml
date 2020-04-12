@@ -1,5 +1,0 @@
-crawler:
-  useragent: HelloPrice
-  timeout: 1000
-  webdriver:
-    remotes:

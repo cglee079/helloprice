@@ -1,7 +1,7 @@
 package com.podo.helloprice.core.domain.useritem;
 
 import com.podo.helloprice.core.domain.BaseTimeEntity;
-import com.podo.helloprice.core.domain.item.Item;
+import com.podo.helloprice.core.domain.product.Product;
 import com.podo.helloprice.core.domain.user.User;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -14,7 +14,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "user_item_notify")
 @Entity
-public class UserItemNotify extends BaseTimeEntity {
+public class UserProductNotify extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -26,11 +26,11 @@ public class UserItemNotify extends BaseTimeEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "item_id")
-    private Item item;
+    private Product item;
 
     private LocalDateTime lastNotifiedAt;
 
-    public UserItemNotify(User user, Item item) {
+    public UserProductNotify(User user, Product item) {
         this.user = user;
         this.item = item;
     }

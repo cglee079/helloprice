@@ -34,3 +34,4 @@ helloprice-domain/src/main/resources/application-jpa.yml
 **/generated/**
 **/logs/**
 
+application-*.yml

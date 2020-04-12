@@ -25,7 +25,7 @@ public class ProductQuerydslRepository{
                 .fetchOne();
     }
 
-    public Product findByItemCode(String productCode) {
+    public Product findByProductCode(String productCode) {
         return jpaQueryFactory.selectFrom(product)
                 .where(product.productCode.eq(productCode))
                 .fetchOne();

@@ -8,6 +8,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.stereotype.Component;
 
 import java.util.Collections;
@@ -18,7 +20,6 @@ import static java.util.Collections.singletonList;
 
 @Slf4j
 @RequiredArgsConstructor
-@Component
 public class DanawaProductSearchCrawler {
 
     private static final String DANAWA_PRODUCT_SEARCH_URL = "http://search.danawa.com/mobile/dsearch.php?keyword=";

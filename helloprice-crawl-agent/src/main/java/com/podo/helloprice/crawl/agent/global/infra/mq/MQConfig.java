@@ -14,10 +14,10 @@ import java.util.function.Consumer;
 public class MQConfig {
 
     @Bean
-    public Consumer<String> lastCrawledItem(CrawlProductJobRunner crawlProductJobRunner) {
-        return (lastPublishedItem) ->{
-            log.debug("MQ :: CONSUME :: payload : {}", lastPublishedItem);
-            crawlProductJobRunner.run(lastPublishedItem);
+    public Consumer<String> lastCrawledProduct(CrawlProductJobRunner crawlProductJobRunner) {
+        return (lastPublishedProduct) ->{
+            log.debug("MQ :: CONSUME :: payload : {}", lastPublishedProduct);
+            crawlProductJobRunner.run(lastPublishedProduct);
         };
     }
 }

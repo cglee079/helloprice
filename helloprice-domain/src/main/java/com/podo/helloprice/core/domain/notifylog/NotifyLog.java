@@ -7,40 +7,41 @@ import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 import javax.persistence.*;
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 @Slf4j
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Table(name = "notify_log")
+@Table(name = "product_notify_log")
 @Entity
 public class NotifyLog {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String itemName;
+    private String productName;
 
-    private String itemUrl;
+    private String url;
 
-    private Integer itemPrice;
+    private Integer price;
 
-    private Integer itemBeforePrice;
+    private Integer beforePrice;
 
-    private Double itemPriceChangeRate;
+    private BigDecimal priceChangeRate;
 
-    private String itemStatus;
+    private String aliveStatus;
 
     private LocalDateTime notifyAt;
 
     @Builder
-    public NotifyLog(String itemName, String itemUrl, Integer itemPrice, Integer itemBeforePrice, Double itemPriceChangeRate, String itemStatus, LocalDateTime notifyAt) {
-        this.itemName = itemName;
-        this.itemUrl = itemUrl;
-        this.itemPrice = itemPrice;
-        this.itemBeforePrice = itemBeforePrice;
-        this.itemPriceChangeRate = itemPriceChangeRate;
-        this.itemStatus = itemStatus;
+    public NotifyLog(String productName, String url, Integer price, Integer beforePrice, BigDecimal priceChangeRate, String aliveStatus, LocalDateTime notifyAt) {
+        this.productName = productName;
+        this.url = url;
+        this.price = price;
+        this.beforePrice = beforePrice;
+        this.priceChangeRate = priceChangeRate;
+        this.aliveStatus = aliveStatus;
         this.notifyAt = notifyAt;
     }
 }

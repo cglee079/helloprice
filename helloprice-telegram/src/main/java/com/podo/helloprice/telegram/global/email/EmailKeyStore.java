@@ -39,7 +39,7 @@ public class EmailKeyStore {
 
     private void scheduleRemoveExpireKey(String email, String key) {
         scheduler.schedule(() -> {
-            log.info("{}({}) 인증시간이 만료되어 삭제합니다", email, key);
+            log.debug("EMAIL AUTH :: EXPIRE KEY :: {}({}) 인증시간이 만료되어 삭제합니다", email, key);
             this.emailKeyStore.remove(email);
             this.keyStoreTimes.remove(key);
         }, certifyTimeout, TimeUnit.MINUTES);
@@ -59,12 +59,12 @@ public class EmailKeyStore {
         final LocalDateTime keyStoreTime = keyStoreTimes.get(key);
 
         if (Objects.isNull(keyStoreTime)) {
-            log.info("저장되어있지 않은 KEY 입니다 {}", key);
+            log.debug("EMAIL AUTH :: 저장되어있지 않은 KEY 입니다 {}", key);
             return null;
         }
 
         if (isExpiredKey(now, keyStoreTime)) {
-            log.info("시간이 만료된 KEY 입니다 {}", key);
+            log.debug("EMAIL AUTH :: 시간이 만료된 KEY 입니다 {}", key);
             return null;
         }
 

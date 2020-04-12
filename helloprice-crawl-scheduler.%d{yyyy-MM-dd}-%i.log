@@ -1,0 +1,1024 @@
+2020-04-12 19:40:22.973  INFO 12148 --- [main] c.c.c.ConfigServicePropertySourceLocator : Fetching config from server at : http://localhost:8888
+2020-04-12 19:40:25.095  INFO 12148 --- [main] c.c.c.ConfigServicePropertySourceLocator : Connect Timeout Exception on Url - http://localhost:8888. Will be trying the next url if available
+2020-04-12 19:40:25.096  WARN 12148 --- [main] c.c.c.ConfigServicePropertySourceLocator : Could not locate PropertySource: I/O error on GET request for "http://localhost:8888/helloprice-crawl-scheduler/dev,dev-app,dev-jpa,dev-stream": Connection refused: connect; nested exception is java.net.ConnectException: Connection refused: connect
+2020-04-12 19:40:25.100  INFO 12148 --- [main] c.p.h.CrawlSchedulerApplication          : The following profiles are active: core,jpa,stream,dev-app,dev-jpa,dev-stream,dev
+2020-04-12 19:40:25.553  INFO 12148 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data repositories in DEFAULT mode.
+2020-04-12 19:40:25.581  INFO 12148 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 20ms. Found 0 repository interfaces.
+2020-04-12 19:40:25.821  INFO 12148 --- [main] o.s.cloud.context.scope.GenericScope     : BeanFactory id=d378f835-a4c4-3ee8-8140-061ddd300414
+2020-04-12 19:40:25.858  INFO 12148 --- [main] faultConfiguringBeanFactoryPostProcessor : No bean named 'errorChannel' has been explicitly defined. Therefore, a default PublishSubscribeChannel will be created.
+2020-04-12 19:40:25.869  INFO 12148 --- [main] faultConfiguringBeanFactoryPostProcessor : No bean named 'integrationHeaderChannelRegistry' has been explicitly defined. Therefore, a default DefaultHeaderChannelRegistry will be created.
+2020-04-12 19:40:25.937  INFO 12148 --- [main] trationDelegate$BeanPostProcessorChecker : Bean 'org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration' of type [org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2020-04-12 19:40:25.972  INFO 12148 --- [main] trationDelegate$BeanPostProcessorChecker : Bean 'org.springframework.integration.config.IntegrationManagementConfiguration' of type [org.springframework.integration.config.IntegrationManagementConfiguration] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2020-04-12 19:40:25.975  INFO 12148 --- [main] trationDelegate$BeanPostProcessorChecker : Bean 'org.springframework.boot.autoconfigure.integration.IntegrationAutoConfiguration$IntegrationJmxConfiguration' of type [org.springframework.boot.autoconfigure.integration.IntegrationAutoConfiguration$IntegrationJmxConfiguration] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2020-04-12 19:40:25.982  INFO 12148 --- [main] trationDelegate$BeanPostProcessorChecker : Bean 'org.springframework.boot.autoconfigure.jmx.JmxAutoConfiguration' of type [org.springframework.boot.autoconfigure.jmx.JmxAutoConfiguration] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2020-04-12 19:40:25.986  INFO 12148 --- [main] trationDelegate$BeanPostProcessorChecker : Bean 'mbeanServer' of type [com.sun.jmx.mbeanserver.JmxMBeanServer] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2020-04-12 19:40:26.001  INFO 12148 --- [main] trationDelegate$BeanPostProcessorChecker : Bean 'integrationChannelResolver' of type [org.springframework.integration.support.channel.BeanFactoryChannelResolver] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2020-04-12 19:40:26.002  INFO 12148 --- [main] trationDelegate$BeanPostProcessorChecker : Bean 'integrationDisposableAutoCreatedBeans' of type [org.springframework.integration.config.annotation.Disposables] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2020-04-12 19:40:26.217  INFO 12148 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 28081 (http)
+2020-04-12 19:40:26.226  INFO 12148 --- [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2020-04-12 19:40:26.226  INFO 12148 --- [main] org.apache.catalina.core.StandardEngine  : Starting Servlet engine: [Apache Tomcat/9.0.27]
+2020-04-12 19:40:26.380  INFO 12148 --- [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2020-04-12 19:40:26.380  INFO 12148 --- [main] o.s.web.context.ContextLoader            : Root WebApplicationContext: initialization completed in 1266 ms
+2020-04-12 19:40:26.528  INFO 12148 --- [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2020-04-12 19:40:26.626  INFO 12148 --- [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2020-04-12 19:40:26.671  INFO 12148 --- [main] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2020-04-12 19:40:26.742  INFO 12148 --- [main] org.hibernate.Version                    : HHH000412: Hibernate Core {5.4.6.Final}
+2020-04-12 19:40:26.893  INFO 12148 --- [main] o.hibernate.annotations.common.Version   : HCANN000001: Hibernate Commons Annotations {5.1.0.Final}
+2020-04-12 19:40:27.012  INFO 12148 --- [main] org.hibernate.dialect.Dialect            : HHH000400: Using dialect: org.hibernate.dialect.MySQL55Dialect
+2020-04-12 19:40:27.619  INFO 12148 --- [main] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+2020-04-12 19:40:27.628  INFO 12148 --- [main] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2020-04-12 19:40:27.747  WARN 12148 --- [main] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2020-04-12 19:40:27.855  INFO 12148 --- [main] o.s.s.concurrent.ThreadPoolTaskExecutor  : Initializing ExecutorService 'applicationTaskExecutor'
+2020-04-12 19:40:28.078  INFO 12148 --- [main] o.s.s.c.ThreadPoolTaskScheduler          : Initializing ExecutorService 'taskScheduler'
+2020-04-12 19:40:29.087  INFO 12148 --- [main] c.f.c.c.BeanFactoryAwareFunctionRegistry : Looking up function 'publishProduct' with acceptedOutputTypes: []
+2020-04-12 19:40:29.123  INFO 12148 --- [main] c.f.c.c.BeanFactoryAwareFunctionRegistry : Looking up function 'publishProduct' with acceptedOutputTypes: []
+2020-04-12 19:40:29.127  INFO 12148 --- [main] c.f.c.c.BeanFactoryAwareFunctionRegistry : Looking up function 'publishProduct' with acceptedOutputTypes: []
+2020-04-12 19:40:29.127  INFO 12148 --- [main] c.f.c.c.BeanFactoryAwareFunctionRegistry : Looking up function 'publishProduct' with acceptedOutputTypes: [application/json]
+2020-04-12 19:40:29.365  INFO 12148 --- [main] o.s.i.monitor.IntegrationMBeanExporter   : Registering MessageChannel publishProduct_integrationflow.channel#0
+2020-04-12 19:40:29.422  INFO 12148 --- [main] o.s.i.monitor.IntegrationMBeanExporter   : Registering MessageChannel nullChannel
+2020-04-12 19:40:29.439  INFO 12148 --- [main] o.s.i.monitor.IntegrationMBeanExporter   : Registering MessageChannel publishProduct-out-0
+2020-04-12 19:40:29.505  INFO 12148 --- [main] o.s.i.monitor.IntegrationMBeanExporter   : Registering MessageChannel errorChannel
+2020-04-12 19:40:29.570  INFO 12148 --- [main] o.s.i.monitor.IntegrationMBeanExporter   : Registering MessageHandler publishProduct_integrationflow.org.springframework.integration.config.ConsumerEndpointFactoryBean#0
+2020-04-12 19:40:29.603  INFO 12148 --- [main] o.s.i.monitor.IntegrationMBeanExporter   : Registering MessageHandler errorLogger
+2020-04-12 19:40:29.621  INFO 12148 --- [main] o.s.i.endpoint.EventDrivenConsumer       : Adding {logging-channel-adapter:_org.springframework.integration.errorLogger} as a subscriber to the 'errorChannel' channel
+2020-04-12 19:40:29.621  INFO 12148 --- [main] o.s.i.channel.PublishSubscribeChannel    : Channel 'helloprice-crawl-scheduler-1.errorChannel' has 1 subscriber(s).
+2020-04-12 19:40:29.621  INFO 12148 --- [main] o.s.i.endpoint.EventDrivenConsumer       : started bean '_org.springframework.integration.errorLogger'
+2020-04-12 19:40:29.638  INFO 12148 --- [main] o.s.i.endpoint.ReactiveStreamsConsumer   : started bean 'publishProduct_integrationflow.org.springframework.integration.config.ConsumerEndpointFactoryBean#0'
+2020-04-12 19:40:30.401  INFO 12148 --- [main] c.c.c.ConfigServicePropertySourceLocator : Fetching config from server at : http://localhost:8888
+2020-04-12 19:40:32.406  INFO 12148 --- [main] c.c.c.ConfigServicePropertySourceLocator : Connect Timeout Exception on Url - http://localhost:8888. Will be trying the next url if available
+2020-04-12 19:40:32.406  WARN 12148 --- [main] c.c.c.ConfigServicePropertySourceLocator : Could not locate PropertySource: I/O error on GET request for "http://localhost:8888/helloprice-crawl-scheduler/dev,dev-app,dev-jpa,dev-stream": Connection refused: connect; nested exception is java.net.ConnectException: Connection refused: connect
+2020-04-12 19:40:32.559  INFO 12148 --- [main] o.s.c.s.b.k.p.KafkaTopicProvisioner      : Using kafka topic for outbound: com.podo.helloprice.crawl.test.crawl-items
+2020-04-12 19:40:32.561  INFO 12148 --- [main] o.a.k.clients.admin.AdminClientConfig    : AdminClientConfig values: 
+	bootstrap.servers = [192.168.219.103:9092]
+	client.dns.lookup = default
+	client.id = 
+	connections.max.idle.ms = 300000
+	metadata.max.age.ms = 300000
+	metric.reporters = []
+	metrics.num.samples = 2
+	metrics.recording.level = INFO
+	metrics.sample.window.ms = 30000
+	receive.buffer.bytes = 65536
+	reconnect.backoff.max.ms = 1000
+	reconnect.backoff.ms = 50
+	request.timeout.ms = 120000
+	retries = 5
+	retry.backoff.ms = 100
+	sasl.client.callback.handler.class = null
+	sasl.jaas.config = null
+	sasl.kerberos.kinit.cmd = /usr/bin/kinit
+	sasl.kerberos.min.time.before.relogin = 60000
+	sasl.kerberos.service.name = null
+	sasl.kerberos.ticket.renew.jitter = 0.05
+	sasl.kerberos.ticket.renew.window.factor = 0.8
+	sasl.login.callback.handler.class = null
+	sasl.login.class = null
+	sasl.login.refresh.buffer.seconds = 300
+	sasl.login.refresh.min.period.seconds = 60
+	sasl.login.refresh.window.factor = 0.8
+	sasl.login.refresh.window.jitter = 0.05
+	sasl.mechanism = GSSAPI
+	security.protocol = PLAINTEXT
+	send.buffer.bytes = 131072
+	ssl.cipher.suites = null
+	ssl.enabled.protocols = [TLSv1.2, TLSv1.1, TLSv1]
+	ssl.endpoint.identification.algorithm = https
+	ssl.key.password = null
+	ssl.keymanager.algorithm = SunX509
+	ssl.keystore.location = null
+	ssl.keystore.password = null
+	ssl.keystore.type = JKS
+	ssl.protocol = TLS
+	ssl.provider = null
+	ssl.secure.random.implementation = null
+	ssl.trustmanager.algorithm = PKIX
+	ssl.truststore.location = null
+	ssl.truststore.password = null
+	ssl.truststore.type = JKS
+
+2020-04-12 19:40:32.599  INFO 12148 --- [main] o.a.kafka.common.utils.AppInfoParser     : Kafka version: 2.3.0
+2020-04-12 19:40:32.599  INFO 12148 --- [main] o.a.kafka.common.utils.AppInfoParser     : Kafka commitId: fc1aaa116b661c8a
+2020-04-12 19:40:32.599  INFO 12148 --- [main] o.a.kafka.common.utils.AppInfoParser     : Kafka startTimeMs: 1586688032598
+2020-04-12 19:40:32.927  INFO 12148 --- [main] o.a.k.clients.producer.ProducerConfig    : ProducerConfig values: 
+	acks = 1
+	batch.size = 16384
+	bootstrap.servers = [192.168.219.103:9092]
+	buffer.memory = 33554432
+	client.dns.lookup = default
+	client.id = 
+	compression.type = none
+	connections.max.idle.ms = 540000
+	delivery.timeout.ms = 120000
+	enable.idempotence = false
+	interceptor.classes = []
+	key.serializer = class org.apache.kafka.common.serialization.ByteArraySerializer
+	linger.ms = 0
+	max.block.ms = 60000
+	max.in.flight.requests.per.connection = 5
+	max.request.size = 1048576
+	metadata.max.age.ms = 300000
+	metric.reporters = []
+	metrics.num.samples = 2
+	metrics.recording.level = INFO
+	metrics.sample.window.ms = 30000
+	partitioner.class = class org.apache.kafka.clients.producer.internals.DefaultPartitioner
+	receive.buffer.bytes = 32768
+	reconnect.backoff.max.ms = 1000
+	reconnect.backoff.ms = 50
+	request.timeout.ms = 30000
+	retries = 0
+	retry.backoff.ms = 100
+	sasl.client.callback.handler.class = null
+	sasl.jaas.config = null
+	sasl.kerberos.kinit.cmd = /usr/bin/kinit
+	sasl.kerberos.min.time.before.relogin = 60000
+	sasl.kerberos.service.name = null
+	sasl.kerberos.ticket.renew.jitter = 0.05
+	sasl.kerberos.ticket.renew.window.factor = 0.8
+	sasl.login.callback.handler.class = null
+	sasl.login.class = null
+	sasl.login.refresh.buffer.seconds = 300
+	sasl.login.refresh.min.period.seconds = 60
+	sasl.login.refresh.window.factor = 0.8
+	sasl.login.refresh.window.jitter = 0.05
+	sasl.mechanism = GSSAPI
+	security.protocol = PLAINTEXT
+	send.buffer.bytes = 131072
+	ssl.cipher.suites = null
+	ssl.enabled.protocols = [TLSv1.2, TLSv1.1, TLSv1]
+	ssl.endpoint.identification.algorithm = https
+	ssl.key.password = null
+	ssl.keymanager.algorithm = SunX509
+	ssl.keystore.location = null
+	ssl.keystore.password = null
+	ssl.keystore.type = JKS
+	ssl.protocol = TLS
+	ssl.provider = null
+	ssl.secure.random.implementation = null
+	ssl.trustmanager.algorithm = PKIX
+	ssl.truststore.location = null
+	ssl.truststore.password = null
+	ssl.truststore.type = JKS
+	transaction.timeout.ms = 60000
+	transactional.id = null
+	value.serializer = class org.apache.kafka.common.serialization.ByteArraySerializer
+
+2020-04-12 19:40:32.944  INFO 12148 --- [main] o.a.kafka.common.utils.AppInfoParser     : Kafka version: 2.3.0
+2020-04-12 19:40:32.944  INFO 12148 --- [main] o.a.kafka.common.utils.AppInfoParser     : Kafka commitId: fc1aaa116b661c8a
+2020-04-12 19:40:32.944  INFO 12148 --- [main] o.a.kafka.common.utils.AppInfoParser     : Kafka startTimeMs: 1586688032944
+2020-04-12 19:40:32.950  INFO 12148 --- [kafka-producer-network-thread | producer-1] org.apache.kafka.clients.Metadata        : [Producer clientId=producer-1] Cluster ID: EZ4UIMyySmCd9ZU9r2Z2tQ
+2020-04-12 19:40:32.951  INFO 12148 --- [main] o.a.k.clients.producer.KafkaProducer     : [Producer clientId=producer-1] Closing the Kafka producer with timeoutMillis = 30000 ms.
+2020-04-12 19:40:32.965  INFO 12148 --- [main] o.s.c.s.m.DirectWithAttributesChannel    : Channel 'helloprice-crawl-scheduler-1.publishProduct-out-0' has 1 subscriber(s).
+2020-04-12 19:40:32.987  INFO 12148 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 28081 (http) with context path ''
+2020-04-12 19:40:33.443  INFO 12148 --- [main] c.p.h.CrawlSchedulerApplication          : Started CrawlSchedulerApplication in 12.557 seconds (JVM running for 13.519)
+2020-04-12 19:40:40.297  INFO 12148 --- [scheduling-1] o.a.k.clients.producer.ProducerConfig    : ProducerConfig values: 
+	acks = 1
+	batch.size = 16384
+	bootstrap.servers = [192.168.219.103:9092]
+	buffer.memory = 33554432
+	client.dns.lookup = default
+	client.id = 
+	compression.type = none
+	connections.max.idle.ms = 540000
+	delivery.timeout.ms = 120000
+	enable.idempotence = false
+	interceptor.classes = []
+	key.serializer = class org.apache.kafka.common.serialization.ByteArraySerializer
+	linger.ms = 0
+	max.block.ms = 60000
+	max.in.flight.requests.per.connection = 5
+	max.request.size = 1048576
+	metadata.max.age.ms = 300000
+	metric.reporters = []
+	metrics.num.samples = 2
+	metrics.recording.level = INFO
+	metrics.sample.window.ms = 30000
+	partitioner.class = class org.apache.kafka.clients.producer.internals.DefaultPartitioner
+	receive.buffer.bytes = 32768
+	reconnect.backoff.max.ms = 1000
+	reconnect.backoff.ms = 50
+	request.timeout.ms = 30000
+	retries = 0
+	retry.backoff.ms = 100
+	sasl.client.callback.handler.class = null
+	sasl.jaas.config = null
+	sasl.kerberos.kinit.cmd = /usr/bin/kinit
+	sasl.kerberos.min.time.before.relogin = 60000
+	sasl.kerberos.service.name = null
+	sasl.kerberos.ticket.renew.jitter = 0.05
+	sasl.kerberos.ticket.renew.window.factor = 0.8
+	sasl.login.callback.handler.class = null
+	sasl.login.class = null
+	sasl.login.refresh.buffer.seconds = 300
+	sasl.login.refresh.min.period.seconds = 60
+	sasl.login.refresh.window.factor = 0.8
+	sasl.login.refresh.window.jitter = 0.05
+	sasl.mechanism = GSSAPI
+	security.protocol = PLAINTEXT
+	send.buffer.bytes = 131072
+	ssl.cipher.suites = null
+	ssl.enabled.protocols = [TLSv1.2, TLSv1.1, TLSv1]
+	ssl.endpoint.identification.algorithm = https
+	ssl.key.password = null
+	ssl.keymanager.algorithm = SunX509
+	ssl.keystore.location = null
+	ssl.keystore.password = null
+	ssl.keystore.type = JKS
+	ssl.protocol = TLS
+	ssl.provider = null
+	ssl.secure.random.implementation = null
+	ssl.trustmanager.algorithm = PKIX
+	ssl.truststore.location = null
+	ssl.truststore.password = null
+	ssl.truststore.type = JKS
+	transaction.timeout.ms = 60000
+	transactional.id = null
+	value.serializer = class org.apache.kafka.common.serialization.ByteArraySerializer
+
+2020-04-12 19:40:40.300  INFO 12148 --- [scheduling-1] o.a.kafka.common.utils.AppInfoParser     : Kafka version: 2.3.0
+2020-04-12 19:40:40.300  INFO 12148 --- [scheduling-1] o.a.kafka.common.utils.AppInfoParser     : Kafka commitId: fc1aaa116b661c8a
+2020-04-12 19:40:40.300  INFO 12148 --- [scheduling-1] o.a.kafka.common.utils.AppInfoParser     : Kafka startTimeMs: 1586688040300
+2020-04-12 19:40:40.306  INFO 12148 --- [kafka-producer-network-thread | producer-2] org.apache.kafka.clients.Metadata        : [Producer clientId=producer-2] Cluster ID: EZ4UIMyySmCd9ZU9r2Z2tQ
+2020-04-12 19:56:07.709  INFO 12148 --- [SpringContextShutdownHook] o.s.i.endpoint.EventDrivenConsumer       : Removing {logging-channel-adapter:_org.springframework.integration.errorLogger} as a subscriber to the 'errorChannel' channel
+2020-04-12 19:56:07.709  INFO 12148 --- [SpringContextShutdownHook] o.s.i.channel.PublishSubscribeChannel    : Channel 'helloprice-crawl-scheduler-1.errorChannel' has 0 subscriber(s).
+2020-04-12 19:56:07.709  INFO 12148 --- [SpringContextShutdownHook] o.s.i.endpoint.EventDrivenConsumer       : stopped bean '_org.springframework.integration.errorLogger'
+2020-04-12 19:56:07.709  INFO 12148 --- [SpringContextShutdownHook] o.s.i.endpoint.ReactiveStreamsConsumer   : stopped bean 'publishProduct_integrationflow.org.springframework.integration.config.ConsumerEndpointFactoryBean#0'
+2020-04-12 19:56:07.710  INFO 12148 --- [SpringContextShutdownHook] o.s.s.c.ThreadPoolTaskScheduler          : Shutting down ExecutorService 'taskScheduler'
+2020-04-12 19:56:07.712  INFO 12148 --- [SpringContextShutdownHook] o.s.s.concurrent.ThreadPoolTaskExecutor  : Shutting down ExecutorService 'applicationTaskExecutor'
+2020-04-12 19:56:07.712  INFO 12148 --- [SpringContextShutdownHook] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2020-04-12 19:56:07.714  INFO 12148 --- [SpringContextShutdownHook] o.s.i.monitor.IntegrationMBeanExporter   : Summary on shutdown: bean 'publishProduct_integrationflow.channel#0'
+2020-04-12 19:56:07.714  INFO 12148 --- [SpringContextShutdownHook] o.s.i.monitor.IntegrationMBeanExporter   : Summary on shutdown: nullChannel
+2020-04-12 19:56:07.714  INFO 12148 --- [SpringContextShutdownHook] o.s.i.monitor.IntegrationMBeanExporter   : Summary on shutdown: bean 'publishProduct-out-0'
+2020-04-12 19:56:07.714  INFO 12148 --- [SpringContextShutdownHook] o.s.i.monitor.IntegrationMBeanExporter   : Summary on shutdown: bean 'errorChannel'
+2020-04-12 19:56:07.714  INFO 12148 --- [SpringContextShutdownHook] o.s.i.monitor.IntegrationMBeanExporter   : Summary on shutdown: bean 'publishProduct_integrationflow.router#0' for component 'publishProduct_integrationflow.org.springframework.integration.config.ConsumerEndpointFactoryBean#0'
+2020-04-12 19:56:07.714  INFO 12148 --- [SpringContextShutdownHook] o.s.i.monitor.IntegrationMBeanExporter   : Summary on shutdown: bean '_org.springframework.integration.errorLogger.handler' for component '_org.springframework.integration.errorLogger'
+2020-04-12 19:56:07.714  INFO 12148 --- [SpringContextShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
+2020-04-12 19:56:07.718  INFO 12148 --- [SpringContextShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.
+2020-04-12 19:56:18.095  INFO 16368 --- [main] c.c.c.ConfigServicePropertySourceLocator : Fetching config from server at : http://localhost:8888
+2020-04-12 19:56:20.190  INFO 16368 --- [main] c.c.c.ConfigServicePropertySourceLocator : Connect Timeout Exception on Url - http://localhost:8888. Will be trying the next url if available
+2020-04-12 19:56:20.191  WARN 16368 --- [main] c.c.c.ConfigServicePropertySourceLocator : Could not locate PropertySource: I/O error on GET request for "http://localhost:8888/helloprice-crawl-scheduler/dev,dev-app,dev-jpa,dev-stream": Connection refused: connect; nested exception is java.net.ConnectException: Connection refused: connect
+2020-04-12 19:56:20.193  INFO 16368 --- [main] c.p.h.CrawlSchedulerApplication          : The following profiles are active: core,jpa,stream,dev-app,dev-jpa,dev-stream,dev
+2020-04-12 19:56:20.714  INFO 16368 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data repositories in DEFAULT mode.
+2020-04-12 19:56:20.742  INFO 16368 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 21ms. Found 0 repository interfaces.
+2020-04-12 19:56:20.992  INFO 16368 --- [main] o.s.cloud.context.scope.GenericScope     : BeanFactory id=d378f835-a4c4-3ee8-8140-061ddd300414
+2020-04-12 19:56:21.032  INFO 16368 --- [main] faultConfiguringBeanFactoryPostProcessor : No bean named 'errorChannel' has been explicitly defined. Therefore, a default PublishSubscribeChannel will be created.
+2020-04-12 19:56:21.043  INFO 16368 --- [main] faultConfiguringBeanFactoryPostProcessor : No bean named 'integrationHeaderChannelRegistry' has been explicitly defined. Therefore, a default DefaultHeaderChannelRegistry will be created.
+2020-04-12 19:56:21.116  INFO 16368 --- [main] trationDelegate$BeanPostProcessorChecker : Bean 'org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration' of type [org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2020-04-12 19:56:21.150  INFO 16368 --- [main] trationDelegate$BeanPostProcessorChecker : Bean 'org.springframework.integration.config.IntegrationManagementConfiguration' of type [org.springframework.integration.config.IntegrationManagementConfiguration] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2020-04-12 19:56:21.153  INFO 16368 --- [main] trationDelegate$BeanPostProcessorChecker : Bean 'org.springframework.boot.autoconfigure.integration.IntegrationAutoConfiguration$IntegrationJmxConfiguration' of type [org.springframework.boot.autoconfigure.integration.IntegrationAutoConfiguration$IntegrationJmxConfiguration] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2020-04-12 19:56:21.160  INFO 16368 --- [main] trationDelegate$BeanPostProcessorChecker : Bean 'org.springframework.boot.autoconfigure.jmx.JmxAutoConfiguration' of type [org.springframework.boot.autoconfigure.jmx.JmxAutoConfiguration] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2020-04-12 19:56:21.165  INFO 16368 --- [main] trationDelegate$BeanPostProcessorChecker : Bean 'mbeanServer' of type [com.sun.jmx.mbeanserver.JmxMBeanServer] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2020-04-12 19:56:21.179  INFO 16368 --- [main] trationDelegate$BeanPostProcessorChecker : Bean 'integrationChannelResolver' of type [org.springframework.integration.support.channel.BeanFactoryChannelResolver] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2020-04-12 19:56:21.180  INFO 16368 --- [main] trationDelegate$BeanPostProcessorChecker : Bean 'integrationDisposableAutoCreatedBeans' of type [org.springframework.integration.config.annotation.Disposables] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2020-04-12 19:56:21.401  INFO 16368 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 28081 (http)
+2020-04-12 19:56:21.411  INFO 16368 --- [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2020-04-12 19:56:21.411  INFO 16368 --- [main] org.apache.catalina.core.StandardEngine  : Starting Servlet engine: [Apache Tomcat/9.0.27]
+2020-04-12 19:56:21.575  INFO 16368 --- [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2020-04-12 19:56:21.575  INFO 16368 --- [main] o.s.web.context.ContextLoader            : Root WebApplicationContext: initialization completed in 1366 ms
+2020-04-12 19:56:21.732  INFO 16368 --- [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2020-04-12 19:56:21.834  INFO 16368 --- [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2020-04-12 19:56:21.882  INFO 16368 --- [main] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2020-04-12 19:56:21.961  INFO 16368 --- [main] org.hibernate.Version                    : HHH000412: Hibernate Core {5.4.6.Final}
+2020-04-12 19:56:22.117  INFO 16368 --- [main] o.hibernate.annotations.common.Version   : HCANN000001: Hibernate Commons Annotations {5.1.0.Final}
+2020-04-12 19:56:22.237  INFO 16368 --- [main] org.hibernate.dialect.Dialect            : HHH000400: Using dialect: org.hibernate.dialect.MySQL55Dialect
+2020-04-12 19:56:22.863  INFO 16368 --- [main] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+2020-04-12 19:56:22.875  INFO 16368 --- [main] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2020-04-12 19:56:23.012  WARN 16368 --- [main] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2020-04-12 19:56:23.132  INFO 16368 --- [main] o.s.s.concurrent.ThreadPoolTaskExecutor  : Initializing ExecutorService 'applicationTaskExecutor'
+2020-04-12 19:56:23.381  INFO 16368 --- [main] o.s.s.c.ThreadPoolTaskScheduler          : Initializing ExecutorService 'taskScheduler'
+2020-04-12 19:56:24.506  INFO 16368 --- [main] c.f.c.c.BeanFactoryAwareFunctionRegistry : Looking up function 'publishProduct' with acceptedOutputTypes: []
+2020-04-12 19:56:24.541  INFO 16368 --- [main] c.f.c.c.BeanFactoryAwareFunctionRegistry : Looking up function 'publishProduct' with acceptedOutputTypes: []
+2020-04-12 19:56:24.544  INFO 16368 --- [main] c.f.c.c.BeanFactoryAwareFunctionRegistry : Looking up function 'publishProduct' with acceptedOutputTypes: []
+2020-04-12 19:56:24.544  INFO 16368 --- [main] c.f.c.c.BeanFactoryAwareFunctionRegistry : Looking up function 'publishProduct' with acceptedOutputTypes: [application/json]
+2020-04-12 19:56:24.776  INFO 16368 --- [main] o.s.i.monitor.IntegrationMBeanExporter   : Registering MessageChannel nullChannel
+2020-04-12 19:56:24.795  INFO 16368 --- [main] o.s.i.monitor.IntegrationMBeanExporter   : Registering MessageChannel publishProduct-out-0
+2020-04-12 19:56:24.889  INFO 16368 --- [main] o.s.i.monitor.IntegrationMBeanExporter   : Registering MessageChannel publishProduct_integrationflow.channel#0
+2020-04-12 19:56:24.913  INFO 16368 --- [main] o.s.i.monitor.IntegrationMBeanExporter   : Registering MessageChannel errorChannel
+2020-04-12 19:56:24.977  INFO 16368 --- [main] o.s.i.monitor.IntegrationMBeanExporter   : Registering MessageHandler publishProduct_integrationflow.org.springframework.integration.config.ConsumerEndpointFactoryBean#0
+2020-04-12 19:56:25.010  INFO 16368 --- [main] o.s.i.monitor.IntegrationMBeanExporter   : Registering MessageHandler errorLogger
+2020-04-12 19:56:25.028  INFO 16368 --- [main] o.s.i.endpoint.EventDrivenConsumer       : Adding {logging-channel-adapter:_org.springframework.integration.errorLogger} as a subscriber to the 'errorChannel' channel
+2020-04-12 19:56:25.028  INFO 16368 --- [main] o.s.i.channel.PublishSubscribeChannel    : Channel 'helloprice-crawl-scheduler-1.errorChannel' has 1 subscriber(s).
+2020-04-12 19:56:25.028  INFO 16368 --- [main] o.s.i.endpoint.EventDrivenConsumer       : started bean '_org.springframework.integration.errorLogger'
+2020-04-12 19:56:25.045  INFO 16368 --- [main] o.s.i.endpoint.ReactiveStreamsConsumer   : started bean 'publishProduct_integrationflow.org.springframework.integration.config.ConsumerEndpointFactoryBean#0'
+2020-04-12 19:56:25.803  INFO 16368 --- [main] c.c.c.ConfigServicePropertySourceLocator : Fetching config from server at : http://localhost:8888
+2020-04-12 19:56:27.804  INFO 16368 --- [main] c.c.c.ConfigServicePropertySourceLocator : Connect Timeout Exception on Url - http://localhost:8888. Will be trying the next url if available
+2020-04-12 19:56:27.804  WARN 16368 --- [main] c.c.c.ConfigServicePropertySourceLocator : Could not locate PropertySource: I/O error on GET request for "http://localhost:8888/helloprice-crawl-scheduler/dev,dev-app,dev-jpa,dev-stream": Connection refused: connect; nested exception is java.net.ConnectException: Connection refused: connect
+2020-04-12 19:56:27.942  INFO 16368 --- [main] o.s.c.s.b.k.p.KafkaTopicProvisioner      : Using kafka topic for outbound: com.podo.helloprice.crawl.test.crawl-items
+2020-04-12 19:56:27.944  INFO 16368 --- [main] o.a.k.clients.admin.AdminClientConfig    : AdminClientConfig values: 
+	bootstrap.servers = [192.168.219.103:9092]
+	client.dns.lookup = default
+	client.id = 
+	connections.max.idle.ms = 300000
+	metadata.max.age.ms = 300000
+	metric.reporters = []
+	metrics.num.samples = 2
+	metrics.recording.level = INFO
+	metrics.sample.window.ms = 30000
+	receive.buffer.bytes = 65536
+	reconnect.backoff.max.ms = 1000
+	reconnect.backoff.ms = 50
+	request.timeout.ms = 120000
+	retries = 5
+	retry.backoff.ms = 100
+	sasl.client.callback.handler.class = null
+	sasl.jaas.config = null
+	sasl.kerberos.kinit.cmd = /usr/bin/kinit
+	sasl.kerberos.min.time.before.relogin = 60000
+	sasl.kerberos.service.name = null
+	sasl.kerberos.ticket.renew.jitter = 0.05
+	sasl.kerberos.ticket.renew.window.factor = 0.8
+	sasl.login.callback.handler.class = null
+	sasl.login.class = null
+	sasl.login.refresh.buffer.seconds = 300
+	sasl.login.refresh.min.period.seconds = 60
+	sasl.login.refresh.window.factor = 0.8
+	sasl.login.refresh.window.jitter = 0.05
+	sasl.mechanism = GSSAPI
+	security.protocol = PLAINTEXT
+	send.buffer.bytes = 131072
+	ssl.cipher.suites = null
+	ssl.enabled.protocols = [TLSv1.2, TLSv1.1, TLSv1]
+	ssl.endpoint.identification.algorithm = https
+	ssl.key.password = null
+	ssl.keymanager.algorithm = SunX509
+	ssl.keystore.location = null
+	ssl.keystore.password = null
+	ssl.keystore.type = JKS
+	ssl.protocol = TLS
+	ssl.provider = null
+	ssl.secure.random.implementation = null
+	ssl.trustmanager.algorithm = PKIX
+	ssl.truststore.location = null
+	ssl.truststore.password = null
+	ssl.truststore.type = JKS
+
+2020-04-12 19:56:27.982  INFO 16368 --- [main] o.a.kafka.common.utils.AppInfoParser     : Kafka version: 2.3.0
+2020-04-12 19:56:27.982  INFO 16368 --- [main] o.a.kafka.common.utils.AppInfoParser     : Kafka commitId: fc1aaa116b661c8a
+2020-04-12 19:56:27.982  INFO 16368 --- [main] o.a.kafka.common.utils.AppInfoParser     : Kafka startTimeMs: 1586688987979
+2020-04-12 19:56:28.244  INFO 16368 --- [main] o.a.k.clients.producer.ProducerConfig    : ProducerConfig values: 
+	acks = 1
+	batch.size = 16384
+	bootstrap.servers = [192.168.219.103:9092]
+	buffer.memory = 33554432
+	client.dns.lookup = default
+	client.id = 
+	compression.type = none
+	connections.max.idle.ms = 540000
+	delivery.timeout.ms = 120000
+	enable.idempotence = false
+	interceptor.classes = []
+	key.serializer = class org.apache.kafka.common.serialization.ByteArraySerializer
+	linger.ms = 0
+	max.block.ms = 60000
+	max.in.flight.requests.per.connection = 5
+	max.request.size = 1048576
+	metadata.max.age.ms = 300000
+	metric.reporters = []
+	metrics.num.samples = 2
+	metrics.recording.level = INFO
+	metrics.sample.window.ms = 30000
+	partitioner.class = class org.apache.kafka.clients.producer.internals.DefaultPartitioner
+	receive.buffer.bytes = 32768
+	reconnect.backoff.max.ms = 1000
+	reconnect.backoff.ms = 50
+	request.timeout.ms = 30000
+	retries = 0
+	retry.backoff.ms = 100
+	sasl.client.callback.handler.class = null
+	sasl.jaas.config = null
+	sasl.kerberos.kinit.cmd = /usr/bin/kinit
+	sasl.kerberos.min.time.before.relogin = 60000
+	sasl.kerberos.service.name = null
+	sasl.kerberos.ticket.renew.jitter = 0.05
+	sasl.kerberos.ticket.renew.window.factor = 0.8
+	sasl.login.callback.handler.class = null
+	sasl.login.class = null
+	sasl.login.refresh.buffer.seconds = 300
+	sasl.login.refresh.min.period.seconds = 60
+	sasl.login.refresh.window.factor = 0.8
+	sasl.login.refresh.window.jitter = 0.05
+	sasl.mechanism = GSSAPI
+	security.protocol = PLAINTEXT
+	send.buffer.bytes = 131072
+	ssl.cipher.suites = null
+	ssl.enabled.protocols = [TLSv1.2, TLSv1.1, TLSv1]
+	ssl.endpoint.identification.algorithm = https
+	ssl.key.password = null
+	ssl.keymanager.algorithm = SunX509
+	ssl.keystore.location = null
+	ssl.keystore.password = null
+	ssl.keystore.type = JKS
+	ssl.protocol = TLS
+	ssl.provider = null
+	ssl.secure.random.implementation = null
+	ssl.trustmanager.algorithm = PKIX
+	ssl.truststore.location = null
+	ssl.truststore.password = null
+	ssl.truststore.type = JKS
+	transaction.timeout.ms = 60000
+	transactional.id = null
+	value.serializer = class org.apache.kafka.common.serialization.ByteArraySerializer
+
+2020-04-12 19:56:28.261  INFO 16368 --- [main] o.a.kafka.common.utils.AppInfoParser     : Kafka version: 2.3.0
+2020-04-12 19:56:28.261  INFO 16368 --- [main] o.a.kafka.common.utils.AppInfoParser     : Kafka commitId: fc1aaa116b661c8a
+2020-04-12 19:56:28.261  INFO 16368 --- [main] o.a.kafka.common.utils.AppInfoParser     : Kafka startTimeMs: 1586688988261
+2020-04-12 19:56:28.267  INFO 16368 --- [kafka-producer-network-thread | producer-1] org.apache.kafka.clients.Metadata        : [Producer clientId=producer-1] Cluster ID: EZ4UIMyySmCd9ZU9r2Z2tQ
+2020-04-12 19:56:28.268  INFO 16368 --- [main] o.a.k.clients.producer.KafkaProducer     : [Producer clientId=producer-1] Closing the Kafka producer with timeoutMillis = 30000 ms.
+2020-04-12 19:56:28.281  INFO 16368 --- [main] o.s.c.s.m.DirectWithAttributesChannel    : Channel 'helloprice-crawl-scheduler-1.publishProduct-out-0' has 1 subscriber(s).
+2020-04-12 19:56:28.301  INFO 16368 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 28081 (http) with context path ''
+2020-04-12 19:56:28.762  INFO 16368 --- [main] c.p.h.CrawlSchedulerApplication          : Started CrawlSchedulerApplication in 12.655 seconds (JVM running for 13.677)
+2020-04-12 19:57:00.056  INFO 16368 --- [scheduling-1] o.a.k.clients.producer.ProducerConfig    : ProducerConfig values: 
+	acks = 1
+	batch.size = 16384
+	bootstrap.servers = [192.168.219.103:9092]
+	buffer.memory = 33554432
+	client.dns.lookup = default
+	client.id = 
+	compression.type = none
+	connections.max.idle.ms = 540000
+	delivery.timeout.ms = 120000
+	enable.idempotence = false
+	interceptor.classes = []
+	key.serializer = class org.apache.kafka.common.serialization.ByteArraySerializer
+	linger.ms = 0
+	max.block.ms = 60000
+	max.in.flight.requests.per.connection = 5
+	max.request.size = 1048576
+	metadata.max.age.ms = 300000
+	metric.reporters = []
+	metrics.num.samples = 2
+	metrics.recording.level = INFO
+	metrics.sample.window.ms = 30000
+	partitioner.class = class org.apache.kafka.clients.producer.internals.DefaultPartitioner
+	receive.buffer.bytes = 32768
+	reconnect.backoff.max.ms = 1000
+	reconnect.backoff.ms = 50
+	request.timeout.ms = 30000
+	retries = 0
+	retry.backoff.ms = 100
+	sasl.client.callback.handler.class = null
+	sasl.jaas.config = null
+	sasl.kerberos.kinit.cmd = /usr/bin/kinit
+	sasl.kerberos.min.time.before.relogin = 60000
+	sasl.kerberos.service.name = null
+	sasl.kerberos.ticket.renew.jitter = 0.05
+	sasl.kerberos.ticket.renew.window.factor = 0.8
+	sasl.login.callback.handler.class = null
+	sasl.login.class = null
+	sasl.login.refresh.buffer.seconds = 300
+	sasl.login.refresh.min.period.seconds = 60
+	sasl.login.refresh.window.factor = 0.8
+	sasl.login.refresh.window.jitter = 0.05
+	sasl.mechanism = GSSAPI
+	security.protocol = PLAINTEXT
+	send.buffer.bytes = 131072
+	ssl.cipher.suites = null
+	ssl.enabled.protocols = [TLSv1.2, TLSv1.1, TLSv1]
+	ssl.endpoint.identification.algorithm = https
+	ssl.key.password = null
+	ssl.keymanager.algorithm = SunX509
+	ssl.keystore.location = null
+	ssl.keystore.password = null
+	ssl.keystore.type = JKS
+	ssl.protocol = TLS
+	ssl.provider = null
+	ssl.secure.random.implementation = null
+	ssl.trustmanager.algorithm = PKIX
+	ssl.truststore.location = null
+	ssl.truststore.password = null
+	ssl.truststore.type = JKS
+	transaction.timeout.ms = 60000
+	transactional.id = null
+	value.serializer = class org.apache.kafka.common.serialization.ByteArraySerializer
+
+2020-04-12 19:57:00.059  INFO 16368 --- [scheduling-1] o.a.kafka.common.utils.AppInfoParser     : Kafka version: 2.3.0
+2020-04-12 19:57:00.059  INFO 16368 --- [scheduling-1] o.a.kafka.common.utils.AppInfoParser     : Kafka commitId: fc1aaa116b661c8a
+2020-04-12 19:57:00.059  INFO 16368 --- [scheduling-1] o.a.kafka.common.utils.AppInfoParser     : Kafka startTimeMs: 1586689020059
+2020-04-12 19:57:00.065  INFO 16368 --- [kafka-producer-network-thread | producer-2] org.apache.kafka.clients.Metadata        : [Producer clientId=producer-2] Cluster ID: EZ4UIMyySmCd9ZU9r2Z2tQ
+2020-04-12 20:01:11.299  INFO 16368 --- [SpringContextShutdownHook] o.s.i.endpoint.EventDrivenConsumer       : Removing {logging-channel-adapter:_org.springframework.integration.errorLogger} as a subscriber to the 'errorChannel' channel
+2020-04-12 20:01:11.300  INFO 16368 --- [SpringContextShutdownHook] o.s.i.channel.PublishSubscribeChannel    : Channel 'helloprice-crawl-scheduler-1.errorChannel' has 0 subscriber(s).
+2020-04-12 20:01:11.300  INFO 16368 --- [SpringContextShutdownHook] o.s.i.endpoint.EventDrivenConsumer       : stopped bean '_org.springframework.integration.errorLogger'
+2020-04-12 20:01:11.300  INFO 16368 --- [SpringContextShutdownHook] o.s.i.endpoint.ReactiveStreamsConsumer   : stopped bean 'publishProduct_integrationflow.org.springframework.integration.config.ConsumerEndpointFactoryBean#0'
+2020-04-12 20:01:11.301  INFO 16368 --- [SpringContextShutdownHook] o.s.s.c.ThreadPoolTaskScheduler          : Shutting down ExecutorService 'taskScheduler'
+2020-04-12 20:01:11.302  INFO 16368 --- [SpringContextShutdownHook] o.s.s.concurrent.ThreadPoolTaskExecutor  : Shutting down ExecutorService 'applicationTaskExecutor'
+2020-04-12 20:01:11.303  INFO 16368 --- [SpringContextShutdownHook] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2020-04-12 20:01:11.305  INFO 16368 --- [SpringContextShutdownHook] o.s.i.monitor.IntegrationMBeanExporter   : Summary on shutdown: nullChannel
+2020-04-12 20:01:11.305  INFO 16368 --- [SpringContextShutdownHook] o.s.i.monitor.IntegrationMBeanExporter   : Summary on shutdown: bean 'publishProduct-out-0'
+2020-04-12 20:01:11.305  INFO 16368 --- [SpringContextShutdownHook] o.s.i.monitor.IntegrationMBeanExporter   : Summary on shutdown: bean 'publishProduct_integrationflow.channel#0'
+2020-04-12 20:01:11.305  INFO 16368 --- [SpringContextShutdownHook] o.s.i.monitor.IntegrationMBeanExporter   : Summary on shutdown: bean 'errorChannel'
+2020-04-12 20:01:11.305  INFO 16368 --- [SpringContextShutdownHook] o.s.i.monitor.IntegrationMBeanExporter   : Summary on shutdown: bean 'publishProduct_integrationflow.router#0' for component 'publishProduct_integrationflow.org.springframework.integration.config.ConsumerEndpointFactoryBean#0'
+2020-04-12 20:01:11.305  INFO 16368 --- [SpringContextShutdownHook] o.s.i.monitor.IntegrationMBeanExporter   : Summary on shutdown: bean '_org.springframework.integration.errorLogger.handler' for component '_org.springframework.integration.errorLogger'
+2020-04-12 20:01:11.305  INFO 16368 --- [SpringContextShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
+2020-04-12 20:01:11.309  INFO 16368 --- [SpringContextShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.
+2020-04-12 20:01:17.246  INFO 15768 --- [main] c.c.c.ConfigServicePropertySourceLocator : Fetching config from server at : http://localhost:8888
+2020-04-12 20:01:19.346  INFO 15768 --- [main] c.c.c.ConfigServicePropertySourceLocator : Connect Timeout Exception on Url - http://localhost:8888. Will be trying the next url if available
+2020-04-12 20:01:19.347  WARN 15768 --- [main] c.c.c.ConfigServicePropertySourceLocator : Could not locate PropertySource: I/O error on GET request for "http://localhost:8888/helloprice-crawl-scheduler/dev,dev-app,dev-jpa,dev-stream": Connection refused: connect; nested exception is java.net.ConnectException: Connection refused: connect
+2020-04-12 20:01:19.348  INFO 15768 --- [main] c.p.h.CrawlSchedulerApplication          : The following profiles are active: core,jpa,stream,dev-app,dev-jpa,dev-stream,dev
+2020-04-12 20:01:19.844  INFO 15768 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data repositories in DEFAULT mode.
+2020-04-12 20:01:19.876  INFO 15768 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 22ms. Found 0 repository interfaces.
+2020-04-12 20:01:20.244  INFO 15768 --- [main] o.s.cloud.context.scope.GenericScope     : BeanFactory id=d378f835-a4c4-3ee8-8140-061ddd300414
+2020-04-12 20:01:20.298  INFO 15768 --- [main] faultConfiguringBeanFactoryPostProcessor : No bean named 'errorChannel' has been explicitly defined. Therefore, a default PublishSubscribeChannel will be created.
+2020-04-12 20:01:20.312  INFO 15768 --- [main] faultConfiguringBeanFactoryPostProcessor : No bean named 'integrationHeaderChannelRegistry' has been explicitly defined. Therefore, a default DefaultHeaderChannelRegistry will be created.
+2020-04-12 20:01:20.402  INFO 15768 --- [main] trationDelegate$BeanPostProcessorChecker : Bean 'org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration' of type [org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2020-04-12 20:01:20.450  INFO 15768 --- [main] trationDelegate$BeanPostProcessorChecker : Bean 'org.springframework.integration.config.IntegrationManagementConfiguration' of type [org.springframework.integration.config.IntegrationManagementConfiguration] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2020-04-12 20:01:20.453  INFO 15768 --- [main] trationDelegate$BeanPostProcessorChecker : Bean 'org.springframework.boot.autoconfigure.integration.IntegrationAutoConfiguration$IntegrationJmxConfiguration' of type [org.springframework.boot.autoconfigure.integration.IntegrationAutoConfiguration$IntegrationJmxConfiguration] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2020-04-12 20:01:20.462  INFO 15768 --- [main] trationDelegate$BeanPostProcessorChecker : Bean 'org.springframework.boot.autoconfigure.jmx.JmxAutoConfiguration' of type [org.springframework.boot.autoconfigure.jmx.JmxAutoConfiguration] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2020-04-12 20:01:20.467  INFO 15768 --- [main] trationDelegate$BeanPostProcessorChecker : Bean 'mbeanServer' of type [com.sun.jmx.mbeanserver.JmxMBeanServer] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2020-04-12 20:01:20.485  INFO 15768 --- [main] trationDelegate$BeanPostProcessorChecker : Bean 'integrationChannelResolver' of type [org.springframework.integration.support.channel.BeanFactoryChannelResolver] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2020-04-12 20:01:20.486  INFO 15768 --- [main] trationDelegate$BeanPostProcessorChecker : Bean 'integrationDisposableAutoCreatedBeans' of type [org.springframework.integration.config.annotation.Disposables] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2020-04-12 20:01:20.705  INFO 15768 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 28081 (http)
+2020-04-12 20:01:20.714  INFO 15768 --- [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2020-04-12 20:01:20.714  INFO 15768 --- [main] org.apache.catalina.core.StandardEngine  : Starting Servlet engine: [Apache Tomcat/9.0.27]
+2020-04-12 20:01:20.875  INFO 15768 --- [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2020-04-12 20:01:20.875  INFO 15768 --- [main] o.s.web.context.ContextLoader            : Root WebApplicationContext: initialization completed in 1509 ms
+2020-04-12 20:01:21.028  INFO 15768 --- [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2020-04-12 20:01:21.143  INFO 15768 --- [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2020-04-12 20:01:21.189  INFO 15768 --- [main] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2020-04-12 20:01:21.266  INFO 15768 --- [main] org.hibernate.Version                    : HHH000412: Hibernate Core {5.4.6.Final}
+2020-04-12 20:01:21.419  INFO 15768 --- [main] o.hibernate.annotations.common.Version   : HCANN000001: Hibernate Commons Annotations {5.1.0.Final}
+2020-04-12 20:01:21.542  INFO 15768 --- [main] org.hibernate.dialect.Dialect            : HHH000400: Using dialect: org.hibernate.dialect.MySQL55Dialect
+2020-04-12 20:01:22.166  INFO 15768 --- [main] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+2020-04-12 20:01:22.176  INFO 15768 --- [main] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2020-04-12 20:01:22.306  WARN 15768 --- [main] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2020-04-12 20:01:22.432  INFO 15768 --- [main] o.s.s.concurrent.ThreadPoolTaskExecutor  : Initializing ExecutorService 'applicationTaskExecutor'
+2020-04-12 20:01:22.672  INFO 15768 --- [main] o.s.s.c.ThreadPoolTaskScheduler          : Initializing ExecutorService 'taskScheduler'
+2020-04-12 20:01:23.681  INFO 15768 --- [main] c.f.c.c.BeanFactoryAwareFunctionRegistry : Looking up function 'publishProduct' with acceptedOutputTypes: []
+2020-04-12 20:01:23.718  INFO 15768 --- [main] c.f.c.c.BeanFactoryAwareFunctionRegistry : Looking up function 'publishProduct' with acceptedOutputTypes: []
+2020-04-12 20:01:23.721  INFO 15768 --- [main] c.f.c.c.BeanFactoryAwareFunctionRegistry : Looking up function 'publishProduct' with acceptedOutputTypes: []
+2020-04-12 20:01:23.722  INFO 15768 --- [main] c.f.c.c.BeanFactoryAwareFunctionRegistry : Looking up function 'publishProduct' with acceptedOutputTypes: [application/json]
+2020-04-12 20:01:23.962  INFO 15768 --- [main] o.s.i.monitor.IntegrationMBeanExporter   : Registering MessageChannel nullChannel
+2020-04-12 20:01:23.983  INFO 15768 --- [main] o.s.i.monitor.IntegrationMBeanExporter   : Registering MessageChannel errorChannel
+2020-04-12 20:01:24.084  INFO 15768 --- [main] o.s.i.monitor.IntegrationMBeanExporter   : Registering MessageChannel publishProduct-out-0
+2020-04-12 20:01:24.135  INFO 15768 --- [main] o.s.i.monitor.IntegrationMBeanExporter   : Registering MessageChannel publishProduct_integrationflow.channel#0
+2020-04-12 20:01:24.169  INFO 15768 --- [main] o.s.i.monitor.IntegrationMBeanExporter   : Registering MessageHandler errorLogger
+2020-04-12 20:01:24.211  INFO 15768 --- [main] o.s.i.monitor.IntegrationMBeanExporter   : Registering MessageHandler publishProduct_integrationflow.org.springframework.integration.config.ConsumerEndpointFactoryBean#0
+2020-04-12 20:01:24.239  INFO 15768 --- [main] o.s.i.endpoint.EventDrivenConsumer       : Adding {logging-channel-adapter:_org.springframework.integration.errorLogger} as a subscriber to the 'errorChannel' channel
+2020-04-12 20:01:24.239  INFO 15768 --- [main] o.s.i.channel.PublishSubscribeChannel    : Channel 'helloprice-crawl-scheduler-1.errorChannel' has 1 subscriber(s).
+2020-04-12 20:01:24.240  INFO 15768 --- [main] o.s.i.endpoint.EventDrivenConsumer       : started bean '_org.springframework.integration.errorLogger'
+2020-04-12 20:01:24.258  INFO 15768 --- [main] o.s.i.endpoint.ReactiveStreamsConsumer   : started bean 'publishProduct_integrationflow.org.springframework.integration.config.ConsumerEndpointFactoryBean#0'
+2020-04-12 20:01:25.172  INFO 15768 --- [main] c.c.c.ConfigServicePropertySourceLocator : Fetching config from server at : http://localhost:8888
+2020-04-12 20:01:27.178  INFO 15768 --- [main] c.c.c.ConfigServicePropertySourceLocator : Connect Timeout Exception on Url - http://localhost:8888. Will be trying the next url if available
+2020-04-12 20:01:27.178  WARN 15768 --- [main] c.c.c.ConfigServicePropertySourceLocator : Could not locate PropertySource: I/O error on GET request for "http://localhost:8888/helloprice-crawl-scheduler/dev,dev-app,dev-jpa,dev-stream": Connection refused: connect; nested exception is java.net.ConnectException: Connection refused: connect
+2020-04-12 20:01:27.331  INFO 15768 --- [main] o.s.c.s.b.k.p.KafkaTopicProvisioner      : Using kafka topic for outbound: com.podo.helloprice.crawl.test.crawl-items
+2020-04-12 20:01:27.333  INFO 15768 --- [main] o.a.k.clients.admin.AdminClientConfig    : AdminClientConfig values: 
+	bootstrap.servers = [192.168.219.103:9092]
+	client.dns.lookup = default
+	client.id = 
+	connections.max.idle.ms = 300000
+	metadata.max.age.ms = 300000
+	metric.reporters = []
+	metrics.num.samples = 2
+	metrics.recording.level = INFO
+	metrics.sample.window.ms = 30000
+	receive.buffer.bytes = 65536
+	reconnect.backoff.max.ms = 1000
+	reconnect.backoff.ms = 50
+	request.timeout.ms = 120000
+	retries = 5
+	retry.backoff.ms = 100
+	sasl.client.callback.handler.class = null
+	sasl.jaas.config = null
+	sasl.kerberos.kinit.cmd = /usr/bin/kinit
+	sasl.kerberos.min.time.before.relogin = 60000
+	sasl.kerberos.service.name = null
+	sasl.kerberos.ticket.renew.jitter = 0.05
+	sasl.kerberos.ticket.renew.window.factor = 0.8
+	sasl.login.callback.handler.class = null
+	sasl.login.class = null
+	sasl.login.refresh.buffer.seconds = 300
+	sasl.login.refresh.min.period.seconds = 60
+	sasl.login.refresh.window.factor = 0.8
+	sasl.login.refresh.window.jitter = 0.05
+	sasl.mechanism = GSSAPI
+	security.protocol = PLAINTEXT
+	send.buffer.bytes = 131072
+	ssl.cipher.suites = null
+	ssl.enabled.protocols = [TLSv1.2, TLSv1.1, TLSv1]
+	ssl.endpoint.identification.algorithm = https
+	ssl.key.password = null
+	ssl.keymanager.algorithm = SunX509
+	ssl.keystore.location = null
+	ssl.keystore.password = null
+	ssl.keystore.type = JKS
+	ssl.protocol = TLS
+	ssl.provider = null
+	ssl.secure.random.implementation = null
+	ssl.trustmanager.algorithm = PKIX
+	ssl.truststore.location = null
+	ssl.truststore.password = null
+	ssl.truststore.type = JKS
+
+2020-04-12 20:01:27.383  INFO 15768 --- [main] o.a.kafka.common.utils.AppInfoParser     : Kafka version: 2.3.0
+2020-04-12 20:01:27.383  INFO 15768 --- [main] o.a.kafka.common.utils.AppInfoParser     : Kafka commitId: fc1aaa116b661c8a
+2020-04-12 20:01:27.383  INFO 15768 --- [main] o.a.kafka.common.utils.AppInfoParser     : Kafka startTimeMs: 1586689287381
+2020-04-12 20:01:27.667  INFO 15768 --- [main] o.a.k.clients.producer.ProducerConfig    : ProducerConfig values: 
+	acks = 1
+	batch.size = 16384
+	bootstrap.servers = [192.168.219.103:9092]
+	buffer.memory = 33554432
+	client.dns.lookup = default
+	client.id = 
+	compression.type = none
+	connections.max.idle.ms = 540000
+	delivery.timeout.ms = 120000
+	enable.idempotence = false
+	interceptor.classes = []
+	key.serializer = class org.apache.kafka.common.serialization.ByteArraySerializer
+	linger.ms = 0
+	max.block.ms = 60000
+	max.in.flight.requests.per.connection = 5
+	max.request.size = 1048576
+	metadata.max.age.ms = 300000
+	metric.reporters = []
+	metrics.num.samples = 2
+	metrics.recording.level = INFO
+	metrics.sample.window.ms = 30000
+	partitioner.class = class org.apache.kafka.clients.producer.internals.DefaultPartitioner
+	receive.buffer.bytes = 32768
+	reconnect.backoff.max.ms = 1000
+	reconnect.backoff.ms = 50
+	request.timeout.ms = 30000
+	retries = 0
+	retry.backoff.ms = 100
+	sasl.client.callback.handler.class = null
+	sasl.jaas.config = null
+	sasl.kerberos.kinit.cmd = /usr/bin/kinit
+	sasl.kerberos.min.time.before.relogin = 60000
+	sasl.kerberos.service.name = null
+	sasl.kerberos.ticket.renew.jitter = 0.05
+	sasl.kerberos.ticket.renew.window.factor = 0.8
+	sasl.login.callback.handler.class = null
+	sasl.login.class = null
+	sasl.login.refresh.buffer.seconds = 300
+	sasl.login.refresh.min.period.seconds = 60
+	sasl.login.refresh.window.factor = 0.8
+	sasl.login.refresh.window.jitter = 0.05
+	sasl.mechanism = GSSAPI
+	security.protocol = PLAINTEXT
+	send.buffer.bytes = 131072
+	ssl.cipher.suites = null
+	ssl.enabled.protocols = [TLSv1.2, TLSv1.1, TLSv1]
+	ssl.endpoint.identification.algorithm = https
+	ssl.key.password = null
+	ssl.keymanager.algorithm = SunX509
+	ssl.keystore.location = null
+	ssl.keystore.password = null
+	ssl.keystore.type = JKS
+	ssl.protocol = TLS
+	ssl.provider = null
+	ssl.secure.random.implementation = null
+	ssl.trustmanager.algorithm = PKIX
+	ssl.truststore.location = null
+	ssl.truststore.password = null
+	ssl.truststore.type = JKS
+	transaction.timeout.ms = 60000
+	transactional.id = null
+	value.serializer = class org.apache.kafka.common.serialization.ByteArraySerializer
+
+2020-04-12 20:01:27.687  INFO 15768 --- [main] o.a.kafka.common.utils.AppInfoParser     : Kafka version: 2.3.0
+2020-04-12 20:01:27.687  INFO 15768 --- [main] o.a.kafka.common.utils.AppInfoParser     : Kafka commitId: fc1aaa116b661c8a
+2020-04-12 20:01:27.687  INFO 15768 --- [main] o.a.kafka.common.utils.AppInfoParser     : Kafka startTimeMs: 1586689287687
+2020-04-12 20:01:27.694  INFO 15768 --- [kafka-producer-network-thread | producer-1] org.apache.kafka.clients.Metadata        : [Producer clientId=producer-1] Cluster ID: EZ4UIMyySmCd9ZU9r2Z2tQ
+2020-04-12 20:01:27.695  INFO 15768 --- [main] o.a.k.clients.producer.KafkaProducer     : [Producer clientId=producer-1] Closing the Kafka producer with timeoutMillis = 30000 ms.
+2020-04-12 20:01:27.711  INFO 15768 --- [main] o.s.c.s.m.DirectWithAttributesChannel    : Channel 'helloprice-crawl-scheduler-1.publishProduct-out-0' has 1 subscriber(s).
+2020-04-12 20:01:27.737  INFO 15768 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 28081 (http) with context path ''
+2020-04-12 20:01:28.256  INFO 15768 --- [main] c.p.h.CrawlSchedulerApplication          : Started CrawlSchedulerApplication in 13.122 seconds (JVM running for 14.089)
+2020-04-12 20:01:40.049  INFO 15768 --- [scheduling-1] o.a.k.clients.producer.ProducerConfig    : ProducerConfig values: 
+	acks = 1
+	batch.size = 16384
+	bootstrap.servers = [192.168.219.103:9092]
+	buffer.memory = 33554432
+	client.dns.lookup = default
+	client.id = 
+	compression.type = none
+	connections.max.idle.ms = 540000
+	delivery.timeout.ms = 120000
+	enable.idempotence = false
+	interceptor.classes = []
+	key.serializer = class org.apache.kafka.common.serialization.ByteArraySerializer
+	linger.ms = 0
+	max.block.ms = 60000
+	max.in.flight.requests.per.connection = 5
+	max.request.size = 1048576
+	metadata.max.age.ms = 300000
+	metric.reporters = []
+	metrics.num.samples = 2
+	metrics.recording.level = INFO
+	metrics.sample.window.ms = 30000
+	partitioner.class = class org.apache.kafka.clients.producer.internals.DefaultPartitioner
+	receive.buffer.bytes = 32768
+	reconnect.backoff.max.ms = 1000
+	reconnect.backoff.ms = 50
+	request.timeout.ms = 30000
+	retries = 0
+	retry.backoff.ms = 100
+	sasl.client.callback.handler.class = null
+	sasl.jaas.config = null
+	sasl.kerberos.kinit.cmd = /usr/bin/kinit
+	sasl.kerberos.min.time.before.relogin = 60000
+	sasl.kerberos.service.name = null
+	sasl.kerberos.ticket.renew.jitter = 0.05
+	sasl.kerberos.ticket.renew.window.factor = 0.8
+	sasl.login.callback.handler.class = null
+	sasl.login.class = null
+	sasl.login.refresh.buffer.seconds = 300
+	sasl.login.refresh.min.period.seconds = 60
+	sasl.login.refresh.window.factor = 0.8
+	sasl.login.refresh.window.jitter = 0.05
+	sasl.mechanism = GSSAPI
+	security.protocol = PLAINTEXT
+	send.buffer.bytes = 131072
+	ssl.cipher.suites = null
+	ssl.enabled.protocols = [TLSv1.2, TLSv1.1, TLSv1]
+	ssl.endpoint.identification.algorithm = https
+	ssl.key.password = null
+	ssl.keymanager.algorithm = SunX509
+	ssl.keystore.location = null
+	ssl.keystore.password = null
+	ssl.keystore.type = JKS
+	ssl.protocol = TLS
+	ssl.provider = null
+	ssl.secure.random.implementation = null
+	ssl.trustmanager.algorithm = PKIX
+	ssl.truststore.location = null
+	ssl.truststore.password = null
+	ssl.truststore.type = JKS
+	transaction.timeout.ms = 60000
+	transactional.id = null
+	value.serializer = class org.apache.kafka.common.serialization.ByteArraySerializer
+
+2020-04-12 20:01:40.051  INFO 15768 --- [scheduling-1] o.a.kafka.common.utils.AppInfoParser     : Kafka version: 2.3.0
+2020-04-12 20:01:40.052  INFO 15768 --- [scheduling-1] o.a.kafka.common.utils.AppInfoParser     : Kafka commitId: fc1aaa116b661c8a
+2020-04-12 20:01:40.052  INFO 15768 --- [scheduling-1] o.a.kafka.common.utils.AppInfoParser     : Kafka startTimeMs: 1586689300051
+2020-04-12 20:01:40.058  INFO 15768 --- [kafka-producer-network-thread | producer-2] org.apache.kafka.clients.Metadata        : [Producer clientId=producer-2] Cluster ID: EZ4UIMyySmCd9ZU9r2Z2tQ
+2020-04-12 20:03:08.840  INFO 15768 --- [SpringContextShutdownHook] o.s.i.endpoint.EventDrivenConsumer       : Removing {logging-channel-adapter:_org.springframework.integration.errorLogger} as a subscriber to the 'errorChannel' channel
+2020-04-12 20:03:08.840  INFO 15768 --- [SpringContextShutdownHook] o.s.i.channel.PublishSubscribeChannel    : Channel 'helloprice-crawl-scheduler-1.errorChannel' has 0 subscriber(s).
+2020-04-12 20:03:08.841  INFO 15768 --- [SpringContextShutdownHook] o.s.i.endpoint.EventDrivenConsumer       : stopped bean '_org.springframework.integration.errorLogger'
+2020-04-12 20:03:08.841  INFO 15768 --- [SpringContextShutdownHook] o.s.i.endpoint.ReactiveStreamsConsumer   : stopped bean 'publishProduct_integrationflow.org.springframework.integration.config.ConsumerEndpointFactoryBean#0'
+2020-04-12 20:03:08.842  INFO 15768 --- [SpringContextShutdownHook] o.s.s.c.ThreadPoolTaskScheduler          : Shutting down ExecutorService 'taskScheduler'
+2020-04-12 20:03:08.843  INFO 15768 --- [SpringContextShutdownHook] o.s.s.concurrent.ThreadPoolTaskExecutor  : Shutting down ExecutorService 'applicationTaskExecutor'
+2020-04-12 20:03:08.844  INFO 15768 --- [SpringContextShutdownHook] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2020-04-12 20:03:08.846  INFO 15768 --- [SpringContextShutdownHook] o.s.i.monitor.IntegrationMBeanExporter   : Summary on shutdown: nullChannel
+2020-04-12 20:03:08.846  INFO 15768 --- [SpringContextShutdownHook] o.s.i.monitor.IntegrationMBeanExporter   : Summary on shutdown: bean 'errorChannel'
+2020-04-12 20:03:08.846  INFO 15768 --- [SpringContextShutdownHook] o.s.i.monitor.IntegrationMBeanExporter   : Summary on shutdown: bean 'publishProduct-out-0'
+2020-04-12 20:03:08.846  INFO 15768 --- [SpringContextShutdownHook] o.s.i.monitor.IntegrationMBeanExporter   : Summary on shutdown: bean 'publishProduct_integrationflow.channel#0'
+2020-04-12 20:03:08.846  INFO 15768 --- [SpringContextShutdownHook] o.s.i.monitor.IntegrationMBeanExporter   : Summary on shutdown: bean '_org.springframework.integration.errorLogger.handler' for component '_org.springframework.integration.errorLogger'
+2020-04-12 20:03:08.846  INFO 15768 --- [SpringContextShutdownHook] o.s.i.monitor.IntegrationMBeanExporter   : Summary on shutdown: bean 'publishProduct_integrationflow.router#0' for component 'publishProduct_integrationflow.org.springframework.integration.config.ConsumerEndpointFactoryBean#0'
+2020-04-12 20:03:08.846  INFO 15768 --- [SpringContextShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
+2020-04-12 20:03:08.850  INFO 15768 --- [SpringContextShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.
+2020-04-12 20:03:13.795  INFO 14576 --- [main] c.c.c.ConfigServicePropertySourceLocator : Fetching config from server at : http://localhost:8888
+2020-04-12 20:03:15.932  INFO 14576 --- [main] c.c.c.ConfigServicePropertySourceLocator : Connect Timeout Exception on Url - http://localhost:8888. Will be trying the next url if available
+2020-04-12 20:03:15.933  WARN 14576 --- [main] c.c.c.ConfigServicePropertySourceLocator : Could not locate PropertySource: I/O error on GET request for "http://localhost:8888/helloprice-crawl-scheduler/dev,dev-app,dev-jpa,dev-stream": Connection refused: connect; nested exception is java.net.ConnectException: Connection refused: connect
+2020-04-12 20:03:15.935  INFO 14576 --- [main] c.p.h.CrawlSchedulerApplication          : The following profiles are active: core,jpa,stream,dev-app,dev-jpa,dev-stream,dev
+2020-04-12 20:03:16.588  INFO 14576 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data repositories in DEFAULT mode.
+2020-04-12 20:03:16.627  INFO 14576 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 29ms. Found 0 repository interfaces.
+2020-04-12 20:03:16.914  INFO 14576 --- [main] o.s.cloud.context.scope.GenericScope     : BeanFactory id=d378f835-a4c4-3ee8-8140-061ddd300414
+2020-04-12 20:03:16.955  INFO 14576 --- [main] faultConfiguringBeanFactoryPostProcessor : No bean named 'errorChannel' has been explicitly defined. Therefore, a default PublishSubscribeChannel will be created.
+2020-04-12 20:03:16.967  INFO 14576 --- [main] faultConfiguringBeanFactoryPostProcessor : No bean named 'integrationHeaderChannelRegistry' has been explicitly defined. Therefore, a default DefaultHeaderChannelRegistry will be created.
+2020-04-12 20:03:17.042  INFO 14576 --- [main] trationDelegate$BeanPostProcessorChecker : Bean 'org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration' of type [org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2020-04-12 20:03:17.077  INFO 14576 --- [main] trationDelegate$BeanPostProcessorChecker : Bean 'org.springframework.integration.config.IntegrationManagementConfiguration' of type [org.springframework.integration.config.IntegrationManagementConfiguration] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2020-04-12 20:03:17.080  INFO 14576 --- [main] trationDelegate$BeanPostProcessorChecker : Bean 'org.springframework.boot.autoconfigure.integration.IntegrationAutoConfiguration$IntegrationJmxConfiguration' of type [org.springframework.boot.autoconfigure.integration.IntegrationAutoConfiguration$IntegrationJmxConfiguration] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2020-04-12 20:03:17.088  INFO 14576 --- [main] trationDelegate$BeanPostProcessorChecker : Bean 'org.springframework.boot.autoconfigure.jmx.JmxAutoConfiguration' of type [org.springframework.boot.autoconfigure.jmx.JmxAutoConfiguration] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2020-04-12 20:03:17.092  INFO 14576 --- [main] trationDelegate$BeanPostProcessorChecker : Bean 'mbeanServer' of type [com.sun.jmx.mbeanserver.JmxMBeanServer] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2020-04-12 20:03:17.106  INFO 14576 --- [main] trationDelegate$BeanPostProcessorChecker : Bean 'integrationChannelResolver' of type [org.springframework.integration.support.channel.BeanFactoryChannelResolver] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2020-04-12 20:03:17.107  INFO 14576 --- [main] trationDelegate$BeanPostProcessorChecker : Bean 'integrationDisposableAutoCreatedBeans' of type [org.springframework.integration.config.annotation.Disposables] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2020-04-12 20:03:17.322  INFO 14576 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 28081 (http)
+2020-04-12 20:03:17.332  INFO 14576 --- [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2020-04-12 20:03:17.332  INFO 14576 --- [main] org.apache.catalina.core.StandardEngine  : Starting Servlet engine: [Apache Tomcat/9.0.27]
+2020-04-12 20:03:17.499  INFO 14576 --- [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2020-04-12 20:03:17.499  INFO 14576 --- [main] o.s.web.context.ContextLoader            : Root WebApplicationContext: initialization completed in 1546 ms
+2020-04-12 20:03:17.653  INFO 14576 --- [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2020-04-12 20:03:17.755  INFO 14576 --- [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2020-04-12 20:03:17.803  INFO 14576 --- [main] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2020-04-12 20:03:17.882  INFO 14576 --- [main] org.hibernate.Version                    : HHH000412: Hibernate Core {5.4.6.Final}
+2020-04-12 20:03:18.034  INFO 14576 --- [main] o.hibernate.annotations.common.Version   : HCANN000001: Hibernate Commons Annotations {5.1.0.Final}
+2020-04-12 20:03:18.152  INFO 14576 --- [main] org.hibernate.dialect.Dialect            : HHH000400: Using dialect: org.hibernate.dialect.MySQL55Dialect
+2020-04-12 20:03:18.805  INFO 14576 --- [main] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+2020-04-12 20:03:18.814  INFO 14576 --- [main] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2020-04-12 20:03:18.940  WARN 14576 --- [main] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2020-04-12 20:03:19.056  INFO 14576 --- [main] o.s.s.concurrent.ThreadPoolTaskExecutor  : Initializing ExecutorService 'applicationTaskExecutor'
+2020-04-12 20:03:19.289  INFO 14576 --- [main] o.s.s.c.ThreadPoolTaskScheduler          : Initializing ExecutorService 'taskScheduler'
+2020-04-12 20:03:20.294  INFO 14576 --- [main] c.f.c.c.BeanFactoryAwareFunctionRegistry : Looking up function 'publishProduct' with acceptedOutputTypes: []
+2020-04-12 20:03:20.330  INFO 14576 --- [main] c.f.c.c.BeanFactoryAwareFunctionRegistry : Looking up function 'publishProduct' with acceptedOutputTypes: []
+2020-04-12 20:03:20.334  INFO 14576 --- [main] c.f.c.c.BeanFactoryAwareFunctionRegistry : Looking up function 'publishProduct' with acceptedOutputTypes: []
+2020-04-12 20:03:20.334  INFO 14576 --- [main] c.f.c.c.BeanFactoryAwareFunctionRegistry : Looking up function 'publishProduct' with acceptedOutputTypes: [application/json]
+2020-04-12 20:03:20.567  INFO 14576 --- [main] o.s.i.monitor.IntegrationMBeanExporter   : Registering MessageChannel nullChannel
+2020-04-12 20:03:20.587  INFO 14576 --- [main] o.s.i.monitor.IntegrationMBeanExporter   : Registering MessageChannel publishProduct-out-0
+2020-04-12 20:03:20.677  INFO 14576 --- [main] o.s.i.monitor.IntegrationMBeanExporter   : Registering MessageChannel errorChannel
+2020-04-12 20:03:20.730  INFO 14576 --- [main] o.s.i.monitor.IntegrationMBeanExporter   : Registering MessageChannel publishProduct_integrationflow.channel#0
+2020-04-12 20:03:20.774  INFO 14576 --- [main] o.s.i.monitor.IntegrationMBeanExporter   : Registering MessageHandler errorLogger
+2020-04-12 20:03:20.802  INFO 14576 --- [main] o.s.i.monitor.IntegrationMBeanExporter   : Registering MessageHandler publishProduct_integrationflow.org.springframework.integration.config.ConsumerEndpointFactoryBean#0
+2020-04-12 20:03:20.831  INFO 14576 --- [main] o.s.i.endpoint.EventDrivenConsumer       : Adding {logging-channel-adapter:_org.springframework.integration.errorLogger} as a subscriber to the 'errorChannel' channel
+2020-04-12 20:03:20.831  INFO 14576 --- [main] o.s.i.channel.PublishSubscribeChannel    : Channel 'helloprice-crawl-scheduler-1.errorChannel' has 1 subscriber(s).
+2020-04-12 20:03:20.831  INFO 14576 --- [main] o.s.i.endpoint.EventDrivenConsumer       : started bean '_org.springframework.integration.errorLogger'
+2020-04-12 20:03:20.849  INFO 14576 --- [main] o.s.i.endpoint.ReactiveStreamsConsumer   : started bean 'publishProduct_integrationflow.org.springframework.integration.config.ConsumerEndpointFactoryBean#0'
+2020-04-12 20:03:21.721  INFO 14576 --- [main] c.c.c.ConfigServicePropertySourceLocator : Fetching config from server at : http://localhost:8888
+2020-04-12 20:03:23.738  INFO 14576 --- [main] c.c.c.ConfigServicePropertySourceLocator : Connect Timeout Exception on Url - http://localhost:8888. Will be trying the next url if available
+2020-04-12 20:03:23.738  WARN 14576 --- [main] c.c.c.ConfigServicePropertySourceLocator : Could not locate PropertySource: I/O error on GET request for "http://localhost:8888/helloprice-crawl-scheduler/dev,dev-app,dev-jpa,dev-stream": Connection refused: connect; nested exception is java.net.ConnectException: Connection refused: connect
+2020-04-12 20:03:23.909  INFO 14576 --- [main] o.s.c.s.b.k.p.KafkaTopicProvisioner      : Using kafka topic for outbound: com.podo.helloprice.crawl.test.crawl-items
+2020-04-12 20:03:23.911  INFO 14576 --- [main] o.a.k.clients.admin.AdminClientConfig    : AdminClientConfig values: 
+	bootstrap.servers = [192.168.219.103:9092]
+	client.dns.lookup = default
+	client.id = 
+	connections.max.idle.ms = 300000
+	metadata.max.age.ms = 300000
+	metric.reporters = []
+	metrics.num.samples = 2
+	metrics.recording.level = INFO
+	metrics.sample.window.ms = 30000
+	receive.buffer.bytes = 65536
+	reconnect.backoff.max.ms = 1000
+	reconnect.backoff.ms = 50
+	request.timeout.ms = 120000
+	retries = 5
+	retry.backoff.ms = 100
+	sasl.client.callback.handler.class = null
+	sasl.jaas.config = null
+	sasl.kerberos.kinit.cmd = /usr/bin/kinit
+	sasl.kerberos.min.time.before.relogin = 60000
+	sasl.kerberos.service.name = null
+	sasl.kerberos.ticket.renew.jitter = 0.05
+	sasl.kerberos.ticket.renew.window.factor = 0.8
+	sasl.login.callback.handler.class = null
+	sasl.login.class = null
+	sasl.login.refresh.buffer.seconds = 300
+	sasl.login.refresh.min.period.seconds = 60
+	sasl.login.refresh.window.factor = 0.8
+	sasl.login.refresh.window.jitter = 0.05
+	sasl.mechanism = GSSAPI
+	security.protocol = PLAINTEXT
+	send.buffer.bytes = 131072
+	ssl.cipher.suites = null
+	ssl.enabled.protocols = [TLSv1.2, TLSv1.1, TLSv1]
+	ssl.endpoint.identification.algorithm = https
+	ssl.key.password = null
+	ssl.keymanager.algorithm = SunX509
+	ssl.keystore.location = null
+	ssl.keystore.password = null
+	ssl.keystore.type = JKS
+	ssl.protocol = TLS
+	ssl.provider = null
+	ssl.secure.random.implementation = null
+	ssl.trustmanager.algorithm = PKIX
+	ssl.truststore.location = null
+	ssl.truststore.password = null
+	ssl.truststore.type = JKS
+
+2020-04-12 20:03:23.952  INFO 14576 --- [main] o.a.kafka.common.utils.AppInfoParser     : Kafka version: 2.3.0
+2020-04-12 20:03:23.952  INFO 14576 --- [main] o.a.kafka.common.utils.AppInfoParser     : Kafka commitId: fc1aaa116b661c8a
+2020-04-12 20:03:23.952  INFO 14576 --- [main] o.a.kafka.common.utils.AppInfoParser     : Kafka startTimeMs: 1586689403950
+2020-04-12 20:03:24.245  INFO 14576 --- [main] o.a.k.clients.producer.ProducerConfig    : ProducerConfig values: 
+	acks = 1
+	batch.size = 16384
+	bootstrap.servers = [192.168.219.103:9092]
+	buffer.memory = 33554432
+	client.dns.lookup = default
+	client.id = 
+	compression.type = none
+	connections.max.idle.ms = 540000
+	delivery.timeout.ms = 120000
+	enable.idempotence = false
+	interceptor.classes = []
+	key.serializer = class org.apache.kafka.common.serialization.ByteArraySerializer
+	linger.ms = 0
+	max.block.ms = 60000
+	max.in.flight.requests.per.connection = 5
+	max.request.size = 1048576
+	metadata.max.age.ms = 300000
+	metric.reporters = []
+	metrics.num.samples = 2
+	metrics.recording.level = INFO
+	metrics.sample.window.ms = 30000
+	partitioner.class = class org.apache.kafka.clients.producer.internals.DefaultPartitioner
+	receive.buffer.bytes = 32768
+	reconnect.backoff.max.ms = 1000
+	reconnect.backoff.ms = 50
+	request.timeout.ms = 30000
+	retries = 0
+	retry.backoff.ms = 100
+	sasl.client.callback.handler.class = null
+	sasl.jaas.config = null
+	sasl.kerberos.kinit.cmd = /usr/bin/kinit
+	sasl.kerberos.min.time.before.relogin = 60000
+	sasl.kerberos.service.name = null
+	sasl.kerberos.ticket.renew.jitter = 0.05
+	sasl.kerberos.ticket.renew.window.factor = 0.8
+	sasl.login.callback.handler.class = null
+	sasl.login.class = null
+	sasl.login.refresh.buffer.seconds = 300
+	sasl.login.refresh.min.period.seconds = 60
+	sasl.login.refresh.window.factor = 0.8
+	sasl.login.refresh.window.jitter = 0.05
+	sasl.mechanism = GSSAPI
+	security.protocol = PLAINTEXT
+	send.buffer.bytes = 131072
+	ssl.cipher.suites = null
+	ssl.enabled.protocols = [TLSv1.2, TLSv1.1, TLSv1]
+	ssl.endpoint.identification.algorithm = https
+	ssl.key.password = null
+	ssl.keymanager.algorithm = SunX509
+	ssl.keystore.location = null
+	ssl.keystore.password = null
+	ssl.keystore.type = JKS
+	ssl.protocol = TLS
+	ssl.provider = null
+	ssl.secure.random.implementation = null
+	ssl.trustmanager.algorithm = PKIX
+	ssl.truststore.location = null
+	ssl.truststore.password = null
+	ssl.truststore.type = JKS
+	transaction.timeout.ms = 60000
+	transactional.id = null
+	value.serializer = class org.apache.kafka.common.serialization.ByteArraySerializer
+
+2020-04-12 20:03:24.262  INFO 14576 --- [main] o.a.kafka.common.utils.AppInfoParser     : Kafka version: 2.3.0
+2020-04-12 20:03:24.262  INFO 14576 --- [main] o.a.kafka.common.utils.AppInfoParser     : Kafka commitId: fc1aaa116b661c8a
+2020-04-12 20:03:24.262  INFO 14576 --- [main] o.a.kafka.common.utils.AppInfoParser     : Kafka startTimeMs: 1586689404262
+2020-04-12 20:03:24.269  INFO 14576 --- [kafka-producer-network-thread | producer-1] org.apache.kafka.clients.Metadata        : [Producer clientId=producer-1] Cluster ID: EZ4UIMyySmCd9ZU9r2Z2tQ
+2020-04-12 20:03:24.270  INFO 14576 --- [main] o.a.k.clients.producer.KafkaProducer     : [Producer clientId=producer-1] Closing the Kafka producer with timeoutMillis = 30000 ms.
+2020-04-12 20:03:24.284  INFO 14576 --- [main] o.s.c.s.m.DirectWithAttributesChannel    : Channel 'helloprice-crawl-scheduler-1.publishProduct-out-0' has 1 subscriber(s).
+2020-04-12 20:03:24.306  INFO 14576 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 28081 (http) with context path ''
+2020-04-12 20:03:24.810  INFO 14576 --- [main] c.p.h.CrawlSchedulerApplication          : Started CrawlSchedulerApplication in 13.24 seconds (JVM running for 14.223)
+2020-04-12 20:04:00.052  INFO 14576 --- [scheduling-1] o.a.k.clients.producer.ProducerConfig    : ProducerConfig values: 
+	acks = 1
+	batch.size = 16384
+	bootstrap.servers = [192.168.219.103:9092]
+	buffer.memory = 33554432
+	client.dns.lookup = default
+	client.id = 
+	compression.type = none
+	connections.max.idle.ms = 540000
+	delivery.timeout.ms = 120000
+	enable.idempotence = false
+	interceptor.classes = []
+	key.serializer = class org.apache.kafka.common.serialization.ByteArraySerializer
+	linger.ms = 0
+	max.block.ms = 60000
+	max.in.flight.requests.per.connection = 5
+	max.request.size = 1048576
+	metadata.max.age.ms = 300000
+	metric.reporters = []
+	metrics.num.samples = 2
+	metrics.recording.level = INFO
+	metrics.sample.window.ms = 30000
+	partitioner.class = class org.apache.kafka.clients.producer.internals.DefaultPartitioner
+	receive.buffer.bytes = 32768
+	reconnect.backoff.max.ms = 1000
+	reconnect.backoff.ms = 50
+	request.timeout.ms = 30000
+	retries = 0
+	retry.backoff.ms = 100
+	sasl.client.callback.handler.class = null
+	sasl.jaas.config = null
+	sasl.kerberos.kinit.cmd = /usr/bin/kinit
+	sasl.kerberos.min.time.before.relogin = 60000
+	sasl.kerberos.service.name = null
+	sasl.kerberos.ticket.renew.jitter = 0.05
+	sasl.kerberos.ticket.renew.window.factor = 0.8
+	sasl.login.callback.handler.class = null
+	sasl.login.class = null
+	sasl.login.refresh.buffer.seconds = 300
+	sasl.login.refresh.min.period.seconds = 60
+	sasl.login.refresh.window.factor = 0.8
+	sasl.login.refresh.window.jitter = 0.05
+	sasl.mechanism = GSSAPI
+	security.protocol = PLAINTEXT
+	send.buffer.bytes = 131072
+	ssl.cipher.suites = null
+	ssl.enabled.protocols = [TLSv1.2, TLSv1.1, TLSv1]
+	ssl.endpoint.identification.algorithm = https
+	ssl.key.password = null
+	ssl.keymanager.algorithm = SunX509
+	ssl.keystore.location = null
+	ssl.keystore.password = null
+	ssl.keystore.type = JKS
+	ssl.protocol = TLS
+	ssl.provider = null
+	ssl.secure.random.implementation = null
+	ssl.trustmanager.algorithm = PKIX
+	ssl.truststore.location = null
+	ssl.truststore.password = null
+	ssl.truststore.type = JKS
+	transaction.timeout.ms = 60000
+	transactional.id = null
+	value.serializer = class org.apache.kafka.common.serialization.ByteArraySerializer
+
+2020-04-12 20:04:00.054  INFO 14576 --- [scheduling-1] o.a.kafka.common.utils.AppInfoParser     : Kafka version: 2.3.0
+2020-04-12 20:04:00.054  INFO 14576 --- [scheduling-1] o.a.kafka.common.utils.AppInfoParser     : Kafka commitId: fc1aaa116b661c8a
+2020-04-12 20:04:00.055  INFO 14576 --- [scheduling-1] o.a.kafka.common.utils.AppInfoParser     : Kafka startTimeMs: 1586689440054
+2020-04-12 20:04:00.059  INFO 14576 --- [kafka-producer-network-thread | producer-2] org.apache.kafka.clients.Metadata        : [Producer clientId=producer-2] Cluster ID: EZ4UIMyySmCd9ZU9r2Z2tQ
+2020-04-12 20:11:55.587  INFO 14576 --- [SpringContextShutdownHook] o.s.i.endpoint.EventDrivenConsumer       : Removing {logging-channel-adapter:_org.springframework.integration.errorLogger} as a subscriber to the 'errorChannel' channel
+2020-04-12 20:11:55.587  INFO 14576 --- [SpringContextShutdownHook] o.s.i.channel.PublishSubscribeChannel    : Channel 'helloprice-crawl-scheduler-1.errorChannel' has 0 subscriber(s).
+2020-04-12 20:11:55.587  INFO 14576 --- [SpringContextShutdownHook] o.s.i.endpoint.EventDrivenConsumer       : stopped bean '_org.springframework.integration.errorLogger'
+2020-04-12 20:11:55.587  INFO 14576 --- [SpringContextShutdownHook] o.s.i.endpoint.ReactiveStreamsConsumer   : stopped bean 'publishProduct_integrationflow.org.springframework.integration.config.ConsumerEndpointFactoryBean#0'
+2020-04-12 20:11:55.589  INFO 14576 --- [SpringContextShutdownHook] o.s.s.c.ThreadPoolTaskScheduler          : Shutting down ExecutorService 'taskScheduler'
+2020-04-12 20:11:55.590  INFO 14576 --- [SpringContextShutdownHook] o.s.s.concurrent.ThreadPoolTaskExecutor  : Shutting down ExecutorService 'applicationTaskExecutor'
+2020-04-12 20:11:55.591  INFO 14576 --- [SpringContextShutdownHook] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2020-04-12 20:11:55.593  INFO 14576 --- [SpringContextShutdownHook] o.s.i.monitor.IntegrationMBeanExporter   : Summary on shutdown: nullChannel
+2020-04-12 20:11:55.593  INFO 14576 --- [SpringContextShutdownHook] o.s.i.monitor.IntegrationMBeanExporter   : Summary on shutdown: bean 'publishProduct-out-0'
+2020-04-12 20:11:55.593  INFO 14576 --- [SpringContextShutdownHook] o.s.i.monitor.IntegrationMBeanExporter   : Summary on shutdown: bean 'errorChannel'
+2020-04-12 20:11:55.594  INFO 14576 --- [SpringContextShutdownHook] o.s.i.monitor.IntegrationMBeanExporter   : Summary on shutdown: bean 'publishProduct_integrationflow.channel#0'
+2020-04-12 20:11:55.594  INFO 14576 --- [SpringContextShutdownHook] o.s.i.monitor.IntegrationMBeanExporter   : Summary on shutdown: bean '_org.springframework.integration.errorLogger.handler' for component '_org.springframework.integration.errorLogger'
+2020-04-12 20:11:55.594  INFO 14576 --- [SpringContextShutdownHook] o.s.i.monitor.IntegrationMBeanExporter   : Summary on shutdown: bean 'publishProduct_integrationflow.router#0' for component 'publishProduct_integrationflow.org.springframework.integration.config.ConsumerEndpointFactoryBean#0'
+2020-04-12 20:11:55.594  INFO 14576 --- [SpringContextShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
+2020-04-12 20:11:55.598  INFO 14576 --- [SpringContextShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.

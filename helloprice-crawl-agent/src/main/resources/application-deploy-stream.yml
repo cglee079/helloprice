@@ -1,9 +1,9 @@
 spring.cloud:
   function:
-    definition: lastCrawledItem
+    definition: lastCrawledProduct
   stream:
     bindings:
-      lastCrawledItem-in-0:
+      lastCrawledProduct-in-0:
         group: com.podo.helloprice.crawl.crawl-items.group-1
         destination: com.podo.helloprice.crawl.crawl-items
         binder: kafka

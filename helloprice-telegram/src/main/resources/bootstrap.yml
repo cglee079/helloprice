@@ -1,0 +1,20 @@
+spring.application.name: helloprice-telegram
+
+logging.level.root : info
+logging.file.name: helloprice-telegram.%d{yyyy-MM-dd}-%i.log
+
+---
+
+spring.profiles: dev
+spring.profiles.include: dev-app, dev-jpa, dev-infra
+
+logging:
+  file.path: c://dev-log/helloprice/logs/helloprice-telegram
+
+---
+
+spring.profiles: deploy
+spring.profiles.include: deploy-app, deploy-jpa, deploy-infra
+
+logging:
+  file.path: /data/logs

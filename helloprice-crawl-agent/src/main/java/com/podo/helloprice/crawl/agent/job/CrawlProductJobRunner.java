@@ -21,19 +21,19 @@ import java.util.Date;
 public class CrawlProductJobRunner {
 
     public static final String PARAM_CREATE_AT = "createAt";
-    public static final String PARAM_LAST_PUBLISHED_ITEM = "lastPublishedItem";
+    public static final String PARAM_LAST_PUBLISHED_ITEM = "lastPublishedProduct";
     private final JobLauncher jobLauncher;
 
     @Qualifier(value = CrawlProductJobConfig.CRAWL_JOB_BEAN_NAME)
     private final Job crawlJob;
 
-    public void run(String lastPublishedItem) {
+    public void run(String lastPublishedProduct) {
         log.debug("JOB :: START :: 상품 정보 갱신 JOB 을 실행합니다");
 
         try {
             final JobParameters jobParameters = new JobParametersBuilder()
                     .addDate(PARAM_CREATE_AT, new Date())
-                    .addString(PARAM_LAST_PUBLISHED_ITEM, lastPublishedItem)
+                    .addString(PARAM_LAST_PUBLISHED_ITEM, lastPublishedProduct)
                     .toJobParameters();
 
             jobLauncher.run(crawlJob, jobParameters);
