@@ -2,7 +2,8 @@ package com.podo.helloprice.telegram.domain.product.dto;
 
 import com.podo.helloprice.code.model.ProductAliveStatus;
 import com.podo.helloprice.code.model.ProductSaleStatus;
-import com.podo.helloprice.telegram.domain.product.Product;
+import com.podo.helloprice.telegram.domain.product.model.PriceType;
+import com.podo.helloprice.telegram.domain.product.model.Product;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -15,17 +16,19 @@ public class ProductDetailDto {
     private String productName;
     private String productCode;
     private String description;
+    private PriceType priceType;
     private String url;
     private String imageUrl;
     private Integer price;
     private Integer beforePrice;
+    private String priceAdditionalInfo;
     private ProductAliveStatus aliveStatus;
     private ProductSaleStatus saleStatus;
     private LocalDateTime lastUpdateAt;
-    private LocalDateTime lastPoolAt;
+    private LocalDateTime lastCrawledAt;
 
     @Builder
-    public ProductDetailDto(Product product) {
+    public ProductDetailDto(Product product, PriceType priceType) {
         this.id = product.getId();
         this.aliveStatus = product.getAliveStatus();
         this.productCode = product.getProductCode();
@@ -33,11 +36,13 @@ public class ProductDetailDto {
         this.url = product.getUrl();
         this.description = product.getDescription();
         this.imageUrl = product.getImageUrl();
-        this.price = product.getPrice();
         this.saleStatus = product.getSaleStatus();
-        this.beforePrice = product.getBeforePrice();
-        this.lastUpdateAt = product.getLastUpdatedAt();
-        this.lastPoolAt = product.getLastCrawledAt();
+        this.lastCrawledAt = product.getLastCrawledAt();
+        this.priceType = priceType;
+        this.price = product.getPrice(priceType);
+        this.beforePrice = product.getBeforePrice(priceType);
+        this.priceAdditionalInfo = product.getPriceAdditionalInfo(priceType);
+        this.lastUpdateAt = product.getLastUpdateAt(priceType);
     }
 
 }

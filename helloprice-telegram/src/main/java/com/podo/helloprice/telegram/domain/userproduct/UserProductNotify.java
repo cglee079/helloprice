@@ -1,7 +1,8 @@
 package com.podo.helloprice.telegram.domain.userproduct;
 
 import com.podo.helloprice.telegram.domain.BaseTimeEntity;
-import com.podo.helloprice.telegram.domain.product.Product;
+import com.podo.helloprice.telegram.domain.product.model.PriceType;
+import com.podo.helloprice.telegram.domain.product.model.Product;
 import com.podo.helloprice.telegram.domain.user.model.User;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -28,11 +29,15 @@ public class UserProductNotify extends BaseTimeEntity {
     @JoinColumn(name = "product_id")
     private Product product;
 
+    @Enumerated(EnumType.STRING)
+    private PriceType priceType;
+
     private LocalDateTime lastNotifiedAt;
 
-    public UserProductNotify(User user, Product product) {
+    public UserProductNotify(User user, Product product, PriceType priceType) {
         this.user = user;
         this.product = product;
+        this.priceType = priceType;
     }
 
     public void updateNotifiedAt(LocalDateTime notifyAt) {

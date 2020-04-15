@@ -1,7 +1,8 @@
 package com.podo.helloprice.telegram.domain.userproduct;
 
-import com.podo.helloprice.telegram.domain.product.Product;
 import com.podo.helloprice.telegram.domain.product.dto.ProductDetailDto;
+import com.podo.helloprice.telegram.domain.product.model.PriceType;
+import com.podo.helloprice.telegram.domain.product.model.Product;
 import com.podo.helloprice.telegram.domain.product.repository.ProductRepository;
 import com.podo.helloprice.telegram.domain.user.dto.UserDetailDto;
 import com.podo.helloprice.telegram.domain.user.model.User;
@@ -31,16 +32,16 @@ public class UserProductNotifyService {
     private final ProductRepository productRepository;
     private final UserProductNotifyRepository userProductNotifyRepository;
 
-    public boolean isExistedNotify(Long userId, Long productId) {
-        final UserProductNotify existedNotify = userProductNotifyRepository.findByUserIdAndProductId(userId, productId);
+    public boolean isExistedNotify(Long userId, Long productId, PriceType priceType) {
+        final UserProductNotify existedNotify = userProductNotifyRepository.findByUserIdAndProductIdAndPriceType(userId, productId, priceType);
         return Objects.nonNull(existedNotify);
     }
 
-    public void addNewNotify(Long userId, Long productId) {
+    public void addNewNotify(Long userId, Long productId, PriceType priceType) {
         final User existedUser = findUserById(userRepository, userId);
         final Product existedProduct = findProductById(productRepository, productId);
 
-        UserProductNotify userProductNotify = new UserProductNotify(existedUser, existedProduct);
+        UserProductNotify userProductNotify = new UserProductNotify(existedUser, existedProduct, priceType);
         userProductNotifyRepository.save(userProductNotify);
 
         existedUser.addUserProductNotify(userProductNotify);
@@ -55,8 +56,8 @@ public class UserProductNotifyService {
         }
     }
 
-    public void deleteNotifyByUserIdAndProductId(Long userId, Long productId) {
-        final UserProductNotify userProductNotify = userProductNotifyRepository.findByUserIdAndProductId(userId, productId);
+    public void deleteNotifyByUserIdAndProductId(Long userId, Long productId, PriceType priceType) {
+        final UserProductNotify userProductNotify = userProductNotifyRepository.findByUserIdAndProductIdAndPriceType(userId, productId, priceType);
         deleteExistedNotify(userProductNotify);
     }
 
@@ -85,7 +86,7 @@ public class UserProductNotifyService {
         final List<UserProductNotify> existedUserProductNotifies = userProductNotifyRepository.findByUserTelegramId(telegramId);
 
         return existedUserProductNotifies.stream()
-                .map(notify -> new ProductDetailDto(notify.getProduct()))
+                .map(notify -> new ProductDetailDto(notify.getProduct(), notify.getPriceType()))
                 .collect(Collectors.toList());
     }
 

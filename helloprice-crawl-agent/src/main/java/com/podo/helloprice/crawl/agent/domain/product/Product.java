@@ -2,7 +2,7 @@ package com.podo.helloprice.crawl.agent.domain.product;
 
 import com.podo.helloprice.code.model.ProductAliveStatus;
 import com.podo.helloprice.code.model.ProductSaleStatus;
-import com.podo.helloprice.code.model.ProductUpdateStatus;
+import com.podo.helloprice.crawl.agent.global.infra.mq.message.UpdateStatus;
 import com.podo.helloprice.crawl.worker.vo.CrawledProduct;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -14,6 +14,10 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.*;
+
+import static com.podo.helloprice.crawl.agent.domain.product.PriceType.*;
+import static java.util.Collections.emptyList;
 
 @EntityListeners(AuditingEntityListener.class)
 @Slf4j
@@ -21,7 +25,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "product")
 @Entity
-public class Product{
+public class Product {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -37,15 +41,13 @@ public class Product{
 
     private String imageUrl;
 
-    private Integer price;
-
-    private Integer beforePrice;
+    @OneToMany(mappedBy = "product")
+    @MapKey(name = "priceType")
+    private Map<PriceType, ProductPrice> productPrices;
 
     private LocalDateTime lastCrawledAt;
 
     private LocalDateTime lastPublishAt;
-
-    private LocalDateTime lastUpdatedAt;
 
     private Integer deadCount;
 
@@ -55,63 +57,87 @@ public class Product{
     @Enumerated(EnumType.STRING)
     private ProductSaleStatus saleStatus;
 
-    @Enumerated(EnumType.STRING)
-    private ProductUpdateStatus updateStatus;
-
     @LastModifiedDate
     private LocalDateTime updateAt;
 
     @LastModifiedBy
     private String updateBy;
 
-    public void updateByCrawledProduct(CrawledProduct crawledProduct) {
-        final Integer existPrice = this.price;
-        final Integer crawledPrice = crawledProduct.getPrice();
+    public List<UpdateStatus> updateByCrawledProduct(CrawledProduct crawledProduct) {
+        final LocalDateTime crawledAt = crawledProduct.getCrawledAt();
 
-        this.price = crawledPrice;
         this.deadCount = 0;
-
         this.productName = crawledProduct.getProductName();
         this.imageUrl = crawledProduct.getImageUrl();
-        this.lastCrawledAt = crawledProduct.getCrawledAt();
         this.saleStatus = crawledProduct.getSaleStatus();
+        this.lastCrawledAt = crawledAt;
 
-        switch (crawledProduct.getSaleStatus()) {
+        switch (saleStatus) {
             case UNKNOWN:
-            case DISCONTINUE:
-            case NOT_SUPPORT:
+                this.updateAllProductPrices(0, lastCrawledAt);
                 this.aliveStatus = ProductAliveStatus.PAUSE;
-                updateProductAt(lastCrawledAt);
-                break;
-
-            case SALE:
+                return Collections.singletonList(UpdateStatus.UPDATE_UNKNOWN);
+            case DISCONTINUE:
+                this.updateAllProductPrices(0, lastCrawledAt);
+                this.aliveStatus = ProductAliveStatus.PAUSE;
+                return Collections.singletonList(UpdateStatus.UPDATE_DISCONTINUE);
+            case NOT_SUPPORT:
+                this.updateAllProductPrices(0, lastCrawledAt);
+                this.aliveStatus = ProductAliveStatus.PAUSE;
+                return Collections.singletonList(UpdateStatus.UPDATE_NOT_SUPPORT);
             case EMPTY_AMOUNT:
-                if (existPrice.equals(crawledPrice)) {
-                    updateStatus = ProductUpdateStatus.BE;
-                } else {
-                    beforePrice = existPrice;
-                    updateProductAt(lastCrawledAt);
-                }
+                this.updateAllProductPrices(0, lastCrawledAt);
+                this.aliveStatus = ProductAliveStatus.ALIVE;
+                return Collections.singletonList(UpdateStatus.UPDATE_EMPTY_AMOUNT);
+            case SALE:
+                this.aliveStatus = ProductAliveStatus.ALIVE;
+                return updatePrices(crawledProduct, crawledAt);
             default:
-                break;
+                return emptyList();
         }
     }
 
-    public void increaseDeadCount(Integer maxDeadCount, LocalDateTime lastCrawledAt) {
+    private List<UpdateStatus> updatePrices(CrawledProduct crawledProduct, LocalDateTime crawledAt) {
+        final List<UpdateStatus> updateStatuses = new ArrayList<>();
+
+        if(productPrices.containsKey(NORMAL)){
+            if (productPrices.get(NORMAL).update(crawledProduct.getCardPrice(), crawledAt)) {
+                updateStatuses.add(UpdateStatus.UPDATE_SALE_PRICE);
+            }
+        };
+
+        if(productPrices.containsKey(CASH)){
+            if (productPrices.get(CASH).update(crawledProduct.getCardPrice(), crawledAt)) {
+                updateStatuses.add(UpdateStatus.UPDATE_SALE_CASH_PRICE);
+            }
+        };
+
+        if(productPrices.containsKey(CARD)){
+            if (productPrices.get(CARD).update(crawledProduct.getCardPrice(), crawledAt)) {
+                updateStatuses.add(UpdateStatus.UPDATE_SALE_CARD_PRICE);
+            }
+        };
+
+        return updateStatuses;
+    }
+
+    public void updateAllProductPrices(Integer price, LocalDateTime updateAt) {
+        for (ProductPrice productPrice : productPrices.values()) {
+            productPrice.update(price, updateAt);
+        }
+    }
+
+    public boolean increaseDeadCount(Integer maxDeadCount, LocalDateTime updateAt) {
         this.deadCount++;
 
-        if(this.deadCount > maxDeadCount){
+        if (this.deadCount > maxDeadCount) {
             log.debug("{}({}) 상품 DEAD_COUNT 초과, DEAD 상태로 변경", this.productName, this.productCode);
-            this.beforePrice = this.price;
-            this.price = 0;
+            this.updateAllProductPrices(0, updateAt);
             this.aliveStatus = ProductAliveStatus.DEAD;
-            updateProductAt(lastCrawledAt);
+            return true;
         }
-    }
 
-    private void updateProductAt(LocalDateTime lastUpdatedAt) {
-        this.updateStatus = ProductUpdateStatus.UPDATED;
-        this.lastUpdatedAt = lastUpdatedAt;
+        return false;
     }
 
 }

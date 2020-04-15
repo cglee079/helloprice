@@ -47,7 +47,10 @@ class DanawaProductCrawlerTest {
         //then
         assertThat(crawledProduct.getProductCode()).isEqualTo(productCode);
         assertThat(crawledProduct.getSaleStatus()).isEqualTo(SALE);
-        assertThat(crawledProduct.getPrice()).isGreaterThan(0);
+        assertThat(crawledProduct.getPrice()).isEqualTo(56850);
+        assertThat(crawledProduct.getCashPrice()).isEqualTo(54500);
+        assertThat(crawledProduct.getCardPrice()).isEqualTo(55330);
+        assertThat(crawledProduct.getCardType()).isEqualTo("삼성 카드최저가");
         assertThat(crawledProduct.getProductName()).isNotEmpty();
         assertThat(crawledProduct.getCrawledAt()).isEqualTo(crawledAt);
     }

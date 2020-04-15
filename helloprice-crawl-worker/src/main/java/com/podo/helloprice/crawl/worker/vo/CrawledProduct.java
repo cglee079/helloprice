@@ -19,10 +19,16 @@ public class CrawledProduct {
     private String imageUrl;
     private ProductSaleStatus saleStatus;
     private Integer price;
+    private Integer cashPrice;
+    private String cardType;
+    private Integer cardPrice;
     private LocalDateTime crawledAt;
 
     @Builder
-    public CrawledProduct(String productCode, String url, String description, String productName, String imageUrl, ProductSaleStatus saleStatus, Integer price, LocalDateTime crawledAt) {
+    public CrawledProduct(String productCode, String url, String description,
+                          String productName, String imageUrl, ProductSaleStatus saleStatus,
+                          Integer price, Integer cashPrice, String cardType, Integer cardPrice,
+                          LocalDateTime crawledAt) {
         this.productCode = productCode;
         this.url = url;
         this.description = description;
@@ -30,6 +36,9 @@ public class CrawledProduct {
         this.imageUrl = imageUrl;
         this.saleStatus = saleStatus;
         this.price = price;
+        this.cashPrice = cashPrice;
+        this.cardType = cardType;
+        this.cardPrice = cardPrice;
         this.crawledAt = crawledAt;
     }
 }

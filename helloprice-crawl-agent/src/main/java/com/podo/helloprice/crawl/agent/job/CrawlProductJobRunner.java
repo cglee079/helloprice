@@ -1,5 +1,7 @@
 package com.podo.helloprice.crawl.agent.job;
 
+import com.podo.helloprice.core.util.JsonUtil;
+import com.podo.helloprice.crawl.agent.global.infra.mq.message.LastPublishedProduct;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.batch.core.Job;
@@ -27,13 +29,13 @@ public class CrawlProductJobRunner {
     @Qualifier(value = CrawlProductJobConfig.CRAWL_JOB_BEAN_NAME)
     private final Job crawlJob;
 
-    public void run(String lastPublishedProduct) {
+    public void run(LastPublishedProduct lastPublishedProduct) {
         log.debug("JOB :: START :: 상품 정보 갱신 JOB 을 실행합니다");
 
         try {
             final JobParameters jobParameters = new JobParametersBuilder()
                     .addDate(PARAM_CREATE_AT, new Date())
-                    .addString(PARAM_LAST_PUBLISHED_ITEM, lastPublishedProduct)
+                    .addString(PARAM_LAST_PUBLISHED_ITEM, JsonUtil.toJSON(lastPublishedProduct))
                     .toJobParameters();
 
             jobLauncher.run(crawlJob, jobParameters);

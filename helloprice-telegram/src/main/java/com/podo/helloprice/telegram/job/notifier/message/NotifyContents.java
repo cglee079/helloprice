@@ -2,7 +2,7 @@ package com.podo.helloprice.telegram.job.notifier.message;
 
 import com.podo.helloprice.core.util.CalculateUtil;
 import com.podo.helloprice.core.util.CurrencyUtil;
-import com.podo.helloprice.telegram.app.menu.global.CommonResponse;
+import com.podo.helloprice.telegram.app.menu.product.ProductCommonResponse;
 import com.podo.helloprice.telegram.domain.product.dto.ProductDetailDto;
 import lombok.experimental.UtilityClass;
 
@@ -17,7 +17,7 @@ public class NotifyContents {
                 .append("더 이상 해당 상품은 알림이 전송되지 않습니다\n")
                 .append("</b>")
                 .append("\n")
-                .append(CommonResponse.descProductDetailWithChangeMessage(product))
+                .append(ProductCommonResponse.descProductDetailWithChangeMessage(product))
                 .toString();
     }
 
@@ -28,7 +28,7 @@ public class NotifyContents {
                 .append("더 이상 해당 상품은 알림이 전송되지 않습니다\n")
                 .append("</b>")
                 .append("\n")
-                .append(CommonResponse.descProductDetailWithChangeMessage(product))
+                .append(ProductCommonResponse.descProductDetailWithChangeMessage(product))
                 .toString();
     }
 
@@ -38,7 +38,7 @@ public class NotifyContents {
                 .append("해당 상품은 '재고없음' 상태로 변경되었습니다\n")
                 .append("</b>")
                 .append("\n")
-                .append(CommonResponse.descProductDetailWithChangeMessage(product))
+                .append(ProductCommonResponse.descProductDetailWithChangeMessage(product))
                 .toString();
     }
 
@@ -48,7 +48,7 @@ public class NotifyContents {
                 .append("해당 상품은 '가격비교중비' 상태로 변경되었습니다\n")
                 .append("</b>")
                 .append("\n")
-                .append(CommonResponse.descProductDetailWithChangeMessage(product))
+                .append(ProductCommonResponse.descProductDetailWithChangeMessage(product))
                 .toString();
     }
 
@@ -63,7 +63,7 @@ public class NotifyContents {
                 .append("해당 상품은 최저가가 갱신되었습니다!!\n")
                 .append("</b>")
                 .append("\n")
-                .append(CommonResponse.descProductDetailWithChangeMessage(product))
+                .append(ProductCommonResponse.descProductDetailWithChangeMessage(product))
                 .toString();
     }
 
@@ -97,7 +97,7 @@ public class NotifyContents {
                 .append("해당 상품은 다시 판매를 시작했습니다!\n")
                 .append("</b>")
                 .append("\n")
-                .append(CommonResponse.descProductDetailWithChangeMessage(product))
+                .append(ProductCommonResponse.descProductDetailWithChangeMessage(product))
                 .toString();
     }
 
@@ -108,7 +108,7 @@ public class NotifyContents {
                 .append("더 이상 해당 상품은 알림이 전송되지 않습니다\n")
                 .append("</b>")
                 .append("\n")
-                .append(CommonResponse.descProductDetailWithChangeMessage(product))
+                .append(ProductCommonResponse.descProductDetailWithChangeMessage(product))
                 .toString();
     }
 

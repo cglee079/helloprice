@@ -2,10 +2,10 @@ package com.podo.helloprice.telegram.app.core;
 
 
 import com.podo.helloprice.telegram.app.SendMessageCallbackFactory;
-import com.podo.helloprice.telegram.app.menu.Keyboard;
+import com.podo.helloprice.telegram.app.menu.KeyboardHelper;
 import com.podo.helloprice.telegram.app.menu.Menu;
 import com.podo.helloprice.telegram.app.menu.MenuHandler;
-import com.podo.helloprice.telegram.app.menu.global.CommonResponse;
+import com.podo.helloprice.telegram.app.menu.product.ProductCommonResponse;
 import com.podo.helloprice.telegram.app.vo.MessageVo;
 import com.podo.helloprice.telegram.app.vo.SendMessageVo;
 import com.podo.helloprice.telegram.domain.user.application.UserReadService;
@@ -100,9 +100,9 @@ public class TelegramMessageReceiver {
 
     private void sendMessageToNewUser(MessageVo messageVo) {
         final String telegramId = messageVo.getTelegramId();
-        telegramMessageSender.send(SendMessageVo.create(messageVo, CommonResponse.introduce(appName), Keyboard.getHomeKeyboard(Collections.emptyList()), callbackFactory.create(telegramId, Menu.HOME)));
-        telegramMessageSender.sendWithWebPagePreview(SendMessageVo.create(messageVo, CommonResponse.help(helpUrl), null, callbackFactory.create(telegramId, null)));
-        telegramMessageSender.send(SendMessageVo.create(messageVo, CommonResponse.seeKeyboardIcon(), null, callbackFactory.create(telegramId, null)));
+        telegramMessageSender.send(SendMessageVo.create(messageVo, ProductCommonResponse.introduce(appName), KeyboardHelper.getHomeKeyboard(Collections.emptyList()), callbackFactory.create(telegramId, Menu.HOME)));
+        telegramMessageSender.sendWithWebPagePreview(SendMessageVo.create(messageVo, ProductCommonResponse.help(helpUrl), null, callbackFactory.create(telegramId, null)));
+        telegramMessageSender.send(SendMessageVo.create(messageVo, ProductCommonResponse.seeKeyboardIcon(), null, callbackFactory.create(telegramId, null)));
     }
 
     private void handleCommand(MessageVo messageVo, String requestMessage, Menu userMenuStatus) {

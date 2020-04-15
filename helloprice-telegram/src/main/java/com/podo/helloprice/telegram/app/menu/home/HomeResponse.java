@@ -1,6 +1,6 @@
 package com.podo.helloprice.telegram.app.menu.home;
 
-import com.podo.helloprice.telegram.app.menu.global.CommonResponse;
+import com.podo.helloprice.telegram.app.menu.product.ProductCommonResponse;
 import com.podo.helloprice.telegram.domain.product.dto.ProductDetailDto;
 import lombok.experimental.UtilityClass;
 
@@ -11,7 +11,7 @@ public class HomeResponse {
         return new StringBuilder()
                 .append("현재 상품정보는 다음과 같습니다\n")
                 .append("\n")
-                .append(CommonResponse.descProductDetailWithChangeMessage(product))
+                .append(ProductCommonResponse.descProductDetailWithChangeMessage(product))
                 .toString();
     }
 

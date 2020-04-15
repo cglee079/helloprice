@@ -1,16 +1,21 @@
 package com.podo.helloprice.telegram.domain.product.application;
 
 import com.podo.helloprice.crawl.worker.vo.CrawledProduct;
-import com.podo.helloprice.telegram.domain.product.Product;
-import com.podo.helloprice.telegram.domain.product.application.helper.ProductReadHelper;
 import com.podo.helloprice.telegram.domain.product.dto.ProductInsertDto;
+import com.podo.helloprice.telegram.domain.product.model.Product;
 import com.podo.helloprice.telegram.domain.product.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.validation.constraints.NotNull;
+import java.time.LocalDateTime;
+import java.util.Objects;
 import java.util.Optional;
+
+import static com.podo.helloprice.telegram.domain.product.model.PriceType.*;
+import static com.podo.helloprice.telegram.domain.product.model.ProductPrice.create;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -20,7 +25,8 @@ public class ProductWriteService {
 
     private final ProductRepository productRepository;
 
-    public Long writeCrawledProduct(CrawledProduct crawledProduct) {
+    public Long writeCrawledProduct(@NotNull CrawledProduct crawledProduct) {
+        final LocalDateTime crawledAt = crawledProduct.getCrawledAt();
 
         final Optional<Product> byProductCode = productRepository.findByProductCode(crawledProduct.getProductCode());
 
@@ -36,20 +42,22 @@ public class ProductWriteService {
                 .url(crawledProduct.getUrl())
                 .description(crawledProduct.getDescription())
                 .imageUrl(crawledProduct.getImageUrl())
-                .price(crawledProduct.getPrice())
                 .saleStatus(crawledProduct.getSaleStatus())
                 .build();
 
-        return insertNewProduct(productInsert);
-    }
-
-    public Long insertNewProduct(ProductInsertDto productInsert) {
         final Product savedProduct = productRepository.save(productInsert.toEntity());
+
+        savedProduct.addProductPrice(create(NORMAL, crawledProduct.getPrice(), null, crawledAt));
+
+        if(Objects.nonNull(crawledProduct.getCashPrice())){
+            savedProduct.addProductPrice(create(CASH, crawledProduct.getCashPrice(), null, crawledAt));
+        }
+
+        if(Objects.nonNull(crawledProduct.getCardPrice())){
+            savedProduct.addProductPrice(create(CARD, crawledProduct.getCardPrice(), crawledProduct.getCardType(), crawledAt));
+        }
+
         return savedProduct.getId();
     }
 
-    public void notifiedProduct(Long productId) {
-        final Product product = ProductReadHelper.findProductById(productRepository, productId);
-        product.notified();
-    }
 }

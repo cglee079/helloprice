@@ -1,12 +1,16 @@
 package com.podo.helloprice.crawl.agent.global.infra.mq;
 
-import com.podo.helloprice.crawl.agent.job.CrawlProductJobRunner;
+import com.podo.helloprice.crawl.agent.global.infra.mq.message.LastPublishedProduct;
+import com.podo.helloprice.crawl.agent.global.infra.mq.message.NotifyEvent;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import reactor.core.publisher.EmitterProcessor;
+import reactor.core.publisher.Flux;
 
 import java.util.function.Consumer;
+import java.util.function.Supplier;
 
 @Slf4j
 @Configuration
@@ -14,10 +18,13 @@ import java.util.function.Consumer;
 public class MQConfig {
 
     @Bean
-    public Consumer<String> lastCrawledProduct(CrawlProductJobRunner crawlProductJobRunner) {
-        return (lastPublishedProduct) ->{
-            log.debug("MQ :: CONSUME :: payload : {}", lastPublishedProduct);
-            crawlProductJobRunner.run(lastPublishedProduct);
-        };
+    public Consumer<LastPublishedProduct> consumeLastPublishProduct(CrawlProductJobConsumer crawlProductJobConsumer) {
+        return crawlProductJobConsumer;
     }
+
+    @Bean
+    public Supplier<Flux<NotifyEvent>> publishNotifyEvent(NotifyEventPublisher notifyEventPublisher){
+        return notifyEventPublisher::processor;
+    }
+
 }
