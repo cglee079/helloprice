@@ -2,15 +2,15 @@ package com.podo.helloprice.telegram.app.menu.product.searchselect;
 
 import com.podo.helloprice.telegram.app.SendMessageCallbackFactory;
 import com.podo.helloprice.telegram.app.menu.AbstractMenuHandler;
+import com.podo.helloprice.telegram.app.menu.CommonResponse;
 import com.podo.helloprice.telegram.app.menu.KeyboardHelper;
 import com.podo.helloprice.telegram.app.menu.product.ProductAddHandler;
-import com.podo.helloprice.telegram.app.menu.product.ProductCommonResponse;
 import com.podo.helloprice.telegram.app.menu.product.ProductDescCommandTranslator;
 import com.podo.helloprice.telegram.app.menu.product.ProductSearchCommandTranslator;
 import com.podo.helloprice.telegram.app.vo.MessageVo;
 import com.podo.helloprice.telegram.app.vo.SendMessageVo;
 import com.podo.helloprice.telegram.domain.user.model.Menu;
-import com.podo.helloprice.telegram.domain.userproduct.UserProductNotifyService;
+import com.podo.helloprice.telegram.domain.userproduct.application.UserProductNotifyReadService;
 import com.podo.helloprice.telegram.global.cache.DanawaProductCache;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -31,12 +31,12 @@ public class ProductSearchSelectMenuHandler extends AbstractMenuHandler {
 
     private final ProductAddHandler productAddHandler;
     private final DanawaProductCache danawaProductCache;
-    private final UserProductNotifyService userProductNotifyService;
+    private final UserProductNotifyReadService userProductNotifyReadService;
     private final SendMessageCallbackFactory callbackFactory;
 
     public void handle(MessageVo messageVo, String requestMessage) {
         final String telegramId = messageVo.getTelegramId();
-        final List<String> productCommands = ProductDescCommandTranslator.encodes(userProductNotifyService.findNotifyProductsByUserTelegramId(telegramId));
+        final List<String> productCommands = ProductDescCommandTranslator.encodes(userProductNotifyReadService.findNotifyProductsByUserTelegramId(telegramId));
 
         log.debug("APP :: {} << 상품 검색 결과 메뉴에서 응답, 받은메세지 '{}'", telegramId, requestMessage);
 
@@ -50,7 +50,7 @@ public class ProductSearchSelectMenuHandler extends AbstractMenuHandler {
 
         if (Objects.isNull(productCode)) {
             log.debug("APP :: {} << 응답 할 수 없는 메세지 입니다 받은메세지 '{}'", telegramId, requestMessage);
-            sender().send(SendMessageVo.create(messageVo, ProductCommonResponse.wrongInput(), KeyboardHelper.getHomeKeyboard(productCommands), callbackFactory.create(telegramId, Menu.HOME)));
+            sender().send(SendMessageVo.create(messageVo, CommonResponse.wrongInput(), KeyboardHelper.getHomeKeyboard(productCommands), callbackFactory.create(telegramId, Menu.HOME)));
             return;
         }
 
@@ -61,14 +61,14 @@ public class ProductSearchSelectMenuHandler extends AbstractMenuHandler {
     private void handleCommand(ProductSearchSelectCommand requestCommand, MessageVo messageVo, List<String> productCommands) {
         switch (requestCommand) {
             case EXIT:
-                sender().send(SendMessageVo.create(messageVo, ProductCommonResponse.toHome(), KeyboardHelper.getHomeKeyboard(productCommands), callbackFactory.create(messageVo.getTelegramId(), Menu.HOME)));
+                sender().send(SendMessageVo.create(messageVo, CommonResponse.toHome(), KeyboardHelper.getHomeKeyboard(productCommands), callbackFactory.create(messageVo.getTelegramId(), Menu.HOME)));
         }
     }
 
     private void handleProductCommand(String productCode, MessageVo messageVo) {
         final String telegramId = messageVo.getTelegramId();
 
-        sender().send(SendMessageVo.create(messageVo, ProductCommonResponse.justWait(), null, callbackFactory.createDefaultNoAction(telegramId)));
+        sender().send(SendMessageVo.create(messageVo, CommonResponse.justWait(), null, callbackFactory.createDefaultNoAction(telegramId)));
 
         productAddHandler.handleProductAdd(messageVo, productCode);
     }

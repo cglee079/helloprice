@@ -1,5 +1,6 @@
 package com.podo.helloprice.telegram.app.menu.product.search;
 
+import com.podo.helloprice.telegram.app.menu.CommonResponse;
 import com.podo.helloprice.telegram.app.menu.product.ProductCommonResponse;
 import lombok.experimental.UtilityClass;
 
@@ -18,7 +19,7 @@ public class ProductSearchResponse {
         return new StringBuilder()
                 .append("검색결과가 없습니다\n")
                 .append("\n")
-                .append(ProductCommonResponse.toHome())
+                .append(CommonResponse.toHome())
                 .toString();
     }
 }

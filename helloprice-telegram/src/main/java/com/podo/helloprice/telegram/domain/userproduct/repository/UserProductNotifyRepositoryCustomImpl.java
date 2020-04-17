@@ -25,13 +25,4 @@ public class UserProductNotifyRepositoryCustomImpl implements UserProductNotifyR
                 .fetch();
     }
 
-    @Override
-    public List<UserProductNotify> findByProductIdAndUserStatus(Long productId, UserStatus userStatus) {
-        return jpaQueryFactory.selectFrom(QUserProductNotify.userProductNotify)
-                .leftJoin(QUserProductNotify.userProductNotify.user, QUser.user)
-                .leftJoin(QUserProductNotify.userProductNotify.product, QProduct.product)
-                .where(QUserProductNotify.userProductNotify.product.id.eq(productId))
-                .where(QUserProductNotify.userProductNotify.user.userStatus.eq(userStatus))
-                .fetch();
-    }
 }

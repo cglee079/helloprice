@@ -2,6 +2,7 @@ package com.podo.helloprice.telegram.app.menu.product;
 
 import com.podo.helloprice.crawl.worker.vo.CrawledProduct;
 import com.podo.helloprice.core.util.CurrencyUtil;
+import com.podo.helloprice.telegram.app.menu.CommonResponse;
 import lombok.experimental.UtilityClass;
 
 import java.util.Objects;
@@ -18,7 +19,7 @@ public class ProductAddResponse {
                 .append(productCode)
                 .append("\n")
                 .append("\n")
-                .append(ProductCommonResponse.toHome())
+                .append(CommonResponse.toHome())
                 .toString();
     }
 
@@ -28,7 +29,7 @@ public class ProductAddResponse {
                 .append("\n")
                 .append("죄송합니다, 페이지에서 단종된 상품입니다")
                 .append("\n")
-                .append(ProductCommonResponse.toHome())
+                .append(CommonResponse.toHome())
                 .toString();
     }
 
@@ -39,7 +40,7 @@ public class ProductAddResponse {
                 .append("죄송합니다, 페이지에서 알 수 없는 상태의 상품입니다")
                 .append("\n")
                 .append("\n")
-                .append(ProductCommonResponse.toHome())
+                .append(CommonResponse.toHome())
                 .toString();
     }
 
@@ -50,7 +51,7 @@ public class ProductAddResponse {
                 .append("죄송합니다, 페이지에서 가격비교를 제공하지 않는 상품입니다")
                 .append("\n")
                 .append("\n")
-                .append(ProductCommonResponse.toHome())
+                .append(CommonResponse.toHome())
                 .toString();
     }
 
@@ -59,7 +60,7 @@ public class ProductAddResponse {
                 .append("죄송합니다, 최대 상품 알림 수를 초과했습니다.")
                 .append("\n")
                 .append("\n")
-                .append(ProductCommonResponse.toHome())
+                .append(CommonResponse.toHome())
                 .toString();
 
     }

@@ -2,6 +2,7 @@ package com.podo.helloprice.telegram.app.menu.home;
 
 
 import com.podo.helloprice.telegram.app.menu.AbstractMenuHandler;
+import com.podo.helloprice.telegram.app.menu.CommonResponse;
 import com.podo.helloprice.telegram.app.menu.email.add.EmailAddResponse;
 import com.podo.helloprice.telegram.app.menu.email.delete.EmailDeleteResponse;
 import com.podo.helloprice.telegram.app.menu.product.ProductDescCommandTranslator;
@@ -13,13 +14,12 @@ import com.podo.helloprice.telegram.domain.user.dto.UserDetailDto;
 import com.podo.helloprice.telegram.app.SendMessageCallbackFactory;
 import com.podo.helloprice.telegram.app.menu.KeyboardHelper;
 import com.podo.helloprice.telegram.domain.user.model.Menu;
-import com.podo.helloprice.telegram.app.menu.product.ProductCommonResponse;
 import com.podo.helloprice.telegram.app.menu.product.ProductDescParameter;
 import com.podo.helloprice.telegram.app.vo.MessageVo;
 import com.podo.helloprice.telegram.app.vo.SendMessageVo;
 import com.podo.helloprice.telegram.domain.product.application.ProductReadService;
 import com.podo.helloprice.telegram.domain.product.dto.ProductDetailDto;
-import com.podo.helloprice.telegram.domain.userproduct.UserProductNotifyService;
+import com.podo.helloprice.telegram.domain.userproduct.application.UserProductNotifyReadService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -44,7 +44,7 @@ public class HomeMenuHandler extends AbstractMenuHandler {
     private final UserReadService userReadService;
     private final ProductReadService productReadService;
 
-    private final UserProductNotifyService userProductNotifyService;
+    private final UserProductNotifyReadService userProductNotifyReadService;
     private final SendMessageCallbackFactory callbackFactory;
 
     @Override
@@ -54,7 +54,7 @@ public class HomeMenuHandler extends AbstractMenuHandler {
 
     public void handle(MessageVo messageVo, String requestMessage) {
         final String telegramId = messageVo.getTelegramId();
-        final List<String> productCommands = ProductDescCommandTranslator.encodes(userProductNotifyService.findNotifyProductsByUserTelegramId(telegramId));
+        final List<String> productCommands = ProductDescCommandTranslator.encodes(userProductNotifyReadService.findNotifyProductsByUserTelegramId(telegramId));
 
         log.debug("APP :: {} << 홈메뉴에서 응답, 받은메세지 '{}'", telegramId, requestMessage);
 
@@ -69,7 +69,7 @@ public class HomeMenuHandler extends AbstractMenuHandler {
 
         if (Objects.isNull(productDescParameter)) {
             log.debug("APP :: {} << 응답 할 수 없는 메세지 입니다 받은메세지 '{}'", telegramId, requestMessage);
-            sender().send(SendMessageVo.create(messageVo, ProductCommonResponse.wrongInput(), KeyboardHelper.getHomeKeyboard(productCommands), callbackFactory.create(telegramId, Menu.HOME)));
+            sender().send(SendMessageVo.create(messageVo, CommonResponse.wrongInput(), KeyboardHelper.getHomeKeyboard(productCommands), callbackFactory.create(telegramId, Menu.HOME)));
             return;
         }
 
@@ -115,8 +115,8 @@ public class HomeMenuHandler extends AbstractMenuHandler {
 
             case HELP:
                 log.debug("APP :: {} << 도움말. 받은메세지 '{}'", telegramId, requestMessage);
-                sender().send(SendMessageVo.create(messageVo, ProductCommonResponse.introduce(appDesc), null, callbackFactory.create(telegramId, Menu.HOME)));
-                sender().send(SendMessageVo.create(messageVo, ProductCommonResponse.help(helpUrl), null, callbackFactory.create(telegramId, null)));
+                sender().send(SendMessageVo.create(messageVo, CommonResponse.introduce(appDesc), null, callbackFactory.create(telegramId, Menu.HOME)));
+                sender().send(SendMessageVo.create(messageVo, CommonResponse.help(helpUrl), null, callbackFactory.create(telegramId, null)));
                 break;
         }
     }

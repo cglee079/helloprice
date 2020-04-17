@@ -8,5 +8,4 @@ import java.util.List;
 public interface UserProductNotifyRepositoryCustom {
 
     List<UserProductNotify> findByUserTelegramId(String telegramId);
-    List<UserProductNotify> findByProductIdAndUserStatus(Long productId, UserStatus userStatus);
 }

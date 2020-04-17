@@ -1,7 +1,7 @@
 package com.podo.helloprice.crawl.agent.job.step.notify;
 
-import com.podo.helloprice.crawl.agent.global.infra.mq.publish.NotifyEventPublisher;
-import com.podo.helloprice.crawl.agent.global.infra.mq.message.NotifyEventMessage;
+import com.podo.helloprice.crawl.agent.global.infra.mq.publish.ProductUpdatePublisher;
+import com.podo.helloprice.crawl.agent.global.infra.mq.message.ProductUpdateMessage;
 import com.podo.helloprice.crawl.agent.job.CrawlProductJobStore;
 import com.podo.helloprice.crawl.agent.job.NotifyEvent;
 import lombok.RequiredArgsConstructor;
@@ -18,14 +18,14 @@ import java.util.List;
 public class CrawlProductNotifyTasklet implements Tasklet {
 
     private final CrawlProductJobStore crawlProductJobStore;
-    private final NotifyEventPublisher notifyEventPublisher;
+    private final ProductUpdatePublisher productUpdatePublisher;
 
     @Override
     public RepeatStatus execute(StepContribution contribution, ChunkContext chunkContext){
         final List<NotifyEvent> notifyEvents = crawlProductJobStore.getNotifyEvents();
 
         for (NotifyEvent notifyEvent : notifyEvents) {
-            notifyEventPublisher.publish(new NotifyEventMessage(notifyEvent.getProductId(), notifyEvent.getProductUpdateStatus()));
+            productUpdatePublisher.publish(new ProductUpdateMessage(notifyEvent.getProductId(), notifyEvent.getProductUpdateStatus()));
         }
 
         return RepeatStatus.FINISHED;

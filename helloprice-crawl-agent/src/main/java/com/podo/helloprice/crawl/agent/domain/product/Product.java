@@ -1,5 +1,6 @@
 package com.podo.helloprice.crawl.agent.domain.product;
 
+import com.podo.helloprice.core.model.PriceType;
 import com.podo.helloprice.core.model.ProductAliveStatus;
 import com.podo.helloprice.core.model.ProductSaleStatus;
 import com.podo.helloprice.core.model.ProductUpdateStatus;
@@ -16,7 +17,9 @@ import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.*;
 
+import static com.podo.helloprice.core.model.PriceType.*;
 import static java.util.Collections.emptyList;
+import static java.util.Collections.singletonList;
 
 @EntityListeners(AuditingEntityListener.class)
 @Slf4j
@@ -75,19 +78,19 @@ public class Product {
             case UNKNOWN:
                 this.updateAllProductPrices(0, lastCrawledAt);
                 this.aliveStatus = ProductAliveStatus.PAUSE;
-                return Collections.singletonList(ProductUpdateStatus.UPDATE_UNKNOWN);
+                return singletonList(ProductUpdateStatus.UPDATE_UNKNOWN);
             case DISCONTINUE:
                 this.updateAllProductPrices(0, lastCrawledAt);
                 this.aliveStatus = ProductAliveStatus.PAUSE;
-                return Collections.singletonList(ProductUpdateStatus.UPDATE_DISCONTINUE);
+                return singletonList(ProductUpdateStatus.UPDATE_DISCONTINUE);
             case NOT_SUPPORT:
                 this.updateAllProductPrices(0, lastCrawledAt);
                 this.aliveStatus = ProductAliveStatus.PAUSE;
-                return Collections.singletonList(ProductUpdateStatus.UPDATE_NOT_SUPPORT);
+                return singletonList(ProductUpdateStatus.UPDATE_NOT_SUPPORT);
             case EMPTY_AMOUNT:
                 this.updateAllProductPrices(0, lastCrawledAt);
                 this.aliveStatus = ProductAliveStatus.ALIVE;
-                return Collections.singletonList(ProductUpdateStatus.UPDATE_EMPTY_AMOUNT);
+                return singletonList(ProductUpdateStatus.UPDATE_EMPTY_AMOUNT);
             case SALE:
                 this.aliveStatus = ProductAliveStatus.ALIVE;
                 return updatePrices(crawledProduct, crawledAt);
@@ -99,23 +102,23 @@ public class Product {
     private List<ProductUpdateStatus> updatePrices(CrawledProduct crawledProduct, LocalDateTime crawledAt) {
         final List<ProductUpdateStatus> productUpdateStatuses = new ArrayList<>();
 
-        if(productPrices.containsKey(PriceType.NORMAL)){
-            if (productPrices.get(PriceType.NORMAL).update(crawledProduct.getCardPrice(), crawledAt)) {
-                productUpdateStatuses.add(ProductUpdateStatus.UPDATE_SALE_PRICE);
+        if(productPrices.containsKey(NORMAL)){
+            if (productPrices.get(NORMAL).update(crawledProduct.getPrice(), crawledAt)) {
+                productUpdateStatuses.add(ProductUpdateStatus.UPDATE_SALE_NORMAL_PRICE);
             }
-        };
+        }
 
-        if(productPrices.containsKey(PriceType.CASH)){
-            if (productPrices.get(PriceType.CASH).update(crawledProduct.getCardPrice(), crawledAt)) {
+        if(productPrices.containsKey(CASH)){
+            if (productPrices.get(CASH).update(crawledProduct.getCashPrice(), crawledAt)) {
                 productUpdateStatuses.add(ProductUpdateStatus.UPDATE_SALE_CASH_PRICE);
             }
-        };
+        }
 
-        if(productPrices.containsKey(PriceType.CARD)){
-            if (productPrices.get(PriceType.CARD).update(crawledProduct.getCardPrice(), crawledAt)) {
+        if(productPrices.containsKey(CARD)){
+            if (productPrices.get(CARD).update(crawledProduct.getCardPrice(), crawledAt)) {
                 productUpdateStatuses.add(ProductUpdateStatus.UPDATE_SALE_CARD_PRICE);
             }
-        };
+        }
 
         return productUpdateStatuses;
     }

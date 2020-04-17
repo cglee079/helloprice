@@ -1,5 +1,6 @@
 package com.podo.helloprice.telegram.app.menu.email.add;
 
+import com.podo.helloprice.telegram.app.menu.CommonResponse;
 import com.podo.helloprice.telegram.app.menu.product.ProductCommonResponse;
 import lombok.experimental.UtilityClass;
 
@@ -18,7 +19,7 @@ public class EmailAddResponse {
         return new StringBuilder()
                 .append("<b>이메일 형식이 아닙니다..</b>\n")
                 .append("\n")
-                .append(ProductCommonResponse.toHome())
+                .append(CommonResponse.toHome())
                 .toString();
     }
 

@@ -2,6 +2,7 @@ package com.podo.helloprice.telegram.app.core;
 
 
 import com.podo.helloprice.telegram.app.SendMessageCallbackFactory;
+import com.podo.helloprice.telegram.app.menu.CommonResponse;
 import com.podo.helloprice.telegram.app.menu.KeyboardHelper;
 import com.podo.helloprice.telegram.app.menu.MenuHandler;
 import com.podo.helloprice.telegram.app.vo.MessageVo;
@@ -100,9 +101,9 @@ public class TelegramMessageReceiver {
 
     private void sendMessageToNewUser(MessageVo messageVo) {
         final String telegramId = messageVo.getTelegramId();
-        telegramMessageSender.send(SendMessageVo.create(messageVo, ProductCommonResponse.introduce(appName), KeyboardHelper.getHomeKeyboard(Collections.emptyList()), callbackFactory.create(telegramId, Menu.HOME)));
-        telegramMessageSender.sendWithWebPagePreview(SendMessageVo.create(messageVo, ProductCommonResponse.help(helpUrl), null, callbackFactory.create(telegramId, null)));
-        telegramMessageSender.send(SendMessageVo.create(messageVo, ProductCommonResponse.seeKeyboardIcon(), null, callbackFactory.create(telegramId, null)));
+        telegramMessageSender.send(SendMessageVo.create(messageVo, CommonResponse.introduce(appName), KeyboardHelper.getHomeKeyboard(Collections.emptyList()), callbackFactory.create(telegramId, Menu.HOME)));
+        telegramMessageSender.sendWithWebPagePreview(SendMessageVo.create(messageVo, CommonResponse.help(helpUrl), null, callbackFactory.create(telegramId, null)));
+        telegramMessageSender.send(SendMessageVo.create(messageVo, CommonResponse.seeKeyboardIcon(), null, callbackFactory.create(telegramId, null)));
     }
 
     private void handleCommand(MessageVo messageVo, String requestMessage, Menu userMenuStatus) {

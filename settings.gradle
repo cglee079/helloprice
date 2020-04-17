@@ -10,6 +10,6 @@ include 'helloprice-core',
         'helloprice-crawl-agent',
         'helloprice-crawl-worker',
         'helloprice-crawl-scheduler',
-        'helloprice-notify-analysis',
-        'helloprice-notify-doer',
-        'helloprice-telegram'
+        'helloprice-notifier',
+        'helloprice-telegram',
+        'helloprice-product-update-analysis'

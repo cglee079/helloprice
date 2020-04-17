@@ -9,6 +9,4 @@ import java.util.List;
 public interface UserProductNotifyRepository extends JpaRepository<UserProductNotify, Long>, UserProductNotifyRepositoryCustom{
 
     UserProductNotify findByUserIdAndProductIdAndPriceType(Long userId, Long productId, PriceType priceType);
-
-    List<UserProductNotify> findByProductId(Long productId);
 }

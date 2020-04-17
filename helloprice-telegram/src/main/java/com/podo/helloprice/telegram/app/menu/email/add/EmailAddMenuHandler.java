@@ -11,7 +11,7 @@ import com.podo.helloprice.telegram.domain.user.application.UserReadService;
 import com.podo.helloprice.telegram.domain.user.dto.UserDetailDto;
 import com.podo.helloprice.telegram.global.infra.gmail.GmailClient;
 import com.podo.helloprice.telegram.domain.user.model.Menu;
-import com.podo.helloprice.telegram.domain.userproduct.UserProductNotifyService;
+import com.podo.helloprice.telegram.domain.userproduct.application.UserProductNotifyReadService;
 import com.podo.helloprice.telegram.global.email.EmailKeyStore;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -28,7 +28,7 @@ import static com.podo.helloprice.telegram.domain.user.model.Menu.*;
 public class EmailAddMenuHandler extends AbstractMenuHandler {
 
     private final UserReadService userReadService;
-    private final UserProductNotifyService userProductNotifyService;
+    private final UserProductNotifyReadService userProductNotifyReadService;
 
     private final EmailKeyStore emailKeyStore;
     private final GmailClient gmailClient;
@@ -47,7 +47,7 @@ public class EmailAddMenuHandler extends AbstractMenuHandler {
 
         if (!EmailValidator.getInstance().isValid(email)) {
             log.debug("TELEGRAM  :: {} << 이메일 형식이 아닙니다, 받은메세지 '{}'", telegramId, requestMessage);
-            final List<String> productCommands = ProductDescCommandTranslator.encodes(userProductNotifyService.findNotifyProductsByUserTelegramId(telegramId));
+            final List<String> productCommands = ProductDescCommandTranslator.encodes(userProductNotifyReadService.findNotifyProductsByUserTelegramId(telegramId));
             sender().send(SendMessageVo.create(messageVo, EmailAddResponse.invalidEmail(), KeyboardHelper.getHomeKeyboard(productCommands), callbackFactory.create(telegramId, HOME)));
             return;
         }

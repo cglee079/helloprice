@@ -1,6 +1,6 @@
 package com.podo.helloprice.telegram.app.menu.product.addurl;
 
-import com.podo.helloprice.telegram.app.menu.product.ProductCommonResponse;
+import com.podo.helloprice.telegram.app.menu.CommonResponse;
 import lombok.experimental.UtilityClass;
 
 @UtilityClass
@@ -14,7 +14,7 @@ public class ProductAddUrlResponse {
                 .append("다나와 : ")
                 .append(url)
                 .append("\n")
-                .append(ProductCommonResponse.help(helpUrl))
+                .append(CommonResponse.help(helpUrl))
 
                 .toString();
 
@@ -26,7 +26,7 @@ public class ProductAddUrlResponse {
                 .append(url)
                 .append("\n")
                 .append("\n")
-                .append(ProductCommonResponse.toHome())
+                .append(CommonResponse.toHome())
                 .toString();
     }
 

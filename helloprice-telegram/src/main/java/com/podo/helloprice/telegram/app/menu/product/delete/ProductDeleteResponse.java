@@ -1,5 +1,6 @@
 package com.podo.helloprice.telegram.app.menu.product.delete;
 
+import com.podo.helloprice.telegram.app.menu.CommonResponse;
 import com.podo.helloprice.telegram.app.menu.product.ProductCommonResponse;
 import com.podo.helloprice.telegram.domain.product.dto.ProductDetailDto;
 import lombok.experimental.UtilityClass;
@@ -22,7 +23,7 @@ public class ProductDeleteResponse {
                 .append("알림이 등록되어있지 않은 상품입니다\n")
                 .append("\n")
                 .append("\n")
-                .append(ProductCommonResponse.toHome())
+                .append(CommonResponse.toHome())
                 .toString();
     }
 

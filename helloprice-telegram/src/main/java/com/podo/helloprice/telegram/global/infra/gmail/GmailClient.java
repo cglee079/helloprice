@@ -32,10 +32,6 @@ public class GmailClient {
 
     private ExecutorService executorService = Executors.newFixedThreadPool(5);
 
-    public void sendEmailToAdmin(String title, String contents) {
-        sendEmail(appName, adminEmail, title, contents);
-    }
-
     public void sendEmail(String username, String userEmail, String title, String contents) {
 
         executorService.execute(() -> {

@@ -2,8 +2,8 @@ package com.podo.helloprice.crawl.agent.global.infra.mq;
 
 import com.podo.helloprice.crawl.agent.global.infra.mq.consumer.CrawlProductJobConsumer;
 import com.podo.helloprice.crawl.agent.global.infra.mq.message.CrawlProductMessage;
-import com.podo.helloprice.crawl.agent.global.infra.mq.message.NotifyEventMessage;
-import com.podo.helloprice.crawl.agent.global.infra.mq.publish.NotifyEventPublisher;
+import com.podo.helloprice.crawl.agent.global.infra.mq.message.ProductUpdateMessage;
+import com.podo.helloprice.crawl.agent.global.infra.mq.publish.ProductUpdatePublisher;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
@@ -24,8 +24,8 @@ public class MQConfig {
     }
 
     @Bean
-    public Supplier<Flux<NotifyEventMessage>> publishNotifyEvent(NotifyEventPublisher notifyEventPublisher){
-        return notifyEventPublisher::processor;
+    public Supplier<Flux<ProductUpdateMessage>> publicProductUpdate(ProductUpdatePublisher productUpdatePublisher){
+        return productUpdatePublisher::processor;
     }
 
 }

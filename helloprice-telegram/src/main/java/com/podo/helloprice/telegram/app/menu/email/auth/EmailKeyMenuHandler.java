@@ -9,7 +9,7 @@ import com.podo.helloprice.telegram.app.menu.KeyboardHelper;
 import com.podo.helloprice.telegram.app.vo.MessageVo;
 import com.podo.helloprice.telegram.app.vo.SendMessageVo;
 import com.podo.helloprice.telegram.domain.user.application.UserWriteService;
-import com.podo.helloprice.telegram.domain.userproduct.UserProductNotifyService;
+import com.podo.helloprice.telegram.domain.userproduct.application.UserProductNotifyReadService;
 import com.podo.helloprice.telegram.global.email.EmailKeyStore;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -28,7 +28,7 @@ import static com.podo.helloprice.telegram.domain.user.model.Menu.HOME;
 public class EmailKeyMenuHandler extends AbstractMenuHandler {
 
     private final EmailKeyStore emailKeyStore;
-    private final UserProductNotifyService userProductNotifyService;
+    private final UserProductNotifyReadService userProductNotifyReadService;
     private final UserWriteService userWriteService;
     private final SendMessageCallbackFactory callbackFactory;
 
@@ -43,7 +43,7 @@ public class EmailKeyMenuHandler extends AbstractMenuHandler {
 
         log.debug("TELEGRAM :: {} << 이메일 인증 메뉴에서 응답, 받은메세지 '{}'", telegramId, messageContents);
 
-        final List<String> productCommands = ProductDescCommandTranslator.encodes(userProductNotifyService.findNotifyProductsByUserTelegramId(telegramId));
+        final List<String> productCommands = ProductDescCommandTranslator.encodes(userProductNotifyReadService.findNotifyProductsByUserTelegramId(telegramId));
 
         final String email = emailKeyStore.getEmailIfCertifiedByAuthKey(authKey, LocalDateTime.now());
 

@@ -8,7 +8,7 @@ import com.podo.helloprice.telegram.app.menu.KeyboardHelper;
 import com.podo.helloprice.telegram.app.vo.MessageVo;
 import com.podo.helloprice.telegram.domain.user.model.Menu;
 import com.podo.helloprice.telegram.app.vo.SendMessageVo;
-import com.podo.helloprice.telegram.domain.userproduct.UserProductNotifyService;
+import com.podo.helloprice.telegram.domain.userproduct.application.UserProductNotifyReadService;
 import com.podo.helloprice.telegram.global.cache.DanawaProductCache;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -22,14 +22,14 @@ import java.util.Objects;
 @Component
 public class ProductAddHandler {
 
-    private final UserProductNotifyService userProductNotifyService;
+    private final UserProductNotifyReadService userProductNotifyReadService;
     private final TelegramMessageSender sender;
     private final DanawaProductCache danawaProductCache;
     private final SendMessageCallbackFactory callbackFactory;
 
     public void handleProductAdd(MessageVo messageVo, String productCode) {
         final String telegramId = messageVo.getTelegramId();
-        final List<String> productDescCommands = ProductDescCommandTranslator.encodes(userProductNotifyService.findNotifyProductsByUserTelegramId(telegramId));
+        final List<String> productDescCommands = ProductDescCommandTranslator.encodes(userProductNotifyReadService.findNotifyProductsByUserTelegramId(telegramId));
 
         final CrawledProduct crawledProduct = danawaProductCache.get(productCode);
         if (Objects.isNull(crawledProduct)) {

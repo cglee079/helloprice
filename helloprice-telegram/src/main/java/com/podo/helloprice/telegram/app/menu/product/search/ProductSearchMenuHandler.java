@@ -4,15 +4,15 @@ import com.podo.helloprice.crawl.worker.target.danawa.DanawaProductSearchCrawler
 import com.podo.helloprice.crawl.worker.vo.ProductSearchVo;
 import com.podo.helloprice.telegram.app.SendMessageCallbackFactory;
 import com.podo.helloprice.telegram.app.menu.AbstractMenuHandler;
+import com.podo.helloprice.telegram.app.menu.CommonResponse;
 import com.podo.helloprice.telegram.app.menu.KeyboardHelper;
 import com.podo.helloprice.telegram.domain.user.model.Menu;
-import com.podo.helloprice.telegram.app.menu.product.ProductCommonResponse;
 import com.podo.helloprice.telegram.app.menu.product.ProductDescCommandTranslator;
 import com.podo.helloprice.telegram.app.menu.product.ProductSearchCommandTranslator;
 import com.podo.helloprice.telegram.app.menu.product.searchselect.ProductSearchSelectResponse;
 import com.podo.helloprice.telegram.app.vo.MessageVo;
 import com.podo.helloprice.telegram.app.vo.SendMessageVo;
-import com.podo.helloprice.telegram.domain.userproduct.UserProductNotifyService;
+import com.podo.helloprice.telegram.domain.userproduct.application.UserProductNotifyReadService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -28,7 +28,7 @@ import java.util.stream.Collectors;
 @Component
 public class ProductSearchMenuHandler extends AbstractMenuHandler {
 
-    private final UserProductNotifyService userProductNotifyService;
+    private final UserProductNotifyReadService userProductNotifyReadService;
     private final DanawaProductSearchCrawler danawaProductSearchCrawler;
     private final SendMessageCallbackFactory callbackFactory;
 
@@ -42,13 +42,13 @@ public class ProductSearchMenuHandler extends AbstractMenuHandler {
 
         log.debug("TELEGRAM :: {} << 상품 검색 메뉴에서 응답, 받은메세지 '{}'", telegramId, messageContents);
 
-        sender().send(SendMessageVo.create(messageVo, ProductCommonResponse.justWait(), null, callbackFactory.createDefaultNoAction(telegramId)));
+        sender().send(SendMessageVo.create(messageVo, CommonResponse.justWait(), null, callbackFactory.createDefaultNoAction(telegramId)));
 
         final String requestSearchKeyword = messageContents;
         final List<ProductSearchVo> productSearchResults = danawaProductSearchCrawler.crawl(requestSearchKeyword);
 
         if (productSearchResults.isEmpty()) {
-            final List<String> productCommands = ProductDescCommandTranslator.encodes(userProductNotifyService.findNotifyProductsByUserTelegramId(telegramId));
+            final List<String> productCommands = ProductDescCommandTranslator.encodes(userProductNotifyReadService.findNotifyProductsByUserTelegramId(telegramId));
             sender().send(SendMessageVo.create(messageVo, ProductSearchResponse.noResult(), KeyboardHelper.getHomeKeyboard(productCommands), callbackFactory.create(messageVo.getTelegramId(), Menu.HOME)));
             return;
         }
