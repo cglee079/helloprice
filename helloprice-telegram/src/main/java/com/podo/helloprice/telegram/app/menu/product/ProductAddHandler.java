@@ -5,8 +5,8 @@ import com.podo.helloprice.crawl.worker.vo.CrawledProduct;
 import com.podo.helloprice.telegram.app.SendMessageCallbackFactory;
 import com.podo.helloprice.telegram.app.core.TelegramMessageSender;
 import com.podo.helloprice.telegram.app.menu.KeyboardHelper;
-import com.podo.helloprice.telegram.app.menu.Menu;
 import com.podo.helloprice.telegram.app.vo.MessageVo;
+import com.podo.helloprice.telegram.domain.user.model.Menu;
 import com.podo.helloprice.telegram.app.vo.SendMessageVo;
 import com.podo.helloprice.telegram.domain.userproduct.UserProductNotifyService;
 import com.podo.helloprice.telegram.global.cache.DanawaProductCache;
@@ -16,8 +16,6 @@ import org.springframework.stereotype.Component;
 
 import java.util.List;
 import java.util.Objects;
-
-import static com.podo.helloprice.telegram.app.menu.product.ProductDescCommandTranslator.encodes;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -31,7 +29,7 @@ public class ProductAddHandler {
 
     public void handleProductAdd(MessageVo messageVo, String productCode) {
         final String telegramId = messageVo.getTelegramId();
-        final List<String> productDescCommands = encodes(userProductNotifyService.findNotifyProductsByUserTelegramId(telegramId));
+        final List<String> productDescCommands = ProductDescCommandTranslator.encodes(userProductNotifyService.findNotifyProductsByUserTelegramId(telegramId));
 
         final CrawledProduct crawledProduct = danawaProductCache.get(productCode);
         if (Objects.isNull(crawledProduct)) {

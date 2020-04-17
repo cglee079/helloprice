@@ -1,9 +1,9 @@
 package com.podo.helloprice.telegram.domain.product.application;
 
+import com.podo.helloprice.core.model.PriceType;
 import com.podo.helloprice.telegram.domain.product.application.helper.ProductReadHelper;
-import com.podo.helloprice.telegram.domain.product.dto.ProductDetailDto;
-import com.podo.helloprice.telegram.domain.product.model.PriceType;
 import com.podo.helloprice.telegram.domain.product.model.Product;
+import com.podo.helloprice.telegram.domain.product.dto.ProductDetailDto;
 import com.podo.helloprice.telegram.domain.product.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

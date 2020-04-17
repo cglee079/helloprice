@@ -1,8 +1,8 @@
 package com.podo.helloprice.telegram.app.config;
 
 
-import com.podo.helloprice.telegram.app.menu.Menu;
 import com.podo.helloprice.telegram.app.menu.MenuHandler;
+import com.podo.helloprice.telegram.domain.user.model.Menu;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;

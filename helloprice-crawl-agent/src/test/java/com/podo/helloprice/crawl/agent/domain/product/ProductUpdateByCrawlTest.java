@@ -1,6 +1,6 @@
 package com.podo.helloprice.crawl.agent.domain.product;
 
-import com.podo.helloprice.code.model.ProductSaleStatus;
+import com.podo.helloprice.core.model.ProductSaleStatus;
 import com.podo.helloprice.crawl.worker.vo.CrawledProduct;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -10,7 +10,6 @@ import org.springframework.test.util.ReflectionTestUtils;
 
 import java.time.LocalDateTime;
 
-import static com.podo.helloprice.code.model.ProductSaleStatus.SALE;
 import static com.podo.helloprice.code.model.PriceUpdateStatus.BE;
 import static com.podo.helloprice.code.model.PriceUpdateStatus.UPDATED;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -26,7 +25,7 @@ public class ProductUpdateByCrawlTest {
             final int existedPrice = product.getProductPrice();
             final int crawledPrice = existedPrice + 1000;
             final LocalDateTime crawledAt = LocalDateTime.now();
-            final CrawledProduct crawledProduct = createCrawledProduct(product, SALE, crawledPrice, crawledAt);
+            final CrawledProduct crawledProduct = createCrawledProduct(product, ProductSaleStatus.SALE, crawledPrice, crawledAt);
 
             //when
             product.updateByCrawledProduct(crawledProduct);
@@ -34,7 +33,7 @@ public class ProductUpdateByCrawlTest {
             //then
             assertThat(product.getUpdateStatus()).isEqualTo(UPDATED);
             assertThat(product.getLastUpdatedAt()).isEqualTo(crawledAt);
-            assertThat(product.getSaleStatus()).isEqualTo(SALE);
+            assertThat(product.getSaleStatus()).isEqualTo(ProductSaleStatus.SALE);
             assertThat(product.getProductPrice()).isEqualTo(crawledPrice);
             assertThat(product.getBeforePrice()).isEqualTo(existedPrice);
         }
@@ -48,7 +47,7 @@ public class ProductUpdateByCrawlTest {
             final int existedPrice = product.getProductPrice();
             final int crawledPrice = existedPrice;
             final LocalDateTime crawledAt = LocalDateTime.now();
-            final CrawledProduct crawledProduct = createCrawledProduct(product, SALE, crawledPrice, crawledAt);
+            final CrawledProduct crawledProduct = createCrawledProduct(product, ProductSaleStatus.SALE, crawledPrice, crawledAt);
 
             //when
             product.updateByCrawledProduct(crawledProduct);
@@ -56,7 +55,7 @@ public class ProductUpdateByCrawlTest {
             //then
             assertThat(product.getUpdateStatus()).isEqualTo(BE);
             assertThat(product.getLastCrawledAt()).isEqualTo(crawledAt);
-            assertThat(product.getSaleStatus()).isEqualTo(SALE);
+            assertThat(product.getSaleStatus()).isEqualTo(ProductSaleStatus.SALE);
             assertThat(product.getProductPrice()).isEqualTo(crawledPrice);
             assertThat(product.getBeforePrice()).isEqualTo(beforePrice);
         }
@@ -105,7 +104,7 @@ public class ProductUpdateByCrawlTest {
             final String description = "productDesc";
             final int price = 1;
             final int beforePrice = 2;
-            final ProductSaleStatus saleStatus = SALE;
+            final ProductSaleStatus saleStatus = ProductSaleStatus.SALE;
             final LocalDateTime lastCrawledAt = LocalDateTime.now();
 
             final Product product = new Product();

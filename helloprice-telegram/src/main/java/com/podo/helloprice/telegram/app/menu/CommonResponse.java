@@ -1,13 +1,6 @@
 package com.podo.helloprice.telegram.app.menu;
 
-import com.podo.helloprice.code.model.ProductAliveStatus;
-import com.podo.helloprice.code.model.ProductSaleStatus;
-import com.podo.helloprice.core.util.CalculateUtil;
-import com.podo.helloprice.core.util.DateTimeUtil;
-import com.podo.helloprice.telegram.domain.product.dto.ProductDetailDto;
 import lombok.experimental.UtilityClass;
-
-import static com.podo.helloprice.core.util.CurrencyUtil.toKrw;
 
 @UtilityClass
 public class CommonResponse {

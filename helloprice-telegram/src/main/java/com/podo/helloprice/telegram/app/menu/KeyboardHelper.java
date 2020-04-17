@@ -1,8 +1,8 @@
 package com.podo.helloprice.telegram.app.menu;
 
 import com.podo.helloprice.telegram.app.menu.email.delete.EmailDeleteKeyboard;
-import com.podo.helloprice.telegram.app.menu.product.delete.ProductDeleteKeyboard;
 import com.podo.helloprice.telegram.app.menu.home.HomeKeyboard;
+import com.podo.helloprice.telegram.app.menu.product.delete.ProductDeleteKeyboard;
 import com.podo.helloprice.telegram.app.menu.product.searchselect.ProductSearchSelectKeyboard;
 import com.podo.helloprice.telegram.app.menu.product.typeselect.ProductTypeSelectKeyboard;
 import org.springframework.stereotype.Component;

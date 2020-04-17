@@ -1,23 +1,23 @@
 package com.podo.helloprice.telegram.app.menu.product.typeselect;
 
 
+import com.podo.helloprice.telegram.app.menu.product.ProductDescCommandTranslator;
+import com.podo.helloprice.telegram.domain.product.application.ProductWriteService;
+import com.podo.helloprice.telegram.domain.user.dto.UserDetailDto;
 import com.podo.helloprice.telegram.app.SendMessageCallbackFactory;
 import com.podo.helloprice.telegram.app.menu.AbstractMenuHandler;
 import com.podo.helloprice.telegram.app.menu.KeyboardHelper;
-import com.podo.helloprice.telegram.app.menu.Menu;
+import com.podo.helloprice.telegram.domain.user.model.Menu;
 import com.podo.helloprice.telegram.app.menu.product.ProductCommonResponse;
 import com.podo.helloprice.telegram.app.menu.product.ProductAddResponse;
-import com.podo.helloprice.telegram.app.menu.product.ProductDescCommandTranslator;
 import com.podo.helloprice.telegram.app.menu.product.ProductTypeCommandTranslator;
 import com.podo.helloprice.telegram.app.menu.product.ProductTypeParameter;
 import com.podo.helloprice.telegram.app.vo.MessageVo;
 import com.podo.helloprice.telegram.app.vo.SendMessageVo;
 import com.podo.helloprice.telegram.domain.product.application.ProductReadService;
-import com.podo.helloprice.telegram.domain.product.application.ProductWriteService;
 import com.podo.helloprice.telegram.domain.product.dto.ProductDetailDto;
-import com.podo.helloprice.telegram.domain.product.model.PriceType;
+import com.podo.helloprice.core.model.PriceType;
 import com.podo.helloprice.telegram.domain.user.application.UserReadService;
-import com.podo.helloprice.telegram.domain.user.dto.UserDetailDto;
 import com.podo.helloprice.telegram.domain.userproduct.UserProductNotifyService;
 import com.podo.helloprice.telegram.global.cache.DanawaProductCache;
 import lombok.RequiredArgsConstructor;

@@ -1,5 +1,6 @@
 package com.podo.helloprice.telegram.domain.product.model;
 
+import com.podo.helloprice.core.model.PriceType;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -53,7 +54,6 @@ public class ProductPrice {
         this.beforePrice = existPrice;
         this.additionalInfo = additionalInfo;
         this.lastUpdateAt = updateAt;
-        return ;
     }
 
     public void setProduct(Product product) {

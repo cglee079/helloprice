@@ -1,12 +1,13 @@
 package com.podo.helloprice.telegram.domain.user.application;
 
-import com.podo.helloprice.telegram.app.menu.Menu;
-import com.podo.helloprice.telegram.domain.user.dto.UserInsertDto;
+import com.podo.helloprice.core.model.UserStatus;
+import com.podo.helloprice.telegram.domain.user.application.helper.UserReadServiceHelper;
+import com.podo.helloprice.telegram.domain.user.model.Menu;
 import com.podo.helloprice.telegram.domain.user.model.User;
-import com.podo.helloprice.telegram.domain.user.model.UserStatus;
 import com.podo.helloprice.telegram.domain.user.repository.UserRepository;
 import com.podo.helloprice.telegram.domain.userproduct.UserProductNotify;
 import com.podo.helloprice.telegram.domain.userproduct.repository.UserProductNotifyRepository;
+import com.podo.helloprice.telegram.domain.user.dto.UserInsertDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -15,9 +16,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
-
-import static com.podo.helloprice.telegram.domain.user.application.helper.UserReadServiceHelper.findUserByTelegramId;
-import static com.podo.helloprice.telegram.domain.user.application.helper.UserReadServiceHelper.findUserById;
 
 @Slf4j
 @Service
@@ -37,7 +35,7 @@ public class UserWriteService {
     }
 
     public void increaseUserErrorCountByTelegramId(String telegramId) {
-        final User user = findUserByTelegramId(userRepository, telegramId);
+        final User user = UserReadServiceHelper.findUserByTelegramId(userRepository, telegramId);
 
         user.increaseErrorCount(userMaxErrorCount);
 
@@ -56,22 +54,22 @@ public class UserWriteService {
     }
 
     public void updateMenuStatusByTelegramId(String telegramId, Menu menu) {
-        findUserByTelegramId(userRepository, telegramId).updateMenuStatus(menu);
+        UserReadServiceHelper.findUserByTelegramId(userRepository, telegramId).updateMenuStatus(menu);
     }
 
     public void clearUserErrorCountByTelegramId(String telegramId) {
-        findUserByTelegramId(userRepository, telegramId).clearErrorCount();
+        UserReadServiceHelper.findUserByTelegramId(userRepository, telegramId).clearErrorCount();
     }
 
     public void reviveUser(Long userId) {
-        findUserById(userRepository, userId).revive();
+        UserReadServiceHelper.findUserById(userRepository, userId).revive();
     }
 
     public void updateSendAt(Long userId, LocalDateTime lastSendAt) {
-        findUserById(userRepository, userId).updateLastSendAt(lastSendAt);
+        UserReadServiceHelper.findUserById(userRepository, userId).updateLastSendAt(lastSendAt);
     }
 
     public void updateEmailByTelegramId(String telegramId, String email) {
-        findUserByTelegramId(userRepository, telegramId).updateEmail(email);
+        UserReadServiceHelper.findUserByTelegramId(userRepository, telegramId).updateEmail(email);
     }
 }

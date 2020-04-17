@@ -2,13 +2,13 @@ package com.podo.helloprice.telegram.app.menu.email.delete;
 
 
 import com.podo.helloprice.telegram.app.SendMessageCallbackFactory;
-import com.podo.helloprice.telegram.app.menu.Menu;
 import com.podo.helloprice.telegram.app.menu.AbstractMenuHandler;
 import com.podo.helloprice.telegram.app.menu.KeyboardHelper;
 import com.podo.helloprice.telegram.app.menu.product.ProductDescCommandTranslator;
 import com.podo.helloprice.telegram.app.vo.MessageVo;
 import com.podo.helloprice.telegram.app.vo.SendMessageVo;
 import com.podo.helloprice.telegram.domain.user.application.UserWriteService;
+import com.podo.helloprice.telegram.domain.user.model.Menu;
 import com.podo.helloprice.telegram.domain.userproduct.UserProductNotifyService;
 import com.podo.helloprice.telegram.app.menu.product.ProductCommonResponse;
 import lombok.RequiredArgsConstructor;
@@ -17,8 +17,6 @@ import org.springframework.stereotype.Component;
 
 import java.util.List;
 import java.util.Objects;
-
-import static com.podo.helloprice.telegram.app.menu.Menu.EMAIL_DELETE;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -32,7 +30,7 @@ public class EmailDeleteMenuHandler extends AbstractMenuHandler {
 
     @Override
     public Menu getHandleMenu() {
-        return EMAIL_DELETE;
+        return Menu.EMAIL_DELETE;
     }
 
     public void handle(MessageVo messageVo, String requestMessage) {

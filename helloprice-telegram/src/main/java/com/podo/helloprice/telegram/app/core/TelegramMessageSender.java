@@ -8,6 +8,8 @@ import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.methods.send.SendPhoto;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
+import javax.annotation.PostConstruct;
+
 @Slf4j
 @Component
 public class TelegramMessageSender {
@@ -71,6 +73,5 @@ public class TelegramMessageSender {
         }
 
     }
-
 
 }

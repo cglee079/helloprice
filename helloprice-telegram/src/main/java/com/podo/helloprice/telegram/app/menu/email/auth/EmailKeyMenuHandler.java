@@ -1,8 +1,9 @@
 package com.podo.helloprice.telegram.app.menu.email.auth;
 
 
+import com.podo.helloprice.telegram.app.menu.product.ProductDescCommandTranslator;
 import com.podo.helloprice.telegram.app.SendMessageCallbackFactory;
-import com.podo.helloprice.telegram.app.menu.Menu;
+import com.podo.helloprice.telegram.domain.user.model.Menu;
 import com.podo.helloprice.telegram.app.menu.AbstractMenuHandler;
 import com.podo.helloprice.telegram.app.menu.KeyboardHelper;
 import com.podo.helloprice.telegram.app.vo.MessageVo;
@@ -18,9 +19,8 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
 
-import static com.podo.helloprice.telegram.app.menu.Menu.EMAIL_KEY;
-import static com.podo.helloprice.telegram.app.menu.Menu.HOME;
-import static com.podo.helloprice.telegram.app.menu.product.ProductDescCommandTranslator.encodes;
+import static com.podo.helloprice.telegram.domain.user.model.Menu.EMAIL_KEY;
+import static com.podo.helloprice.telegram.domain.user.model.Menu.HOME;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -43,7 +43,7 @@ public class EmailKeyMenuHandler extends AbstractMenuHandler {
 
         log.debug("TELEGRAM :: {} << 이메일 인증 메뉴에서 응답, 받은메세지 '{}'", telegramId, messageContents);
 
-        final List<String> productCommands = encodes(userProductNotifyService.findNotifyProductsByUserTelegramId(telegramId));
+        final List<String> productCommands = ProductDescCommandTranslator.encodes(userProductNotifyService.findNotifyProductsByUserTelegramId(telegramId));
 
         final String email = emailKeyStore.getEmailIfCertifiedByAuthKey(authKey, LocalDateTime.now());
 

@@ -1,16 +1,13 @@
 package com.podo.helloprice.telegram.app.menu.product;
 
-import com.podo.helloprice.code.model.ProductAliveStatus;
-import com.podo.helloprice.code.model.ProductSaleStatus;
+import com.podo.helloprice.core.model.ProductAliveStatus;
+import com.podo.helloprice.core.model.ProductSaleStatus;
 import com.podo.helloprice.core.util.CalculateUtil;
 import com.podo.helloprice.core.util.DateTimeUtil;
+import com.podo.helloprice.core.util.CurrencyUtil;
 import com.podo.helloprice.telegram.domain.product.dto.ProductDetailDto;
-import com.podo.helloprice.telegram.domain.product.model.PriceType;
 import lombok.experimental.UtilityClass;
 import org.springframework.util.StringUtils;
-
-import static com.podo.helloprice.core.util.CurrencyUtil.toKrw;
-import static com.podo.helloprice.telegram.domain.product.model.PriceType.CARD;
 
 @UtilityClass
 public class ProductCommonResponse {
@@ -102,13 +99,13 @@ public class ProductCommonResponse {
 
                 .append("<b>")
                 .append("이전가격 : ")
-                .append(toKrw(productBeforePrice))
+                .append(CurrencyUtil.toKrw(productBeforePrice))
                 .append("</b>")
                 .append("\n")
 
                 .append("<b>")
                 .append("현재가격 : ")
-                .append(toKrw(productPrice))
+                .append(CurrencyUtil.toKrw(productPrice))
                 .append("</b>")
                 .append("\n")
 
@@ -161,14 +158,14 @@ public class ProductCommonResponse {
         final StringBuilder message = new StringBuilder();
         if (productBeforePrice.equals(0)) {
             message.append("야호!  <b>")
-                    .append(toKrw(productPrice))
+                    .append(CurrencyUtil.toKrw(productPrice))
                     .append("</b>으로 다시 판매를 시작했어요!!");
             return message.toString();
         }
 
         if (productPrice > productBeforePrice) {
             message.append("죄송합니다.. 가격이 <b>")
-                    .append(toKrw(productPrice - productBeforePrice))
+                    .append(CurrencyUtil.toKrw(productPrice - productBeforePrice))
                     .append("</b> 올랐어요...");
             return message.toString();
         }
@@ -179,7 +176,7 @@ public class ProductCommonResponse {
         }
 
         message.append("야호! 가격이 <b>")
-                .append(toKrw(productBeforePrice - productPrice))
+                .append(CurrencyUtil.toKrw(productBeforePrice - productPrice))
                 .append("</b> 떨어졌어요!!");
 
         return message.toString();

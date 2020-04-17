@@ -1,7 +1,7 @@
 package com.podo.helloprice.crawl.agent.job;
 
 import com.podo.helloprice.core.util.JsonUtil;
-import com.podo.helloprice.crawl.agent.global.infra.mq.message.LastPublishedProduct;
+import com.podo.helloprice.crawl.agent.global.infra.mq.message.CrawlProductMessage;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.batch.core.Job;
@@ -23,19 +23,19 @@ import java.util.Date;
 public class CrawlProductJobRunner {
 
     public static final String PARAM_CREATE_AT = "createAt";
-    public static final String PARAM_LAST_PUBLISHED_ITEM = "lastPublishedProduct";
+    public static final String PARAM_LAST_PUBLISHED_ITEM = "doCrawlProduct";
     private final JobLauncher jobLauncher;
 
     @Qualifier(value = CrawlProductJobConfig.CRAWL_JOB_BEAN_NAME)
     private final Job crawlJob;
 
-    public void run(LastPublishedProduct lastPublishedProduct) {
+    public void run(DoCrawlProduct crawlProductMessage) {
         log.debug("JOB :: START :: 상품 정보 갱신 JOB 을 실행합니다");
 
         try {
             final JobParameters jobParameters = new JobParametersBuilder()
                     .addDate(PARAM_CREATE_AT, new Date())
-                    .addString(PARAM_LAST_PUBLISHED_ITEM, JsonUtil.toJSON(lastPublishedProduct))
+                    .addString(PARAM_LAST_PUBLISHED_ITEM, JsonUtil.toJSON(crawlProductMessage))
                     .toJobParameters();
 
             jobLauncher.run(crawlJob, jobParameters);

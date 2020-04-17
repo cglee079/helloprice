@@ -1,11 +1,10 @@
 package com.podo.helloprice.telegram.app.menu.product;
 
 import com.podo.helloprice.crawl.worker.vo.CrawledProduct;
+import com.podo.helloprice.core.util.CurrencyUtil;
 import lombok.experimental.UtilityClass;
 
 import java.util.Objects;
-
-import static com.podo.helloprice.core.util.CurrencyUtil.toKrw;
 
 @UtilityClass
 public class ProductAddResponse {
@@ -91,14 +90,14 @@ public class ProductAddResponse {
 
                 .append("<b>")
                 .append("상품가격/일반: ")
-                .append(toKrw(crawledProduct.getPrice()))
+                .append(CurrencyUtil.toKrw(crawledProduct.getPrice()))
                 .append("</b>")
                 .append("\n");
 
         if(Objects.nonNull(crawledProduct.getCashPrice())) {
             message.append("<b>")
                     .append("상품가격/현금: ")
-                    .append(toKrw(crawledProduct.getCashPrice()))
+                    .append(CurrencyUtil.toKrw(crawledProduct.getCashPrice()))
                     .append("</b>")
                     .append("\n");
         }
@@ -106,7 +105,7 @@ public class ProductAddResponse {
         if(Objects.nonNull(crawledProduct.getCardPrice())) {
             message.append("<b>")
                     .append("상품가격/카드: ")
-                    .append(toKrw(crawledProduct.getCardPrice()))
+                    .append(CurrencyUtil.toKrw(crawledProduct.getCardPrice()))
                     .append("(" + crawledProduct.getCardType() + ")")
                     .append("</b>")
                     .append("\n");

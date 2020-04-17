@@ -14,7 +14,7 @@ import java.time.LocalDateTime;
 import java.util.Objects;
 import java.util.Optional;
 
-import static com.podo.helloprice.telegram.domain.product.model.PriceType.*;
+import static com.podo.helloprice.core.model.PriceType.*;
 import static com.podo.helloprice.telegram.domain.product.model.ProductPrice.create;
 
 @Slf4j

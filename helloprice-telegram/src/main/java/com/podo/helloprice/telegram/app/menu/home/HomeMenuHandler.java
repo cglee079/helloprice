@@ -1,24 +1,24 @@
 package com.podo.helloprice.telegram.app.menu.home;
 
 
-import com.podo.helloprice.telegram.app.SendMessageCallbackFactory;
 import com.podo.helloprice.telegram.app.menu.AbstractMenuHandler;
-import com.podo.helloprice.telegram.app.menu.KeyboardHelper;
-import com.podo.helloprice.telegram.app.menu.Menu;
 import com.podo.helloprice.telegram.app.menu.email.add.EmailAddResponse;
 import com.podo.helloprice.telegram.app.menu.email.delete.EmailDeleteResponse;
-import com.podo.helloprice.telegram.app.menu.product.ProductCommonResponse;
 import com.podo.helloprice.telegram.app.menu.product.ProductDescCommandTranslator;
-import com.podo.helloprice.telegram.app.menu.product.ProductDescParameter;
 import com.podo.helloprice.telegram.app.menu.product.addurl.ProductAddUrlResponse;
 import com.podo.helloprice.telegram.app.menu.product.delete.ProductDeleteResponse;
 import com.podo.helloprice.telegram.app.menu.product.search.ProductSearchResponse;
+import com.podo.helloprice.telegram.domain.user.application.UserReadService;
+import com.podo.helloprice.telegram.domain.user.dto.UserDetailDto;
+import com.podo.helloprice.telegram.app.SendMessageCallbackFactory;
+import com.podo.helloprice.telegram.app.menu.KeyboardHelper;
+import com.podo.helloprice.telegram.domain.user.model.Menu;
+import com.podo.helloprice.telegram.app.menu.product.ProductCommonResponse;
+import com.podo.helloprice.telegram.app.menu.product.ProductDescParameter;
 import com.podo.helloprice.telegram.app.vo.MessageVo;
 import com.podo.helloprice.telegram.app.vo.SendMessageVo;
 import com.podo.helloprice.telegram.domain.product.application.ProductReadService;
 import com.podo.helloprice.telegram.domain.product.dto.ProductDetailDto;
-import com.podo.helloprice.telegram.domain.user.application.UserReadService;
-import com.podo.helloprice.telegram.domain.user.dto.UserDetailDto;
 import com.podo.helloprice.telegram.domain.userproduct.UserProductNotifyService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

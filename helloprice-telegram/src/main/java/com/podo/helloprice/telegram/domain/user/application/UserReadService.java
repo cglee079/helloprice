@@ -1,8 +1,6 @@
 package com.podo.helloprice.telegram.domain.user.application;
 
 import com.podo.helloprice.telegram.domain.user.dto.UserDetailDto;
-import com.podo.helloprice.telegram.domain.user.application.helper.UserReadServiceHelper;
-import com.podo.helloprice.telegram.domain.user.exception.InvalidTelegramIdException;
 import com.podo.helloprice.telegram.domain.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

@@ -1,7 +1,7 @@
 package com.podo.helloprice.telegram.app.menu.product;
 
 import com.podo.helloprice.crawl.worker.vo.CrawledProduct;
-import com.podo.helloprice.telegram.domain.product.model.PriceType;
+import com.podo.helloprice.core.model.PriceType;
 import lombok.experimental.UtilityClass;
 import org.springframework.util.StringUtils;
 

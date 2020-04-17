@@ -1,6 +1,6 @@
 package com.podo.helloprice.telegram.app.menu.product;
 
-import com.podo.helloprice.telegram.domain.product.model.PriceType;
+import com.podo.helloprice.core.model.PriceType;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;

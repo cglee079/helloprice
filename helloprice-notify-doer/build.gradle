@@ -1,0 +1,9 @@
+dependencies {
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+
+    implementation 'org.springframework.cloud:spring-cloud-stream'
+    implementation 'org.springframework.cloud:spring-cloud-stream-binder-kafka'
+    implementation 'org.springframework.cloud:spring-cloud-starter-config'
+
+    implementation group: 'org.telegram', name: 'telegrambots', version: '4.0.0'
+}

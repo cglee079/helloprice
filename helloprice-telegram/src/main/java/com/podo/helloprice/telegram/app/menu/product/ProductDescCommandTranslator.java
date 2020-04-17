@@ -1,11 +1,8 @@
 package com.podo.helloprice.telegram.app.menu.product;
 
 import com.podo.helloprice.telegram.domain.product.dto.ProductDetailDto;
-import com.podo.helloprice.telegram.domain.product.model.PriceType;
-import lombok.RequiredArgsConstructor;
+import com.podo.helloprice.core.model.PriceType;
 import lombok.experimental.UtilityClass;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
 import java.util.Arrays;

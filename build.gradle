@@ -1,8 +1,8 @@
 buildscript {
     ext {
-        springBootVersion = '2.2.0.RELEASE'
+        springBootVersion = '2.2.5.RELEASE'
         querydslPluginVersion = '1.0.10'
-        springCloudVersion = 'Hoxton.SR1'
+        springCloudVersion = 'Hoxton.SR3'
     }
 
     repositories {

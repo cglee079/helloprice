@@ -1,6 +1,6 @@
 package com.podo.helloprice.telegram.domain.product.dto;
 
-import com.podo.helloprice.code.model.ProductSaleStatus;
+import com.podo.helloprice.core.model.ProductSaleStatus;
 import com.podo.helloprice.telegram.domain.product.model.Product;
 import lombok.Builder;
 import lombok.Getter;

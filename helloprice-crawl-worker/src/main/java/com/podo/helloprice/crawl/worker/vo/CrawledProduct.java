@@ -1,6 +1,6 @@
 package com.podo.helloprice.crawl.worker.vo;
 
-import com.podo.helloprice.code.model.ProductSaleStatus;
+import com.podo.helloprice.core.model.ProductSaleStatus;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;

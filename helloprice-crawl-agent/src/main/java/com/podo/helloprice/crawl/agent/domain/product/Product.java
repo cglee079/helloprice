@@ -1,8 +1,8 @@
 package com.podo.helloprice.crawl.agent.domain.product;
 
-import com.podo.helloprice.code.model.ProductAliveStatus;
-import com.podo.helloprice.code.model.ProductSaleStatus;
-import com.podo.helloprice.crawl.agent.global.infra.mq.message.UpdateStatus;
+import com.podo.helloprice.core.model.ProductAliveStatus;
+import com.podo.helloprice.core.model.ProductSaleStatus;
+import com.podo.helloprice.core.model.ProductUpdateStatus;
 import com.podo.helloprice.crawl.worker.vo.CrawledProduct;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -16,7 +16,6 @@ import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.*;
 
-import static com.podo.helloprice.crawl.agent.domain.product.PriceType.*;
 import static java.util.Collections.emptyList;
 
 @EntityListeners(AuditingEntityListener.class)
@@ -63,7 +62,7 @@ public class Product {
     @LastModifiedBy
     private String updateBy;
 
-    public List<UpdateStatus> updateByCrawledProduct(CrawledProduct crawledProduct) {
+    public List<ProductUpdateStatus> updateByCrawledProduct(CrawledProduct crawledProduct) {
         final LocalDateTime crawledAt = crawledProduct.getCrawledAt();
 
         this.deadCount = 0;
@@ -76,19 +75,19 @@ public class Product {
             case UNKNOWN:
                 this.updateAllProductPrices(0, lastCrawledAt);
                 this.aliveStatus = ProductAliveStatus.PAUSE;
-                return Collections.singletonList(UpdateStatus.UPDATE_UNKNOWN);
+                return Collections.singletonList(ProductUpdateStatus.UPDATE_UNKNOWN);
             case DISCONTINUE:
                 this.updateAllProductPrices(0, lastCrawledAt);
                 this.aliveStatus = ProductAliveStatus.PAUSE;
-                return Collections.singletonList(UpdateStatus.UPDATE_DISCONTINUE);
+                return Collections.singletonList(ProductUpdateStatus.UPDATE_DISCONTINUE);
             case NOT_SUPPORT:
                 this.updateAllProductPrices(0, lastCrawledAt);
                 this.aliveStatus = ProductAliveStatus.PAUSE;
-                return Collections.singletonList(UpdateStatus.UPDATE_NOT_SUPPORT);
+                return Collections.singletonList(ProductUpdateStatus.UPDATE_NOT_SUPPORT);
             case EMPTY_AMOUNT:
                 this.updateAllProductPrices(0, lastCrawledAt);
                 this.aliveStatus = ProductAliveStatus.ALIVE;
-                return Collections.singletonList(UpdateStatus.UPDATE_EMPTY_AMOUNT);
+                return Collections.singletonList(ProductUpdateStatus.UPDATE_EMPTY_AMOUNT);
             case SALE:
                 this.aliveStatus = ProductAliveStatus.ALIVE;
                 return updatePrices(crawledProduct, crawledAt);
@@ -97,28 +96,28 @@ public class Product {
         }
     }
 
-    private List<UpdateStatus> updatePrices(CrawledProduct crawledProduct, LocalDateTime crawledAt) {
-        final List<UpdateStatus> updateStatuses = new ArrayList<>();
+    private List<ProductUpdateStatus> updatePrices(CrawledProduct crawledProduct, LocalDateTime crawledAt) {
+        final List<ProductUpdateStatus> productUpdateStatuses = new ArrayList<>();
 
-        if(productPrices.containsKey(NORMAL)){
-            if (productPrices.get(NORMAL).update(crawledProduct.getCardPrice(), crawledAt)) {
-                updateStatuses.add(UpdateStatus.UPDATE_SALE_PRICE);
+        if(productPrices.containsKey(PriceType.NORMAL)){
+            if (productPrices.get(PriceType.NORMAL).update(crawledProduct.getCardPrice(), crawledAt)) {
+                productUpdateStatuses.add(ProductUpdateStatus.UPDATE_SALE_PRICE);
             }
         };
 
-        if(productPrices.containsKey(CASH)){
-            if (productPrices.get(CASH).update(crawledProduct.getCardPrice(), crawledAt)) {
-                updateStatuses.add(UpdateStatus.UPDATE_SALE_CASH_PRICE);
+        if(productPrices.containsKey(PriceType.CASH)){
+            if (productPrices.get(PriceType.CASH).update(crawledProduct.getCardPrice(), crawledAt)) {
+                productUpdateStatuses.add(ProductUpdateStatus.UPDATE_SALE_CASH_PRICE);
             }
         };
 
-        if(productPrices.containsKey(CARD)){
-            if (productPrices.get(CARD).update(crawledProduct.getCardPrice(), crawledAt)) {
-                updateStatuses.add(UpdateStatus.UPDATE_SALE_CARD_PRICE);
+        if(productPrices.containsKey(PriceType.CARD)){
+            if (productPrices.get(PriceType.CARD).update(crawledProduct.getCardPrice(), crawledAt)) {
+                productUpdateStatuses.add(ProductUpdateStatus.UPDATE_SALE_CARD_PRICE);
             }
         };
 
-        return updateStatuses;
+        return productUpdateStatuses;
     }
 
     public void updateAllProductPrices(Integer price, LocalDateTime updateAt) {

@@ -1,7 +1,7 @@
 package com.podo.helloprice.telegram.domain.notifylog.dto;
 
 
-import com.podo.helloprice.code.model.ProductSaleStatus;
+import com.podo.helloprice.core.model.ProductSaleStatus;
 import com.podo.helloprice.core.util.CalculateUtil;
 import com.podo.helloprice.telegram.domain.notifylog.model.NotifyLog;
 import com.podo.helloprice.telegram.domain.product.dto.ProductDetailDto;

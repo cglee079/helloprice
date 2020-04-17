@@ -4,7 +4,7 @@ package com.podo.helloprice.telegram.app.menu.product.delete;
 import com.podo.helloprice.telegram.app.SendMessageCallbackFactory;
 import com.podo.helloprice.telegram.app.menu.AbstractMenuHandler;
 import com.podo.helloprice.telegram.app.menu.KeyboardHelper;
-import com.podo.helloprice.telegram.app.menu.Menu;
+import com.podo.helloprice.telegram.domain.user.model.Menu;
 import com.podo.helloprice.telegram.app.menu.product.ProductCommonResponse;
 import com.podo.helloprice.telegram.app.menu.product.ProductDescCommandTranslator;
 import com.podo.helloprice.telegram.app.menu.product.ProductDescParameter;

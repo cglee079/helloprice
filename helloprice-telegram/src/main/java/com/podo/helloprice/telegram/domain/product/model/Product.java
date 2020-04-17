@@ -1,7 +1,8 @@
 package com.podo.helloprice.telegram.domain.product.model;
 
-import com.podo.helloprice.code.model.ProductAliveStatus;
-import com.podo.helloprice.code.model.ProductSaleStatus;
+import com.podo.helloprice.core.model.PriceType;
+import com.podo.helloprice.core.model.ProductAliveStatus;
+import com.podo.helloprice.core.model.ProductSaleStatus;
 import com.podo.helloprice.crawl.worker.vo.CrawledProduct;
 import com.podo.helloprice.telegram.domain.BaseEntity;
 import com.podo.helloprice.telegram.domain.userproduct.UserProductNotify;
@@ -18,7 +19,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static com.podo.helloprice.telegram.domain.product.model.PriceType.*;
 import static java.util.Optional.ofNullable;
 
 @Slf4j
@@ -104,9 +104,9 @@ public class Product extends BaseEntity {
     }
 
     private void updatePrices(CrawledProduct crawledProduct, LocalDateTime crawledAt) {
-        ofNullable(this.productPrices.get(NORMAL)).ifPresent(p -> p.update(crawledProduct.getPrice(), null, crawledAt));
-        ofNullable(this.productPrices.get(CASH)).ifPresent(p -> p.update(crawledProduct.getCashPrice(), null, crawledAt));
-        ofNullable(this.productPrices.get(CARD)).ifPresent(p -> p.update(crawledProduct.getCardPrice(), crawledProduct.getCardType(), crawledAt));
+        ofNullable(this.productPrices.get(PriceType.NORMAL)).ifPresent(p -> p.update(crawledProduct.getPrice(), null, crawledAt));
+        ofNullable(this.productPrices.get(PriceType.CASH)).ifPresent(p -> p.update(crawledProduct.getCashPrice(), null, crawledAt));
+        ofNullable(this.productPrices.get(PriceType.CARD)).ifPresent(p -> p.update(crawledProduct.getCardPrice(), crawledProduct.getCardType(), crawledAt));
     }
 
     public void updateAllProductPrices(Integer price, LocalDateTime updateAt) {

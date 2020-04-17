@@ -1,6 +1,5 @@
 package com.podo.helloprice.telegram.domain.user.application.helper;
 
-import com.podo.helloprice.telegram.domain.user.application.UserReadService;
 import com.podo.helloprice.telegram.domain.user.exception.InvalidTelegramIdException;
 import com.podo.helloprice.telegram.domain.user.exception.InvalidUserIdException;
 import com.podo.helloprice.telegram.domain.user.model.User;

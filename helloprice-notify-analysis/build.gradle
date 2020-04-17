@@ -1,0 +1,16 @@
+dependencies {
+    implementation project(':helloprice-core')
+
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+
+    implementation 'org.springframework.cloud:spring-cloud-stream'
+    implementation 'org.springframework.cloud:spring-cloud-stream-binder-kafka'
+    implementation 'org.springframework.cloud:spring-cloud-starter-config'
+
+    implementation 'mysql:mysql-connector-java'
+    implementation group: 'javax.mail', name: 'mail', version: '1.4.7'
+
+    testImplementation 'org.springframework.cloud:spring-cloud-stream-test-support'
+}
+

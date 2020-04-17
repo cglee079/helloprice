@@ -1,6 +1,6 @@
 package com.podo.helloprice.telegram.domain.userproduct.repository;
 
-import com.podo.helloprice.telegram.domain.product.model.PriceType;
+import com.podo.helloprice.core.model.PriceType;
 import com.podo.helloprice.telegram.domain.userproduct.UserProductNotify;
 import org.springframework.data.jpa.repository.JpaRepository;
 

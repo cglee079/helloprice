@@ -3,15 +3,16 @@ package com.podo.helloprice.telegram.app.menu.email.add;
 import com.podo.helloprice.telegram.app.SendMessageCallbackFactory;
 import com.podo.helloprice.telegram.app.menu.AbstractMenuHandler;
 import com.podo.helloprice.telegram.app.menu.KeyboardHelper;
-import com.podo.helloprice.telegram.app.menu.Menu;
 import com.podo.helloprice.telegram.app.menu.email.auth.EmailKeyResponse;
+import com.podo.helloprice.telegram.app.menu.product.ProductDescCommandTranslator;
 import com.podo.helloprice.telegram.app.vo.MessageVo;
 import com.podo.helloprice.telegram.app.vo.SendMessageVo;
 import com.podo.helloprice.telegram.domain.user.application.UserReadService;
 import com.podo.helloprice.telegram.domain.user.dto.UserDetailDto;
+import com.podo.helloprice.telegram.global.infra.gmail.GmailClient;
+import com.podo.helloprice.telegram.domain.user.model.Menu;
 import com.podo.helloprice.telegram.domain.userproduct.UserProductNotifyService;
 import com.podo.helloprice.telegram.global.email.EmailKeyStore;
-import com.podo.helloprice.telegram.global.infra.gmail.GmailClient;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.validator.routines.EmailValidator;
@@ -19,8 +20,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.List;
 
-import static com.podo.helloprice.telegram.app.menu.Menu.*;
-import static com.podo.helloprice.telegram.app.menu.product.ProductDescCommandTranslator.encodes;
+import static com.podo.helloprice.telegram.domain.user.model.Menu.*;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -47,7 +47,7 @@ public class EmailAddMenuHandler extends AbstractMenuHandler {
 
         if (!EmailValidator.getInstance().isValid(email)) {
             log.debug("TELEGRAM  :: {} << 이메일 형식이 아닙니다, 받은메세지 '{}'", telegramId, requestMessage);
-            final List<String> productCommands = encodes(userProductNotifyService.findNotifyProductsByUserTelegramId(telegramId));
+            final List<String> productCommands = ProductDescCommandTranslator.encodes(userProductNotifyService.findNotifyProductsByUserTelegramId(telegramId));
             sender().send(SendMessageVo.create(messageVo, EmailAddResponse.invalidEmail(), KeyboardHelper.getHomeKeyboard(productCommands), callbackFactory.create(telegramId, HOME)));
             return;
         }

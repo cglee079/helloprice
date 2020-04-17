@@ -1,6 +1,6 @@
 package com.podo.helloprice.telegram.domain.user.model;
 
-import com.podo.helloprice.telegram.app.menu.Menu;
+import com.podo.helloprice.core.model.UserStatus;
 import com.podo.helloprice.telegram.domain.BaseEntity;
 import com.podo.helloprice.telegram.domain.userproduct.UserProductNotify;
 import lombok.AccessLevel;

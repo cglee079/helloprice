@@ -5,7 +5,7 @@ import com.podo.helloprice.crawl.worker.target.danawa.DanawaProductCodeCrawler;
 import com.podo.helloprice.telegram.app.SendMessageCallbackFactory;
 import com.podo.helloprice.telegram.app.menu.AbstractMenuHandler;
 import com.podo.helloprice.telegram.app.menu.KeyboardHelper;
-import com.podo.helloprice.telegram.app.menu.Menu;
+import com.podo.helloprice.telegram.domain.user.model.Menu;
 import com.podo.helloprice.telegram.app.menu.product.ProductCommonResponse;
 import com.podo.helloprice.telegram.app.menu.product.ProductAddHandler;
 import com.podo.helloprice.telegram.app.vo.MessageVo;
@@ -18,7 +18,7 @@ import org.springframework.stereotype.Component;
 import java.util.List;
 import java.util.Objects;
 
-import static com.podo.helloprice.telegram.app.menu.Menu.PRODUCT_ADD;
+import static com.podo.helloprice.telegram.domain.user.model.Menu.PRODUCT_ADD;
 import static com.podo.helloprice.telegram.app.menu.product.ProductDescCommandTranslator.encodes;
 
 @Slf4j

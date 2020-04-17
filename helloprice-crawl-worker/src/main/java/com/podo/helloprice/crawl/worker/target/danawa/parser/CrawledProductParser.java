@@ -1,6 +1,6 @@
 package com.podo.helloprice.crawl.worker.target.danawa.parser;
 
-import com.podo.helloprice.code.model.ProductSaleStatus;
+import com.podo.helloprice.core.model.ProductSaleStatus;
 import com.podo.helloprice.core.util.StringUtil;
 import com.podo.helloprice.crawl.worker.vo.CrawledProduct;
 import lombok.extern.slf4j.Slf4j;
@@ -9,8 +9,6 @@ import org.jsoup.nodes.Element;
 
 import java.time.LocalDateTime;
 import java.util.Objects;
-
-import static com.podo.helloprice.code.model.ProductSaleStatus.*;
 
 @Slf4j
 public class CrawledProductParser {
@@ -95,11 +93,11 @@ public class CrawledProductParser {
     private ProductSaleStatus getProductSaleStatusByCrawledSaleStatusText(String saleStatusText) {
         switch (saleStatusText) {
             case TEXT_PRODUCT_STATUS_DISCONTINUE:
-                return DISCONTINUE;
+                return ProductSaleStatus.DISCONTINUE;
             case TEXT_PRODUCT_STATUS_EMPTY_ACCOUNT:
-                return EMPTY_AMOUNT;
+                return ProductSaleStatus.EMPTY_AMOUNT;
             case TEXT_PRODUCT_STATUS_NO_SUPPORT:
-                return NOT_SUPPORT;
+                return ProductSaleStatus.NOT_SUPPORT;
         }
 
         return ProductSaleStatus.UNKNOWN;

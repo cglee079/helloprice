@@ -1,14 +1,16 @@
 package com.podo.helloprice.telegram.domain.userproduct;
 
-import com.podo.helloprice.telegram.domain.product.dto.ProductDetailDto;
-import com.podo.helloprice.telegram.domain.product.model.PriceType;
-import com.podo.helloprice.telegram.domain.product.model.Product;
-import com.podo.helloprice.telegram.domain.product.repository.ProductRepository;
+import com.podo.helloprice.core.model.PriceType;
+import com.podo.helloprice.core.model.UserStatus;
+import com.podo.helloprice.telegram.domain.product.application.helper.ProductReadHelper;
+import com.podo.helloprice.telegram.domain.user.application.helper.UserReadServiceHelper;
 import com.podo.helloprice.telegram.domain.user.dto.UserDetailDto;
 import com.podo.helloprice.telegram.domain.user.model.User;
-import com.podo.helloprice.telegram.domain.user.model.UserStatus;
 import com.podo.helloprice.telegram.domain.user.repository.UserRepository;
 import com.podo.helloprice.telegram.domain.userproduct.repository.UserProductNotifyRepository;
+import com.podo.helloprice.telegram.domain.product.dto.ProductDetailDto;
+import com.podo.helloprice.telegram.domain.product.model.Product;
+import com.podo.helloprice.telegram.domain.product.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -18,9 +20,6 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
-
-import static com.podo.helloprice.telegram.domain.product.application.helper.ProductReadHelper.findProductById;
-import static com.podo.helloprice.telegram.domain.user.application.helper.UserReadServiceHelper.findUserById;
 
 @Slf4j
 @Transactional
@@ -38,8 +37,8 @@ public class UserProductNotifyService {
     }
 
     public void addNewNotify(Long userId, Long productId, PriceType priceType) {
-        final User existedUser = findUserById(userRepository, userId);
-        final Product existedProduct = findProductById(productRepository, productId);
+        final User existedUser = UserReadServiceHelper.findUserById(userRepository, userId);
+        final Product existedProduct = ProductReadHelper.findProductById(productRepository, productId);
 
         UserProductNotify userProductNotify = new UserProductNotify(existedUser, existedProduct, priceType);
         userProductNotifyRepository.save(userProductNotify);

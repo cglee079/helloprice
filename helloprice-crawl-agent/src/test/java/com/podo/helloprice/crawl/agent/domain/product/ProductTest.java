@@ -1,12 +1,12 @@
 package com.podo.helloprice.crawl.agent.domain.product;
 
+import com.podo.helloprice.core.model.ProductAliveStatus;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.test.util.ReflectionTestUtils;
 
 import java.time.LocalDateTime;
 
-import static com.podo.helloprice.code.model.ProductAliveStatus.DEAD;
 import static com.podo.helloprice.code.model.PriceUpdateStatus.UPDATED;
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -44,7 +44,7 @@ class ProductTest {
         assertThat(product.getDeadCount()).isEqualTo(1);
         assertThat(product.getProductPrice()).isEqualTo(0);
         assertThat(product.getBeforePrice()).isEqualTo(productPrice);
-        assertThat(product.getAliveStatus()).isEqualTo(DEAD);
+        assertThat(product.getAliveStatus()).isEqualTo(ProductAliveStatus.DEAD);
         assertThat(product.getUpdateStatus()).isEqualTo(UPDATED);
         assertThat(product.getLastUpdatedAt()).isEqualTo(lastCrawledAt);
     }

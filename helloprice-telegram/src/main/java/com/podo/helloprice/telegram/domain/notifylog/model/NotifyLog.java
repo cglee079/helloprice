@@ -1,6 +1,6 @@
 package com.podo.helloprice.telegram.domain.notifylog.model;
 
-import com.podo.helloprice.code.model.ProductSaleStatus;
+import com.podo.helloprice.core.model.ProductSaleStatus;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
