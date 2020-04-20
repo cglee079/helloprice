@@ -20,8 +20,9 @@ public class TelegramNotifyMessageConsumer implements Consumer<TelegramNotifyMes
         log.debug("MQ :: CONSUME :: {}", telegramNotifyMessage);
 
         final String telegramId = telegramNotifyMessage.getTelegramId();
+        final String imageUrl = telegramNotifyMessage.getImageUrl();
         final String contents = telegramNotifyMessage.getContents();
 
-        telegramSender.send(telegramId, null, contents);
+        telegramSender.send(telegramId, imageUrl, contents);
     }
 }

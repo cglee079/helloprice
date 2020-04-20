@@ -12,7 +12,7 @@ public class NotifyTitle {
                 .append("'")
                 .append(productDetail.getProductName())
                 .append("' 상품이 ")
-                .append(CurrencyUtil.toKrw(productDetail.getPrice()))
+                .append(CurrencyUtil.toKRW(productDetail.getPrice()))
                 .append(" 으로 다시 판매를 시작했습니다.")
                 .toString();
     }

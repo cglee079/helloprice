@@ -1,4 +1,4 @@
-package com.podo.helloprice.telegram.app.menu.product;
+package com.podo.helloprice.telegram.app.menu.product.global;
 
 import com.podo.helloprice.crawl.worker.vo.CrawledProduct;
 import com.podo.helloprice.core.util.CurrencyUtil;
@@ -55,16 +55,6 @@ public class ProductAddResponse {
                 .toString();
     }
 
-    public static String hasMaxProduct() {
-        return new StringBuilder()
-                .append("죄송합니다, 최대 상품 알림 수를 초과했습니다.")
-                .append("\n")
-                .append("\n")
-                .append(CommonResponse.toHome())
-                .toString();
-
-    }
-
     public static String descCrawledProduct(CrawledProduct crawledProduct) {
         final StringBuilder message = new StringBuilder()
                 .append("<b>상품코드</b> : ")
@@ -91,14 +81,14 @@ public class ProductAddResponse {
 
                 .append("<b>")
                 .append("상품가격/일반: ")
-                .append(CurrencyUtil.toKrw(crawledProduct.getPrice()))
+                .append(CurrencyUtil.toKRW(crawledProduct.getPrice()))
                 .append("</b>")
                 .append("\n");
 
         if(Objects.nonNull(crawledProduct.getCashPrice())) {
             message.append("<b>")
                     .append("상품가격/현금: ")
-                    .append(CurrencyUtil.toKrw(crawledProduct.getCashPrice()))
+                    .append(CurrencyUtil.toKRW(crawledProduct.getCashPrice()))
                     .append("</b>")
                     .append("\n");
         }
@@ -106,7 +96,7 @@ public class ProductAddResponse {
         if(Objects.nonNull(crawledProduct.getCardPrice())) {
             message.append("<b>")
                     .append("상품가격/카드: ")
-                    .append(CurrencyUtil.toKrw(crawledProduct.getCardPrice()))
+                    .append(CurrencyUtil.toKRW(crawledProduct.getCardPrice()))
                     .append("(" + crawledProduct.getCardType() + ")")
                     .append("</b>")
                     .append("\n");

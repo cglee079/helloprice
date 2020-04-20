@@ -5,7 +5,7 @@ import com.podo.helloprice.core.util.CurrencyUtil;
 import com.podo.helloprice.product.update.analysis.domain.product.dto.ProductDetailDto;
 import lombok.experimental.UtilityClass;
 
-import static com.podo.helloprice.core.util.CurrencyUtil.toKrw;
+import static com.podo.helloprice.core.util.CurrencyUtil.toKRW;
 import static java.math.BigDecimal.valueOf;
 
 @UtilityClass
@@ -16,7 +16,7 @@ public class SaleNotifyHelper {
                 .append("'")
                 .append(product.getProductName())
                 .append("' 상품의 최저가격이  ")
-                .append(toKrw(product.getPrice()))
+                .append(toKRW(product.getPrice()))
                 .append(" 으로 갱신되었습니다.")
                 .toString();
     }
@@ -34,7 +34,7 @@ public class SaleNotifyHelper {
 
                 .append("<b>")
                 .append("현재가격 : ")
-                .append(CurrencyUtil.toKrw(price))
+                .append(CurrencyUtil.toKRW(price))
                 .append("</b>")
                 .append("\n")
 

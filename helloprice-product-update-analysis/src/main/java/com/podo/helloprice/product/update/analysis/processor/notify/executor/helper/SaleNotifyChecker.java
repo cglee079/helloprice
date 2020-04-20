@@ -8,7 +8,7 @@ import static java.math.BigDecimal.valueOf;
 @UtilityClass
 public class SaleNotifyChecker {
 
-    public static boolean satifiedSendNotify(Integer price, Integer beforePrice){
+    public static boolean satisfiedSendNotify(Integer price, Integer beforePrice){
         return price < beforePrice && CalculateUtil.getChangePercent(price, beforePrice).compareTo(valueOf(-1)) < 0;
     }
 }

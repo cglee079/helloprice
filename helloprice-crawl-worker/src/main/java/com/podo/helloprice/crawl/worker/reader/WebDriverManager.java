@@ -3,6 +3,7 @@ package com.podo.helloprice.crawl.worker.reader;
 import com.podo.helloprice.core.util.NumberUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.openqa.selenium.Capabilities;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.remote.RemoteWebDriver;
@@ -41,7 +42,6 @@ public class WebDriverManager {
         this.webDrivers = new HashMap<>();
     }
 
-
     private void initNewWebDriverOnIndex(int webDriverIndex, String userAgent, Long readTimeout) {
         final String webDriverRemoteUrl = webDriverRemoteUrls.get(webDriverIndex);
 
@@ -66,6 +66,7 @@ public class WebDriverManager {
         final ChromeOptions chromeOptions = new ChromeOptions();
         chromeOptions.addArguments("headless");
         chromeOptions.addArguments("disable-gpu");
+        chromeOptions.addArguments("--no-sandbox");
         chromeOptions.addArguments("user-agent=" + userAgent);
         return chromeOptions;
     }

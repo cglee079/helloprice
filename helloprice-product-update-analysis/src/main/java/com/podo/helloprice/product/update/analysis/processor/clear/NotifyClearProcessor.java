@@ -6,6 +6,8 @@ import com.podo.helloprice.product.update.analysis.domain.userproduct.applicatio
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDateTime;
+
 @RequiredArgsConstructor
 @Component
 public class NotifyClearProcessor implements Processor {
@@ -13,7 +15,7 @@ public class NotifyClearProcessor implements Processor {
     private final UserProductNotifyDeleteService userProductNotifyDeleteService;
 
     @Override
-    public void process(Long productId, ProductUpdateStatus updateStatus) {
+    public void process(Long productId, ProductUpdateStatus updateStatus, LocalDateTime now) {
 
         switch (updateStatus){
             case UPDATE_UNKNOWN:

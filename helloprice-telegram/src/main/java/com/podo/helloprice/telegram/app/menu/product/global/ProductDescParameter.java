@@ -1,4 +1,4 @@
-package com.podo.helloprice.telegram.app.menu.product;
+package com.podo.helloprice.telegram.app.menu.product.global;
 
 import com.podo.helloprice.core.model.PriceType;
 import lombok.EqualsAndHashCode;
@@ -9,13 +9,13 @@ import lombok.RequiredArgsConstructor;
 @Getter
 @RequiredArgsConstructor
 @EqualsAndHashCode
-public class ProductTypeParameter {
+public class ProductDescParameter {
 
     private final String productCode;
     private final PriceType priceType;
 
     @Override
     public String toString() {
-        return String.format("%s/%s", productCode, priceType.value());
+        return String.format("%s/%s", productCode, priceType.kr());
     }
 }

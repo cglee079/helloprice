@@ -25,6 +25,7 @@ public class CrawledProductParser {
     private static final String TEXT_PRODUCT_STATUS_DISCONTINUE = "단종 된";
     private static final String TEXT_PRODUCT_STATUS_EMPTY_ACCOUNT = "일시 품절";
     private static final String TEXT_PRODUCT_STATUS_NO_SUPPORT = "가격비교 중지";
+    public static final String CARD_TYPE_POSTFIX = "카드최저가";
 
     public CrawledProduct parse(Document document, String productCode, String url, LocalDateTime crawledAt) {
         try {
@@ -74,7 +75,7 @@ public class CrawledProductParser {
 
     private String getCardType(Document document) {
         final Element cardTypeElement = document.selectFirst(SELECTOR_PRODUCT_CARD_TYPE);
-        return Objects.isNull(cardTypeElement) ? null : cardTypeElement.text();
+        return Objects.isNull(cardTypeElement) ? null : cardTypeElement.text().replace(CARD_TYPE_POSTFIX, "").trim();
     }
 
     private Integer getCardPrice(Document document) {

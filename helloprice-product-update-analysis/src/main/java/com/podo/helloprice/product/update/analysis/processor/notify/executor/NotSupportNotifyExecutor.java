@@ -30,10 +30,11 @@ public class NotSupportNotifyExecutor implements NotifyExecutor {
     }
 
     @Override
-    public void execute(Long productId) {
+    public boolean execute(Long productId) {
         notify(productId, NORMAL);
         notify(productId, CARD);
         notify(productId, CASH);
+        return true;
     }
 
     private void notify(Long productId, PriceType priceType) {

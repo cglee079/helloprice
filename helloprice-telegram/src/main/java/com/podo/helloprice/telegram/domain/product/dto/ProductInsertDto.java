@@ -32,7 +32,7 @@ public class ProductInsertDto {
     }
 
     public Product toEntity() {
-        return Product.builder()
+        return Product.newProduct()
                 .productName(productName)
                 .productCode(productCode)
                 .url(url)

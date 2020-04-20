@@ -2,14 +2,17 @@ package com.podo.helloprice.telegram.global.config;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.domain.AuditorAware;
+import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import java.util.Optional;
 
+@EnableJpaAuditing
 @RequiredArgsConstructor
 @Configuration
 public class JpaConfig {
@@ -24,6 +27,6 @@ public class JpaConfig {
 
     @Bean
     AuditorAware auditorAware() {
-        return (AuditorAware<String>) () -> Optional.of("Helloprice.Telegram@" + Thread.currentThread());
+        return (AuditorAware<String>) () -> Optional.of("Telegram");
     }
 }

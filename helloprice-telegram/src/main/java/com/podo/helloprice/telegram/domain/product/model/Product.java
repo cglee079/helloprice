@@ -61,7 +61,7 @@ public class Product extends BaseEntity {
     @OneToMany(mappedBy = "product")
     private List<UserProductNotify> userProductNotifies = new ArrayList<>();
 
-    @Builder
+    @Builder(builderMethodName = "newProduct")
     public Product(String productCode,
                    String productName, String description,
                    String url, String imageUrl,
@@ -93,12 +93,13 @@ public class Product extends BaseEntity {
             case UNKNOWN:
             case DISCONTINUE:
             case NOT_SUPPORT:
+                this.updateAllProductPrices(0, lastCrawledAt);
+                this.aliveStatus = ProductAliveStatus.PAUSE;
+                break;
             case EMPTY_AMOUNT:
                 this.updateAllProductPrices(0, lastCrawledAt);
-                this.aliveStatus = ProductAliveStatus.ALIVE;
                 break;
             case SALE:
-                this.aliveStatus = ProductAliveStatus.ALIVE;
                 updatePrices(crawledProduct, crawledAt);
         }
     }

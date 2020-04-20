@@ -26,14 +26,15 @@ public class EmptyAmountNotifyExecutor implements NotifyExecutor {
 
     @Override
     public ProductUpdateStatus getProductUpdateStatus() {
-        return ProductUpdateStatus.UPDATE_DISCONTINUE;
+        return ProductUpdateStatus.UPDATE_EMPTY_AMOUNT;
     }
 
     @Override
-    public void execute(Long productId) {
+    public boolean execute(Long productId) {
         notify(productId, NORMAL);
         notify(productId, CARD);
         notify(productId, CASH);
+        return true;
     }
 
     private void notify(Long productId, PriceType priceType) {

@@ -9,6 +9,8 @@ import com.podo.helloprice.core.util.CurrencyUtil;
 import lombok.experimental.UtilityClass;
 import org.springframework.util.StringUtils;
 
+import java.util.Objects;
+
 @UtilityClass
 public class ProductDescribe {
 
@@ -54,14 +56,14 @@ public class ProductDescribe {
         final StringBuilder message = new StringBuilder();
         if (productBeforePrice.equals(0)) {
             message.append("야호!  <b>")
-                    .append(CurrencyUtil.toKrw(productPrice))
+                    .append(CurrencyUtil.toKRW(productPrice))
                     .append("</b>으로 다시 판매를 시작했어요!!");
             return message.toString();
         }
 
         if (productPrice > productBeforePrice) {
             message.append("죄송합니다.. 가격이 <b>")
-                    .append(CurrencyUtil.toKrw(productPrice - productBeforePrice))
+                    .append(CurrencyUtil.toKRW(productPrice - productBeforePrice))
                     .append("</b> 올랐어요...");
             return message.toString();
         }
@@ -72,7 +74,7 @@ public class ProductDescribe {
         }
 
         message.append("야호! 가격이 <b>")
-                .append(CurrencyUtil.toKrw(productBeforePrice - productPrice))
+                .append(CurrencyUtil.toKRW(productBeforePrice - productPrice))
                 .append("</b> 떨어졌어요!!");
 
         return message.toString();
@@ -117,20 +119,20 @@ public class ProductDescribe {
 
                 .append("<b>")
                 .append("가격타입 : ★")
-                .append(product.getPriceType().value())
+                .append(product.getPriceType().kr())
                 .append(StringUtils.isEmpty(product.getPriceAdditionalInfo()) ? "" : "(" + product.getPriceAdditionalInfo() + ")")
                 .append("</b>")
                 .append("\n")
 
                 .append("<b>")
                 .append("이전가격 : ")
-                .append(CurrencyUtil.toKrw(productBeforePrice))
+                .append(CurrencyUtil.toKRW(productBeforePrice))
                 .append("</b>")
                 .append("\n")
 
                 .append("<b>")
                 .append("현재가격 : ")
-                .append(CurrencyUtil.toKrw(productPrice))
+                .append(CurrencyUtil.toKRW(productPrice))
                 .append("</b>")
                 .append("\n")
 

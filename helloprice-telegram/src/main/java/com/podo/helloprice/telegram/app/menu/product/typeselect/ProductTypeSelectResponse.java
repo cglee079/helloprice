@@ -1,7 +1,7 @@
 package com.podo.helloprice.telegram.app.menu.product.typeselect;
 
+import com.podo.helloprice.core.model.PriceType;
 import com.podo.helloprice.telegram.app.menu.CommonResponse;
-import com.podo.helloprice.telegram.app.menu.product.ProductCommonResponse;
 import lombok.experimental.UtilityClass;
 
 @UtilityClass
@@ -16,12 +16,26 @@ public class ProductTypeSelectResponse {
 
     }
 
-    public static String alreadySetNotifyProduct() {
+    public static String alreadySetNotifyProduct(String productName, PriceType priceType) {
         return new StringBuilder()
-                .append("이미 알림이 등록된 상품입니다\n")
+                .append("'")
+                .append(productName)
+                .append("/★")
+                .append(priceType.kr())
+                .append("' 은 이미 알림이 등록된 상품입니다\n")
                 .append("\n")
                 .append(CommonResponse.toHome())
                 .toString();
+    }
+
+    public static String hasMaxProduct() {
+        return new StringBuilder()
+                .append("죄송합니다, 최대 상품 알림 수를 초과했습니다.")
+                .append("\n")
+                .append("\n")
+                .append(CommonResponse.toHome())
+                .toString();
+
     }
 
 }

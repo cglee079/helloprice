@@ -4,24 +4,23 @@ package com.podo.helloprice.telegram.app.menu.product.delete;
 import com.podo.helloprice.telegram.app.SendMessageCallbackFactory;
 import com.podo.helloprice.telegram.app.menu.AbstractMenuHandler;
 import com.podo.helloprice.telegram.app.menu.CommonResponse;
-import com.podo.helloprice.telegram.app.menu.KeyboardHelper;
-import com.podo.helloprice.telegram.domain.user.model.Menu;
-import com.podo.helloprice.telegram.app.menu.product.ProductDescCommandTranslator;
-import com.podo.helloprice.telegram.app.menu.product.ProductDescParameter;
+import com.podo.helloprice.telegram.app.menu.home.HomeKeyboard;
 import com.podo.helloprice.telegram.app.vo.MessageVo;
 import com.podo.helloprice.telegram.app.vo.SendMessageVo;
 import com.podo.helloprice.telegram.domain.product.application.ProductReadService;
-import com.podo.helloprice.telegram.domain.product.dto.ProductDetailDto;
+import com.podo.helloprice.telegram.domain.product.dto.ProductOnePriceTypeDto;
 import com.podo.helloprice.telegram.domain.user.application.UserReadService;
 import com.podo.helloprice.telegram.domain.user.dto.UserDetailDto;
+import com.podo.helloprice.telegram.domain.user.model.Menu;
 import com.podo.helloprice.telegram.domain.userproduct.application.UserProductNotifyReadService;
 import com.podo.helloprice.telegram.domain.userproduct.application.UserProductNotifyWriteService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
-import java.util.List;
 import java.util.Objects;
+
+import static com.podo.helloprice.telegram.app.menu.product.delete.ProductDeleteCommand.EXIT;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -42,44 +41,36 @@ public class ProductDeleteMenuHandler extends AbstractMenuHandler {
 
     public void handle(MessageVo messageVo, String requestMessage) {
         final String telegramId = messageVo.getTelegramId();
+        final HomeKeyboard homeKeyboard = getHomeKeyboard(telegramId);
 
         log.debug("APP :: {} << 상품 알림 삭제 메뉴에서 응답, 받은메세지 '{}'", telegramId, requestMessage);
 
-        final List<String> productCommands = ProductDescCommandTranslator.encodes(userProductNotifyReadService.findNotifyProductsByUserTelegramId(telegramId));
 
         final ProductDeleteCommand requestProductDeleteCommand = ProductDeleteCommand.from(requestMessage);
-        if (Objects.nonNull(requestProductDeleteCommand)) {
-            handleCommand(requestProductDeleteCommand, messageVo, productCommands);
+        if (Objects.nonNull(requestProductDeleteCommand) && requestProductDeleteCommand.equals(EXIT)) {
+            sender().send(SendMessageVo.create(messageVo, CommonResponse.toHome(), homeKeyboard, callbackFactory.create(messageVo.getTelegramId(), Menu.HOME)));
             return;
         }
 
-        final ProductDescParameter productDescParameter = ProductDescCommandTranslator.decode(requestMessage);
+        final ProductDeleteParameter productDeleteParameter = ProductDeleteCommandTranslator.decode(requestMessage);
 
-        if (Objects.isNull(productDescParameter)) {
+        if (Objects.isNull(productDeleteParameter)) {
             log.debug("APP :: {} << 잘못된 값을 입력했습니다. 상품코드를 찾을 수 없습니다. 받은메세지 '{}'", telegramId, requestMessage);
-            sender().send(SendMessageVo.create(messageVo, CommonResponse.wrongInput(), KeyboardHelper.getHomeKeyboard(productCommands), callbackFactory.create(telegramId, Menu.HOME)));
+            sender().send(SendMessageVo.create(messageVo, CommonResponse.wrongInput(), homeKeyboard, callbackFactory.create(telegramId, Menu.HOME)));
             return;
         }
 
         final UserDetailDto user = userReadService.findByTelegramId(telegramId);
-        final ProductDetailDto product = productReadService.findByProductParameter(productDescParameter.getProductCode(), productDescParameter.getPriceType());
+        final ProductOnePriceTypeDto product = productReadService.findByProductParameter(productDeleteParameter.getProductCode(), productDeleteParameter.getPriceType());
 
         if (!userProductNotifyReadService.isExistedNotify(user.getId(), product.getId(), product.getPriceType())) {
-            log.debug("APP :: {} << 삭제 요청한 {}({}) 상품 알림이 등록되어있지 않습니다. 받은메세지 '{}'", telegramId, product.getProductName(), productDescParameter, requestMessage);
-            sender().send(SendMessageVo.create(messageVo, ProductDeleteResponse.alreadyNotNotifyProduct(), KeyboardHelper.getHomeKeyboard(productCommands), callbackFactory.create(telegramId, Menu.HOME)));
+            log.debug("APP :: {} << 삭제 요청한 {}({}) 상품 알림이 등록되어있지 않습니다. 받은메세지 '{}'", telegramId, product.getProductName(), productDeleteParameter, requestMessage);
+            sender().send(SendMessageVo.create(messageVo, ProductDeleteResponse.alreadyNotNotifyProduct(), homeKeyboard, callbackFactory.create(telegramId, Menu.HOME)));
         }
 
-        userProductNotifyWriteService.deleteNotifyByUserIdAndProductId(user.getId(), product.getId(), productDescParameter.getPriceType());
-        final List<String> reloadProductCommands = ProductDescCommandTranslator.encodes(userProductNotifyReadService.findNotifyProductsByUserTelegramId(telegramId));
-        sender().send(SendMessageVo.create(messageVo, ProductDeleteResponse.deletedNotifyProduct(product), KeyboardHelper.getHomeKeyboard(reloadProductCommands), callbackFactory.create(telegramId, Menu.HOME)));
+        userProductNotifyWriteService.deleteNotifyByUserIdAndProductId(user.getId(), product.getId(), productDeleteParameter.getPriceType());
 
-    }
-
-    private void handleCommand(ProductDeleteCommand productDeleteCommand, MessageVo messageVo, List<String> productCommands) {
-        switch (productDeleteCommand) {
-            case EXIT:
-                sender().send(SendMessageVo.create(messageVo, CommonResponse.toHome(), KeyboardHelper.getHomeKeyboard(productCommands), callbackFactory.create(messageVo.getTelegramId(), Menu.HOME)));
-        }
+        sender().send(SendMessageVo.create(messageVo, ProductDeleteResponse.deletedNotifyProduct(product), getHomeKeyboard(telegramId), callbackFactory.create(telegramId, Menu.HOME)));
     }
 }
 

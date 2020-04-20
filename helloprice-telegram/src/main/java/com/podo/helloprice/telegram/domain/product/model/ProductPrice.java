@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 @Getter
 @NoArgsConstructor
@@ -36,17 +37,21 @@ public class ProductPrice {
         final ProductPrice productPrice = new ProductPrice();
         productPrice.priceType = priceType;
         productPrice.price = price;
-        productPrice.beforePrice = 0;
+        productPrice.beforePrice = price;
         productPrice.lastUpdateAt = lastUpdateAt;
         productPrice.additionalInfo = additionalInfo;
         return productPrice;
     }
 
     public void update(Integer price, String additionalInfo, LocalDateTime updateAt) {
+
+        if(Objects.isNull(price)){
+            price = 0;
+        }
+
         final Integer existPrice = this.price;
 
-        if (price.equals(existPrice) || this.additionalInfo.equals(additionalInfo)) {
-            this.additionalInfo = additionalInfo;
+        if (price.equals(existPrice) && Objects.equals(this.additionalInfo, additionalInfo)) {
             return ;
         }
 

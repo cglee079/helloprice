@@ -1,7 +1,7 @@
 package com.podo.helloprice.telegram.domain.userproduct.application;
 
 import com.podo.helloprice.core.model.PriceType;
-import com.podo.helloprice.telegram.domain.product.dto.ProductDetailDto;
+import com.podo.helloprice.telegram.domain.product.dto.ProductOnePriceTypeDto;
 import com.podo.helloprice.telegram.domain.userproduct.UserProductNotify;
 import com.podo.helloprice.telegram.domain.userproduct.repository.UserProductNotifyRepository;
 import lombok.RequiredArgsConstructor;
@@ -26,11 +26,11 @@ public class UserProductNotifyReadService {
         return Objects.nonNull(existedNotify);
     }
 
-    public List<ProductDetailDto> findNotifyProductsByUserTelegramId(String telegramId) {
-        final List<UserProductNotify> existedUserProductNotifies = userProductNotifyRepository.findByUserTelegramId(telegramId);
+    public List<ProductOnePriceTypeDto> findNotifyProductsByTelegramId(String telegramId) {
+        final List<UserProductNotify> existedUserProductNotifies = userProductNotifyRepository.findByTelegramId(telegramId);
 
         return existedUserProductNotifies.stream()
-                .map(notify -> new ProductDetailDto(notify.getProduct(), notify.getPriceType()))
+                .map(notify -> new ProductOnePriceTypeDto(notify.getProduct(), notify.getPriceType()))
                 .collect(Collectors.toList());
     }
 

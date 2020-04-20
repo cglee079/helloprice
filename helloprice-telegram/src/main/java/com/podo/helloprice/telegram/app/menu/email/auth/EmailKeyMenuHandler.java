@@ -1,11 +1,10 @@
 package com.podo.helloprice.telegram.app.menu.email.auth;
 
 
-import com.podo.helloprice.telegram.app.menu.product.ProductDescCommandTranslator;
+import com.podo.helloprice.telegram.app.menu.home.HomeKeyboard;
 import com.podo.helloprice.telegram.app.SendMessageCallbackFactory;
 import com.podo.helloprice.telegram.domain.user.model.Menu;
 import com.podo.helloprice.telegram.app.menu.AbstractMenuHandler;
-import com.podo.helloprice.telegram.app.menu.KeyboardHelper;
 import com.podo.helloprice.telegram.app.vo.MessageVo;
 import com.podo.helloprice.telegram.app.vo.SendMessageVo;
 import com.podo.helloprice.telegram.domain.user.application.UserWriteService;
@@ -16,7 +15,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
-import java.util.List;
 import java.util.Objects;
 
 import static com.podo.helloprice.telegram.domain.user.model.Menu.EMAIL_KEY;
@@ -40,29 +38,28 @@ public class EmailKeyMenuHandler extends AbstractMenuHandler {
     public void handle(MessageVo messageVo, String messageContents) {
         final String telegramId = messageVo.getTelegramId();
         final String authKey = messageContents;
+        final HomeKeyboard homeKeyboard = getHomeKeyboard(telegramId);
 
         log.debug("TELEGRAM :: {} << 이메일 인증 메뉴에서 응답, 받은메세지 '{}'", telegramId, messageContents);
-
-        final List<String> productCommands = ProductDescCommandTranslator.encodes(userProductNotifyReadService.findNotifyProductsByUserTelegramId(telegramId));
 
         final String email = emailKeyStore.getEmailIfCertifiedByAuthKey(authKey, LocalDateTime.now());
 
         if (Objects.isNull(email)) {
             log.debug("APP :: {} << 키 값이 잘못되었습니다", telegramId);
-            sender().send(SendMessageVo.create(messageVo, EmailKeyResponse.invalidKey(), KeyboardHelper.getHomeKeyboard(productCommands), callbackFactory.create(telegramId, HOME)));
+            sender().send(SendMessageVo.create(messageVo, EmailKeyResponse.invalidKey(), homeKeyboard, callbackFactory.create(telegramId, HOME)));
             return;
         }
 
-        handleEmail(messageVo, productCommands, email);
+        handleEmail(messageVo, email, homeKeyboard);
     }
 
-    private void handleEmail(MessageVo messageVo, List<String> productCommands, String email) {
+    private void handleEmail(MessageVo messageVo, String email, HomeKeyboard homeKeyboard) {
         final String telegramId = messageVo.getTelegramId();
 
         log.debug("APP :: {} << 이메일이 인증되었습니다", telegramId);
+
         userWriteService.updateEmailByTelegramId(telegramId, email);
 
-        sender().send(SendMessageVo.create(messageVo, EmailKeyResponse.success(), KeyboardHelper.getHomeKeyboard(productCommands), callbackFactory.create(telegramId, HOME)));
+        sender().send(SendMessageVo.create(messageVo, EmailKeyResponse.success(), homeKeyboard, callbackFactory.create(telegramId, HOME)));
     }
-
 }

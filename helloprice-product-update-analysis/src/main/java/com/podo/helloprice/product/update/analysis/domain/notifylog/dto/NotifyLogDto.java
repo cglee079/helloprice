@@ -4,7 +4,7 @@ package com.podo.helloprice.product.update.analysis.domain.notifylog.dto;
 import com.podo.helloprice.core.model.ProductSaleStatus;
 import com.podo.helloprice.core.util.CalculateUtil;
 import com.podo.helloprice.product.update.analysis.domain.notifylog.model.NotifyLog;
-import com.podo.helloprice.telegram.domain.product.dto.ProductDetailDto;
+import com.podo.helloprice.product.update.analysis.domain.product.dto.ProductDetailDto;
 import lombok.Builder;
 import lombok.Getter;
 

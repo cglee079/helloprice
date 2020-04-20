@@ -1,19 +1,18 @@
 package com.podo.helloprice.telegram.app.core;
 
 
+import com.podo.helloprice.core.model.UserStatus;
 import com.podo.helloprice.telegram.app.SendMessageCallbackFactory;
 import com.podo.helloprice.telegram.app.menu.CommonResponse;
-import com.podo.helloprice.telegram.app.menu.KeyboardHelper;
 import com.podo.helloprice.telegram.app.menu.MenuHandler;
+import com.podo.helloprice.telegram.app.menu.home.HomeKeyboard;
 import com.podo.helloprice.telegram.app.vo.MessageVo;
-import com.podo.helloprice.telegram.domain.user.application.UserReadService;
-import com.podo.helloprice.telegram.domain.user.dto.UserDetailDto;
-import com.podo.helloprice.telegram.domain.user.model.Menu;
-import com.podo.helloprice.telegram.app.menu.product.ProductCommonResponse;
 import com.podo.helloprice.telegram.app.vo.SendMessageVo;
+import com.podo.helloprice.telegram.domain.user.application.UserReadService;
 import com.podo.helloprice.telegram.domain.user.application.UserWriteService;
+import com.podo.helloprice.telegram.domain.user.dto.UserDetailDto;
 import com.podo.helloprice.telegram.domain.user.dto.UserInsertDto;
-import com.podo.helloprice.core.model.UserStatus;
+import com.podo.helloprice.telegram.domain.user.model.Menu;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -22,8 +21,9 @@ import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.User;
 
 import java.time.LocalDateTime;
-import java.util.Collections;
 import java.util.Map;
+
+import static java.util.Collections.emptyList;
 
 @Slf4j
 @Component
@@ -101,7 +101,7 @@ public class TelegramMessageReceiver {
 
     private void sendMessageToNewUser(MessageVo messageVo) {
         final String telegramId = messageVo.getTelegramId();
-        telegramMessageSender.send(SendMessageVo.create(messageVo, CommonResponse.introduce(appName), KeyboardHelper.getHomeKeyboard(Collections.emptyList()), callbackFactory.create(telegramId, Menu.HOME)));
+        telegramMessageSender.send(SendMessageVo.create(messageVo, CommonResponse.introduce(appName), new HomeKeyboard(emptyList()), callbackFactory.create(telegramId, Menu.HOME)));
         telegramMessageSender.sendWithWebPagePreview(SendMessageVo.create(messageVo, CommonResponse.help(helpUrl), null, callbackFactory.create(telegramId, null)));
         telegramMessageSender.send(SendMessageVo.create(messageVo, CommonResponse.seeKeyboardIcon(), null, callbackFactory.create(telegramId, null)));
     }

@@ -26,14 +26,15 @@ public class UnknownNotifyExecutor implements NotifyExecutor {
 
     @Override
     public ProductUpdateStatus getProductUpdateStatus() {
-        return ProductUpdateStatus.UPDATE_NOT_SUPPORT;
+        return ProductUpdateStatus.UPDATE_UNKNOWN;
     }
 
     @Override
-    public void execute(Long productId) {
+    public boolean execute(Long productId) {
         notify(productId, NORMAL);
         notify(productId, CARD);
         notify(productId, CASH);
+        return true;
     }
 
     private void notify(Long productId, PriceType priceType) {

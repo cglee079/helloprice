@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.function.Consumer;
 
@@ -21,11 +22,12 @@ public class ProductUpdateConsumer implements Consumer<ProductUpdateMessage> {
     public void accept(ProductUpdateMessage productUpdateMessage) {
         log.debug("MQ :: CONSUME :: payload : {}", productUpdateMessage);
 
+        final LocalDateTime now = LocalDateTime.now();
         final Long productId = productUpdateMessage.getProductId();
         final ProductUpdateStatus updateStatus = productUpdateMessage.getUpdateStatus();
 
         for (Processor processor : processors) {
-            processor.process(productId, updateStatus);
+            processor.process(productId, updateStatus, now);
         }
     }
 }

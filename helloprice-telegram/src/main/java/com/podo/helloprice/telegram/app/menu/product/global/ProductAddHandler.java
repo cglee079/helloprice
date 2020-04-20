@@ -1,10 +1,12 @@
-package com.podo.helloprice.telegram.app.menu.product;
+package com.podo.helloprice.telegram.app.menu.product.global;
 
 
 import com.podo.helloprice.crawl.worker.vo.CrawledProduct;
 import com.podo.helloprice.telegram.app.SendMessageCallbackFactory;
 import com.podo.helloprice.telegram.app.core.TelegramMessageSender;
-import com.podo.helloprice.telegram.app.menu.KeyboardHelper;
+import com.podo.helloprice.telegram.app.menu.home.HomeKeyboard;
+import com.podo.helloprice.telegram.app.menu.product.typeselect.ProductTypeCommandTranslator;
+import com.podo.helloprice.telegram.app.menu.product.typeselect.ProductTypeSelectKeyboard;
 import com.podo.helloprice.telegram.app.vo.MessageVo;
 import com.podo.helloprice.telegram.domain.user.model.Menu;
 import com.podo.helloprice.telegram.app.vo.SendMessageVo;
@@ -29,28 +31,29 @@ public class ProductAddHandler {
 
     public void handleProductAdd(MessageVo messageVo, String productCode) {
         final String telegramId = messageVo.getTelegramId();
-        final List<String> productDescCommands = ProductDescCommandTranslator.encodes(userProductNotifyReadService.findNotifyProductsByUserTelegramId(telegramId));
+        final List<String> productDescCommands = ProductDescCommandTranslator.encodes(userProductNotifyReadService.findNotifyProductsByTelegramId(telegramId));
+        final HomeKeyboard homeKeyboard = new HomeKeyboard(productDescCommands);
 
         final CrawledProduct crawledProduct = danawaProductCache.get(productCode);
         if (Objects.isNull(crawledProduct)) {
             log.debug("APP :: {} << 상품 정보를 가져 올 수 없습니다. 상품코드 '{}'", telegramId, productCode);
-            sender.send(SendMessageVo.create(messageVo, ProductAddResponse.wrongProductCode(productCode), KeyboardHelper.getHomeKeyboard(productDescCommands), callbackFactory.create(telegramId, Menu.HOME)));
+            sender.send(SendMessageVo.create(messageVo, ProductAddResponse.wrongProductCode(productCode), homeKeyboard, callbackFactory.create(telegramId, Menu.HOME)));
             return;
         }
 
-        if (!validateAddProduct(messageVo, productDescCommands, crawledProduct)) {
+        if (!validateAddProduct(messageVo, crawledProduct, homeKeyboard)) {
             return;
         }
 
         sender.send(
                 SendMessageVo.create(messageVo, ProductAddResponse.descCrawledProduct(crawledProduct),
                         crawledProduct.getImageUrl(),
-                        KeyboardHelper.getProductTypeSelectKeyboard(ProductTypeCommandTranslator.encode(crawledProduct)),
+                        new ProductTypeSelectKeyboard(ProductTypeCommandTranslator.encode(crawledProduct)),
                         callbackFactory.create(telegramId, Menu.PRODUCT_TYPE_SELECT))
         );
     }
 
-    private boolean validateAddProduct(MessageVo messageVo, List<String> productCommands, CrawledProduct crawledProduct) {
+    private boolean validateAddProduct(MessageVo messageVo, CrawledProduct crawledProduct, HomeKeyboard homeKeyboard) {
         final String telegramId = messageVo.getTelegramId();
         final String productName = crawledProduct.getProductName();
         final String productCode = crawledProduct.getProductCode();
@@ -58,15 +61,15 @@ public class ProductAddHandler {
         switch (crawledProduct.getSaleStatus()) {
             case DISCONTINUE:
                 log.debug("APP :: {} << 추가요청한 {}({})는 단종된 상품 입니다", telegramId, productName, productCode);
-                sender.send(SendMessageVo.create(messageVo, ProductAddResponse.isDiscontinueProduct(crawledProduct), KeyboardHelper.getHomeKeyboard(productCommands), callbackFactory.create(telegramId, Menu.HOME)));
+                sender.send(SendMessageVo.create(messageVo, ProductAddResponse.isDiscontinueProduct(crawledProduct), homeKeyboard, callbackFactory.create(telegramId, Menu.HOME)));
                 return false;
             case NOT_SUPPORT:
                 log.debug("APP :: {} << 추가요청한 {}({})는 가격비교중지 상품입니다", telegramId, productName, productCode);
-                sender.send(SendMessageVo.create(messageVo, ProductAddResponse.isNotSupportProduct(crawledProduct), KeyboardHelper.getHomeKeyboard(productCommands), callbackFactory.create(telegramId, Menu.HOME)));
+                sender.send(SendMessageVo.create(messageVo, ProductAddResponse.isNotSupportProduct(crawledProduct), homeKeyboard, callbackFactory.create(telegramId, Menu.HOME)));
                 return false;
             case UNKNOWN:
                 log.debug("APP :: {} << 추가요청한 상품 {}({})는 알 수 없는 상태의 상품입니다", telegramId, productName, productCode);
-                sender.send(SendMessageVo.create(messageVo, ProductAddResponse.isErrorProduct(crawledProduct), KeyboardHelper.getHomeKeyboard(productCommands), callbackFactory.create(telegramId, Menu.HOME)));
+                sender.send(SendMessageVo.create(messageVo, ProductAddResponse.isErrorProduct(crawledProduct), homeKeyboard, callbackFactory.create(telegramId, Menu.HOME)));
                 return false;
         }
 

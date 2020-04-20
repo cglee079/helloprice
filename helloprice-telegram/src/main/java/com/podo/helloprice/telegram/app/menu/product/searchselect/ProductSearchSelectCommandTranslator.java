@@ -1,10 +1,10 @@
-package com.podo.helloprice.telegram.app.menu.product;
+package com.podo.helloprice.telegram.app.menu.product.searchselect;
 
 import lombok.experimental.UtilityClass;
 import org.springframework.util.StringUtils;
 
 @UtilityClass
-public class ProductSearchCommandTranslator {
+public class ProductSearchSelectCommandTranslator {
 
     public static String encode(String productCode, String productName) {
         return String.format("#%s, %s", productCode, productName);

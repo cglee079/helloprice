@@ -2,6 +2,7 @@ package com.podo.helloprice.product.update.analysis.processor.notify.executor;
 
 import com.podo.helloprice.core.model.PriceType;
 import com.podo.helloprice.core.model.ProductUpdateStatus;
+import com.podo.helloprice.product.update.analysis.notify.contents.NotifyContents;
 import com.podo.helloprice.product.update.analysis.processor.notify.NotifyExecutor;
 import com.podo.helloprice.product.update.analysis.domain.product.dto.ProductDetailDto;
 import com.podo.helloprice.product.update.analysis.domain.user.dto.UserDto;
@@ -31,10 +32,11 @@ public class DeadNotifyExecutor implements NotifyExecutor {
     }
 
     @Override
-    public void execute(Long productId) {
+    public boolean execute(Long productId) {
         notify(productId, NORMAL);
         notify(productId, CASH);
         notify(productId, CARD);
+        return true;
     }
 
     private void notify(Long productId, PriceType normal) {

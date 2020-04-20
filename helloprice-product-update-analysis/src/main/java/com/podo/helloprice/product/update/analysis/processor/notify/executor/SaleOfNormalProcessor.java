@@ -32,7 +32,7 @@ public class SaleOfNormalProcessor implements NotifyExecutor {
     }
 
     @Override
-    public void execute(Long productId) {
+    public boolean execute(Long productId) {
         final NotifyTarget notifyTarget = notifyTargetFacadeReadService.get(productId, NORMAL);
         final ProductDetailDto product = notifyTarget.getProduct();
 
@@ -40,11 +40,15 @@ public class SaleOfNormalProcessor implements NotifyExecutor {
         final String title = title(product);
         final String contents = contents(product);
 
-        if (SaleNotifyChecker.satifiedSendNotify(product.getPrice(), product.getBeforePrice())) {
+        if (SaleNotifyChecker.satisfiedSendNotify(product.getPrice(), product.getBeforePrice())) {
             for (UserDto user : notifyTarget.getUsers()) {
                 notifier.notify(TelegramNotifyMessage.create(user.getTelegramId(), imageUrl, contents));
                 notifier.notify(EmailNotifyMessage.create(user.getEmail(), user.getUsername(), title, EmailContentCreator.create(imageUrl, contents)));
             }
+
+            return true;
         }
+
+        return false;
     }
 }

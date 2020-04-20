@@ -12,11 +12,9 @@ crawler:
 
 user:
   max_error_count: 5
-  max_product: 10
+  max_product: 30
 
 product:
-  max_unknown_count: 1
-  max_dead_count: 10
   cache:
     expire_minutes: 1
 

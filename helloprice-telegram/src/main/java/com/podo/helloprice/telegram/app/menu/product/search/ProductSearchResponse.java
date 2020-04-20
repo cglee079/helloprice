@@ -1,7 +1,6 @@
 package com.podo.helloprice.telegram.app.menu.product.search;
 
 import com.podo.helloprice.telegram.app.menu.CommonResponse;
-import com.podo.helloprice.telegram.app.menu.product.ProductCommonResponse;
 import lombok.experimental.UtilityClass;
 
 @UtilityClass

@@ -7,17 +7,17 @@ import java.util.Arrays;
 @RequiredArgsConstructor
 public enum PriceType {
 
-    NORMAL("일반"), CASH("현금"), CARD("카드");
+    NORMAL("일반 최저가"), CASH("현금 최저가"), CARD("카드 최저가");
 
-    private final String value;
+    private final String kr;
 
-    public static PriceType from(String value) {
+    public static PriceType from(String kr) {
         return Arrays.stream(PriceType.values())
-                .filter(p -> p.value().equals(value))
+                .filter(p -> p.kr().equals(kr))
                 .findFirst().orElse(null);
     }
 
-    public String value() {
-        return this.value;
+    public String kr() {
+        return this.kr;
     }
 }

@@ -1,6 +1,7 @@
 package com.podo.helloprice.product.update.analysis.infra.mq;
 
 import com.podo.helloprice.product.update.analysis.infra.mq.consumer.ProductUpdateConsumer;
+import com.podo.helloprice.product.update.analysis.infra.mq.message.EmailNotifyMessage;
 import com.podo.helloprice.product.update.analysis.infra.mq.message.ProductUpdateMessage;
 import com.podo.helloprice.product.update.analysis.infra.mq.message.TelegramNotifyMessage;
 import com.podo.helloprice.product.update.analysis.infra.mq.publisher.EmailNotifyPublisher;
@@ -30,7 +31,7 @@ public class MQConfig {
     }
 
     @Bean
-    public Supplier<Flux<TelegramNotifyMessage>> publishEmailNotify(EmailNotifyPublisher emailNotifyPublisher){
+    public Supplier<Flux<EmailNotifyMessage>> publishEmailNotify(EmailNotifyPublisher emailNotifyPublisher){
         return emailNotifyPublisher::processor;
     }
 }

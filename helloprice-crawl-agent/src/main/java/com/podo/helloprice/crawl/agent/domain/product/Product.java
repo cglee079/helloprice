@@ -15,7 +15,9 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 import static com.podo.helloprice.core.model.PriceType.*;
 import static java.util.Collections.emptyList;
@@ -103,19 +105,19 @@ public class Product {
         final List<ProductUpdateStatus> productUpdateStatuses = new ArrayList<>();
 
         if(productPrices.containsKey(NORMAL)){
-            if (productPrices.get(NORMAL).update(crawledProduct.getPrice(), crawledAt)) {
+            if (productPrices.get(NORMAL).update(crawledProduct.getPrice(), null, crawledAt)) {
                 productUpdateStatuses.add(ProductUpdateStatus.UPDATE_SALE_NORMAL_PRICE);
             }
         }
 
         if(productPrices.containsKey(CASH)){
-            if (productPrices.get(CASH).update(crawledProduct.getCashPrice(), crawledAt)) {
+            if (productPrices.get(CASH).update(crawledProduct.getCashPrice(), null, crawledAt)) {
                 productUpdateStatuses.add(ProductUpdateStatus.UPDATE_SALE_CASH_PRICE);
             }
         }
 
         if(productPrices.containsKey(CARD)){
-            if (productPrices.get(CARD).update(crawledProduct.getCardPrice(), crawledAt)) {
+            if (productPrices.get(CARD).update(crawledProduct.getCardPrice(), crawledProduct.getCardType(), crawledAt)) {
                 productUpdateStatuses.add(ProductUpdateStatus.UPDATE_SALE_CARD_PRICE);
             }
         }
@@ -125,7 +127,7 @@ public class Product {
 
     public void updateAllProductPrices(Integer price, LocalDateTime updateAt) {
         for (ProductPrice productPrice : productPrices.values()) {
-            productPrice.update(price, updateAt);
+            productPrice.update(price, null, updateAt);
         }
     }
 

@@ -10,7 +10,7 @@ import lombok.Getter;
 import java.time.LocalDateTime;
 
 @Getter
-public class ProductDetailDto {
+public class ProductOnePriceTypeDto {
 
     private Long id;
     private String productName;
@@ -28,7 +28,7 @@ public class ProductDetailDto {
     private LocalDateTime lastCrawledAt;
 
     @Builder
-    public ProductDetailDto(Product product, PriceType priceType) {
+    public ProductOnePriceTypeDto(Product product, PriceType priceType) {
         this.id = product.getId();
         this.aliveStatus = product.getAliveStatus();
         this.productCode = product.getProductCode();

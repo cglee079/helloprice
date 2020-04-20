@@ -11,13 +11,14 @@ import reactor.core.publisher.Flux;
 @Component
 public class EmailNotifyPublisher {
 
-    private final EmitterProcessor<TelegramNotifyMessage> processor  = EmitterProcessor.create();
+    private final EmitterProcessor<EmailNotifyMessage> processor  = EmitterProcessor.create();
 
     public void publish(EmailNotifyMessage emailNotifyMessage) {
         log.debug("MQ :: PUBLISH :: payload : {}", emailNotifyMessage);
+        processor.onNext(emailNotifyMessage);
     }
 
-    public Flux<TelegramNotifyMessage> processor() {
+    public Flux<EmailNotifyMessage> processor() {
         return this.processor;
     }
 

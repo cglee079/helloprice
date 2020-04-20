@@ -29,9 +29,14 @@ public class UserReadService {
         return new UserDetailDto(findUserByTelegramId(userRepository, telegramId));
     }
 
-    public boolean hasMaxNotifyByUserTelegramId(String telegramId) {
+    public boolean hasMaxNotifyByTelegramId(String telegramId) {
         return findUserByTelegramId(userRepository, telegramId)
                 .hasProductNotifiesMoreThan(maxCountOfProductNotifies);
+    }
+
+    public boolean hasMaxNotifyByTelegramIdIfAdded(String telegramId, int addedSize) {
+        return findUserByTelegramId(userRepository, telegramId)
+                .hasProductNotifiesMoreThan(maxCountOfProductNotifies - addedSize);
     }
 
 }

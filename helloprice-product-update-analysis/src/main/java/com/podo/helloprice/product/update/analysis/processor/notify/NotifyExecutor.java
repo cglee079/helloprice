@@ -6,5 +6,5 @@ public interface NotifyExecutor {
 
     ProductUpdateStatus getProductUpdateStatus();
 
-    void execute(Long productId);
+    boolean execute(Long productId);
 }

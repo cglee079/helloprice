@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
@@ -29,17 +30,25 @@ public class ProductPrice {
 
     private Integer beforePrice;
 
+    private String additionalInfo;
+
     private LocalDateTime lastUpdateAt;
 
-    public boolean update(Integer price, LocalDateTime updateAt) {
+    public boolean update(Integer price, String additionalInfo, LocalDateTime updateAt) {
+        if(Objects.isNull(price)){
+            price = 0;
+        }
+
         final Integer existPrice = this.price;
 
-        if (price.equals(existPrice)) {
+        if (price.equals(existPrice) && Objects.equals(this.additionalInfo, additionalInfo)) {
+            this.additionalInfo = additionalInfo;
             return false;
         }
 
         this.price = price;
         this.beforePrice = existPrice;
+        this.additionalInfo = additionalInfo;
         this.lastUpdateAt = updateAt;
 
         return true;

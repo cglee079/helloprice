@@ -6,6 +6,8 @@ import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.Keyboard
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.podo.helloprice.telegram.app.menu.product.typeselect.ProductTypeSelectCommand.EXIT;
+
 public class ProductTypeSelectKeyboard extends ReplyKeyboardMarkup {
 
     public ProductTypeSelectKeyboard(List<String> commands) {
@@ -14,6 +16,8 @@ public class ProductTypeSelectKeyboard extends ReplyKeyboardMarkup {
         this.setOneTimeKeyboard(false);
 
         final List<KeyboardRow> keyboard = new ArrayList<>();
+
+        keyboard.add(getSingleButtonRow(EXIT.getValue()));
 
         for (String command : commands) {
             keyboard.add(getSingleButtonRow(command));

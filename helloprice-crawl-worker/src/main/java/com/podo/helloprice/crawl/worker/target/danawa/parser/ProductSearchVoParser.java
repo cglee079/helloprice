@@ -43,7 +43,7 @@ public class ProductSearchVoParser {
         final String productPrice = productPriceText.replaceAll(",", "");
 
         if (NumberUtil.isInteger(productPrice)) {
-            return CurrencyUtil.toKrw(Integer.parseInt(productPrice));
+            return CurrencyUtil.toKRW(Integer.parseInt(productPrice));
         }
 
         return productPriceText;

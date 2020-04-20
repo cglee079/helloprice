@@ -10,14 +10,13 @@ import com.podo.helloprice.product.update.analysis.infra.mq.message.EmailNotifyM
 import com.podo.helloprice.product.update.analysis.infra.mq.message.TelegramNotifyMessage;
 import com.podo.helloprice.product.update.analysis.processor.notify.Notifier;
 import com.podo.helloprice.product.update.analysis.processor.notify.executor.helper.EmailContentCreator;
+import com.podo.helloprice.product.update.analysis.processor.notify.executor.helper.SaleNotifyHelper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 import static com.podo.helloprice.core.model.PriceType.CASH;
 import static com.podo.helloprice.core.model.ProductUpdateStatus.UPDATE_SALE_CASH_PRICE;
-import static com.podo.helloprice.product.update.analysis.processor.notify.executor.helper.SaleNotifyChecker.satifiedSendNotify;
-import static com.podo.helloprice.product.update.analysis.processor.notify.executor.helper.SaleNotifyHelper.contents;
-import static com.podo.helloprice.product.update.analysis.processor.notify.executor.helper.SaleNotifyHelper.title;
+import static com.podo.helloprice.product.update.analysis.processor.notify.executor.helper.SaleNotifyChecker.satisfiedSendNotify;
 
 @RequiredArgsConstructor
 @Component
@@ -32,20 +31,24 @@ public class SaleOfCashTelegramProcessor implements NotifyExecutor {
     }
 
     @Override
-    public void execute(Long productId) {
+    public boolean execute(Long productId) {
         final NotifyTarget notifyTarget = notifyTargetFacadeReadService.get(productId, CASH);
         final ProductDetailDto product = notifyTarget.getProduct();
 
         final String imageUrl = product.getImageUrl();
-        final String title = title(product);
-        final String contents = contents(product);
+        final String title = SaleNotifyHelper.title(product);
+        final String contents = SaleNotifyHelper.contents(product);
 
-        if (satifiedSendNotify(product.getPrice(), product.getBeforePrice())) {
+        if (satisfiedSendNotify(product.getPrice(), product.getBeforePrice())) {
             for (UserDto user : notifyTarget.getUsers()) {
                 notifier.notify(TelegramNotifyMessage.create(user.getTelegramId(), imageUrl, contents));
                 notifier.notify(EmailNotifyMessage.create(user.getEmail(), user.getUsername(), title, EmailContentCreator.create(imageUrl, contents)));
             }
+
+            return true;
         }
+
+        return false;
     }
 
 }
