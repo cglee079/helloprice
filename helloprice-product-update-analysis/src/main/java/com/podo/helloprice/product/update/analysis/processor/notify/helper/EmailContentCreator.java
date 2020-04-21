@@ -1,7 +1,10 @@
-package com.podo.helloprice.product.update.analysis.processor.notify.executor.helper;
+package com.podo.helloprice.product.update.analysis.processor.notify.helper;
+
+import lombok.experimental.UtilityClass;
 
 import java.util.Objects;
 
+@UtilityClass
 public class EmailContentCreator {
 
     public static String create(String imageUrl, String contents){

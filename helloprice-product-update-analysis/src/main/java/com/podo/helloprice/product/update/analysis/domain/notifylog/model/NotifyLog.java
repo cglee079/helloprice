@@ -1,6 +1,7 @@
 package com.podo.helloprice.product.update.analysis.domain.notifylog.model;
 
 import com.podo.helloprice.core.model.ProductSaleStatus;
+import com.podo.helloprice.core.model.ProductUpdateStatus;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -22,30 +23,16 @@ public class NotifyLog {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String productName;
+    private Long productId;
 
-    private String url;
-
-    private Integer price;
-
-    private Integer beforePrice;
-
-    private BigDecimal priceChangeRate;
-
-    private ProductSaleStatus saleStatus;
+    @Enumerated(EnumType.STRING)
+    private ProductUpdateStatus updateStatus;
 
     private LocalDateTime notifyAt;
 
-    @Builder
-    public NotifyLog(String productName, String url, Integer price, Integer beforePrice,
-                     BigDecimal priceChangeRate, ProductSaleStatus saleStatus, LocalDateTime notifyAt) {
-
-        this.productName = productName;
-        this.url = url;
-        this.price = price;
-        this.beforePrice = beforePrice;
-        this.priceChangeRate = priceChangeRate;
-        this.saleStatus = saleStatus;
+    public NotifyLog(Long productId, ProductUpdateStatus updateStatus, LocalDateTime notifyAt) {
+        this.productId = productId;
+        this.updateStatus = updateStatus;
         this.notifyAt = notifyAt;
     }
 }

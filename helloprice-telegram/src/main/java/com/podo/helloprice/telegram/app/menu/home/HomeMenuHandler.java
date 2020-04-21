@@ -1,32 +1,33 @@
 package com.podo.helloprice.telegram.app.menu.home;
 
 
+import com.podo.helloprice.telegram.app.SendMessageCallbackFactory;
 import com.podo.helloprice.telegram.app.menu.AbstractMenuHandler;
 import com.podo.helloprice.telegram.app.menu.CommonResponse;
+import com.podo.helloprice.telegram.app.menu.Keyboard;
 import com.podo.helloprice.telegram.app.menu.email.add.EmailAddResponse;
 import com.podo.helloprice.telegram.app.menu.email.delete.EmailDeleteKeyboard;
 import com.podo.helloprice.telegram.app.menu.email.delete.EmailDeleteResponse;
-import com.podo.helloprice.telegram.app.menu.product.delete.ProductDeleteCommandTranslator;
-import com.podo.helloprice.telegram.app.menu.product.global.ProductDescCommandTranslator;
 import com.podo.helloprice.telegram.app.menu.product.addurl.ProductAddUrlResponse;
+import com.podo.helloprice.telegram.app.menu.product.delete.ProductDeleteCommandTranslator;
 import com.podo.helloprice.telegram.app.menu.product.delete.ProductDeleteKeyboard;
 import com.podo.helloprice.telegram.app.menu.product.delete.ProductDeleteResponse;
-import com.podo.helloprice.telegram.app.menu.product.search.ProductSearchResponse;
-import com.podo.helloprice.telegram.domain.user.application.UserReadService;
-import com.podo.helloprice.telegram.domain.user.dto.UserDetailDto;
-import com.podo.helloprice.telegram.app.SendMessageCallbackFactory;
-import com.podo.helloprice.telegram.app.menu.Keyboard;
-import com.podo.helloprice.telegram.domain.user.model.Menu;
+import com.podo.helloprice.telegram.app.menu.product.global.ProductDescCommandTranslator;
 import com.podo.helloprice.telegram.app.menu.product.global.ProductDescParameter;
+import com.podo.helloprice.telegram.app.menu.product.search.ProductSearchResponse;
 import com.podo.helloprice.telegram.app.vo.MessageVo;
 import com.podo.helloprice.telegram.app.vo.SendMessageVo;
 import com.podo.helloprice.telegram.domain.product.application.ProductReadService;
 import com.podo.helloprice.telegram.domain.product.dto.ProductOnePriceTypeDto;
+import com.podo.helloprice.telegram.domain.user.application.UserReadService;
+import com.podo.helloprice.telegram.domain.user.dto.UserDetailDto;
+import com.podo.helloprice.telegram.domain.user.model.Menu;
 import com.podo.helloprice.telegram.domain.userproduct.application.UserProductNotifyReadService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
+import org.springframework.util.StringUtils;
 
 import java.util.List;
 import java.util.Objects;
@@ -55,39 +56,48 @@ public class HomeMenuHandler extends AbstractMenuHandler {
         return Menu.HOME;
     }
 
-    public void handle(MessageVo messageVo, String requestMessage) {
+    public void handle(MessageVo messageVo, String messageContents) {
         final String telegramId = messageVo.getTelegramId();
-        final HomeKeyboard homeKeyboard = getHomeKeyboard(telegramId);
+        final HomeKeyboard homeKeyboard = createHomeKeyboard(telegramId);
 
-        log.debug("APP :: {} << 홈메뉴에서 응답, 받은메세지 '{}'", telegramId, requestMessage);
+        log.debug("APP :: {} << 홈메뉴에서 응답, 받은메세지 '{}'", telegramId, messageContents);
 
-        final HomeCommand requestHomeCommand = HomeCommand.from(requestMessage);
+        final HomeCommand homeCommand = HomeCommand.from(messageContents);
 
-        if (Objects.nonNull(requestHomeCommand)) {
-            handleCommand(messageVo, requestMessage, telegramId, requestHomeCommand, homeKeyboard);
+        if (Objects.nonNull(homeCommand)) {
+            handleCommand(messageVo, messageContents, telegramId, homeCommand, homeKeyboard);
             return;
         }
 
-        final ProductDescParameter productDescParameter = ProductDescCommandTranslator.decode(requestMessage);
+        final ProductDescParameter productDescParameter = ProductDescCommandTranslator.decode(messageContents);
 
         if (Objects.isNull(productDescParameter)) {
-            log.debug("APP :: {} << 응답 할 수 없는 메세지 입니다 받은메세지 '{}'", telegramId, requestMessage);
+            log.debug("APP :: {} << 응답 할 수 없는 메세지 입니다 받은메세지 '{}'", telegramId, messageContents);
             sender().send(SendMessageVo.create(messageVo, CommonResponse.wrongInput(), homeKeyboard, callbackFactory.create(telegramId, Menu.HOME)));
             return;
         }
 
         if (!productReadService.isExistedByProductParameter(productDescParameter.getProductCode())) {
-            log.debug("APP :: {} << 잘못된 상품코드 메세지입니다. 받은메세지 '{}'", telegramId, requestMessage);
+            log.debug("APP :: {} << 잘못된 상품코드 메세지입니다. 받은메세지 '{}'", telegramId, messageContents);
             sender().send(SendMessageVo.create(messageVo, HomeResponse.wrongProductCode(productDescParameter.getProductCode()), homeKeyboard, callbackFactory.create(telegramId, Menu.HOME)));
             return;
         }
 
-        log.debug("APP :: {} << 상품정보 요청을 확인했습니다. 받은메세지 '{}'", telegramId, requestMessage);
+        log.debug("APP :: {} << 상품정보 요청을 확인했습니다. 받은메세지 '{}'", telegramId, messageContents);
         handleProductDescCommands(messageVo, telegramId, productDescParameter);
     }
 
     private void handleProductDescCommands(MessageVo messageVo, String telegramId, ProductDescParameter productDescParameter) {
+        final UserDetailDto user = userReadService.findByTelegramId(telegramId);
         final ProductOnePriceTypeDto product = productReadService.findByProductParameter(productDescParameter.getProductCode(), productDescParameter.getPriceType());
+
+        //상품알림이 삭제되있는 경우.
+        if (userProductNotifyReadService.isExistedNotify(user.getId(), product.getId(), productDescParameter.getPriceType())) {
+            log.debug("APP :: {} << 등록되지 않았거나, 알림 삭제된 상품입니다 : {}", telegramId, product.getProductCode());
+            sender().send(SendMessageVo.create(messageVo, HomeResponse.invalidNotifyProduct(), createHomeKeyboard(telegramId), callbackFactory.create(telegramId, Menu.HOME)));
+            return;
+        }
+
         sender().send(SendMessageVo.create(messageVo, HomeResponse.descProduct(product), product.getImageUrl(), null, callbackFactory.create(telegramId, Menu.HOME)));
     }
 
@@ -147,7 +157,7 @@ public class HomeMenuHandler extends AbstractMenuHandler {
         final UserDetailDto user = userReadService.findByTelegramId(telegramId);
         final String userEmail = user.getEmail();
 
-        if (Objects.isNull(userEmail)) {
+        if (StringUtils.isEmpty(userEmail)) {
             log.debug("APP :: {} << 등록되어있는 이메일이 없습니다", telegramId);
             sender().send(SendMessageVo.create(messageVo, HomeResponse.dontHaveEmail(), homeKeyboard, callbackFactory.create(telegramId, Menu.HOME)));
             return;

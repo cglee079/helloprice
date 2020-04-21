@@ -19,6 +19,10 @@ public class HomeResponse {
         return "상품코드가 잘못되었어요, 상품코드 : " + productCode;
     }
 
+    public static String invalidNotifyProduct() {
+        return "등록되지 않았거나, 알림 삭제된 상품입니다";
+    }
+
     public static String rejectEmailAdd(String email) {
         return new StringBuilder()
                 .append("<b>이미 이메일이 등록되어있습니다</b>\n")

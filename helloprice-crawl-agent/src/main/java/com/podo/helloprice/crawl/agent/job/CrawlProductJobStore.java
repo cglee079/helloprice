@@ -5,13 +5,13 @@ import java.util.List;
 
 public class CrawlProductJobStore{
 
-    private final List<NotifyEvent> notifyEvents = new ArrayList<>();
+    private final List<ProductUpdate> productUpdates = new ArrayList<>();
 
-    public void addNotifyEvent(NotifyEvent notifyEvent){
-        this.notifyEvents.add(notifyEvent);
+    public void addNotifyEvent(ProductUpdate productUpdate){
+        this.productUpdates.add(productUpdate);
     }
 
-    public List<NotifyEvent> getNotifyEvents() {
-        return new ArrayList<>(notifyEvents);
+    public List<ProductUpdate> getProductUpdates() {
+        return new ArrayList<>(productUpdates);
     }
 }

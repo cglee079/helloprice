@@ -1,7 +1,6 @@
 package com.podo.helloprice.crawl.agent.job;
 
 import com.podo.helloprice.core.util.JsonUtil;
-import com.podo.helloprice.crawl.agent.global.infra.mq.message.CrawlProductMessage;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.batch.core.Job;
@@ -29,7 +28,7 @@ public class CrawlProductJobRunner {
     @Qualifier(value = CrawlProductJobConfig.CRAWL_JOB_BEAN_NAME)
     private final Job crawlJob;
 
-    public void run(DoCrawlProduct crawlProductMessage) {
+    public void run(ProductToCrawl crawlProductMessage) {
         log.debug("JOB :: START :: 상품 정보 갱신 JOB 을 실행합니다");
 
         try {

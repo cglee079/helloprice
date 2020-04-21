@@ -41,7 +41,7 @@ public class ProductDeleteMenuHandler extends AbstractMenuHandler {
 
     public void handle(MessageVo messageVo, String requestMessage) {
         final String telegramId = messageVo.getTelegramId();
-        final HomeKeyboard homeKeyboard = getHomeKeyboard(telegramId);
+        final HomeKeyboard homeKeyboard = createHomeKeyboard(telegramId);
 
         log.debug("APP :: {} << 상품 알림 삭제 메뉴에서 응답, 받은메세지 '{}'", telegramId, requestMessage);
 
@@ -70,7 +70,7 @@ public class ProductDeleteMenuHandler extends AbstractMenuHandler {
 
         userProductNotifyWriteService.deleteNotifyByUserIdAndProductId(user.getId(), product.getId(), productDeleteParameter.getPriceType());
 
-        sender().send(SendMessageVo.create(messageVo, ProductDeleteResponse.deletedNotifyProduct(product), getHomeKeyboard(telegramId), callbackFactory.create(telegramId, Menu.HOME)));
+        sender().send(SendMessageVo.create(messageVo, ProductDeleteResponse.deletedNotifyProduct(product), createHomeKeyboard(telegramId), callbackFactory.create(telegramId, Menu.HOME)));
     }
 }
 

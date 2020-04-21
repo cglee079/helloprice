@@ -44,7 +44,7 @@ public class EmailAddMenuHandler extends AbstractMenuHandler {
 
         if (!EmailValidator.getInstance().isValid(email)) {
             log.debug("TELEGRAM  :: {} << 이메일 형식이 아닙니다, 받은메세지 '{}'", telegramId, requestMessage);
-            sender().send(SendMessageVo.create(messageVo, EmailAddResponse.invalidEmail(), getHomeKeyboard(telegramId), callbackFactory.create(telegramId, HOME)));
+            sender().send(SendMessageVo.create(messageVo, EmailAddResponse.invalidEmail(), createHomeKeyboard(telegramId), callbackFactory.create(telegramId, HOME)));
             return;
         }
 

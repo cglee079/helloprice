@@ -20,7 +20,6 @@ public class Notifier {
 
     public void notify(TelegramNotifyMessage telegramNotifyMessage){
         log.info("NOTIFY ::  TELEGRAM :: telegramId : {}, contents : {}", telegramNotifyMessage.getTelegramId(), StringUtil.summary(telegramNotifyMessage.getContents(), 100));
-
         telegramNotifyPublisher.publish(telegramNotifyMessage);
     }
 

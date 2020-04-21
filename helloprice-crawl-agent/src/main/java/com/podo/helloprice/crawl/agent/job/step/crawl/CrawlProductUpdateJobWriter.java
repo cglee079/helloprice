@@ -3,11 +3,10 @@ package com.podo.helloprice.crawl.agent.job.step.crawl;
 import com.podo.helloprice.core.model.ProductUpdateStatus;
 import com.podo.helloprice.crawl.agent.domain.product.Product;
 import com.podo.helloprice.crawl.agent.domain.product.ProductRepository;
-import com.podo.helloprice.crawl.agent.global.infra.mq.message.CrawlProductMessage;
 import com.podo.helloprice.crawl.agent.job.CrawlProductJobParameter;
 import com.podo.helloprice.crawl.agent.job.CrawlProductJobStore;
-import com.podo.helloprice.crawl.agent.job.DoCrawlProduct;
-import com.podo.helloprice.crawl.agent.job.NotifyEvent;
+import com.podo.helloprice.crawl.agent.job.ProductToCrawl;
+import com.podo.helloprice.crawl.agent.job.ProductUpdate;
 import com.podo.helloprice.crawl.worker.vo.CrawledProduct;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -43,22 +42,22 @@ public class CrawlProductUpdateJobWriter implements ItemWriter<CrawledProduct> {
 
     private void updateProduct(CrawledProduct crawledProduct) {
         final LocalDateTime now = LocalDateTime.now();
-        final DoCrawlProduct doCrawlProduct = crawlProductJobParameter.getDoCrawlProduct();
-        final String productName = doCrawlProduct.getProductName();
-        final String productCode = doCrawlProduct.getProductCode();
+        final ProductToCrawl productToCrawl = crawlProductJobParameter.getProductToCrawl();
+        final String productName = productToCrawl.getProductName();
+        final String productCode = productToCrawl.getProductCode();
         final Product product = productRepository.findByProductCode(productCode);
         final Long productId = product.getId();
 
         if (Objects.isNull(crawledProduct)) {
             log.debug("STEP :: WRITER :: {}({}) :: 상품의 정보 갱신 에러 발생", productName, productCode);
             if(product.increaseDeadCount(maxDeadCount, now)) {
-                crawlProductJobStore.addNotifyEvent(new NotifyEvent(productId, ProductUpdateStatus.UPDATE_DEAD));
+                crawlProductJobStore.addNotifyEvent(new ProductUpdate(productId, ProductUpdateStatus.UPDATE_DEAD));
             }
             return;
         }
 
         for (ProductUpdateStatus productUpdateStatus : product.updateByCrawledProduct(crawledProduct)) {
-            crawlProductJobStore.addNotifyEvent(new NotifyEvent(productId, productUpdateStatus));
+            crawlProductJobStore.addNotifyEvent(new ProductUpdate(productId, productUpdateStatus));
         };
 
         log.debug("STEP :: WRITER :: {}({}) ::  상품판매상태 : `{}`, 상품상태 `{}`", productName, productCode, product.getSaleStatus().getValue(), product.getAliveStatus());

@@ -1,10 +1,9 @@
 package com.podo.helloprice.crawl.agent.job;
 
-import com.podo.helloprice.crawl.agent.global.infra.mq.message.CrawlProductMessage;
 import com.podo.helloprice.crawl.agent.job.step.crawl.CrawlProductUpdateJobProcessor;
 import com.podo.helloprice.crawl.agent.job.step.crawl.CrawlProductUpdateJobReader;
 import com.podo.helloprice.crawl.agent.job.step.crawl.CrawlProductUpdateJobWriter;
-import com.podo.helloprice.crawl.agent.job.step.notify.CrawlProductNotifyTasklet;
+import com.podo.helloprice.crawl.agent.job.step.publish.CrawlProductUpdatePublishTasklet;
 import com.podo.helloprice.crawl.worker.vo.CrawledProduct;
 import lombok.RequiredArgsConstructor;
 import org.springframework.batch.core.Job;
@@ -32,7 +31,7 @@ public class CrawlProductJobConfig {
     private final CrawlProductUpdateJobReader crawlProductUpdateJobReader;
     private final CrawlProductUpdateJobProcessor crawlProductUpdateJobProcessor;
     private final CrawlProductUpdateJobWriter crawlProductUpdateJobWriter;
-    private final CrawlProductNotifyTasklet crawlProductNotifyTasklet;
+    private final CrawlProductUpdatePublishTasklet crawlProductUpdatePublishTasklet;
 
     @Bean(CRAWL_JOB_BEAN_NAME)
     public Job job() {
@@ -45,7 +44,7 @@ public class CrawlProductJobConfig {
     @Bean(CRAWL_PRODUCT_UPDATE_STEP_BEAN_NAME)
     public Step crawlProductUpdateStep() {
         return stepBuilderFactory.get(CRAWL_PRODUCT_UPDATE_STEP_NAME)
-                .<DoCrawlProduct, CrawledProduct>chunk(CHUNK_SIZE)
+                .<ProductToCrawl, CrawledProduct>chunk(CHUNK_SIZE)
                 .reader(crawlProductUpdateJobReader)
                 .processor(crawlProductUpdateJobProcessor)
                 .writer(crawlProductUpdateJobWriter)
@@ -55,7 +54,7 @@ public class CrawlProductJobConfig {
     @Bean(CRAWL_PRODUCT_NOTIFY_STEP_BEAN_NAME)
     public Step crawlProductNotifyStep() {
         return stepBuilderFactory.get(CRAWL_PRODUCT_NOTIFY_STEP_NAME)
-                .tasklet(crawlProductNotifyTasklet)
+                .tasklet(crawlProductUpdatePublishTasklet)
                 .build();
     }
 

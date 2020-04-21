@@ -15,7 +15,7 @@ import java.util.Date;
 public class CrawlProductJobParameter {
 
     private LocalDateTime createAt;
-    private DoCrawlProduct doCrawlProduct;
+    private ProductToCrawl productToCrawl;
 
     @Value("#{jobParameters[createAt]}")
     public void setCreateAt(Date createAt) {
@@ -23,8 +23,8 @@ public class CrawlProductJobParameter {
     }
 
     @Value("#{jobParameters[doCrawlProduct]}")
-    public void setDoCrawlProduct(String doCrawlProduct) {
-        this.doCrawlProduct = JsonUtil.toObject(doCrawlProduct, DoCrawlProduct.class);
+    public void setProductToCrawl(String productToCrawl) {
+        this.productToCrawl = JsonUtil.toObject(productToCrawl, ProductToCrawl.class);
     }
 
 }

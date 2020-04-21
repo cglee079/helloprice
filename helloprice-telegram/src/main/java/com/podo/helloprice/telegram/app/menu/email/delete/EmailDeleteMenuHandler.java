@@ -30,7 +30,7 @@ public class EmailDeleteMenuHandler extends AbstractMenuHandler {
 
     public void handle(MessageVo messageVo, String requestMessage) {
         final String telegramId = messageVo.getTelegramId();
-        final HomeKeyboard homeKeyboard = getHomeKeyboard(telegramId);
+        final HomeKeyboard homeKeyboard = createHomeKeyboard(telegramId);
 
         log.debug("TELEGRAM :: {} << 이메일 삭제 메뉴에서 응답, 받은메세지 '{}'", telegramId, requestMessage);
 

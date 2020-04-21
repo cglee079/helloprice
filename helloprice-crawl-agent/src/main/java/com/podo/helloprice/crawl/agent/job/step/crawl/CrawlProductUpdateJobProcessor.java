@@ -1,7 +1,6 @@
 package com.podo.helloprice.crawl.agent.job.step.crawl;
 
-import com.podo.helloprice.crawl.agent.global.infra.mq.message.CrawlProductMessage;
-import com.podo.helloprice.crawl.agent.job.DoCrawlProduct;
+import com.podo.helloprice.crawl.agent.job.ProductToCrawl;
 import com.podo.helloprice.crawl.worker.target.danawa.DanawaProductCrawler;
 import com.podo.helloprice.crawl.worker.vo.CrawledProduct;
 import lombok.RequiredArgsConstructor;
@@ -16,14 +15,14 @@ import java.time.LocalDateTime;
 @RequiredArgsConstructor
 @Component
 @StepScope
-public class CrawlProductUpdateJobProcessor implements ItemProcessor<DoCrawlProduct, CrawledProduct> {
+public class CrawlProductUpdateJobProcessor implements ItemProcessor<ProductToCrawl, CrawledProduct> {
 
     private final DanawaProductCrawler danawaProductCrawler;
 
     @Override
-    public CrawledProduct process(DoCrawlProduct doCrawlProduct) {
-        final String existedProductName = doCrawlProduct.getProductName();
-        final String existedProductCode = doCrawlProduct.getProductCode();
+    public CrawledProduct process(ProductToCrawl productToCrawl) {
+        final String existedProductName = productToCrawl.getProductName();
+        final String existedProductCode = productToCrawl.getProductCode();
 
         log.debug("STEP :: PROCESSOR :: {}({}) 상품의 정보 갱신을 실행합니다", existedProductName, existedProductCode);
 

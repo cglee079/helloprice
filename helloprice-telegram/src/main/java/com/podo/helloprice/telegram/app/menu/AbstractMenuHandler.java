@@ -21,7 +21,7 @@ public abstract class AbstractMenuHandler implements MenuHandler {
         return telegramMessageSender;
     }
 
-    public HomeKeyboard getHomeKeyboard(String telegramId){
+    public HomeKeyboard createHomeKeyboard(String telegramId){
         final List<String> productCommands = ProductDescCommandTranslator.encodes(userProductNotifyReadService.findNotifyProductsByTelegramId(telegramId));
         return new HomeKeyboard(productCommands);
     }

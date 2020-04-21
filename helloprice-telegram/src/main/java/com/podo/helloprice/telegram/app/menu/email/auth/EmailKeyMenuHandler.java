@@ -1,14 +1,13 @@
 package com.podo.helloprice.telegram.app.menu.email.auth;
 
 
-import com.podo.helloprice.telegram.app.menu.home.HomeKeyboard;
 import com.podo.helloprice.telegram.app.SendMessageCallbackFactory;
-import com.podo.helloprice.telegram.domain.user.model.Menu;
 import com.podo.helloprice.telegram.app.menu.AbstractMenuHandler;
+import com.podo.helloprice.telegram.app.menu.home.HomeKeyboard;
 import com.podo.helloprice.telegram.app.vo.MessageVo;
 import com.podo.helloprice.telegram.app.vo.SendMessageVo;
 import com.podo.helloprice.telegram.domain.user.application.UserWriteService;
-import com.podo.helloprice.telegram.domain.userproduct.application.UserProductNotifyReadService;
+import com.podo.helloprice.telegram.domain.user.model.Menu;
 import com.podo.helloprice.telegram.global.email.EmailKeyStore;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -26,7 +25,6 @@ import static com.podo.helloprice.telegram.domain.user.model.Menu.HOME;
 public class EmailKeyMenuHandler extends AbstractMenuHandler {
 
     private final EmailKeyStore emailKeyStore;
-    private final UserProductNotifyReadService userProductNotifyReadService;
     private final UserWriteService userWriteService;
     private final SendMessageCallbackFactory callbackFactory;
 
@@ -38,7 +36,7 @@ public class EmailKeyMenuHandler extends AbstractMenuHandler {
     public void handle(MessageVo messageVo, String messageContents) {
         final String telegramId = messageVo.getTelegramId();
         final String authKey = messageContents;
-        final HomeKeyboard homeKeyboard = getHomeKeyboard(telegramId);
+        final HomeKeyboard homeKeyboard = createHomeKeyboard(telegramId);
 
         log.debug("TELEGRAM :: {} << 이메일 인증 메뉴에서 응답, 받은메세지 '{}'", telegramId, messageContents);
 

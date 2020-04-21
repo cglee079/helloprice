@@ -52,7 +52,7 @@ public class ProductTypeSelectHandler extends AbstractMenuHandler {
     @Override
     public void handle(MessageVo messageVo, String messageContents) {
         final String telegramId = messageVo.getTelegramId();
-        final HomeKeyboard homeKeyboard = getHomeKeyboard(telegramId);
+        final HomeKeyboard homeKeyboard = createHomeKeyboard(telegramId);
 
         final ProductTypeSelectCommand command = ProductTypeSelectCommand.from(messageContents);
 
@@ -107,7 +107,7 @@ public class ProductTypeSelectHandler extends AbstractMenuHandler {
             userProductNotifyWriteService.insertNewNotify(user.getId(), product.getId(), priceType);
         }
 
-        sender().send(SendMessageVo.create(messageVo, ProductTypeSelectResponse.successAddNotifyProduct(), product.getImageUrl(),  getHomeKeyboard(telegramId), callbackFactory.create(telegramId, HOME)));
+        sender().send(SendMessageVo.create(messageVo, ProductTypeSelectResponse.successAddNotifyProduct(), product.getImageUrl(),  createHomeKeyboard(telegramId), callbackFactory.create(telegramId, HOME)));
     }
 
     private void handleOnePriceType(MessageVo messageVo, Long productId, PriceType priceType, HomeKeyboard homeKeyboard) {
@@ -130,7 +130,7 @@ public class ProductTypeSelectHandler extends AbstractMenuHandler {
 
         userProductNotifyWriteService.insertNewNotify(user.getId(), product.getId(), priceType);
 
-        sender().send(SendMessageVo.create(messageVo, ProductTypeSelectResponse.successAddNotifyProduct(), product.getImageUrl(),  getHomeKeyboard(telegramId), callbackFactory.create(telegramId, HOME)));
+        sender().send(SendMessageVo.create(messageVo, ProductTypeSelectResponse.successAddNotifyProduct(), product.getImageUrl(),  createHomeKeyboard(telegramId), callbackFactory.create(telegramId, HOME)));
     }
 
 }

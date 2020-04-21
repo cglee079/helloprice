@@ -17,7 +17,7 @@ public class Keyboard {
 
     public static ReplyKeyboardRemove TYPING_KEYBOARD = new ReplyKeyboardRemove();
 
-//    public static ReplyKeyboard getHomeKeyboard(List<String> productCommands) {
+//    public static ReplyKeyboard createHomeKeyboard(List<String> productCommands) {
 //        return new HomeKeyboard(productCommands);
 //    }
 //

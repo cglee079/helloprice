@@ -43,7 +43,7 @@ public class ProductAddUrlMenuHandler extends AbstractMenuHandler {
 
         if (Objects.isNull(productCode)) {
             log.debug("APP :: {} << 링크에서 상품 코드를 찾을 수 없습니다. 받은메세지 '{}'", telegramId, messageContents);
-            sender().send(SendMessageVo.create(messageVo, ProductAddUrlResponse.wrongProductUrl(requestUrl), getHomeKeyboard(telegramId), callbackFactory.create(telegramId, Menu.HOME)));
+            sender().send(SendMessageVo.create(messageVo, ProductAddUrlResponse.wrongProductUrl(requestUrl), createHomeKeyboard(telegramId), callbackFactory.create(telegramId, Menu.HOME)));
             return;
         }
 

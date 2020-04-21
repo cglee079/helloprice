@@ -42,7 +42,7 @@ public class ProductSearchMenuHandler extends AbstractMenuHandler {
         final List<ProductSearchVo> productSearchResults = danawaProductSearchCrawler.crawl(requestSearchKeyword);
 
         if (productSearchResults.isEmpty()) {
-            sender().send(SendMessageVo.create(messageVo, ProductSearchResponse.noResult(), getHomeKeyboard(telegramId), callbackFactory.create(messageVo.getTelegramId(), Menu.HOME)));
+            sender().send(SendMessageVo.create(messageVo, ProductSearchResponse.noResult(), createHomeKeyboard(telegramId), callbackFactory.create(messageVo.getTelegramId(), Menu.HOME)));
             return;
         }
 

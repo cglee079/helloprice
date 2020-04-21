@@ -1,4 +1,4 @@
-package com.podo.helloprice.product.update.analysis.processor.notify.executor.helper;
+package com.podo.helloprice.product.update.analysis.processor.notify.helper;
 
 import com.podo.helloprice.core.model.ProductAliveStatus;
 import com.podo.helloprice.core.model.ProductSaleStatus;
@@ -9,12 +9,10 @@ import com.podo.helloprice.core.util.CurrencyUtil;
 import lombok.experimental.UtilityClass;
 import org.springframework.util.StringUtils;
 
-import java.util.Objects;
-
 @UtilityClass
 public class ProductDescribe {
 
-    public static final String DATE_TIME_FORMAT = "yyyy년 MM월 dd일 HH시 mm분";
+    private static final String DATE_TIME_FORMAT = "yyyy년 MM월 dd일 HH시 mm분";
 
     public static String descProductDetailWithChangeMessage(ProductDetailDto product) {
         return new StringBuilder()
