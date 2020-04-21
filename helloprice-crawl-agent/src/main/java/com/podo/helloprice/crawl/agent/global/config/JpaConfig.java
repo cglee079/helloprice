@@ -12,6 +12,6 @@ import java.util.Optional;
 public class JpaConfig {
     @Bean
     AuditorAware auditorAware() {
-        return (AuditorAware<String>) () -> Optional.of("CrawlAgent@" + Thread.currentThread());
+        return (AuditorAware<String>) () -> Optional.of("CrawlAgent");
     }
 }

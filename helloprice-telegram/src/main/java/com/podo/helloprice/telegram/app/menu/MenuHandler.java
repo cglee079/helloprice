@@ -11,6 +11,6 @@ public interface MenuHandler {
 
     TelegramMessageSender sender();
 
-    void handle(MessageVo messageVo, String requestMessage);
+    void handle(MessageVo messageVo, String messageContents);
 
 }

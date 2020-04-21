@@ -12,6 +12,8 @@ public class StringUtil {
     }
 
     public static String summary(String str, int endIndex) {
-        return str.replace("\r\n", "").substring(0, endIndex);
+        return str.replace("\n", "")
+                .replace("\r", "")
+                .substring(0, endIndex);
     }
 }

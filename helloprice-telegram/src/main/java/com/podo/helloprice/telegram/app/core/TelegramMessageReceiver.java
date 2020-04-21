@@ -71,6 +71,7 @@ public class TelegramMessageReceiver {
         }
 
         userWriteService.updateSendAt(userDetail.getId(), messageReceiveAt);
+
         handleCommand(messageVo, messageText, userDetail.getMenuStatus());
     }
 
@@ -106,8 +107,8 @@ public class TelegramMessageReceiver {
         telegramMessageSender.send(SendMessageVo.create(messageVo, CommonResponse.seeKeyboardIcon(), null, callbackFactory.create(telegramId, null)));
     }
 
-    private void handleCommand(MessageVo messageVo, String requestMessage, Menu userMenuStatus) {
+    private void handleCommand(MessageVo messageVo, String messageContents, Menu userMenuStatus) {
         final MenuHandler menuHandler = menuHandlers.get(userMenuStatus);
-        menuHandler.handle(messageVo, requestMessage);
+        menuHandler.handle(messageVo, messageContents);
     }
 }

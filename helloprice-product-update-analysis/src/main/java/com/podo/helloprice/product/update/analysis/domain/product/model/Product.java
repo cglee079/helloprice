@@ -48,22 +48,10 @@ public class Product{
 
     @OneToMany(mappedBy = "product")
     @MapKey(name = "priceType")
-    private Map<PriceType, ProductPrice> productPrices = new HashMap<>();
+    private Map<PriceType, ProductPrice> priceTypeToPrice = new HashMap<>();
 
-    public Integer getPrice(PriceType priceType) {
-        return this.productPrices.get(priceType).getPrice();
-    }
-
-    public Integer getBeforePrice(PriceType priceType) {
-        return this.productPrices.get(priceType).getBeforePrice();
-    }
-
-    public LocalDateTime getLastUpdateAt(PriceType priceType) {
-        return this.productPrices.get(priceType).getLastUpdateAt();
-    }
-
-    public String getPriceAdditionalInfo(PriceType priceType) {
-        return this.productPrices.get(priceType).getAdditionalInfo();
+    public ProductPrice getPriceByType(PriceType priceType){
+        return priceTypeToPrice.get(priceType);
     }
 
 }

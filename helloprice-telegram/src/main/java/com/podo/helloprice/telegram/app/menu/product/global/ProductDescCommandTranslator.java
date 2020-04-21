@@ -13,8 +13,8 @@ import static java.util.stream.Collectors.toList;
 @UtilityClass
 public class ProductDescCommandTranslator {
 
-    public static final String TOKEN_PRODUCT_KEY = "/★";
-    public static final String TOKEN_PRODUCT_DESC = ".";
+    private static final String TOKEN_PRODUCT_KEY = "/★";
+    private static final String TOKEN_PRODUCT_DESC = ".";
 
     public static List<String> encodes(List<ProductOnePriceTypeDto> products) {
         return products.stream()

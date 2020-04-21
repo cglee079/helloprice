@@ -8,7 +8,6 @@ import lombok.experimental.UtilityClass;
 public class ProductTypeSelectResponse {
 
     public static String successAddNotifyProduct() {
-
         return new StringBuilder()
                 .append("상품 가격알림이 등록되었습니다\n")
                 .append("지금부터 상품의 <b>최저가격</b>이 갱신되면 알림이 전송됩니다!\n")

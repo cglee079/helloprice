@@ -4,6 +4,7 @@ import com.podo.helloprice.core.model.ProductAliveStatus;
 import com.podo.helloprice.core.model.ProductSaleStatus;
 import com.podo.helloprice.core.model.PriceType;
 import com.podo.helloprice.telegram.domain.product.model.Product;
+import com.podo.helloprice.telegram.domain.product.model.ProductPrice;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -20,7 +21,7 @@ public class ProductOnePriceTypeDto {
     private String url;
     private String imageUrl;
     private Integer price;
-    private Integer beforePrice;
+    private Integer prevPrice;
     private String priceAdditionalInfo;
     private ProductAliveStatus aliveStatus;
     private ProductSaleStatus saleStatus;
@@ -39,10 +40,13 @@ public class ProductOnePriceTypeDto {
         this.saleStatus = product.getSaleStatus();
         this.lastCrawledAt = product.getLastCrawledAt();
         this.priceType = priceType;
-        this.price = product.getPrice(priceType);
-        this.beforePrice = product.getBeforePrice(priceType);
-        this.priceAdditionalInfo = product.getPriceAdditionalInfo(priceType);
-        this.lastUpdateAt = product.getLastUpdateAt(priceType);
+
+        final ProductPrice priceByType = product.getPriceByType(priceType);
+
+        this.price = priceByType.getPrice();
+        this.prevPrice = priceByType.getPrevPrice();
+        this.priceAdditionalInfo = priceByType.getAdditionalInfo();
+        this.lastUpdateAt = priceByType.getLastUpdateAt();
     }
 
 }

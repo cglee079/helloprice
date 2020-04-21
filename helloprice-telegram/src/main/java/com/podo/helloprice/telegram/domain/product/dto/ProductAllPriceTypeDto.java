@@ -6,7 +6,6 @@ import com.podo.helloprice.core.model.ProductSaleStatus;
 import com.podo.helloprice.telegram.domain.product.model.Product;
 import com.podo.helloprice.telegram.domain.product.model.ProductPrice;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Getter;
 
 import java.time.LocalDateTime;
@@ -14,7 +13,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Getter
-public class ProductOneMorePriceTypeDto {
+public class ProductAllPriceTypeDto {
 
     private Long id;
     private String productName;
@@ -27,7 +26,7 @@ public class ProductOneMorePriceTypeDto {
     private ProductSaleStatus saleStatus;
     private LocalDateTime lastCrawledAt;
 
-    public ProductOneMorePriceTypeDto(Product product){
+    public ProductAllPriceTypeDto(Product product){
         this.id = product.getId();
         this.productName = product.getProductName();
         this.productCode = product.getProductCode();
@@ -38,7 +37,7 @@ public class ProductOneMorePriceTypeDto {
         this.saleStatus = product.getSaleStatus();
         this.lastCrawledAt = product.getLastCrawledAt();
 
-        final Map<PriceType, ProductPrice> productPrices = product.getProductPrices();
+        final Map<PriceType, ProductPrice> productPrices = product.getPriceTypeToPrice();
         for (PriceType priceType : productPrices.keySet()) {
             this.prices.put(priceType, new  Price(productPrices.get(priceType)));
         }

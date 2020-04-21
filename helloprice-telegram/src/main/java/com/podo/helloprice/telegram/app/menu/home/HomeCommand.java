@@ -2,9 +2,7 @@ package com.podo.helloprice.telegram.app.menu.home;
 
 import com.podo.helloprice.telegram.app.menu.Command;
 import lombok.AllArgsConstructor;
-import lombok.Getter;
 
-@Getter
 @AllArgsConstructor
 public enum HomeCommand implements Command {
 
@@ -23,5 +21,9 @@ public enum HomeCommand implements Command {
         return Command.from(values(), str, null);
     }
 
+    @Override
+    public String getValue() {
+        return value;
+    }
 
 }

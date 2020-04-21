@@ -4,7 +4,6 @@ import com.podo.helloprice.telegram.app.menu.Command;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
-@Getter
 @AllArgsConstructor
 public enum EmailDeleteCommand implements Command {
 
@@ -18,5 +17,8 @@ public enum EmailDeleteCommand implements Command {
         return Command.from(values(), str, null);
     }
 
-
+    @Override
+    public String getValue() {
+        return value;
+    }
 }

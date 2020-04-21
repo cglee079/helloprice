@@ -91,8 +91,8 @@ public class HomeMenuHandler extends AbstractMenuHandler {
         final UserDetailDto user = userReadService.findByTelegramId(telegramId);
         final ProductOnePriceTypeDto product = productReadService.findByProductParameter(productDescParameter.getProductCode(), productDescParameter.getPriceType());
 
-        //상품알림이 삭제되있는 경우.
-        if (userProductNotifyReadService.isExistedNotify(user.getId(), product.getId(), productDescParameter.getPriceType())) {
+        //상품알림이 등록되어있지 않은 경우.
+        if (!userProductNotifyReadService.isExistedNotify(user.getId(), product.getId(), productDescParameter.getPriceType())) {
             log.debug("APP :: {} << 등록되지 않았거나, 알림 삭제된 상품입니다 : {}", telegramId, product.getProductCode());
             sender().send(SendMessageVo.create(messageVo, HomeResponse.invalidNotifyProduct(), createHomeKeyboard(telegramId), callbackFactory.create(telegramId, Menu.HOME)));
             return;

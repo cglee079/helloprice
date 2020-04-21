@@ -2,7 +2,7 @@ package com.podo.helloprice.telegram.domain.product.application;
 
 import com.podo.helloprice.core.model.PriceType;
 import com.podo.helloprice.telegram.domain.product.application.helper.ProductReadHelper;
-import com.podo.helloprice.telegram.domain.product.dto.ProductOneMorePriceTypeDto;
+import com.podo.helloprice.telegram.domain.product.dto.ProductAllPriceTypeDto;
 import com.podo.helloprice.telegram.domain.product.model.Product;
 import com.podo.helloprice.telegram.domain.product.dto.ProductOnePriceTypeDto;
 import com.podo.helloprice.telegram.domain.product.repository.ProductRepository;
@@ -21,9 +21,9 @@ public class ProductReadService {
 
     private final ProductRepository productRepository;
 
-    public ProductOneMorePriceTypeDto findByProductId(Long productId) {
+    public ProductAllPriceTypeDto findByProductId(Long productId) {
         final Product product = ProductReadHelper.findProductById(productRepository, productId);
-        return new ProductOneMorePriceTypeDto(product);
+        return new ProductAllPriceTypeDto(product);
     }
 
     public ProductOnePriceTypeDto findByProductId(Long productId, PriceType priceType) {

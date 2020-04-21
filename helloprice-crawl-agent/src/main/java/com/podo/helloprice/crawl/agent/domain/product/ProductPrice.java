@@ -4,6 +4,8 @@ import com.podo.helloprice.core.model.PriceType;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.data.annotation.LastModifiedBy;
+import org.springframework.data.annotation.LastModifiedDate;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -28,11 +30,17 @@ public class ProductPrice {
 
     private Integer price;
 
-    private Integer beforePrice;
+    private Integer prevPrice;
 
     private String additionalInfo;
 
     private LocalDateTime lastUpdateAt;
+
+    @LastModifiedDate
+    private LocalDateTime updateAt;
+
+    @LastModifiedBy
+    private String updateBy;
 
     public boolean update(Integer price, String additionalInfo, LocalDateTime updateAt) {
         if(Objects.isNull(price)){
@@ -47,7 +55,7 @@ public class ProductPrice {
         }
 
         this.price = price;
-        this.beforePrice = existPrice;
+        this.prevPrice = existPrice;
         this.additionalInfo = additionalInfo;
         this.lastUpdateAt = updateAt;
 

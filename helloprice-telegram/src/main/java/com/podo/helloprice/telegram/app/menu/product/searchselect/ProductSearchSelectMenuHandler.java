@@ -28,21 +28,21 @@ public class ProductSearchSelectMenuHandler extends AbstractMenuHandler {
         return Menu.PRODUCT_SEARCH_RESULT;
     }
 
-    public void handle(MessageVo messageVo, String requestMessage) {
+    public void handle(MessageVo messageVo, String messageContents) {
         final String telegramId = messageVo.getTelegramId();
 
-        log.debug("APP :: {} << 상품 검색 결과 메뉴에서 응답, 받은메세지 '{}'", telegramId, requestMessage);
+        log.debug("APP :: {} << 상품 검색 결과 메뉴에서 응답, 받은메세지 '{}'", telegramId, messageContents);
 
-        final ProductSearchSelectCommand requestCommand = ProductSearchSelectCommand.from(requestMessage);
+        final ProductSearchSelectCommand requestCommand = ProductSearchSelectCommand.from(messageContents);
         if (Objects.nonNull(requestCommand) && requestCommand.equals(EXIT)) {
             sender().send(SendMessageVo.create(messageVo, CommonResponse.toHome(), createHomeKeyboard(telegramId), callbackFactory.create(messageVo.getTelegramId(), Menu.HOME)));
             return;
         }
 
-        final String productCode = ProductSearchSelectCommandTranslator.decode(requestMessage);
+        final String productCode = ProductSearchSelectCommandTranslator.decode(messageContents);
 
         if (Objects.isNull(productCode)) {
-            log.debug("APP :: {} << 응답 할 수 없는 메세지 입니다 받은메세지 '{}'", telegramId, requestMessage);
+            log.debug("APP :: {} << 응답 할 수 없는 메세지 입니다 받은메세지 '{}'", telegramId, messageContents);
             sender().send(SendMessageVo.create(messageVo, CommonResponse.wrongInput(), createHomeKeyboard(telegramId), callbackFactory.create(telegramId, Menu.HOME)));
             return;
         }

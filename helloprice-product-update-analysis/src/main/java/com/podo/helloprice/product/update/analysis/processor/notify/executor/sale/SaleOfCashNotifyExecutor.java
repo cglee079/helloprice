@@ -2,7 +2,7 @@ package com.podo.helloprice.product.update.analysis.processor.notify.executor.sa
 
 import com.podo.helloprice.core.model.PriceType;
 import com.podo.helloprice.core.model.ProductUpdateStatus;
-import com.podo.helloprice.product.update.analysis.processor.notify.executor.SaleNotifyExecutor;
+import com.podo.helloprice.product.update.analysis.processor.notify.executor.AbstractSaleNotifyExecutor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -11,7 +11,7 @@ import static com.podo.helloprice.core.model.ProductUpdateStatus.UPDATE_SALE_CAS
 
 @RequiredArgsConstructor
 @Component
-public class SaleOfCashNotifyExecutor extends SaleNotifyExecutor {
+public class SaleOfCashNotifyExecutor extends AbstractSaleNotifyExecutor {
 
     @Override
     public ProductUpdateStatus getProductUpdateStatus() {

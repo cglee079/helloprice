@@ -56,7 +56,7 @@ public class Product extends BaseEntity {
 
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
     @MapKey(name = "priceType")
-    private Map<PriceType, ProductPrice> productPrices = new HashMap<>();
+    private Map<PriceType, ProductPrice> priceTypeToPrice = new HashMap<>();
 
     @OneToMany(mappedBy = "product")
     private List<UserProductNotify> userProductNotifies = new ArrayList<>();
@@ -105,19 +105,19 @@ public class Product extends BaseEntity {
     }
 
     private void updatePrices(CrawledProduct crawledProduct, LocalDateTime crawledAt) {
-        ofNullable(this.productPrices.get(PriceType.NORMAL)).ifPresent(p -> p.update(crawledProduct.getPrice(), null, crawledAt));
-        ofNullable(this.productPrices.get(PriceType.CASH)).ifPresent(p -> p.update(crawledProduct.getCashPrice(), null, crawledAt));
-        ofNullable(this.productPrices.get(PriceType.CARD)).ifPresent(p -> p.update(crawledProduct.getCardPrice(), crawledProduct.getCardType(), crawledAt));
+        ofNullable(this.priceTypeToPrice.get(PriceType.NORMAL)).ifPresent(p -> p.update(crawledProduct.getPrice(), null, crawledAt));
+        ofNullable(this.priceTypeToPrice.get(PriceType.CASH)).ifPresent(p -> p.update(crawledProduct.getCashPrice(), null, crawledAt));
+        ofNullable(this.priceTypeToPrice.get(PriceType.CARD)).ifPresent(p -> p.update(crawledProduct.getCardPrice(), crawledProduct.getCardType(), crawledAt));
     }
 
     public void updateAllProductPrices(Integer price, LocalDateTime updateAt) {
-        for (ProductPrice productPrice : productPrices.values()) {
+        for (ProductPrice productPrice : priceTypeToPrice.values()) {
             productPrice.update(price, null, updateAt);
         }
     }
 
     public void addProductPrice(ProductPrice productPrice) {
-        this.productPrices.put(productPrice.getPriceType(), productPrice);
+        this.priceTypeToPrice.put(productPrice.getPriceType(), productPrice);
         productPrice.setProduct(this);
     }
 
@@ -145,20 +145,9 @@ public class Product extends BaseEntity {
         return this.aliveStatus.equals(ProductAliveStatus.ALIVE);
     }
 
-    public Integer getPrice(PriceType priceType) {
-        return this.productPrices.get(priceType).getPrice();
+    public ProductPrice getPriceByType(PriceType priceType) {
+        return this.priceTypeToPrice.get(priceType);
     }
 
-    public Integer getBeforePrice(PriceType priceType) {
-        return this.productPrices.get(priceType).getBeforePrice();
-    }
-
-    public LocalDateTime getLastUpdateAt(PriceType priceType) {
-        return this.productPrices.get(priceType).getLastUpdateAt();
-    }
-
-    public String getPriceAdditionalInfo(PriceType priceType) {
-        return this.productPrices.get(priceType).getAdditionalInfo();
-    }
 
 }

@@ -31,9 +31,7 @@ public class ProductWriteService {
         final Optional<Product> byProductCode = productRepository.findByProductCode(crawledProduct.getProductCode());
 
         if (byProductCode.isPresent()) {
-            final Product existedProduct = byProductCode.get();
-            existedProduct.updateByCrawledProduct(crawledProduct);
-            return existedProduct.getId();
+            return updateExistedProduct(crawledProduct, byProductCode.get());
         }
 
         final ProductInsertDto productInsert = ProductInsertDto.builder()
@@ -58,6 +56,12 @@ public class ProductWriteService {
         }
 
         return savedProduct.getId();
+    }
+
+    private Long updateExistedProduct(@NotNull CrawledProduct crawledProduct, Product existedProduct) {
+        existedProduct.updateByCrawledProduct(crawledProduct);
+
+        return existedProduct.getId();
     }
 
 }

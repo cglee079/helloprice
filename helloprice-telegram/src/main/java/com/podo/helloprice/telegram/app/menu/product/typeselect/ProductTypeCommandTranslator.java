@@ -16,19 +16,19 @@ import static java.util.Collections.singletonList;
 @UtilityClass
 public class ProductTypeCommandTranslator {
 
-    public static final String ALL_PRICE_TYPE = "모든 최저가";
+    private static final String ALL_PRICE_TYPE = "모든 최저가";
 
-    public static final String TOKEN = "/★";
-    public static final String TOKEN_PRICE = "/";
-    public static final String PRODUCT_CODE_PREFIX = "#";
-    public static final String COMMAND_FORMAT = PRODUCT_CODE_PREFIX + "%s" + TOKEN + "%s" + TOKEN_PRICE + "%s";
+    private static final String TOKEN = "/★";
+    private static final String TOKEN_PRICE = "/";
+    private static final String PRODUCT_CODE_PREFIX = "#";
+    private static final String COMMAND_FORMAT = PRODUCT_CODE_PREFIX + "%s" + TOKEN + "%s" + TOKEN_PRICE + "%s";
 
     public static List<String> encode(CrawledProduct crawledProduct) {
         final String productCode = crawledProduct.getProductCode();
 
         final List<String> commands = new ArrayList<>();
 
-        commands.add(String.format(COMMAND_FORMAT, productCode, ALL_PRICE_TYPE, ""));
+        commands.add(String.format(COMMAND_FORMAT, productCode, ALL_PRICE_TYPE, "일괄 등록"));
         commands.add(String.format(COMMAND_FORMAT, productCode, PriceType.NORMAL.kr(), toKRW(crawledProduct.getPrice())));
 
         if (Objects.nonNull(crawledProduct.getCashPrice())) {

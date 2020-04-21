@@ -1,6 +1,7 @@
 package com.podo.helloprice.telegram.domain.product.model;
 
 import com.podo.helloprice.core.model.PriceType;
+import com.podo.helloprice.telegram.domain.BaseEntity;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -12,7 +13,7 @@ import java.util.Objects;
 @NoArgsConstructor
 @Entity
 @Table(name = "product_price")
-public class ProductPrice {
+public class ProductPrice extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -27,7 +28,7 @@ public class ProductPrice {
 
     private Integer price;
 
-    private Integer beforePrice;
+    private Integer prevPrice;
 
     private String additionalInfo;
 
@@ -37,10 +38,14 @@ public class ProductPrice {
         final ProductPrice productPrice = new ProductPrice();
         productPrice.priceType = priceType;
         productPrice.price = price;
-        productPrice.beforePrice = price;
+        productPrice.prevPrice = price;
         productPrice.lastUpdateAt = lastUpdateAt;
         productPrice.additionalInfo = additionalInfo;
         return productPrice;
+    }
+
+    public void setProduct(Product product) {
+        this.product = product;
     }
 
     public void update(Integer price, String additionalInfo, LocalDateTime updateAt) {
@@ -56,13 +61,11 @@ public class ProductPrice {
         }
 
         this.price = price;
-        this.beforePrice = existPrice;
+        this.prevPrice = existPrice;
         this.additionalInfo = additionalInfo;
         this.lastUpdateAt = updateAt;
     }
 
-    public void setProduct(Product product) {
-        this.product = product;
-    }
+
 }
 

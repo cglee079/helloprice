@@ -27,7 +27,7 @@ public class ProductPrice {
 
     private Integer price;
 
-    private Integer beforePrice;
+    private Integer prevPrice;
 
     private String additionalInfo;
 

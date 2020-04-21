@@ -28,13 +28,13 @@ public class EmailDeleteMenuHandler extends AbstractMenuHandler {
         return Menu.EMAIL_DELETE;
     }
 
-    public void handle(MessageVo messageVo, String requestMessage) {
+    public void handle(MessageVo messageVo, String messageContents) {
         final String telegramId = messageVo.getTelegramId();
         final HomeKeyboard homeKeyboard = createHomeKeyboard(telegramId);
 
-        log.debug("TELEGRAM :: {} << 이메일 삭제 메뉴에서 응답, 받은메세지 '{}'", telegramId, requestMessage);
+        log.debug("TELEGRAM :: {} << 이메일 삭제 메뉴에서 응답, 받은메세지 '{}'", telegramId, messageContents);
 
-        final EmailDeleteCommand requestCommand = EmailDeleteCommand.from(requestMessage);
+        final EmailDeleteCommand requestCommand = EmailDeleteCommand.from(messageContents);
 
         if (Objects.isNull(requestCommand)) {
             sender().send(SendMessageVo.create(messageVo, CommonResponse.wrongInput(), homeKeyboard, callbackFactory.create(telegramId, Menu.HOME)));
