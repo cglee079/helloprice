@@ -1,23 +1,32 @@
 package com.podo.helloprice.telegram.app.core;
 
 import com.podo.helloprice.telegram.app.vo.SendMessageVo;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
+import org.telegram.telegrambots.bots.DefaultAbsSender;
+import org.telegram.telegrambots.bots.DefaultBotOptions;
+import org.telegram.telegrambots.meta.ApiContext;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.methods.send.SendPhoto;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
-import javax.annotation.PostConstruct;
+import static org.telegram.telegrambots.meta.ApiContext.getInstance;
 
 @Slf4j
-@Component
-public class TelegramMessageSender {
+public class TelegramMessageSender extends DefaultAbsSender {
 
-    private TelegramBot telegramBot;
+    private final String botToken;
 
-    public void setBot(TelegramBot telegramBot) {
-        this.telegramBot = telegramBot;
+    public TelegramMessageSender(String botToken) {
+        super(ApiContext.getInstance(DefaultBotOptions.class));
+        this.botToken = botToken;
+    }
+
+    @Override
+    public String getBotToken() {
+        return botToken;
     }
 
     public void sendWithWebPagePreview(SendMessageVo sendmessageVo) {
@@ -45,7 +54,7 @@ public class TelegramMessageSender {
         sendPhoto.disableNotification();
 
         try {
-            telegramBot.execute(sendPhoto);
+            this.execute(sendPhoto);
         } catch (TelegramApiException e) {
             log.error("TELEGRAM :: {} >> 이미지를 전송 할 수 없습니다. Image : {}", sendMessage.getTelegramId(), sendMessage.getImage());
         }
@@ -66,12 +75,13 @@ public class TelegramMessageSender {
 
         try {
             log.debug("TELEGRAM :: {} >> 메세지 전송, 보낸 메세지 : {}", telegramId, sendmessageVo.getMessage().replace("\n", " "));
-            telegramBot.executeAsync(sendMessage, sendmessageVo.getCallback());
+            this.executeAsync(sendMessage, sendmessageVo.getCallback());
         } catch (TelegramApiException e) {
             log.error("{} >> 메시지를 전송 할 수 없습니다 '{}'", telegramId, e.getMessage());
             sendmessageVo.getCallback().onException(null, null);
         }
 
     }
+
 
 }

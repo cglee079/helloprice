@@ -1,5 +1,6 @@
 package com.podo.helloprice.product.update.analysis.processor.notify.executor.sale;
 
+import com.podo.helloprice.core.model.PriceType;
 import com.podo.helloprice.core.model.ProductAliveStatus;
 import com.podo.helloprice.core.model.ProductSaleStatus;
 import com.podo.helloprice.core.util.CalculateUtil;
@@ -56,7 +57,7 @@ public class ProductDescribe {
 
                 .append("<b>")
                 .append("상품상태 : ")
-                .append(product.getSaleStatus().getValue())
+                .append(product.getSaleStatus().kr())
                 .append("</b>")
                 .append("\n")
 
@@ -109,17 +110,17 @@ public class ProductDescribe {
             case EMPTY_AMOUNT:
                 return "죄송합니다.. <b>상품의 재고가 없어요..</b>";
             case SALE:
-                return descSaleStatusChange(product.getPrice(), product.getPrevPrice());
+                return descSaleStatusChange(product.getPrice(), product.getPrevPrice(), product.getPriceType());
         }
 
         return "";
     }
 
-    private static String descSaleStatusChange(Integer price, Integer prevPrice) {
+    private static String descSaleStatusChange(Integer price, Integer prevPrice, PriceType priceType) {
         final StringBuilder message = new StringBuilder();
 
         if (price.equals(0)) {
-            return "죄송합니다..해당 상품은 일시적으로 판매되지 않고 있어요. :'(";
+            return "<i>죄송합니다, <b>" + priceType.kr() + "</b>는 판매가 진행되지 않고 있어요..</i>";
         }
 
         if (prevPrice.equals(0)) {

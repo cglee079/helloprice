@@ -1,9 +1,7 @@
 package com.podo.helloprice.core.model;
 
-import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
-@Getter
 @RequiredArgsConstructor
 public enum ProductSaleStatus {
 
@@ -13,7 +11,11 @@ public enum ProductSaleStatus {
     NOT_SUPPORT("가격비교중지"),
     UNKNOWN("알 수 없음");
 
-    private final String value;
+    private final String kr;
+
+    public String kr(){
+        return this.kr;
+    }
 
 
 }

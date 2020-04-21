@@ -7,7 +7,6 @@ import org.springframework.test.util.ReflectionTestUtils;
 
 import java.time.LocalDateTime;
 
-import static com.podo.helloprice.code.model.PriceUpdateStatus.UPDATED;
 import static org.assertj.core.api.Assertions.assertThat;
 
 class ProductTest {
@@ -31,10 +30,8 @@ class ProductTest {
     @Test
     void testIncreaseDeadCountOverMax(){
         //given
-        final int productPrice = 1000;
         final Product product = new Product();
         ReflectionTestUtils.setField(product, "deadCount", 0);
-        ReflectionTestUtils.setField(product, "price", productPrice);
         final LocalDateTime lastCrawledAt = LocalDateTime.now();
 
         //when
@@ -42,13 +39,10 @@ class ProductTest {
 
         //then
         assertThat(product.getDeadCount()).isEqualTo(1);
-        assertThat(product.getProductPrice()).isEqualTo(0);
-        assertThat(product.getBeforePrice()).isEqualTo(productPrice);
+        assertThat(product.getProductPrices().values()).extracting(ProductPrice::getPrice).isEqualTo(0);
         assertThat(product.getAliveStatus()).isEqualTo(ProductAliveStatus.DEAD);
-        assertThat(product.getUpdateStatus()).isEqualTo(UPDATED);
-        assertThat(product.getLastUpdatedAt()).isEqualTo(lastCrawledAt);
     }
 
-    
+
 
 }

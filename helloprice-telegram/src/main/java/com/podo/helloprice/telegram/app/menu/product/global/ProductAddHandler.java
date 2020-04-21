@@ -8,7 +8,7 @@ import com.podo.helloprice.telegram.app.menu.home.HomeKeyboard;
 import com.podo.helloprice.telegram.app.menu.product.typeselect.ProductTypeCommandTranslator;
 import com.podo.helloprice.telegram.app.menu.product.typeselect.ProductTypeSelectKeyboard;
 import com.podo.helloprice.telegram.app.vo.MessageVo;
-import com.podo.helloprice.telegram.domain.user.model.Menu;
+import com.podo.helloprice.telegram.app.menu.Menu;
 import com.podo.helloprice.telegram.app.vo.SendMessageVo;
 import com.podo.helloprice.telegram.domain.userproduct.application.UserProductNotifyReadService;
 import com.podo.helloprice.telegram.global.cache.DanawaProductCache;

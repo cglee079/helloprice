@@ -5,8 +5,6 @@ import lombok.experimental.UtilityClass;
 @UtilityClass
 public class CommonResponse {
 
-    public static final String DATE_TIME_FORMAT = "yyyy년 MM월 dd일 HH시 mm분";
-
     public static String introduce(String appDesc) {
         return new StringBuilder()
                 .append("<b>")

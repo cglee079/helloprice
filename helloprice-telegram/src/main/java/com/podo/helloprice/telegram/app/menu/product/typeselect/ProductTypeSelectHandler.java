@@ -14,7 +14,7 @@ import com.podo.helloprice.telegram.domain.product.dto.ProductAllPriceTypeDto;
 import com.podo.helloprice.telegram.domain.product.dto.ProductOnePriceTypeDto;
 import com.podo.helloprice.telegram.domain.user.application.UserReadService;
 import com.podo.helloprice.telegram.domain.user.dto.UserDetailDto;
-import com.podo.helloprice.telegram.domain.user.model.Menu;
+import com.podo.helloprice.telegram.app.menu.Menu;
 import com.podo.helloprice.telegram.domain.userproduct.application.UserProductNotifyReadService;
 import com.podo.helloprice.telegram.domain.userproduct.application.UserProductNotifyWriteService;
 import com.podo.helloprice.telegram.global.cache.DanawaProductCache;
@@ -27,7 +27,7 @@ import java.util.Objects;
 import java.util.Set;
 
 import static com.podo.helloprice.telegram.app.menu.product.typeselect.ProductTypeSelectCommand.EXIT;
-import static com.podo.helloprice.telegram.domain.user.model.Menu.HOME;
+import static com.podo.helloprice.telegram.app.menu.Menu.HOME;
 
 @Slf4j
 @RequiredArgsConstructor

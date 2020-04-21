@@ -8,8 +8,7 @@ import com.podo.helloprice.telegram.app.vo.MessageVo;
 import com.podo.helloprice.telegram.app.vo.SendMessageVo;
 import com.podo.helloprice.telegram.domain.user.application.UserReadService;
 import com.podo.helloprice.telegram.domain.user.dto.UserDetailDto;
-import com.podo.helloprice.telegram.domain.user.model.Menu;
-import com.podo.helloprice.telegram.domain.userproduct.application.UserProductNotifyReadService;
+import com.podo.helloprice.telegram.app.menu.Menu;
 import com.podo.helloprice.telegram.global.email.EmailKeyStore;
 import com.podo.helloprice.telegram.global.infra.gmail.GmailClient;
 import lombok.RequiredArgsConstructor;
@@ -17,7 +16,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.validator.routines.EmailValidator;
 import org.springframework.stereotype.Component;
 
-import static com.podo.helloprice.telegram.domain.user.model.Menu.*;
+import static com.podo.helloprice.telegram.app.menu.Menu.*;
 
 @Slf4j
 @RequiredArgsConstructor

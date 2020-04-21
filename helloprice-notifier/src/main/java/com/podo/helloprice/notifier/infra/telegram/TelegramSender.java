@@ -15,7 +15,6 @@ import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 @Component
 public class TelegramSender extends DefaultAbsSender {
 
-
     @Value("${infra.telegram.bot.token}")
     private String botToken;
 

@@ -11,7 +11,7 @@ import com.podo.helloprice.telegram.domain.product.application.ProductReadServic
 import com.podo.helloprice.telegram.domain.product.dto.ProductOnePriceTypeDto;
 import com.podo.helloprice.telegram.domain.user.application.UserReadService;
 import com.podo.helloprice.telegram.domain.user.dto.UserDetailDto;
-import com.podo.helloprice.telegram.domain.user.model.Menu;
+import com.podo.helloprice.telegram.app.menu.Menu;
 import com.podo.helloprice.telegram.domain.userproduct.application.UserProductNotifyReadService;
 import com.podo.helloprice.telegram.domain.userproduct.application.UserProductNotifyWriteService;
 import lombok.RequiredArgsConstructor;

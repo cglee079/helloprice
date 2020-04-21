@@ -1,4 +1,4 @@
-package com.podo.helloprice.telegram.domain.user.model;
+package com.podo.helloprice.telegram.app.menu;
 
 public enum Menu {
     HOME,

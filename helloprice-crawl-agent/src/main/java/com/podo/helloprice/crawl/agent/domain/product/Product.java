@@ -125,12 +125,6 @@ public class Product {
         return productUpdateStatuses;
     }
 
-    public void updateAllProductPrices(Integer price, LocalDateTime updateAt) {
-        for (ProductPrice productPrice : productPrices.values()) {
-            productPrice.update(price, null, updateAt);
-        }
-    }
-
     public boolean increaseDeadCount(Integer maxDeadCount, LocalDateTime updateAt) {
         this.deadCount++;
 
@@ -142,6 +136,12 @@ public class Product {
         }
 
         return false;
+    }
+
+    private void updateAllProductPrices(Integer price, LocalDateTime updateAt) {
+        for (ProductPrice productPrice : productPrices.values()) {
+            productPrice.update(price, null, updateAt);
+        }
     }
 
 }

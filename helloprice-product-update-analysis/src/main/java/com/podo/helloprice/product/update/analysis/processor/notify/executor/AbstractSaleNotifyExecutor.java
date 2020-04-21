@@ -91,8 +91,9 @@ public abstract class AbstractSaleNotifyExecutor implements NotifyExecutor {
         return new StringBuilder()
                 .append("'")
                 .append(product.getProductName())
-                .append("' 상품이 다시 판매를 시작했어요.. :'(  ")
+                .append("' 상품이 ")
                 .append(toKRW(product.getPrice()))
+                .append(" 으로 다시 판매를 시작했어요.")
                 .toString();
     }
 
@@ -113,7 +114,7 @@ public abstract class AbstractSaleNotifyExecutor implements NotifyExecutor {
                 .append("---------------------------------------\n")
 
                 .append("<b>")
-                .append("야호!, 해당 상품은 다시 판매를 시작했어요\n")
+                .append("야호! 해당 상품은 다시 판매를 시작했어요\n")
                 .append("</b>")
                 .append("\n")
                 .append("\n")
@@ -125,10 +126,10 @@ public abstract class AbstractSaleNotifyExecutor implements NotifyExecutor {
 
     private String getZeroPriceNotifyTitle(ProductDetailDto product) {
         return new StringBuilder()
-                .append("죄송합니다, '")
                 .append(product.getProductName())
-                .append("' 상품이 판매되지 않고있습니다.. :'(  ")
-                .append(toKRW(product.getPrice()))
+                .append("' 상품의 ")
+                .append(product.getPriceType().kr())
+                .append("는 판매가 진행되지 않고 있습니다")
                 .toString();
     }
 
@@ -144,11 +145,10 @@ public abstract class AbstractSaleNotifyExecutor implements NotifyExecutor {
                 .append("\n")
 
                 .append("<b>")
-                .append("해당 상품은 일시적으로 판매되지 않고 있어요. :'(\n")
-                .append("</b>")
-
+                .append(product.getPriceType().kr())
+                .append("</b>는 판매가 진행되지 않고 있어요..\n")
                 .append("\n")
-                .append(ProductDescribe.descProductDetailWithChangeMessage(product))
+
                 .toString();
     }
 

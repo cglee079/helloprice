@@ -16,11 +16,21 @@ public class ProductCommonResponse {
 
     private static final String DATE_TIME_FORMAT = "yyyy년 MM월 dd일 HH시 mm분";
 
-    public static String descProductDetail(ProductOnePriceTypeDto product) {
+    public static String descProductWithChangeMessage(ProductOnePriceTypeDto product) {
+        return new StringBuilder()
+                .append(descProductDetail(product))
+                .append("\n")
+                .append("\n")
+                .append(descProductChange(product))
+                .toString();
+    }
+
+    private static String descProductDetail(ProductOnePriceTypeDto product) {
         final Integer price = product.getPrice();
         final Integer prevPrice = product.getPrevPrice();
 
-        return new StringBuilder().append("<b>")
+        return new StringBuilder()
+                .append("<b>")
                 .append("최종확인시간 : ")
                 .append(dateTimeToString(product.getLastCrawledAt(), DATE_TIME_FORMAT))
                 .append("</b>")
@@ -54,7 +64,7 @@ public class ProductCommonResponse {
 
                 .append("<b>")
                 .append("상품상태 : ")
-                .append(product.getSaleStatus().getValue())
+                .append(product.getSaleStatus().kr())
                 .append("</b>")
                 .append("\n")
 
@@ -78,16 +88,7 @@ public class ProductCommonResponse {
                 .toString();
     }
 
-    public static String descProductWithChangeMessage(ProductOnePriceTypeDto product) {
-        return new StringBuilder()
-                .append(descProductDetail(product))
-                .append("\n")
-                .append("\n")
-                .append(descProductChange(product))
-                .toString();
-    }
-
-    public static String descProductChange(ProductOnePriceTypeDto product) {
+    private static String descProductChange(ProductOnePriceTypeDto product) {
         if (product.getAliveStatus().equals(ProductAliveStatus.DEAD)) {
             return "죄송합니다.. <b>상품의 페이지를 확인 할 수 없어요..</b>";
         }
@@ -117,11 +118,11 @@ public class ProductCommonResponse {
     private static String descSaleStatusChange(Integer price, Integer prevPrice, PriceType priceType) {
 
         if (price.equals(0)) {
-            return "<i> '" + priceType.kr() + "' 타입의 최저가는 더이상 판매가 진행되지 않아요. :'( <i>";
+            return "<i>죄송합니다, <b>" + priceType.kr() + "</b>는 판매가 진행되지 않고 있어요..</i>";
         }
 
         if (price > 0 && prevPrice.equals(0)) {
-            return new StringBuilder().append("야호!  <b>")
+            return new StringBuilder().append("야호! <b>")
                     .append(toKRW(price))
                     .append("</b>으로 다시 판매를 시작했어요!!")
                     .toString();

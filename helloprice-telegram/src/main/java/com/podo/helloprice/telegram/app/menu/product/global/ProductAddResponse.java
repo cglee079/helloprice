@@ -75,7 +75,7 @@ public class ProductAddResponse {
 
                 .append("<b>")
                 .append("상품상태 : ")
-                .append(crawledProduct.getSaleStatus().getValue())
+                .append(crawledProduct.getSaleStatus().kr())
                 .append("</b>")
                 .append("\n")
 

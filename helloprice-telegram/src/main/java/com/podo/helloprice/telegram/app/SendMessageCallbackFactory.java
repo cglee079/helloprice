@@ -1,7 +1,7 @@
 package com.podo.helloprice.telegram.app;
 
 
-import com.podo.helloprice.telegram.domain.user.model.Menu;
+import com.podo.helloprice.telegram.app.menu.Menu;
 import com.podo.helloprice.telegram.domain.user.application.UserWriteService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
