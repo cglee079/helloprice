@@ -1,5 +1,0 @@
-server:
-  port: 28081
-
-product.publish.expire.minute: 1
-
