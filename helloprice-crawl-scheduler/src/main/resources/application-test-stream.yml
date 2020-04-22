@@ -1,0 +1,14 @@
+spring.cloud:
+  function:
+    definition: publishProductToCrawl
+  stream:
+    bindings:
+      publishProductToCrawl-out-0:
+        destination: test
+        binder: kafka
+    kafka:
+      binder:
+        brokers: test
+        auto-add-partitions: true
+        auto-create-topics: true
+        min-partition-count: 1
