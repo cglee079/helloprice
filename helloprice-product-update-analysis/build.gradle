@@ -1,5 +1,13 @@
-archivesBaseName = 'helloprice-crawl-scheduler'
+archivesBaseName = 'helloprice-crawl-update-analysis'
 version = '3.0.0'
+
+bootJar {
+    enabled = true
+}
+
+jar {
+    enabled = false
+}
 
 dependencies {
     implementation project(':helloprice-core')

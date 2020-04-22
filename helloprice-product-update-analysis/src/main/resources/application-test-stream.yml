@@ -1,0 +1,21 @@
+spring.cloud:
+  function:
+    definition: consumeProductUpdate;publishTelegramNotify;publishEmailNotify;
+  stream:
+    bindings:
+      consumeProductUpdate-in-0:
+        group: test
+        destination: test
+        binder: kafka
+      publishTelegramNotify-out-0:
+        destination: test
+        binder: kafka
+      publishEmailNotify-out-0:
+        destination: test
+        binder: kafka
+    kafka:
+      binder:
+        brokers: test:9092
+        auto-add-partitions: true
+        auto-create-topics: true
+        min-partition-count: 1

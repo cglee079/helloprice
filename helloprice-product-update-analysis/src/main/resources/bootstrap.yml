@@ -1,13 +1,20 @@
-spring.application.name: helloprice-notify-analysis
+spring.application.name: helloprice-product-update-analysis
 
-logging.file.name: helloprice-notify-analysis.%d{yyyy-MM-dd}-%i.log
+logging.file.name: helloprice-product-update-analysis.%d{yyyy-MM-dd}-%i.log
 
 ---
 
 spring.profiles: dev
 spring.profiles.include: dev-jpa, dev-stream
 
-logging.file.path: c://dev-log/helloprice/logs/helloprice-notify-analysis
+logging.file.path: c://dev-log/helloprice/logs/helloprice-product-update-analysis
+
+---
+
+spring.profiles: test
+spring.profiles.include: test-jpa, test-stream
+
+logging.file.path: logs
 
 ---
 
