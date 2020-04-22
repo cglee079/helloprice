@@ -1,3 +1,6 @@
+archivesBaseName = 'helloprice-crawl-scheduler'
+version = '3.0.0'
+
 dependencies {
     implementation project(':helloprice-core')
 

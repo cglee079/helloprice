@@ -7,13 +7,13 @@ logging.file.name: helloprice-notify-doer.%d{yyyy-MM-dd}-%i.log
 spring.profiles: dev
 spring.profiles.include: dev-app, dev-stream
 
-logging:
-  file.path: c://dev-log/helloprice/logs/helloprice-notify-doer
+logging.file.path: c://dev-log/helloprice/logs/helloprice-notify-doer
 
 ---
 
 spring.profiles: deploy
 spring.profiles.include: deploy-app, deploy-stream
 
-logging:
-  file.path: /data/logs
+spring.cloud.config.uri: http://192.168.219.103:8888
+
+logging.file.path: /data/logs
