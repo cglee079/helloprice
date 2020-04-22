@@ -4,6 +4,7 @@ import com.podo.helloprice.core.model.PriceType;
 import com.podo.helloprice.core.model.ProductAliveStatus;
 import com.podo.helloprice.core.model.ProductSaleStatus;
 import com.podo.helloprice.crawl.worker.vo.CrawledProduct;
+import com.podo.helloprice.crawl.worker.vo.CrawledProduct.CrawledProductPrice;
 import com.podo.helloprice.telegram.domain.BaseEntity;
 import com.podo.helloprice.telegram.domain.userproduct.UserProductNotify;
 import lombok.AccessLevel;
@@ -19,7 +20,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static java.util.Optional.ofNullable;
+import static com.podo.helloprice.core.model.PriceType.*;
+import static com.podo.helloprice.core.model.PriceType.CARD;
 
 @Slf4j
 @Getter
@@ -105,14 +107,34 @@ public class Product extends BaseEntity {
     }
 
     private void updatePrices(CrawledProduct crawledProduct, LocalDateTime crawledAt) {
-        ofNullable(this.priceTypeToPrice.get(PriceType.NORMAL)).ifPresent(p -> p.update(crawledProduct.getPrice(), null, crawledAt));
-        ofNullable(this.priceTypeToPrice.get(PriceType.CASH)).ifPresent(p -> p.update(crawledProduct.getCashPrice(), null, crawledAt));
-        ofNullable(this.priceTypeToPrice.get(PriceType.CARD)).ifPresent(p -> p.update(crawledProduct.getCardPrice(), crawledProduct.getCardType(), crawledAt));
+        updatePrice(crawledProduct, NORMAL, crawledAt);
+        updatePrice(crawledProduct, CASH, crawledAt);
+        updatePrice(crawledProduct, CARD, crawledAt);
     }
 
-    public void updateAllProductPrices(Integer price, LocalDateTime updateAt) {
+    private boolean updatePrice(CrawledProduct crawledProduct, PriceType priceType, LocalDateTime crawledAt) {
+        final CrawledProductPrice price = crawledProduct.getPriceByType(priceType);
+
+        //기존에 있는 경우, 업데이트
+        if(priceTypeToPrice.containsKey(priceType) && price != null) {
+            return priceTypeToPrice.get(priceType)
+                    .update(price.getPrice(), price.getAdditionalInfo(), crawledAt);
+        }
+
+        //기존에 없는 경우, 새로 등록
+        if(!priceTypeToPrice.containsKey(priceType) && price != null){
+            final ProductPrice productPrice = ProductPrice.create(priceType, price.getPrice(), price.getAdditionalInfo(), crawledAt);
+            priceTypeToPrice.put(priceType, productPrice);
+            productPrice.setProduct(this);
+            return true;
+        }
+
+        return false;
+    }
+
+    private void updateAllProductPrices(Integer price, LocalDateTime updateAt) {
         for (ProductPrice productPrice : priceTypeToPrice.values()) {
-            productPrice.update(price, null, updateAt);
+            productPrice.update(price, "", updateAt);
         }
     }
 
@@ -131,7 +153,7 @@ public class Product extends BaseEntity {
 
         if (!hasAnyNotify() && isAlive()) {
             log.debug("APP :: {}({}) 상품은, 어떤 사용자에게도 알림이 없습니다", this.productName, this.productCode);
-            log.debug("APP :: {}({}) 상품을, 더 이상 갱신하지 않습니다.(중지)", this.productName, this.productCode);
+            log.debug("APP :: {}({}) 상품을, 더 이상 갱신하지 않습니다.(PAUSE)", this.productName, this.productCode);
 
             this.aliveStatus = ProductAliveStatus.PAUSE;
         }

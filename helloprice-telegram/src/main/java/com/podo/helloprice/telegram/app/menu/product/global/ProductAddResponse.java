@@ -1,11 +1,15 @@
 package com.podo.helloprice.telegram.app.menu.product.global;
 
+import com.podo.helloprice.core.model.PriceType;
 import com.podo.helloprice.crawl.worker.vo.CrawledProduct;
 import com.podo.helloprice.core.util.CurrencyUtil;
+import com.podo.helloprice.crawl.worker.vo.CrawledProduct.CrawledProductPrice;
 import com.podo.helloprice.telegram.app.menu.CommonResponse;
 import lombok.experimental.UtilityClass;
 
 import java.util.Objects;
+
+import static com.podo.helloprice.core.model.PriceType.*;
 
 @UtilityClass
 public class ProductAddResponse {
@@ -13,12 +17,14 @@ public class ProductAddResponse {
     public static String wrongProductCode(String productCode) {
         return new StringBuilder()
                 .append("죄송합니다, 상품 정보를 가져 올 수 없습니다\n")
-
                 .append("\n")
+
                 .append("상품코드 : ")
                 .append(productCode)
                 .append("\n")
+
                 .append("\n")
+
                 .append(CommonResponse.toHome())
                 .toString();
     }
@@ -56,6 +62,10 @@ public class ProductAddResponse {
     }
 
     public static String descCrawledProduct(CrawledProduct crawledProduct) {
+        final CrawledProductPrice normalCrawledProductPrice = crawledProduct.getPriceByType(NORMAL);
+        final CrawledProductPrice cashCrawledProductPrice = crawledProduct.getPriceByType(CASH);
+        final CrawledProductPrice cardCrawledProductPrice = crawledProduct.getPriceByType(CARD);
+
         final StringBuilder message = new StringBuilder()
                 .append("<b>상품코드</b> : ")
                 .append(crawledProduct.getProductCode())
@@ -65,6 +75,10 @@ public class ProductAddResponse {
                 .append("상품이름 : ")
                 .append(crawledProduct.getProductName())
                 .append("</b>")
+                .append("\n")
+
+                .append("상품링크 : ")
+                .append(crawledProduct.getUrl())
                 .append("\n")
 
                 .append("<b>상품설명</b> : ")
@@ -81,23 +95,25 @@ public class ProductAddResponse {
 
                 .append("<b>")
                 .append("상품가격/일반: ")
-                .append(CurrencyUtil.toKRW(crawledProduct.getPrice()))
+                .append(CurrencyUtil.toKRW(normalCrawledProductPrice.getPrice()))
                 .append("</b>")
                 .append("\n");
 
-        if(Objects.nonNull(crawledProduct.getCashPrice())) {
+        if(Objects.nonNull(cashCrawledProductPrice)) {
             message.append("<b>")
                     .append("상품가격/현금: ")
-                    .append(CurrencyUtil.toKRW(crawledProduct.getCashPrice()))
+                    .append(CurrencyUtil.toKRW(cashCrawledProductPrice.getPrice()))
                     .append("</b>")
                     .append("\n");
         }
 
-        if(Objects.nonNull(crawledProduct.getCardPrice())) {
+        if(Objects.nonNull(cardCrawledProductPrice)) {
             message.append("<b>")
                     .append("상품가격/카드: ")
-                    .append(CurrencyUtil.toKRW(crawledProduct.getCardPrice()))
-                    .append("(" + crawledProduct.getCardType() + ")")
+                    .append(CurrencyUtil.toKRW(cardCrawledProductPrice.getPrice()))
+                    .append("(")
+                    .append(cardCrawledProductPrice.getAdditionalInfo())
+                    .append(")")
                     .append("</b>")
                     .append("\n");
         }

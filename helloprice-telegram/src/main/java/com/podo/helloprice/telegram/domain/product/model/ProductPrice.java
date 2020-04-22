@@ -1,6 +1,7 @@
 package com.podo.helloprice.telegram.domain.product.model;
 
 import com.podo.helloprice.core.model.PriceType;
+import com.podo.helloprice.crawl.worker.vo.CrawledProduct;
 import com.podo.helloprice.telegram.domain.BaseEntity;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -48,22 +49,24 @@ public class ProductPrice extends BaseEntity {
         this.product = product;
     }
 
-    public void update(Integer price, String additionalInfo, LocalDateTime updateAt) {
+    public boolean update(Integer price, String additionalInfo, LocalDateTime updateAt) {
 
-        if(Objects.isNull(price)){
-            price = 0;
+        if(Objects.isNull(this.price)){
+            this.price = 0;
         }
 
         final Integer existPrice = this.price;
 
         if (price.equals(existPrice) && Objects.equals(this.additionalInfo, additionalInfo)) {
-            return ;
+            return false;
         }
 
         this.price = price;
         this.prevPrice = existPrice;
         this.additionalInfo = additionalInfo;
         this.lastUpdateAt = updateAt;
+
+        return true;
     }
 
 

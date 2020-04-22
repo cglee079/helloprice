@@ -1,6 +1,6 @@
 package com.podo.helloprice.crawl.agent.global.infra.mq.consumer;
 
-import com.podo.helloprice.crawl.agent.global.infra.mq.message.CrawlProductMessage;
+import com.podo.helloprice.crawl.agent.global.infra.mq.message.ProductToCrawlMessage;
 import com.podo.helloprice.crawl.agent.job.CrawlProductJobRunner;
 import com.podo.helloprice.crawl.agent.job.ProductToCrawl;
 import lombok.RequiredArgsConstructor;
@@ -12,15 +12,15 @@ import java.util.function.Consumer;
 @Slf4j
 @RequiredArgsConstructor
 @Component
-public class CrawlProductJobConsumer implements Consumer<CrawlProductMessage> {
+public class CrawlProductJobConsumer implements Consumer<ProductToCrawlMessage> {
 
     final CrawlProductJobRunner crawlProductJobRunner;
 
     @Override
-    public void accept(CrawlProductMessage crawlProductMessage) {
-        log.debug("MQ :: CONSUME :: payload : {}", crawlProductMessage);
+    public void accept(ProductToCrawlMessage productToCrawlMessage) {
+        log.debug("MQ :: CONSUME :: payload : {}", productToCrawlMessage);
 
-        crawlProductJobRunner.run(new ProductToCrawl(crawlProductMessage.getProductCode(), crawlProductMessage.getProductName()));
+        crawlProductJobRunner.run(new ProductToCrawl(productToCrawlMessage.getProductCode(), productToCrawlMessage.getProductName()));
     }
 
 }

@@ -9,7 +9,7 @@ import lombok.ToString;
 @EqualsAndHashCode
 @ToString
 @NoArgsConstructor
-public class CrawlProductMessage {
+public class ProductToCrawlMessage {
     private String productName;
     private String productCode;
 }

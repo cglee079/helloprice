@@ -1,6 +1,8 @@
 package com.podo.helloprice.telegram.domain.product.application;
 
+import com.podo.helloprice.core.model.PriceType;
 import com.podo.helloprice.crawl.worker.vo.CrawledProduct;
+import com.podo.helloprice.crawl.worker.vo.CrawledProduct.CrawledProductPrice;
 import com.podo.helloprice.telegram.domain.product.dto.ProductInsertDto;
 import com.podo.helloprice.telegram.domain.product.model.Product;
 import com.podo.helloprice.telegram.domain.product.repository.ProductRepository;
@@ -28,10 +30,11 @@ public class ProductWriteService {
     public Long writeCrawledProduct(@NotNull CrawledProduct crawledProduct) {
         final LocalDateTime crawledAt = crawledProduct.getCrawledAt();
 
-        final Optional<Product> byProductCode = productRepository.findByProductCode(crawledProduct.getProductCode());
-
-        if (byProductCode.isPresent()) {
-            return updateExistedProduct(crawledProduct, byProductCode.get());
+        final Optional<Product> existedProductOptional = productRepository.findByProductCode(crawledProduct.getProductCode());
+        if (existedProductOptional.isPresent()) {
+            final Product existedProduct = existedProductOptional.get();
+            existedProduct.updateByCrawledProduct(crawledProduct);
+            return existedProduct.getId();
         }
 
         final ProductInsertDto productInsert = ProductInsertDto.builder()
@@ -45,23 +48,16 @@ public class ProductWriteService {
 
         final Product savedProduct = productRepository.save(productInsert.toEntity());
 
-        savedProduct.addProductPrice(create(NORMAL, crawledProduct.getPrice(), null, crawledAt));
+        for (PriceType priceType : values()) {
+            final CrawledProductPrice crawledProductPrice = crawledProduct.getPriceByType(priceType);
 
-        if(Objects.nonNull(crawledProduct.getCashPrice())){
-            savedProduct.addProductPrice(create(CASH, crawledProduct.getCashPrice(), null, crawledAt));
-        }
-
-        if(Objects.nonNull(crawledProduct.getCardPrice())){
-            savedProduct.addProductPrice(create(CARD, crawledProduct.getCardPrice(), crawledProduct.getCardType(), crawledAt));
+            if (Objects.nonNull(crawledProductPrice)) {
+                savedProduct.addProductPrice(create(priceType, crawledProductPrice.getPrice(), crawledProductPrice.getAdditionalInfo(), crawledAt));
+            }
         }
 
         return savedProduct.getId();
     }
 
-    private Long updateExistedProduct(@NotNull CrawledProduct crawledProduct, Product existedProduct) {
-        existedProduct.updateByCrawledProduct(crawledProduct);
-
-        return existedProduct.getId();
-    }
 
 }

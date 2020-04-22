@@ -29,14 +29,14 @@ public class ProductTypeCommandTranslator {
         final List<String> commands = new ArrayList<>();
 
         commands.add(String.format(COMMAND_FORMAT, productCode, ALL_PRICE_TYPE, "일괄 등록"));
-        commands.add(String.format(COMMAND_FORMAT, productCode, PriceType.NORMAL.kr(), toKRW(crawledProduct.getPrice())));
 
-        if (Objects.nonNull(crawledProduct.getCashPrice())) {
-            commands.add(String.format(COMMAND_FORMAT, productCode, PriceType.CASH.kr(), toKRW(crawledProduct.getCashPrice())));
-        }
+        for (PriceType priceType : PriceType.values()) {
 
-        if (Objects.nonNull(crawledProduct.getCardPrice())) {
-            commands.add(String.format(COMMAND_FORMAT, productCode, PriceType.CARD.kr(), toKRW(crawledProduct.getCardPrice())));
+            final CrawledProduct.CrawledProductPrice priceByType = crawledProduct.getPriceByType(priceType);
+
+            if (Objects.nonNull(priceByType)) {
+                commands.add(String.format(COMMAND_FORMAT, productCode, priceType.kr(), toKRW(priceByType.getPrice())));
+            }
         }
 
         return commands;

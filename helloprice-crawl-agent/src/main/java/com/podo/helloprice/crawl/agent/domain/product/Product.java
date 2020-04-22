@@ -45,13 +45,11 @@ public class Product {
 
     private String imageUrl;
 
-    @OneToMany(mappedBy = "product")
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
     @MapKey(name = "priceType")
-    private Map<PriceType, ProductPrice> productPrices;
+    private Map<PriceType, ProductPrice> priceTypeToPrice;
 
     private LocalDateTime lastCrawledAt;
-
-    private LocalDateTime lastPublishAt;
 
     private Integer deadCount;
 
@@ -78,19 +76,19 @@ public class Product {
 
         switch (saleStatus) {
             case UNKNOWN:
-                this.updateAllProductPrices(0, lastCrawledAt);
+                this.updateAllProductPrices(0, "", lastCrawledAt);
                 this.aliveStatus = ProductAliveStatus.PAUSE;
                 return singletonList(ProductUpdateStatus.UPDATE_UNKNOWN);
             case DISCONTINUE:
-                this.updateAllProductPrices(0, lastCrawledAt);
+                this.updateAllProductPrices(0, "", lastCrawledAt);
                 this.aliveStatus = ProductAliveStatus.PAUSE;
                 return singletonList(ProductUpdateStatus.UPDATE_DISCONTINUE);
             case NOT_SUPPORT:
-                this.updateAllProductPrices(0, lastCrawledAt);
+                this.updateAllProductPrices(0, "", lastCrawledAt);
                 this.aliveStatus = ProductAliveStatus.PAUSE;
                 return singletonList(ProductUpdateStatus.UPDATE_NOT_SUPPORT);
             case EMPTY_AMOUNT:
-                this.updateAllProductPrices(0, lastCrawledAt);
+                this.updateAllProductPrices(0, "", lastCrawledAt);
                 this.aliveStatus = ProductAliveStatus.ALIVE;
                 return singletonList(ProductUpdateStatus.UPDATE_EMPTY_AMOUNT);
             case SALE:
@@ -104,25 +102,39 @@ public class Product {
     private List<ProductUpdateStatus> updatePrices(CrawledProduct crawledProduct, LocalDateTime crawledAt) {
         final List<ProductUpdateStatus> productUpdateStatuses = new ArrayList<>();
 
-        if(productPrices.containsKey(NORMAL)){
-            if (productPrices.get(NORMAL).update(crawledProduct.getPrice(), null, crawledAt)) {
-                productUpdateStatuses.add(ProductUpdateStatus.UPDATE_SALE_NORMAL_PRICE);
-            }
+        if (updatePrice(crawledProduct, NORMAL, crawledAt)) {
+            productUpdateStatuses.add(ProductUpdateStatus.UPDATE_SALE_NORMAL_PRICE);
         }
 
-        if(productPrices.containsKey(CASH)){
-            if (productPrices.get(CASH).update(crawledProduct.getCashPrice(), null, crawledAt)) {
-                productUpdateStatuses.add(ProductUpdateStatus.UPDATE_SALE_CASH_PRICE);
-            }
+        if (updatePrice(crawledProduct, CASH, crawledAt)) {
+            productUpdateStatuses.add(ProductUpdateStatus.UPDATE_SALE_CASH_PRICE);
         }
 
-        if(productPrices.containsKey(CARD)){
-            if (productPrices.get(CARD).update(crawledProduct.getCardPrice(), crawledProduct.getCardType(), crawledAt)) {
-                productUpdateStatuses.add(ProductUpdateStatus.UPDATE_SALE_CARD_PRICE);
-            }
+        if (updatePrice(crawledProduct, CARD, crawledAt)) {
+            productUpdateStatuses.add(ProductUpdateStatus.UPDATE_SALE_CARD_PRICE);
         }
 
         return productUpdateStatuses;
+    }
+
+    private boolean updatePrice(CrawledProduct crawledProduct, PriceType priceType, LocalDateTime crawledAt) {
+        final CrawledProduct.CrawledProductPrice price = crawledProduct.getPriceByType(priceType);
+
+        //기존에 있는 경우, 업데이트
+        if(priceTypeToPrice.containsKey(priceType) && price != null) {
+            return priceTypeToPrice.get(priceType)
+                    .update(price.getPrice(), price.getAdditionalInfo(), crawledAt);
+        }
+
+        //기존에 없는 경우, 새로 등록
+        if(!priceTypeToPrice.containsKey(priceType) && price != null){
+            final ProductPrice productPrice = ProductPrice.create(priceType, price.getPrice(), price.getAdditionalInfo(), crawledAt);
+            priceTypeToPrice.put(priceType, productPrice);
+            productPrice.setProduct(this);
+            return true;
+        }
+
+        return false;
     }
 
     public boolean increaseDeadCount(Integer maxDeadCount, LocalDateTime updateAt) {
@@ -130,7 +142,7 @@ public class Product {
 
         if (this.deadCount > maxDeadCount) {
             log.debug("{}({}) 상품 DEAD_COUNT 초과, DEAD 상태로 변경", this.productName, this.productCode);
-            this.updateAllProductPrices(0, updateAt);
+            this.updateAllProductPrices(0, "", updateAt);
             this.aliveStatus = ProductAliveStatus.DEAD;
             return true;
         }
@@ -138,9 +150,9 @@ public class Product {
         return false;
     }
 
-    private void updateAllProductPrices(Integer price, LocalDateTime updateAt) {
-        for (ProductPrice productPrice : productPrices.values()) {
-            productPrice.update(price, null, updateAt);
+    private void updateAllProductPrices(Integer price, String additionalInfo, LocalDateTime updateAt) {
+        for (ProductPrice productPrice : priceTypeToPrice.values()) {
+            productPrice.update(price, additionalInfo, updateAt);
         }
     }
 

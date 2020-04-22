@@ -42,6 +42,20 @@ public class ProductPrice {
     @LastModifiedBy
     private String updateBy;
 
+    public static ProductPrice create(PriceType priceType, Integer price, String additionalInfo, LocalDateTime lastUpdateAt) {
+        final ProductPrice productPrice = new ProductPrice();
+        productPrice.priceType = priceType;
+        productPrice.price = price;
+        productPrice.prevPrice = price;
+        productPrice.lastUpdateAt = lastUpdateAt;
+        productPrice.additionalInfo = additionalInfo;
+        return productPrice;
+    }
+
+    public void setProduct(Product product) {
+        this.product = product;
+    }
+
     public boolean update(Integer price, String additionalInfo, LocalDateTime updateAt) {
         if(Objects.isNull(price)){
             price = 0;

@@ -1,7 +1,7 @@
 package com.podo.helloprice.crawl.agent.global.infra.mq;
 
 import com.podo.helloprice.crawl.agent.global.infra.mq.consumer.CrawlProductJobConsumer;
-import com.podo.helloprice.crawl.agent.global.infra.mq.message.CrawlProductMessage;
+import com.podo.helloprice.crawl.agent.global.infra.mq.message.ProductToCrawlMessage;
 import com.podo.helloprice.crawl.agent.global.infra.mq.message.ProductUpdateMessage;
 import com.podo.helloprice.crawl.agent.global.infra.mq.publish.ProductUpdatePublisher;
 import lombok.RequiredArgsConstructor;
@@ -19,12 +19,12 @@ import java.util.function.Supplier;
 public class MQConfig {
 
     @Bean
-    public Consumer<CrawlProductMessage> consumeCrawlProduct(CrawlProductJobConsumer crawlProductJobConsumer) {
+    public Consumer<ProductToCrawlMessage> consumeProductToCrawl(CrawlProductJobConsumer crawlProductJobConsumer) {
         return crawlProductJobConsumer;
     }
 
     @Bean
-    public Supplier<Flux<ProductUpdateMessage>> publicProductUpdate(ProductUpdatePublisher productUpdatePublisher){
+    public Supplier<Flux<ProductUpdateMessage>> publishProductUpdate(ProductUpdatePublisher productUpdatePublisher){
         return productUpdatePublisher::processor;
     }
 

@@ -58,9 +58,9 @@ public class CrawlProductUpdateJobWriter implements ItemWriter<CrawledProduct> {
 
         for (ProductUpdateStatus productUpdateStatus : product.updateByCrawledProduct(crawledProduct)) {
             crawlProductJobStore.addNotifyEvent(new ProductUpdate(productId, productUpdateStatus));
-        };
+        }
 
-        log.debug("STEP :: WRITER :: {}({}) ::  상품판매상태 : `{}`, 상품상태 `{}`", productName, productCode, product.getSaleStatus().getValue(), product.getAliveStatus());
+        log.debug("STEP :: WRITER :: {}({}) ::  상품판매상태 : `{}`, 상품상태 `{}`", productName, productCode, product.getSaleStatus().kr(), product.getAliveStatus());
     }
 
 

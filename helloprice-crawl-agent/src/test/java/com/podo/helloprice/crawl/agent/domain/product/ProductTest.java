@@ -39,7 +39,7 @@ class ProductTest {
 
         //then
         assertThat(product.getDeadCount()).isEqualTo(1);
-        assertThat(product.getProductPrices().values()).extracting(ProductPrice::getPrice).isEqualTo(0);
+        assertThat(product.getPriceTypeToPrice().values()).extracting(ProductPrice::getPrice).isEqualTo(0);
         assertThat(product.getAliveStatus()).isEqualTo(ProductAliveStatus.DEAD);
     }
 

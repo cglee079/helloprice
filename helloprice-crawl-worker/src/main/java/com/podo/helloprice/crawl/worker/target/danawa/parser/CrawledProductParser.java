@@ -1,14 +1,19 @@
 package com.podo.helloprice.crawl.worker.target.danawa.parser;
 
+import com.podo.helloprice.core.model.PriceType;
 import com.podo.helloprice.core.model.ProductSaleStatus;
 import com.podo.helloprice.core.util.StringUtil;
 import com.podo.helloprice.crawl.worker.vo.CrawledProduct;
+import com.podo.helloprice.crawl.worker.vo.CrawledProduct.CrawledProductPrice;
 import lombok.extern.slf4j.Slf4j;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 
 import java.time.LocalDateTime;
+import java.util.HashMap;
 import java.util.Objects;
+
+import static com.podo.helloprice.core.model.PriceType.*;
 
 @Slf4j
 public class CrawledProductParser {
@@ -25,7 +30,7 @@ public class CrawledProductParser {
     private static final String TEXT_PRODUCT_STATUS_DISCONTINUE = "단종 된";
     private static final String TEXT_PRODUCT_STATUS_EMPTY_ACCOUNT = "일시 품절";
     private static final String TEXT_PRODUCT_STATUS_NO_SUPPORT = "가격비교 중지";
-    public static final String CARD_TYPE_POSTFIX = "카드최저가";
+    private static final String CARD_TYPE_POSTFIX = "카드최저가";
 
     public CrawledProduct parse(Document document, String productCode, String url, LocalDateTime crawledAt) {
         try {
@@ -33,16 +38,17 @@ public class CrawledProductParser {
             final String description = document.select(SELECTOR_PRODUCT_DESC).text().replace("[다나와]", "").trim();
             final String imageUrl = document.select(SELECTOR_PRODUCT_IMAGE).attr("src");
 
-            final Integer price = getPrice(document);
-            final Integer cashPrice = getCashPrice(document);
-            final String cardType = getCardType(document);
-            final Integer cardPrice = getCardPrice(document);
-
-            final ProductSaleStatus saleStatus = getProductSaleStatus(price, document.select(SELECTOR_PRODUCT_SALE_STATUS).text().trim());
 
             if (StringUtil.isEmpty(productName)) {
                 return null;
             }
+
+            final HashMap<PriceType, CrawledProductPrice> priceTypeToPrice = new HashMap<>();
+            priceTypeToPrice.put(NORMAL,  getNormalPrice(document));
+            priceTypeToPrice.put(CASH,  getCashPrice(document));
+            priceTypeToPrice.put(CARD,  getCardPrice(document));
+
+            final ProductSaleStatus saleStatus = getProductSaleStatus(priceTypeToPrice.get(NORMAL), document.select(SELECTOR_PRODUCT_SALE_STATUS).text().trim());
 
             return CrawledProduct.builder()
                     .productCode(productCode)
@@ -50,41 +56,44 @@ public class CrawledProductParser {
                     .productName(productName)
                     .description(description)
                     .imageUrl(imageUrl)
-                    .price(price)
-                    .cashPrice(cashPrice)
-                    .cardType(cardType)
-                    .cardPrice(cardPrice)
+                    .priceTypeToPrice(priceTypeToPrice)
                     .saleStatus(saleStatus)
                     .crawledAt(crawledAt)
                     .build();
 
         } catch (RuntimeException e) {
+            log.error("CRAWL :: ERROR :: 상품정보를 확인 할 수 없습니다.", e);
             return null;
         }
     }
 
-    private Integer getPrice(Document document) {
+    private CrawledProductPrice getNormalPrice(Document document) {
         final Element priceElement = document.select(SELECTOR_PRODUCT_PRICE).first();
-        return Objects.isNull(priceElement) ? 0 : Integer.parseInt(priceElement.text().replace(",", ""));
+        return Objects.isNull(priceElement) ? new CrawledProductPrice(0) : new CrawledProductPrice(Integer.parseInt(priceElement.text().replace(",", "")));
     }
 
-    private Integer getCashPrice(Document document) {
+    private CrawledProductPrice getCashPrice(Document document) {
         final Element cashPriceElement = document.select(SELECTOR_PRODUCT_CASH_PRICE).first();
-        return Objects.isNull(cashPriceElement) ? null : Integer.parseInt(cashPriceElement.text().replace(",", ""));
+        return Objects.isNull(cashPriceElement) ? null : new CrawledProductPrice(Integer.parseInt(cashPriceElement.text().replace(",", "")));
+
     }
 
-    private String getCardType(Document document) {
-        final Element cardTypeElement = document.selectFirst(SELECTOR_PRODUCT_CARD_TYPE);
-        return Objects.isNull(cardTypeElement) ? null : cardTypeElement.text().replace(CARD_TYPE_POSTFIX, "").trim();
-    }
-
-    private Integer getCardPrice(Document document) {
+    private CrawledProductPrice getCardPrice(Document document) {
         final Element cardPriceElement = document.select(SELECTOR_PRODUCT_CARD_PRICE).first();
-        return Objects.isNull(cardPriceElement) ? null : Integer.parseInt(cardPriceElement.text().replace(",", ""));
+        final Element cardTypeElement = document.selectFirst(SELECTOR_PRODUCT_CARD_TYPE);
+
+        if (Objects.isNull(cardTypeElement)) {
+            return null;
+        }
+
+        return new CrawledProductPrice(
+                Integer.parseInt(cardPriceElement.text().replace(",", ""))
+                , cardTypeElement.text().replace(CARD_TYPE_POSTFIX, "").trim()
+        );
     }
 
-    private ProductSaleStatus getProductSaleStatus(Integer productPrice, String saleStatusText) {
-        if (productPrice != 0) {
+    private ProductSaleStatus getProductSaleStatus(CrawledProductPrice crawledProductPrice, String saleStatusText) {
+        if (crawledProductPrice.getPrice() != 0) {
             return ProductSaleStatus.SALE;
         }
 
