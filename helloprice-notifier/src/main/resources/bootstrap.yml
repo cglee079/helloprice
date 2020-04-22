@@ -1,13 +1,20 @@
-spring.application.name: helloprice-notify-doer
+spring.application.name: helloprice-notifier
 
-logging.file.name: helloprice-notify-doer.%d{yyyy-MM-dd}-%i.log
+logging.file.name: helloprice-notifier.%d{yyyy-MM-dd}-%i.log
 
 ---
 
 spring.profiles: dev
 spring.profiles.include: dev-app, dev-stream
 
-logging.file.path: c://dev-log/helloprice/logs/helloprice-notify-doer
+logging.file.path: c://dev-log/helloprice/logs/helloprice-notifier
+
+---
+
+spring.profiles: test
+spring.profiles.include: test-app, test-stream
+
+logging.file.path: logs
 
 ---
 
