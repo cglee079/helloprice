@@ -21,3 +21,4 @@ out/
 **/logs/**
 
 application-*.yml
+!application-test*.yml
