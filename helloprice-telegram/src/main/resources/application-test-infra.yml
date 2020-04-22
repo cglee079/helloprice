@@ -1,0 +1,13 @@
+infra.gmail:
+  send.timeout: 5000
+  admin:
+    username: test
+    email: test@test
+    id: test
+    password: test
+
+infra.telegram:
+  bot:
+    name: test
+    token: test
+  admin.id: test

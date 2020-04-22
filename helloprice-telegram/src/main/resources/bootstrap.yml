@@ -1,6 +1,5 @@
 spring.application.name: helloprice-telegram
 
-logging.level.root : info
 logging.file.name: helloprice-telegram.%d{yyyy-MM-dd}-%i.log
 
 ---
@@ -10,6 +9,14 @@ spring.profiles.include: dev-app, dev-jpa, dev-infra
 
 logging:
   file.path: c://dev-log/helloprice/logs/helloprice-telegram
+
+---
+
+spring.profiles: test
+spring.profiles.include: test-app, test-jpa, test-infra
+
+logging:
+  file.path: logs
 
 ---
 
