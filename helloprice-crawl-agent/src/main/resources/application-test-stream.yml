@@ -1,0 +1,18 @@
+spring.cloud:
+  function:
+    definition: consumeProductToCrawl;publishProductUpdate;
+  stream:
+    bindings:
+      consumeProductToCrawl-in-0:
+        group: test
+        destination: test
+        binder: kafka
+      publishProductUpdate-out-0:
+        destination: test
+        binder: kafka
+    kafka:
+      binder:
+        brokers: localhost:9092
+        auto-add-partitions: true
+        min-partition-count: 1
+        auto-create-topics: true
