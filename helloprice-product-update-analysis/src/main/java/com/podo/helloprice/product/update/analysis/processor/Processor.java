@@ -1,6 +1,6 @@
 package com.podo.helloprice.product.update.analysis.processor;
 
-import com.podo.helloprice.core.model.ProductUpdateStatus;
+import com.podo.helloprice.core.enums.ProductUpdateStatus;
 
 import java.time.LocalDateTime;
 

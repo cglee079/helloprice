@@ -1,6 +1,6 @@
 package com.podo.helloprice.product.update.analysis.processor.clear;
 
-import com.podo.helloprice.core.model.ProductUpdateStatus;
+import com.podo.helloprice.core.enums.ProductUpdateStatus;
 import com.podo.helloprice.product.update.analysis.processor.Processor;
 import com.podo.helloprice.product.update.analysis.domain.userproduct.application.UserProductNotifyDeleteService;
 import lombok.RequiredArgsConstructor;

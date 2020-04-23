@@ -1,10 +1,10 @@
 package com.podo.helloprice.crawl.agent.domain.product;
 
-import com.podo.helloprice.core.model.PriceType;
-import com.podo.helloprice.core.model.ProductAliveStatus;
-import com.podo.helloprice.core.model.ProductSaleStatus;
-import com.podo.helloprice.core.model.ProductUpdateStatus;
-import com.podo.helloprice.crawl.worker.vo.CrawledProduct;
+import com.podo.helloprice.core.enums.PriceType;
+import com.podo.helloprice.core.enums.ProductAliveStatus;
+import com.podo.helloprice.core.enums.ProductSaleStatus;
+import com.podo.helloprice.core.enums.ProductUpdateStatus;
+import com.podo.helloprice.crawl.worker.value.CrawledProduct;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -16,10 +16,11 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static com.podo.helloprice.core.model.PriceType.*;
+import static com.podo.helloprice.core.enums.PriceType.*;
 import static java.util.Collections.emptyList;
 import static java.util.Collections.singletonList;
 
@@ -47,7 +48,7 @@ public class Product {
 
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
     @MapKey(name = "priceType")
-    private Map<PriceType, ProductPrice> priceTypeToPrice;
+    private Map<PriceType, ProductPrice> priceTypeToPrice = new HashMap<>();
 
     private LocalDateTime lastCrawledAt;
 
@@ -118,7 +119,7 @@ public class Product {
     }
 
     private boolean updatePrice(CrawledProduct crawledProduct, PriceType priceType, LocalDateTime crawledAt) {
-        final CrawledProduct.CrawledProductPrice price = crawledProduct.getPriceByType(priceType);
+        final CrawledProduct.CrawledProductPrice price = crawledProduct.getProductPriceByType(priceType);
 
         //기존에 있는 경우, 업데이트
         if(priceTypeToPrice.containsKey(priceType) && price != null) {

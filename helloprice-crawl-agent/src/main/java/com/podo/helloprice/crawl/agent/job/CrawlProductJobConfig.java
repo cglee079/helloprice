@@ -4,7 +4,7 @@ import com.podo.helloprice.crawl.agent.job.step.crawl.CrawlProductUpdateJobProce
 import com.podo.helloprice.crawl.agent.job.step.crawl.CrawlProductUpdateJobReader;
 import com.podo.helloprice.crawl.agent.job.step.crawl.CrawlProductUpdateJobWriter;
 import com.podo.helloprice.crawl.agent.job.step.publish.CrawlProductUpdatePublishTasklet;
-import com.podo.helloprice.crawl.worker.vo.CrawledProduct;
+import com.podo.helloprice.crawl.worker.value.CrawledProduct;
 import lombok.RequiredArgsConstructor;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.Step;

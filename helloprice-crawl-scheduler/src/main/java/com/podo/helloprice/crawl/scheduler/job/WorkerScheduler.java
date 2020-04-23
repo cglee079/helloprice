@@ -10,7 +10,7 @@ import java.util.List;
 
 @RequiredArgsConstructor
 @Component
-public class ProductCrawlScheduler {
+public class WorkerScheduler {
 
     private final List<Worker> workers;
 

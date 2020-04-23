@@ -4,11 +4,11 @@ package com.podo.helloprice.telegram.app.menu.email.auth;
 import com.podo.helloprice.telegram.app.SendMessageCallbackFactory;
 import com.podo.helloprice.telegram.app.menu.AbstractMenuHandler;
 import com.podo.helloprice.telegram.app.menu.home.HomeKeyboard;
-import com.podo.helloprice.telegram.app.vo.MessageVo;
-import com.podo.helloprice.telegram.app.vo.SendMessageVo;
+import com.podo.helloprice.telegram.app.value.MessageVo;
+import com.podo.helloprice.telegram.app.value.SendMessageVo;
 import com.podo.helloprice.telegram.domain.user.application.UserWriteService;
 import com.podo.helloprice.telegram.app.menu.Menu;
-import com.podo.helloprice.telegram.global.email.EmailKeyStore;
+import com.podo.helloprice.telegram.global.email.EmailAuthKeyStore;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -24,7 +24,7 @@ import static com.podo.helloprice.telegram.app.menu.Menu.HOME;
 @Component
 public class EmailKeyMenuHandler extends AbstractMenuHandler {
 
-    private final EmailKeyStore emailKeyStore;
+    private final EmailAuthKeyStore emailAuthKeyStore;
     private final UserWriteService userWriteService;
     private final SendMessageCallbackFactory callbackFactory;
 
@@ -40,7 +40,7 @@ public class EmailKeyMenuHandler extends AbstractMenuHandler {
 
         log.debug("TELEGRAM :: {} << 이메일 인증 메뉴에서 응답, 받은메세지 '{}'", telegramId, messageContents);
 
-        final String email = emailKeyStore.getEmailIfCertifiedByAuthKey(authKey, LocalDateTime.now());
+        final String email = emailAuthKeyStore.getEmailIfCertifiedByAuthKey(authKey, LocalDateTime.now());
 
         if (Objects.isNull(email)) {
             log.debug("APP :: {} << 키 값이 잘못되었습니다", telegramId);

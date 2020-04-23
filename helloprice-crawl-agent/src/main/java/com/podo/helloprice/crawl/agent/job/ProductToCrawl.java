@@ -8,7 +8,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ProductToCrawl {
-
     private String productCode;
     private String productName;
 }

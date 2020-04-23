@@ -19,8 +19,8 @@ public class EmailNotifyMessageConsumer implements Consumer<EmailNotifyMessage> 
     public void accept(EmailNotifyMessage emailNotifyMessage) {
         log.debug("MQ :: CONSUME :: {}", emailNotifyMessage);
 
-        final String email = emailNotifyMessage.getEmail();
         final String username = emailNotifyMessage.getUsername();
+        final String email = emailNotifyMessage.getEmail();
         final String title = emailNotifyMessage.getTitle();
         final String contents = emailNotifyMessage.getContents();
 

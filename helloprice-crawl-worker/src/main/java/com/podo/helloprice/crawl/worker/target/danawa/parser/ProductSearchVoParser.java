@@ -4,7 +4,7 @@ import com.podo.helloprice.core.util.CurrencyUtil;
 import com.podo.helloprice.core.util.NumberUtil;
 import com.podo.helloprice.core.util.StringUtil;
 import com.podo.helloprice.crawl.worker.target.danawa.DanawaProductCodeCrawler;
-import com.podo.helloprice.crawl.worker.vo.ProductSearchVo;
+import com.podo.helloprice.crawl.worker.value.ProductSearchVo;
 import lombok.extern.slf4j.Slf4j;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
@@ -20,7 +20,7 @@ public class ProductSearchVoParser {
     private static String SELECTOR_SEARCH_PRODUCT_URL = "> div.goods_info_wrap > a";
     private static String TEXT_SEARCH_PRODUCT_STATUS_VALUE_DISCONTINUE = "단종";
     private static String TEXT_SEARCH_PRODUCT_STATUS_VALUE_EMPTY_ACCOUNT = "일시품절";
-    
+
     public List<ProductSearchVo> parse(DanawaProductCodeCrawler danawaProductCodeCrawler, Elements products) {
         final List<ProductSearchVo> productSearchInfos = new ArrayList<>();
 

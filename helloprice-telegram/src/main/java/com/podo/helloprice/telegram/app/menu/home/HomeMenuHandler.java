@@ -15,8 +15,8 @@ import com.podo.helloprice.telegram.app.menu.product.delete.ProductDeleteRespons
 import com.podo.helloprice.telegram.app.menu.product.global.ProductDescCommandTranslator;
 import com.podo.helloprice.telegram.app.menu.product.global.ProductDescParameter;
 import com.podo.helloprice.telegram.app.menu.product.search.ProductSearchResponse;
-import com.podo.helloprice.telegram.app.vo.MessageVo;
-import com.podo.helloprice.telegram.app.vo.SendMessageVo;
+import com.podo.helloprice.telegram.app.value.MessageVo;
+import com.podo.helloprice.telegram.app.value.SendMessageVo;
 import com.podo.helloprice.telegram.domain.product.application.ProductReadService;
 import com.podo.helloprice.telegram.domain.product.dto.ProductOnePriceTypeDto;
 import com.podo.helloprice.telegram.domain.user.application.UserReadService;

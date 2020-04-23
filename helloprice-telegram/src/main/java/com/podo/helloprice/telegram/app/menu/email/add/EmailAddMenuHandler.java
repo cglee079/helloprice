@@ -4,12 +4,12 @@ import com.podo.helloprice.telegram.app.SendMessageCallbackFactory;
 import com.podo.helloprice.telegram.app.menu.AbstractMenuHandler;
 import com.podo.helloprice.telegram.app.menu.Keyboard;
 import com.podo.helloprice.telegram.app.menu.email.auth.EmailKeyResponse;
-import com.podo.helloprice.telegram.app.vo.MessageVo;
-import com.podo.helloprice.telegram.app.vo.SendMessageVo;
+import com.podo.helloprice.telegram.app.value.MessageVo;
+import com.podo.helloprice.telegram.app.value.SendMessageVo;
 import com.podo.helloprice.telegram.domain.user.application.UserReadService;
 import com.podo.helloprice.telegram.domain.user.dto.UserDetailDto;
 import com.podo.helloprice.telegram.app.menu.Menu;
-import com.podo.helloprice.telegram.global.email.EmailKeyStore;
+import com.podo.helloprice.telegram.global.email.EmailAuthKeyStore;
 import com.podo.helloprice.telegram.global.infra.gmail.GmailClient;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -25,7 +25,7 @@ public class EmailAddMenuHandler extends AbstractMenuHandler {
 
     private final UserReadService userReadService;
 
-    private final EmailKeyStore emailKeyStore;
+    private final EmailAuthKeyStore emailAuthKeyStore;
     private final GmailClient gmailClient;
     private final SendMessageCallbackFactory callbackFactory;
 
@@ -55,7 +55,7 @@ public class EmailAddMenuHandler extends AbstractMenuHandler {
 
         final UserDetailDto user = userReadService.findByTelegramId(telegramId);
 
-        final String key = emailKeyStore.createAuthKey(email);
+        final String key = emailAuthKeyStore.createAuthKey(email);
         final String title = "이메일 인증을 해주세요!";
         final String content = "KEY : " + key;
 

@@ -1,4 +1,4 @@
-package com.podo.helloprice.telegram.app.vo;
+package com.podo.helloprice.telegram.app.value;
 
 import lombok.EqualsAndHashCode;
 import lombok.Getter;

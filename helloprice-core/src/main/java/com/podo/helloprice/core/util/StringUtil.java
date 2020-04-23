@@ -11,9 +11,10 @@ public class StringUtil {
         return Objects.isNull(str) || str.trim().isEmpty();
     }
 
-    public static String summary(String str, int endIndex) {
-        return str.replace("\n", "")
+    public static String summary(String str, int length) {
+        return str
+                .replace("\n", "")
                 .replace("\r", "")
-                .substring(0, endIndex);
+                .substring(0, length);
     }
 }

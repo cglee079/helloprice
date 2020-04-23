@@ -4,6 +4,7 @@ package com.podo.helloprice.crawl.worker.util;
 import org.apache.commons.io.FileUtils;
 
 import java.io.*;
+import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.stream.Stream;
 
@@ -22,7 +23,7 @@ public class TestUtil {
 
     private static String readFileToString(File file) {
         StringBuilder contentBuilder = new StringBuilder();
-        try (BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(file),"utf-8"))) {
+        try (BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(file), StandardCharsets.UTF_8))) {
 
             String sCurrentLine;
             while ((sCurrentLine = br.readLine()) != null) {
@@ -32,6 +33,7 @@ public class TestUtil {
         } catch (IOException e) {
             e.printStackTrace();
         }
+
         return contentBuilder.toString();
     }
 }

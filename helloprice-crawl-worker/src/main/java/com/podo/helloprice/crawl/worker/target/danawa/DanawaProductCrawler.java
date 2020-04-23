@@ -3,7 +3,7 @@ package com.podo.helloprice.crawl.worker.target.danawa;
 import com.podo.helloprice.crawl.worker.reader.DocumentPromptReader;
 import com.podo.helloprice.crawl.worker.reader.helper.DocumentReaderHelper;
 import com.podo.helloprice.crawl.worker.target.danawa.parser.CrawledProductParser;
-import com.podo.helloprice.crawl.worker.vo.CrawledProduct;
+import com.podo.helloprice.crawl.worker.value.CrawledProduct;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.jsoup.nodes.Document;

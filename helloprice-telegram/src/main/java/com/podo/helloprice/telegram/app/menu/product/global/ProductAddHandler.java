@@ -1,15 +1,15 @@
 package com.podo.helloprice.telegram.app.menu.product.global;
 
 
-import com.podo.helloprice.crawl.worker.vo.CrawledProduct;
+import com.podo.helloprice.crawl.worker.value.CrawledProduct;
 import com.podo.helloprice.telegram.app.SendMessageCallbackFactory;
 import com.podo.helloprice.telegram.app.core.TelegramMessageSender;
 import com.podo.helloprice.telegram.app.menu.home.HomeKeyboard;
 import com.podo.helloprice.telegram.app.menu.product.typeselect.ProductTypeCommandTranslator;
 import com.podo.helloprice.telegram.app.menu.product.typeselect.ProductTypeSelectKeyboard;
-import com.podo.helloprice.telegram.app.vo.MessageVo;
+import com.podo.helloprice.telegram.app.value.MessageVo;
 import com.podo.helloprice.telegram.app.menu.Menu;
-import com.podo.helloprice.telegram.app.vo.SendMessageVo;
+import com.podo.helloprice.telegram.app.value.SendMessageVo;
 import com.podo.helloprice.telegram.domain.userproduct.application.UserProductNotifyReadService;
 import com.podo.helloprice.telegram.global.cache.DanawaProductCache;
 import lombok.RequiredArgsConstructor;

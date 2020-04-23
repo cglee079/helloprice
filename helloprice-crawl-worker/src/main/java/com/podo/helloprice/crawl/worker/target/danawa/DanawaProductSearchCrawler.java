@@ -3,7 +3,7 @@ package com.podo.helloprice.crawl.worker.target.danawa;
 import com.podo.helloprice.crawl.worker.reader.DocumentDelayReader;
 import com.podo.helloprice.crawl.worker.reader.helper.DocumentReaderHelper;
 import com.podo.helloprice.crawl.worker.target.danawa.parser.ProductSearchVoParser;
-import com.podo.helloprice.crawl.worker.vo.ProductSearchVo;
+import com.podo.helloprice.crawl.worker.value.ProductSearchVo;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.jsoup.nodes.Document;
@@ -21,7 +21,7 @@ public class DanawaProductSearchCrawler {
 
     private static final String DANAWA_PRODUCT_SEARCH_URL = "http://search.danawa.com/mobile/dsearch.php?keyword=";
     private static final String SELECTOR_SEARCH_PRODUCT_LIST = "#productListArea_list > li";
-    
+
     private final DocumentDelayReader documentDelayReader;
     private final DanawaProductCodeCrawler danawaProductCodeCrawler;
     private final ProductSearchVoParser productSearchVoParser = new ProductSearchVoParser();
@@ -41,9 +41,7 @@ public class DanawaProductSearchCrawler {
         }
 
         final Elements productSearchResultElements = document.select(SELECTOR_SEARCH_PRODUCT_LIST);
-        final List<ProductSearchVo> productSearchResults = productSearchVoParser.parse(danawaProductCodeCrawler, productSearchResultElements);
-
-        return productSearchResults;
+        return productSearchVoParser.parse(danawaProductCodeCrawler, productSearchResultElements);
     }
 
 

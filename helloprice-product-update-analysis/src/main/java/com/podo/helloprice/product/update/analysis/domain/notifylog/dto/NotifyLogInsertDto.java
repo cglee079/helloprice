@@ -1,7 +1,7 @@
 package com.podo.helloprice.product.update.analysis.domain.notifylog.dto;
 
 
-import com.podo.helloprice.core.model.ProductUpdateStatus;
+import com.podo.helloprice.core.enums.ProductUpdateStatus;
 import com.podo.helloprice.product.update.analysis.domain.notifylog.model.NotifyLog;
 
 import java.time.LocalDateTime;

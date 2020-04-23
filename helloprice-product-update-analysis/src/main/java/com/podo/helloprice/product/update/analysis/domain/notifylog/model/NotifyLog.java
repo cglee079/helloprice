@@ -1,15 +1,12 @@
 package com.podo.helloprice.product.update.analysis.domain.notifylog.model;
 
-import com.podo.helloprice.core.model.ProductSaleStatus;
-import com.podo.helloprice.core.model.ProductUpdateStatus;
+import com.podo.helloprice.core.enums.ProductUpdateStatus;
 import lombok.AccessLevel;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 import javax.persistence.*;
-import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 @Slf4j

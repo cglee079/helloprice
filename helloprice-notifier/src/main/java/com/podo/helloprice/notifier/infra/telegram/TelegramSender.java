@@ -28,13 +28,13 @@ public class TelegramSender extends DefaultAbsSender {
 
     public void send(String telegramId, String imageUrl, String contents) {
         if (!StringUtils.isEmpty(imageUrl)) {
-            sendPhoto(telegramId, imageUrl);
+            sendMessageWithPhoto(telegramId, imageUrl);
         }
 
         sendMessage(telegramId, contents);
     }
 
-    private void sendPhoto(String telegramId, String imageUrl) {
+    private void sendMessageWithPhoto(String telegramId, String imageUrl) {
         final SendPhoto sendPhoto = new SendPhoto();
         sendPhoto.setChatId(telegramId);
         sendPhoto.setPhoto(imageUrl);

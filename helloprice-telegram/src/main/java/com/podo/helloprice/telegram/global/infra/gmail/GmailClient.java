@@ -19,11 +19,11 @@ import java.util.concurrent.Executors;
 @Component
 public class GmailClient {
 
-    @Value("${app.name}")
-    private final String appName;
-
     @Value("${infra.gmail.send.timeout}")
     private final Integer sendTimeout;
+
+    @Value("${infra.gmail.admin.username}")
+    private final String adminUsername;
 
     @Value("${infra.gmail.admin.email}")
     private final String adminEmail;
@@ -55,11 +55,11 @@ public class GmailClient {
 
     }
 
-    private MimeMessage createMessage(String username, String userEmail, String title, String contents, Session msgSession) throws MessagingException, UnsupportedEncodingException {
+    private MimeMessage createMessage(String username, String email, String title, String contents, Session msgSession) throws MessagingException, UnsupportedEncodingException {
         final MimeMessage message = new MimeMessage(msgSession);
 
-        message.setFrom(new InternetAddress(adminEmail, appName));
-        message.setRecipient(Message.RecipientType.TO, new InternetAddress(userEmail, username));
+        message.setFrom(new InternetAddress(adminEmail, adminUsername));
+        message.setRecipient(Message.RecipientType.TO, new InternetAddress(email, username));
         message.setSubject(title);
         message.setContent(contents, "text/html; charset=utf-8");
 

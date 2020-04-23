@@ -1,4 +1,4 @@
-package com.podo.helloprice.product.update.analysis.processor.notify.executor.common;
+package com.podo.helloprice.product.update.analysis.processor.notify.executor;
 
 import com.podo.helloprice.core.util.DateTimeUtil;
 import com.podo.helloprice.product.update.analysis.domain.product.dto.ProductSimpleDto;

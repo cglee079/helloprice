@@ -1,7 +1,7 @@
-package com.podo.helloprice.crawl.worker.vo;
+package com.podo.helloprice.crawl.worker.value;
 
-import com.podo.helloprice.core.model.PriceType;
-import com.podo.helloprice.core.model.ProductSaleStatus;
+import com.podo.helloprice.core.enums.PriceType;
+import com.podo.helloprice.core.enums.ProductSaleStatus;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -38,7 +38,7 @@ public class CrawledProduct {
         this.crawledAt = crawledAt;
     }
 
-    public CrawledProductPrice getPriceByType(PriceType priceType) {
+    public CrawledProductPrice getProductPriceByType(PriceType priceType) {
         return this.priceTypeToPrice.get(priceType);
     }
 

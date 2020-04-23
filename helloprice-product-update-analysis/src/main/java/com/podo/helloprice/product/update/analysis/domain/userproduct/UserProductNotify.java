@@ -1,6 +1,6 @@
 package com.podo.helloprice.product.update.analysis.domain.userproduct;
 
-import com.podo.helloprice.core.model.PriceType;
+import com.podo.helloprice.core.enums.PriceType;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

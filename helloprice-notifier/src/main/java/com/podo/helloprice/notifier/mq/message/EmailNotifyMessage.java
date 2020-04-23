@@ -20,7 +20,7 @@ public class EmailNotifyMessage {
                 "email='" + email + '\'' +
                 ", username='" + username + '\'' +
                 ", title='" + title + '\'' +
-                ", contents='" + contents.replace("\n", "").substring(0, 100) + '\'' +
+                ", contents='" + StringUtil. + '\'' +
                 '}';
     }
 }

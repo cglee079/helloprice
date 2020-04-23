@@ -1,10 +1,10 @@
 package com.podo.helloprice.product.update.analysis.processor.notify.executor;
 
-import com.podo.helloprice.core.model.UserStatus;
+import com.podo.helloprice.core.enums.UserStatus;
 import com.podo.helloprice.product.update.analysis.domain.product.application.ProductReadService;
 import com.podo.helloprice.product.update.analysis.domain.product.dto.ProductSimpleDto;
 import com.podo.helloprice.product.update.analysis.domain.user.UserReadService;
-import com.podo.helloprice.product.update.analysis.domain.user.dto.UserDto;
+import com.podo.helloprice.product.update.analysis.domain.user.UserDto;
 import com.podo.helloprice.product.update.analysis.domain.userproduct.application.UserProductNotifyReadService;
 import com.podo.helloprice.product.update.analysis.infra.mq.message.EmailNotifyMessage;
 import com.podo.helloprice.product.update.analysis.infra.mq.message.TelegramNotifyMessage;

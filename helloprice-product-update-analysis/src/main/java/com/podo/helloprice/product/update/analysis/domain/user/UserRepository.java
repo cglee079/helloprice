@@ -1,6 +1,6 @@
 package com.podo.helloprice.product.update.analysis.domain.user;
 
-import com.podo.helloprice.core.model.UserStatus;
+import com.podo.helloprice.core.enums.UserStatus;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;

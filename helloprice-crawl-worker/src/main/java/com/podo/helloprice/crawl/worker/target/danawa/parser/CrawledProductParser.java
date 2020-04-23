@@ -1,10 +1,10 @@
 package com.podo.helloprice.crawl.worker.target.danawa.parser;
 
-import com.podo.helloprice.core.model.PriceType;
-import com.podo.helloprice.core.model.ProductSaleStatus;
+import com.podo.helloprice.core.enums.PriceType;
+import com.podo.helloprice.core.enums.ProductSaleStatus;
 import com.podo.helloprice.core.util.StringUtil;
-import com.podo.helloprice.crawl.worker.vo.CrawledProduct;
-import com.podo.helloprice.crawl.worker.vo.CrawledProduct.CrawledProductPrice;
+import com.podo.helloprice.crawl.worker.value.CrawledProduct;
+import com.podo.helloprice.crawl.worker.value.CrawledProduct.CrawledProductPrice;
 import lombok.extern.slf4j.Slf4j;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -13,7 +13,7 @@ import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Objects;
 
-import static com.podo.helloprice.core.model.PriceType.*;
+import static com.podo.helloprice.core.enums.PriceType.*;
 
 @Slf4j
 public class CrawledProductParser {
@@ -75,7 +75,6 @@ public class CrawledProductParser {
     private CrawledProductPrice getCashPrice(Document document) {
         final Element cashPriceElement = document.select(SELECTOR_PRODUCT_CASH_PRICE).first();
         return Objects.isNull(cashPriceElement) ? null : new CrawledProductPrice(Integer.parseInt(cashPriceElement.text().replace(",", "")));
-
     }
 
     private CrawledProductPrice getCardPrice(Document document) {
@@ -97,10 +96,6 @@ public class CrawledProductParser {
             return ProductSaleStatus.SALE;
         }
 
-        return getProductSaleStatusByCrawledSaleStatusText(saleStatusText);
-    }
-
-    private ProductSaleStatus getProductSaleStatusByCrawledSaleStatusText(String saleStatusText) {
         switch (saleStatusText) {
             case TEXT_PRODUCT_STATUS_DISCONTINUE:
                 return ProductSaleStatus.DISCONTINUE;
@@ -112,6 +107,5 @@ public class CrawledProductParser {
 
         return ProductSaleStatus.UNKNOWN;
     }
-
 
 }

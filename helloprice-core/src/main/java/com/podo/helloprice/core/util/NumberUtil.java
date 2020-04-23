@@ -7,7 +7,7 @@ import java.util.Random;
 @UtilityClass
 public class NumberUtil {
 
-    public static final Random RANDOM = new Random(System.currentTimeMillis());
+    private static final Random RANDOM = new Random(System.currentTimeMillis());
 
     public static int getRandomInt(int size) {
         return RANDOM.nextInt(size);

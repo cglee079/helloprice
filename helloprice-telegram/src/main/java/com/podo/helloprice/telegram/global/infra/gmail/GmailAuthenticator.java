@@ -1,4 +1,4 @@
-package com.podo.helloprice.notifier.infra.email;
+package com.podo.helloprice.telegram.global.infra.gmail;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -8,11 +8,11 @@ import javax.mail.PasswordAuthentication;
 
 
 @Component
-public class GmailAuth extends Authenticator {
+public class GmailAuthenticator extends Authenticator {
 
     private final PasswordAuthentication passwordAuthentication;
 
-    public GmailAuth(
+    public GmailAuthenticator(
             @Value("${infra.gmail.admin.id}") String id,
             @Value("${infra.gmail.admin.password}") String password) {
         passwordAuthentication = new PasswordAuthentication(id, password);

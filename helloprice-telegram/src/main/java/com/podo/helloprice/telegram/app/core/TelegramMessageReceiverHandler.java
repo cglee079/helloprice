@@ -1,13 +1,13 @@
 package com.podo.helloprice.telegram.app.core;
 
 
-import com.podo.helloprice.core.model.UserStatus;
+import com.podo.helloprice.core.enums.UserStatus;
 import com.podo.helloprice.telegram.app.SendMessageCallbackFactory;
 import com.podo.helloprice.telegram.app.menu.CommonResponse;
 import com.podo.helloprice.telegram.app.menu.MenuHandler;
 import com.podo.helloprice.telegram.app.menu.home.HomeKeyboard;
-import com.podo.helloprice.telegram.app.vo.MessageVo;
-import com.podo.helloprice.telegram.app.vo.SendMessageVo;
+import com.podo.helloprice.telegram.app.value.MessageVo;
+import com.podo.helloprice.telegram.app.value.SendMessageVo;
 import com.podo.helloprice.telegram.domain.user.application.UserReadService;
 import com.podo.helloprice.telegram.domain.user.application.UserWriteService;
 import com.podo.helloprice.telegram.domain.user.dto.UserDetailDto;

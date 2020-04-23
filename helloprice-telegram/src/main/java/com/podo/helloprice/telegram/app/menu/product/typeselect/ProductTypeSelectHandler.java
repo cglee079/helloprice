@@ -1,13 +1,13 @@
 package com.podo.helloprice.telegram.app.menu.product.typeselect;
 
 
-import com.podo.helloprice.core.model.PriceType;
+import com.podo.helloprice.core.enums.PriceType;
 import com.podo.helloprice.telegram.app.SendMessageCallbackFactory;
 import com.podo.helloprice.telegram.app.menu.AbstractMenuHandler;
 import com.podo.helloprice.telegram.app.menu.CommonResponse;
 import com.podo.helloprice.telegram.app.menu.home.HomeKeyboard;
-import com.podo.helloprice.telegram.app.vo.MessageVo;
-import com.podo.helloprice.telegram.app.vo.SendMessageVo;
+import com.podo.helloprice.telegram.app.value.MessageVo;
+import com.podo.helloprice.telegram.app.value.SendMessageVo;
 import com.podo.helloprice.telegram.domain.product.application.ProductReadService;
 import com.podo.helloprice.telegram.domain.product.application.ProductWriteService;
 import com.podo.helloprice.telegram.domain.product.dto.ProductAllPriceTypeDto;

@@ -1,12 +1,11 @@
 package com.podo.helloprice.product.update.analysis.processor.notify.executor.common;
 
-import com.podo.helloprice.core.model.ProductUpdateStatus;
+import com.podo.helloprice.core.enums.ProductUpdateStatus;
 import com.podo.helloprice.product.update.analysis.domain.product.dto.ProductSimpleDto;
 import com.podo.helloprice.product.update.analysis.processor.notify.executor.AbstractCommonNotifyExecutor;
-import lombok.RequiredArgsConstructor;
+import com.podo.helloprice.product.update.analysis.processor.notify.executor.ProductSimpleDescribe;
 import org.springframework.stereotype.Component;
 
-@RequiredArgsConstructor
 @Component
 public class EmptyAmountNotifyExecutor extends AbstractCommonNotifyExecutor {
 

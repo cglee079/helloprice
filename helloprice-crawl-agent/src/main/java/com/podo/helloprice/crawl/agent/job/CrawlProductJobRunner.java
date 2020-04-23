@@ -21,8 +21,8 @@ import java.util.Date;
 @RequiredArgsConstructor
 public class CrawlProductJobRunner {
 
-    public static final String PARAM_CREATE_AT = "createAt";
-    public static final String PARAM_LAST_PUBLISHED_ITEM = "doCrawlProduct";
+    private static final String PARAM_CREATE_AT = "createAt";
+    private static final String PARAM_LAST_PUBLISHED_ITEM = "doCrawlProduct";
     private final JobLauncher jobLauncher;
 
     @Qualifier(value = CrawlProductJobConfig.CRAWL_JOB_BEAN_NAME)

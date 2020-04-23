@@ -1,7 +1,7 @@
 package com.podo.helloprice.telegram.domain.user.dto;
 
 
-import com.podo.helloprice.core.model.UserStatus;
+import com.podo.helloprice.core.enums.UserStatus;
 import com.podo.helloprice.telegram.app.menu.Menu;
 import com.podo.helloprice.telegram.domain.user.model.User;
 import lombok.Builder;

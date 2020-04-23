@@ -1,4 +1,4 @@
-package com.podo.helloprice.product.update.analysis.domain.user.dto;
+package com.podo.helloprice.product.update.analysis.domain.user;
 
 import lombok.Getter;
 

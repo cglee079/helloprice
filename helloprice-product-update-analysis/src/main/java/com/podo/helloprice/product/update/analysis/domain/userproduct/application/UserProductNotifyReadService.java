@@ -1,6 +1,6 @@
 package com.podo.helloprice.product.update.analysis.domain.userproduct.application;
 
-import com.podo.helloprice.core.model.PriceType;
+import com.podo.helloprice.core.enums.PriceType;
 import com.podo.helloprice.product.update.analysis.domain.userproduct.UserProductNotify;
 import com.podo.helloprice.product.update.analysis.domain.userproduct.repository.UserProductNotifyRepository;
 import lombok.RequiredArgsConstructor;

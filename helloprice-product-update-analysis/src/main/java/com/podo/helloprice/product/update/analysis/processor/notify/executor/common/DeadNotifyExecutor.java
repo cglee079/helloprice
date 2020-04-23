@@ -1,12 +1,13 @@
 package com.podo.helloprice.product.update.analysis.processor.notify.executor.common;
 
-import com.podo.helloprice.core.model.ProductUpdateStatus;
+import com.podo.helloprice.core.enums.ProductUpdateStatus;
 import com.podo.helloprice.product.update.analysis.domain.product.dto.ProductSimpleDto;
 import com.podo.helloprice.product.update.analysis.processor.notify.executor.AbstractCommonNotifyExecutor;
+import com.podo.helloprice.product.update.analysis.processor.notify.executor.ProductSimpleDescribe;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
-import static com.podo.helloprice.core.model.ProductUpdateStatus.UPDATE_DEAD;
+import static com.podo.helloprice.core.enums.ProductUpdateStatus.UPDATE_DEAD;
 
 @RequiredArgsConstructor
 @Component

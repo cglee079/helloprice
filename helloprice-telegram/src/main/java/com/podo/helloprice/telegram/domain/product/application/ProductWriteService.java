@@ -1,8 +1,8 @@
 package com.podo.helloprice.telegram.domain.product.application;
 
-import com.podo.helloprice.core.model.PriceType;
-import com.podo.helloprice.crawl.worker.vo.CrawledProduct;
-import com.podo.helloprice.crawl.worker.vo.CrawledProduct.CrawledProductPrice;
+import com.podo.helloprice.core.enums.PriceType;
+import com.podo.helloprice.crawl.worker.value.CrawledProduct;
+import com.podo.helloprice.crawl.worker.value.CrawledProduct.CrawledProductPrice;
 import com.podo.helloprice.telegram.domain.product.dto.ProductInsertDto;
 import com.podo.helloprice.telegram.domain.product.model.Product;
 import com.podo.helloprice.telegram.domain.product.repository.ProductRepository;
@@ -16,7 +16,7 @@ import java.time.LocalDateTime;
 import java.util.Objects;
 import java.util.Optional;
 
-import static com.podo.helloprice.core.model.PriceType.*;
+import static com.podo.helloprice.core.enums.PriceType.*;
 import static com.podo.helloprice.telegram.domain.product.model.ProductPrice.create;
 
 @Slf4j
@@ -49,7 +49,7 @@ public class ProductWriteService {
         final Product savedProduct = productRepository.save(productInsert.toEntity());
 
         for (PriceType priceType : values()) {
-            final CrawledProductPrice crawledProductPrice = crawledProduct.getPriceByType(priceType);
+            final CrawledProductPrice crawledProductPrice = crawledProduct.getProductPriceByType(priceType);
 
             if (Objects.nonNull(crawledProductPrice)) {
                 savedProduct.addProductPrice(create(priceType, crawledProductPrice.getPrice(), crawledProductPrice.getAdditionalInfo(), crawledAt));

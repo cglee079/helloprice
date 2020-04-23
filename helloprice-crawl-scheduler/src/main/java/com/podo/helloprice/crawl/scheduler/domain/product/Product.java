@@ -1,6 +1,6 @@
 package com.podo.helloprice.crawl.scheduler.domain.product;
 
-import com.podo.helloprice.core.model.ProductAliveStatus;
+import com.podo.helloprice.core.enums.ProductAliveStatus;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

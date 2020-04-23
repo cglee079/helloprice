@@ -1,8 +1,8 @@
 package com.podo.helloprice.product.update.analysis.domain.product.model;
 
-import com.podo.helloprice.core.model.PriceType;
-import com.podo.helloprice.core.model.ProductAliveStatus;
-import com.podo.helloprice.core.model.ProductSaleStatus;
+import com.podo.helloprice.core.enums.PriceType;
+import com.podo.helloprice.core.enums.ProductAliveStatus;
+import com.podo.helloprice.core.enums.ProductSaleStatus;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -50,7 +50,7 @@ public class Product{
     @MapKey(name = "priceType")
     private Map<PriceType, ProductPrice> priceTypeToPrice = new HashMap<>();
 
-    public ProductPrice getPriceByType(PriceType priceType){
+    public ProductPrice getProductPriceByType(PriceType priceType){
         return priceTypeToPrice.get(priceType);
     }
 

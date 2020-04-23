@@ -1,7 +1,7 @@
 package com.podo.helloprice.telegram.app.menu.product.typeselect;
 
-import com.podo.helloprice.core.model.PriceType;
-import com.podo.helloprice.crawl.worker.vo.CrawledProduct;
+import com.podo.helloprice.core.enums.PriceType;
+import com.podo.helloprice.crawl.worker.value.CrawledProduct;
 import lombok.experimental.UtilityClass;
 import org.springframework.util.StringUtils;
 
@@ -32,7 +32,7 @@ public class ProductTypeCommandTranslator {
 
         for (PriceType priceType : PriceType.values()) {
 
-            final CrawledProduct.CrawledProductPrice priceByType = crawledProduct.getPriceByType(priceType);
+            final CrawledProduct.CrawledProductPrice priceByType = crawledProduct.getProductPriceByType(priceType);
 
             if (Objects.nonNull(priceByType)) {
                 commands.add(String.format(COMMAND_FORMAT, productCode, priceType.kr(), toKRW(priceByType.getPrice())));

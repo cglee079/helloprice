@@ -1,15 +1,15 @@
 package com.podo.helloprice.telegram.app.menu.product.search;
 
 import com.podo.helloprice.crawl.worker.target.danawa.DanawaProductSearchCrawler;
-import com.podo.helloprice.crawl.worker.vo.ProductSearchVo;
+import com.podo.helloprice.crawl.worker.value.ProductSearchVo;
 import com.podo.helloprice.telegram.app.SendMessageCallbackFactory;
 import com.podo.helloprice.telegram.app.menu.AbstractMenuHandler;
 import com.podo.helloprice.telegram.app.menu.CommonResponse;
 import com.podo.helloprice.telegram.app.menu.product.searchselect.ProductSearchSelectCommandTranslator;
 import com.podo.helloprice.telegram.app.menu.product.searchselect.ProductSearchSelectKeyboard;
 import com.podo.helloprice.telegram.app.menu.product.searchselect.ProductSearchSelectResponse;
-import com.podo.helloprice.telegram.app.vo.MessageVo;
-import com.podo.helloprice.telegram.app.vo.SendMessageVo;
+import com.podo.helloprice.telegram.app.value.MessageVo;
+import com.podo.helloprice.telegram.app.value.SendMessageVo;
 import com.podo.helloprice.telegram.app.menu.Menu;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

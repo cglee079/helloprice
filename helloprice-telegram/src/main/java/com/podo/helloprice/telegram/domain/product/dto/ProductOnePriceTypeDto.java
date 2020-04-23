@@ -1,8 +1,8 @@
 package com.podo.helloprice.telegram.domain.product.dto;
 
-import com.podo.helloprice.core.model.ProductAliveStatus;
-import com.podo.helloprice.core.model.ProductSaleStatus;
-import com.podo.helloprice.core.model.PriceType;
+import com.podo.helloprice.core.enums.ProductAliveStatus;
+import com.podo.helloprice.core.enums.ProductSaleStatus;
+import com.podo.helloprice.core.enums.PriceType;
 import com.podo.helloprice.telegram.domain.product.model.Product;
 import com.podo.helloprice.telegram.domain.product.model.ProductPrice;
 import lombok.Builder;

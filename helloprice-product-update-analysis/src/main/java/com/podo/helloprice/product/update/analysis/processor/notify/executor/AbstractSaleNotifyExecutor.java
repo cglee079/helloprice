@@ -1,18 +1,17 @@
 package com.podo.helloprice.product.update.analysis.processor.notify.executor;
 
-import com.podo.helloprice.core.model.PriceType;
-import com.podo.helloprice.core.model.UserStatus;
+import com.podo.helloprice.core.enums.PriceType;
+import com.podo.helloprice.core.enums.UserStatus;
 import com.podo.helloprice.core.util.CalculateUtil;
 import com.podo.helloprice.core.util.CurrencyUtil;
 import com.podo.helloprice.product.update.analysis.domain.product.application.ProductReadService;
 import com.podo.helloprice.product.update.analysis.domain.product.dto.ProductDetailDto;
 import com.podo.helloprice.product.update.analysis.domain.user.UserReadService;
-import com.podo.helloprice.product.update.analysis.domain.user.dto.UserDto;
+import com.podo.helloprice.product.update.analysis.domain.user.UserDto;
 import com.podo.helloprice.product.update.analysis.domain.userproduct.application.UserProductNotifyReadService;
 import com.podo.helloprice.product.update.analysis.infra.mq.message.EmailNotifyMessage;
 import com.podo.helloprice.product.update.analysis.infra.mq.message.TelegramNotifyMessage;
 import com.podo.helloprice.product.update.analysis.processor.notify.Notifier;
-import com.podo.helloprice.product.update.analysis.processor.notify.executor.sale.ProductDescribe;
 import com.podo.helloprice.product.update.analysis.processor.notify.helper.EmailContentCreator;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -182,7 +181,7 @@ public abstract class AbstractSaleNotifyExecutor implements NotifyExecutor {
 
                 .append("<b>")
                 .append("가격변화 : ")
-                .append(CalculateUtil.getPercentStringWithPlusMinusSign(price, prevPrice))
+                .append(CalculateUtil.getSignPercent(price, prevPrice))
                 .append("</b>")
                 .append("\n")
 

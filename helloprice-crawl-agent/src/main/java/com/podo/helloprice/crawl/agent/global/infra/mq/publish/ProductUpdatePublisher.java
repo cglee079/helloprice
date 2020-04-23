@@ -1,6 +1,6 @@
 package com.podo.helloprice.crawl.agent.global.infra.mq.publish;
 
-import com.podo.helloprice.core.model.ProductUpdateStatus;
+import com.podo.helloprice.core.enums.ProductUpdateStatus;
 import com.podo.helloprice.crawl.agent.global.infra.mq.message.ProductUpdateMessage;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -13,7 +13,7 @@ import javax.annotation.PostConstruct;
 @Component
 public class ProductUpdatePublisher {
 
-    public final EmitterProcessor<ProductUpdateMessage> processor  = EmitterProcessor.create();
+    private final EmitterProcessor<ProductUpdateMessage> processor  = EmitterProcessor.create();
 
     public void publish(ProductUpdateMessage productUpdateMessage){
         log.debug("MQ :: PUBLISH :: payload : {}", productUpdateMessage);

@@ -1,6 +1,6 @@
 package com.podo.helloprice.telegram.domain.user.application;
 
-import com.podo.helloprice.core.model.UserStatus;
+import com.podo.helloprice.core.enums.UserStatus;
 import com.podo.helloprice.telegram.domain.user.application.helper.UserReadServiceHelper;
 import com.podo.helloprice.telegram.app.menu.Menu;
 import com.podo.helloprice.telegram.domain.user.model.User;

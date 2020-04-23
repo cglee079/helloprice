@@ -1,6 +1,6 @@
 package com.podo.helloprice.crawl.agent.job;
 
-import com.podo.helloprice.core.model.ProductUpdateStatus;
+import com.podo.helloprice.core.enums.ProductUpdateStatus;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 

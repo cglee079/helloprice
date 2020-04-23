@@ -1,10 +1,10 @@
 package com.podo.helloprice.telegram.domain.product.model;
 
-import com.podo.helloprice.core.model.PriceType;
-import com.podo.helloprice.core.model.ProductAliveStatus;
-import com.podo.helloprice.core.model.ProductSaleStatus;
-import com.podo.helloprice.crawl.worker.vo.CrawledProduct;
-import com.podo.helloprice.crawl.worker.vo.CrawledProduct.CrawledProductPrice;
+import com.podo.helloprice.core.enums.PriceType;
+import com.podo.helloprice.core.enums.ProductAliveStatus;
+import com.podo.helloprice.core.enums.ProductSaleStatus;
+import com.podo.helloprice.crawl.worker.value.CrawledProduct;
+import com.podo.helloprice.crawl.worker.value.CrawledProduct.CrawledProductPrice;
 import com.podo.helloprice.telegram.domain.BaseEntity;
 import com.podo.helloprice.telegram.domain.userproduct.UserProductNotify;
 import lombok.AccessLevel;
@@ -20,8 +20,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static com.podo.helloprice.core.model.PriceType.*;
-import static com.podo.helloprice.core.model.PriceType.CARD;
+import static com.podo.helloprice.core.enums.PriceType.*;
+import static com.podo.helloprice.core.enums.PriceType.CARD;
 
 @Slf4j
 @Getter
@@ -113,7 +113,7 @@ public class Product extends BaseEntity {
     }
 
     private boolean updatePrice(CrawledProduct crawledProduct, PriceType priceType, LocalDateTime crawledAt) {
-        final CrawledProductPrice price = crawledProduct.getPriceByType(priceType);
+        final CrawledProductPrice price = crawledProduct.getProductPriceByType(priceType);
 
         //기존에 있는 경우, 업데이트
         if(priceTypeToPrice.containsKey(priceType) && price != null) {

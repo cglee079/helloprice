@@ -1,7 +1,6 @@
 package com.podo.helloprice.telegram.domain.product.model;
 
-import com.podo.helloprice.core.model.PriceType;
-import com.podo.helloprice.crawl.worker.vo.CrawledProduct;
+import com.podo.helloprice.core.enums.PriceType;
 import com.podo.helloprice.telegram.domain.BaseEntity;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

@@ -1,6 +1,6 @@
 package com.podo.helloprice.product.update.analysis.domain.product.application;
 
-import com.podo.helloprice.core.model.PriceType;
+import com.podo.helloprice.core.enums.PriceType;
 import com.podo.helloprice.product.update.analysis.domain.product.application.helper.ProductReadHelper;
 import com.podo.helloprice.product.update.analysis.domain.product.dto.ProductDetailDto;
 import com.podo.helloprice.product.update.analysis.domain.product.dto.ProductSimpleDto;

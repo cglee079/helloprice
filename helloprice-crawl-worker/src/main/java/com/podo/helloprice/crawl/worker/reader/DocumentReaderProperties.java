@@ -15,6 +15,7 @@ import java.util.Objects;
 @Configuration
 @ConfigurationProperties(prefix = "crawler")
 public class DocumentReaderProperties {
+    
     private String useragent;
     private Long readTimeout;
     private List<String> webdriverRemotes;

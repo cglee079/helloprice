@@ -1,4 +1,4 @@
-package com.podo.helloprice.crawl.worker.vo;
+package com.podo.helloprice.crawl.worker.value;
 
 import lombok.EqualsAndHashCode;
 import lombok.Getter;

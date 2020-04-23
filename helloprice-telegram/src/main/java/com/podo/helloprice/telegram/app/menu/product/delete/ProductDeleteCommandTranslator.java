@@ -1,6 +1,6 @@
 package com.podo.helloprice.telegram.app.menu.product.delete;
 
-import com.podo.helloprice.core.model.PriceType;
+import com.podo.helloprice.core.enums.PriceType;
 import com.podo.helloprice.telegram.domain.product.dto.ProductOnePriceTypeDto;
 import lombok.experimental.UtilityClass;
 import org.springframework.util.StringUtils;

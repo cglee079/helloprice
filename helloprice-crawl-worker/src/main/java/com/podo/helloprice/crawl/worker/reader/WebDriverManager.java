@@ -57,6 +57,7 @@ public class WebDriverManager {
             driver.manage().timeouts().setScriptTimeout(readTimeout, MILLISECONDS);
 
             this.webDrivers.put(webDriverIndex, driver);
+
         } catch (MalformedURLException e) {
             log.error("WEB DRIVER :: WebDriver URL 이 잘못되었습니다", e);
         }

@@ -26,36 +26,26 @@ public class GmailClient {
     @Value("${infra.gmail.admin.email}")
     private final String adminEmail;
 
-    private final Authenticator gmailAuth;
+    private final Authenticator gmailAuthenticator;
 
-    public void sendEmail(String username, String userEmail, String title, String contents) {
+    public void sendEmail(String username, String email, String title, String contents) {
 
-        log.debug("EMAIL :: '{}({})'로 메일을 발송합니다, 메일제목 : {}", userEmail, username, title);
+        log.debug("EMAIL :: '{}({})'로 메일을 발송합니다, 메일제목 : {}", email, username, title);
 
         try {
             final Properties mailProperties = getMailProperties();
-            final Session messageSession = Session.getInstance(mailProperties, gmailAuth);
+            final Session messageSession = Session.getInstance(mailProperties, gmailAuthenticator);
             final Transport transport = messageSession.getTransport("smtp");
+
             transport.connect();
 
-            final MimeMessage message = createMessage(username, userEmail, title, contents, messageSession);
+            final MimeMessage message = createMessage(username, email, title, contents, messageSession);
             transport.sendMessage(message, message.getAllRecipients());
 
         } catch (Exception e) {
             log.error("메일 전송에 문제가 발생하였습니다 {}", e.getMessage());
         }
 
-    }
-
-    private MimeMessage createMessage(String username, String userEmail, String title, String contents, Session msgSession) throws MessagingException, UnsupportedEncodingException, MessagingException {
-        final MimeMessage message = new MimeMessage(msgSession);
-
-        message.setFrom(new InternetAddress(adminEmail, adminName));
-        message.setRecipient(Message.RecipientType.TO, new InternetAddress(userEmail, username));
-        message.setSubject(title);
-        message.setContent(contents, "text/html; charset=utf-8");
-
-        return message;
     }
 
     private Properties getMailProperties() {
@@ -73,4 +63,14 @@ public class GmailClient {
         return properties;
     }
 
+    private MimeMessage createMessage(String username, String userEmail, String title, String contents, Session msgSession) throws MessagingException, UnsupportedEncodingException, MessagingException {
+        final MimeMessage message = new MimeMessage(msgSession);
+
+        message.setFrom(new InternetAddress(adminEmail, adminName));
+        message.setRecipient(Message.RecipientType.TO, new InternetAddress(userEmail, username));
+        message.setSubject(title);
+        message.setContent(contents, "text/html; charset=utf-8");
+
+        return message;
+    }
 }

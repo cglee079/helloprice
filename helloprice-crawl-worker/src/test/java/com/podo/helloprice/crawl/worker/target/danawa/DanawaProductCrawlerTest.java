@@ -1,10 +1,11 @@
 package com.podo.helloprice.crawl.worker.target.danawa;
 
+import com.podo.helloprice.core.enums.PriceType;
 import com.podo.helloprice.crawl.worker.exception.FailReadDocumentException;
 import com.podo.helloprice.crawl.worker.reader.DocumentPromptReader;
 import com.podo.helloprice.crawl.worker.util.TestUtil;
-import com.podo.helloprice.crawl.worker.vo.CrawledProduct;
-import com.podo.helloprice.core.model.ProductSaleStatus;
+import com.podo.helloprice.crawl.worker.value.CrawledProduct;
+import com.podo.helloprice.core.enums.ProductSaleStatus;
 import org.assertj.core.api.Assertions;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -17,6 +18,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.time.LocalDateTime;
 
+import static com.podo.helloprice.core.enums.PriceType.CASH;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.BDDMockito.given;
 
@@ -47,11 +49,11 @@ class DanawaProductCrawlerTest {
 
         //then
         assertThat(crawledProduct.getProductCode()).isEqualTo(productCode);
-        Assertions.assertThat(crawledProduct.getSaleStatus()).isEqualTo(ProductSaleStatus.SALE);
-        assertThat(crawledProduct.getPrice()).isEqualTo(56850);
-        assertThat(crawledProduct.getCashPrice()).isEqualTo(54500);
-        assertThat(crawledProduct.getCardPrice()).isEqualTo(55330);
-        assertThat(crawledProduct.getCardType()).isEqualTo("삼성 카드최저가");
+        assertThat(crawledProduct.getSaleStatus()).isEqualTo(ProductSaleStatus.SALE);
+        assertThat(crawledProduct.getProductPriceByType(PriceType.NORMAL).getPrice()).isEqualTo(56850);
+        assertThat(crawledProduct.getProductPriceByType(CASH).getPrice()).isEqualTo(54500);
+        assertThat(crawledProduct.getProductPriceByType(PriceType.CARD).getPrice()).isEqualTo(55330);
+        assertThat(crawledProduct.getProductPriceByType(PriceType.CARD).getAdditionalInfo()).isEqualTo("삼성");
         assertThat(crawledProduct.getProductName()).isNotEmpty();
         assertThat(crawledProduct.getCrawledAt()).isEqualTo(crawledAt);
     }
@@ -73,8 +75,7 @@ class DanawaProductCrawlerTest {
 
         //then
         assertThat(crawledProduct.getProductCode()).isEqualTo(productCode);
-        Assertions.assertThat(crawledProduct.getSaleStatus()).isEqualTo(ProductSaleStatus.EMPTY_AMOUNT);
-        assertThat(crawledProduct.getPrice()).isZero();
+        assertThat(crawledProduct.getSaleStatus()).isEqualTo(ProductSaleStatus.EMPTY_AMOUNT);
         assertThat(crawledProduct.getProductName()).isNotEmpty();
         assertThat(crawledProduct.getCrawledAt()).isEqualTo(crawledAt);
     }
@@ -98,7 +99,6 @@ class DanawaProductCrawlerTest {
         assertThat(crawledProduct.getProductName()).isNotEmpty();
         assertThat(crawledProduct.getProductCode()).isEqualTo(productCode);
         Assertions.assertThat(crawledProduct.getSaleStatus()).isEqualTo(ProductSaleStatus.DISCONTINUE);
-        assertThat(crawledProduct.getPrice()).isZero();
         assertThat(crawledProduct.getCrawledAt()).isEqualTo(crawledAt);
     }
 
@@ -120,8 +120,7 @@ class DanawaProductCrawlerTest {
         //then
         assertThat(crawledProduct.getProductName()).isNotEmpty();
         assertThat(crawledProduct.getProductCode()).isEqualTo(productCode);
-        Assertions.assertThat(crawledProduct.getSaleStatus()).isEqualTo(ProductSaleStatus.NOT_SUPPORT);
-        assertThat(crawledProduct.getPrice()).isZero();
+        assertThat(crawledProduct.getSaleStatus()).isEqualTo(ProductSaleStatus.NOT_SUPPORT);
         assertThat(crawledProduct.getCrawledAt()).isEqualTo(crawledAt);
     }
 }

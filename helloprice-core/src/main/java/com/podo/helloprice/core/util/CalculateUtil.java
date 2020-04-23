@@ -7,35 +7,39 @@ import java.math.RoundingMode;
 import java.text.DecimalFormat;
 
 import static java.math.BigDecimal.ZERO;
+import static java.math.BigDecimal.valueOf;
 
 @UtilityClass
 public class CalculateUtil {
 
-    public static final DecimalFormat DECIMAL_FORMAT = new DecimalFormat("#.##");
+    private static final DecimalFormat DECIMAL_FORMAT = new DecimalFormat("#.##");
+    private static final BigDecimal PERCENT_OF_100 = valueOf(100);
+    private static final BigDecimal PERCENT_OF_MINUS_100 = valueOf(-100);
 
     public static BigDecimal getChangePercent(Integer x, Integer y) {
-        final BigDecimal ax = BigDecimal.valueOf(x);
-        final BigDecimal ay = BigDecimal.valueOf(y);
+        final BigDecimal dx = valueOf(x);
+        final BigDecimal dy = valueOf(y);
 
-        if (ax.compareTo(ZERO) == 0 && ay.compareTo(ZERO) == 0) {
+        if (dx.compareTo(ZERO) == 0 && dy.compareTo(ZERO) == 0) {
             return ZERO;
         }
 
-        if (ay.compareTo(ZERO) == 0) {
-            return BigDecimal.valueOf(100);
+        if (dy.compareTo(ZERO) == 0) {
+            return PERCENT_OF_100;
         }
 
-        if (ax.compareTo(ZERO) == 0) {
-            return BigDecimal.valueOf(-100);
+        if (dx.compareTo(ZERO) == 0) {
+            return PERCENT_OF_MINUS_100;
         }
 
-        return ax.subtract(ay).divide(ay, 4, RoundingMode.HALF_UP).multiply(BigDecimal.valueOf(100));
+        return dx.subtract(dy).divide(dy, 4, RoundingMode.HALF_UP)
+                .multiply(PERCENT_OF_100);
     }
 
-    public static String getPercentStringWithPlusMinusSign(Integer a, Integer b) {
+    public static String getSignPercent(Integer x, Integer y) {
         String prefix = "";
 
-        final BigDecimal changePercent = CalculateUtil.getChangePercent(a, b);
+        final BigDecimal changePercent = CalculateUtil.getChangePercent(x, y);
 
         if (changePercent.compareTo(ZERO) > 0) {
             prefix = "+";

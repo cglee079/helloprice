@@ -19,6 +19,7 @@ public class CurrencyUtil {
         CURRENCY_FORMAT.setMaximumFractionDigits(0);
         CURRENCY_FORMAT.setPositiveSuffix("원");
         CURRENCY_FORMAT.setNegativeSuffix("원");
+
         return CURRENCY_FORMAT.format(krw);
     }
 }

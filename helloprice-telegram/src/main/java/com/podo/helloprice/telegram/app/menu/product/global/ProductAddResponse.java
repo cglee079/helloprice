@@ -1,15 +1,14 @@
 package com.podo.helloprice.telegram.app.menu.product.global;
 
-import com.podo.helloprice.core.model.PriceType;
-import com.podo.helloprice.crawl.worker.vo.CrawledProduct;
+import com.podo.helloprice.crawl.worker.value.CrawledProduct;
 import com.podo.helloprice.core.util.CurrencyUtil;
-import com.podo.helloprice.crawl.worker.vo.CrawledProduct.CrawledProductPrice;
+import com.podo.helloprice.crawl.worker.value.CrawledProduct.CrawledProductPrice;
 import com.podo.helloprice.telegram.app.menu.CommonResponse;
 import lombok.experimental.UtilityClass;
 
 import java.util.Objects;
 
-import static com.podo.helloprice.core.model.PriceType.*;
+import static com.podo.helloprice.core.enums.PriceType.*;
 
 @UtilityClass
 public class ProductAddResponse {
@@ -62,9 +61,9 @@ public class ProductAddResponse {
     }
 
     public static String descCrawledProduct(CrawledProduct crawledProduct) {
-        final CrawledProductPrice normalCrawledProductPrice = crawledProduct.getPriceByType(NORMAL);
-        final CrawledProductPrice cashCrawledProductPrice = crawledProduct.getPriceByType(CASH);
-        final CrawledProductPrice cardCrawledProductPrice = crawledProduct.getPriceByType(CARD);
+        final CrawledProductPrice normalCrawledProductPrice = crawledProduct.getProductPriceByType(NORMAL);
+        final CrawledProductPrice cashCrawledProductPrice = crawledProduct.getProductPriceByType(CASH);
+        final CrawledProductPrice cardCrawledProductPrice = crawledProduct.getProductPriceByType(CARD);
 
         final StringBuilder message = new StringBuilder()
                 .append("<b>상품코드</b> : ")

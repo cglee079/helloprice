@@ -1,13 +1,13 @@
 package com.podo.helloprice.crawl.agent.job.step.crawl;
 
-import com.podo.helloprice.core.model.ProductUpdateStatus;
+import com.podo.helloprice.core.enums.ProductUpdateStatus;
 import com.podo.helloprice.crawl.agent.domain.product.Product;
 import com.podo.helloprice.crawl.agent.domain.product.ProductRepository;
 import com.podo.helloprice.crawl.agent.job.CrawlProductJobParameter;
 import com.podo.helloprice.crawl.agent.job.CrawlProductJobStore;
 import com.podo.helloprice.crawl.agent.job.ProductToCrawl;
 import com.podo.helloprice.crawl.agent.job.ProductUpdate;
-import com.podo.helloprice.crawl.worker.vo.CrawledProduct;
+import com.podo.helloprice.crawl.worker.value.CrawledProduct;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.batch.core.configuration.annotation.StepScope;

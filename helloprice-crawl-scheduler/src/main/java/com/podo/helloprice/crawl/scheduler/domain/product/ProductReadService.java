@@ -1,6 +1,6 @@
 package com.podo.helloprice.crawl.scheduler.domain.product;
 
-import com.podo.helloprice.core.model.ProductAliveStatus;
+import com.podo.helloprice.core.enums.ProductAliveStatus;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -25,8 +25,8 @@ public class ProductReadService {
         return new ProductDto(product.getProductName(), product.getProductCode());
     }
 
-    public void updateLastPublishAt(String itemCode, LocalDateTime lastPublishAt) {
-        final Product product = productQuerydslRepository.findByProductCode(itemCode);
+    public void updateLastPublishAt(String productCode, LocalDateTime lastPublishAt) {
+        final Product product = productQuerydslRepository.findByProductCode(productCode);
         product.updateLastPublishAt(lastPublishAt);
     }
 }

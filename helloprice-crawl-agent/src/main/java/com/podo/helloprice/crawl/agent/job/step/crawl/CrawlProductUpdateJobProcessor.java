@@ -2,7 +2,7 @@ package com.podo.helloprice.crawl.agent.job.step.crawl;
 
 import com.podo.helloprice.crawl.agent.job.ProductToCrawl;
 import com.podo.helloprice.crawl.worker.target.danawa.DanawaProductCrawler;
-import com.podo.helloprice.crawl.worker.vo.CrawledProduct;
+import com.podo.helloprice.crawl.worker.value.CrawledProduct;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.batch.core.configuration.annotation.StepScope;

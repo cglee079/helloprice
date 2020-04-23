@@ -1,6 +1,6 @@
 package com.podo.helloprice.product.update.analysis.processor.notify;
 
-import com.podo.helloprice.core.model.ProductUpdateStatus;
+import com.podo.helloprice.core.enums.ProductUpdateStatus;
 import com.podo.helloprice.product.update.analysis.domain.notifylog.application.NotifyLogInsertService;
 import com.podo.helloprice.product.update.analysis.domain.notifylog.dto.NotifyLogInsertDto;
 import com.podo.helloprice.product.update.analysis.domain.userproduct.application.UserProductNotifyUpdateService;

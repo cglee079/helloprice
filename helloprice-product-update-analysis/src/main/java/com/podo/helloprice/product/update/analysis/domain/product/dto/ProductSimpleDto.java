@@ -1,7 +1,7 @@
 package com.podo.helloprice.product.update.analysis.domain.product.dto;
 
-import com.podo.helloprice.core.model.ProductAliveStatus;
-import com.podo.helloprice.core.model.ProductSaleStatus;
+import com.podo.helloprice.core.enums.ProductAliveStatus;
+import com.podo.helloprice.core.enums.ProductSaleStatus;
 import com.podo.helloprice.product.update.analysis.domain.product.model.Product;
 import lombok.Builder;
 import lombok.Getter;

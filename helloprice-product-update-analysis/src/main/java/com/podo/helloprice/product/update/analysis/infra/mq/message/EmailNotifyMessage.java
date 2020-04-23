@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @EqualsAndHashCode
 public class EmailNotifyMessage {
+
     private String email;
     private String username;
     private String title;

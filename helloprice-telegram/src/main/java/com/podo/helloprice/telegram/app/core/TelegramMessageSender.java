@@ -1,9 +1,7 @@
 package com.podo.helloprice.telegram.app.core;
 
-import com.podo.helloprice.telegram.app.vo.SendMessageVo;
-import lombok.RequiredArgsConstructor;
+import com.podo.helloprice.telegram.app.value.SendMessageVo;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 import org.telegram.telegrambots.bots.DefaultAbsSender;
 import org.telegram.telegrambots.bots.DefaultBotOptions;
@@ -11,8 +9,6 @@ import org.telegram.telegrambots.meta.ApiContext;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.methods.send.SendPhoto;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
-
-import static org.telegram.telegrambots.meta.ApiContext.getInstance;
 
 @Slf4j
 public class TelegramMessageSender extends DefaultAbsSender {

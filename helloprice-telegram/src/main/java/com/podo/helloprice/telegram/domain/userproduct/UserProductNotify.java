@@ -1,6 +1,6 @@
 package com.podo.helloprice.telegram.domain.userproduct;
 
-import com.podo.helloprice.core.model.PriceType;
+import com.podo.helloprice.core.enums.PriceType;
 import com.podo.helloprice.telegram.domain.user.model.User;
 import com.podo.helloprice.telegram.domain.BaseTimeEntity;
 import com.podo.helloprice.telegram.domain.product.model.Product;

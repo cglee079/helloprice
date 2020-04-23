@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @EqualsAndHashCode
 public class TelegramNotifyMessage {
+
     private String telegramId;
     private String imageUrl;
     private String contents;

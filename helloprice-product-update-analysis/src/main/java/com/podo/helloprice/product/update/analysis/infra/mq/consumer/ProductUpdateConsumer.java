@@ -1,6 +1,6 @@
 package com.podo.helloprice.product.update.analysis.infra.mq.consumer;
 
-import com.podo.helloprice.core.model.ProductUpdateStatus;
+import com.podo.helloprice.core.enums.ProductUpdateStatus;
 import com.podo.helloprice.product.update.analysis.infra.mq.message.ProductUpdateMessage;
 import com.podo.helloprice.product.update.analysis.processor.Processor;
 import lombok.RequiredArgsConstructor;

@@ -14,9 +14,4 @@ public class ProductReadHelper {
                 .orElseThrow(() -> new InvalidProductIdException(productId));
     }
 
-    public static Product findByProductCode(ProductRepository productRepository, String productCode) {
-        return productRepository.findByProductCode(productCode)
-                .orElseThrow(() -> new InvalidProductCodeException(productCode));
-    }
-
 }

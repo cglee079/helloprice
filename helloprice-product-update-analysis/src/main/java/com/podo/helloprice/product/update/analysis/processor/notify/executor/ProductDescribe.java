@@ -1,8 +1,8 @@
-package com.podo.helloprice.product.update.analysis.processor.notify.executor.sale;
+package com.podo.helloprice.product.update.analysis.processor.notify.executor;
 
-import com.podo.helloprice.core.model.PriceType;
-import com.podo.helloprice.core.model.ProductAliveStatus;
-import com.podo.helloprice.core.model.ProductSaleStatus;
+import com.podo.helloprice.core.enums.PriceType;
+import com.podo.helloprice.core.enums.ProductAliveStatus;
+import com.podo.helloprice.core.enums.ProductSaleStatus;
 import com.podo.helloprice.core.util.CalculateUtil;
 import com.podo.helloprice.core.util.DateTimeUtil;
 import com.podo.helloprice.product.update.analysis.domain.product.dto.ProductDetailDto;
@@ -82,7 +82,7 @@ public class ProductDescribe {
 
                 .append("<b>")
                 .append("가격변화 : ")
-                .append(CalculateUtil.getPercentStringWithPlusMinusSign(price, prevPrice))
+                .append(CalculateUtil.getSignPercent(price, prevPrice))
                 .append("</b>");
 
         return message.toString();

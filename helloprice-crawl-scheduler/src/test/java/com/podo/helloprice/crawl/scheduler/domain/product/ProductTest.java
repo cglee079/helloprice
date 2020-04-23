@@ -14,13 +14,13 @@ class ProductTest {
     void testUpdateLastPublishAt(){
         //given
         final LocalDateTime lastPublishAt = LocalDateTime.now();
-        final Product item = new Product();
+        final Product product = new Product();
 
         //when
-        item.updateLastPublishAt(lastPublishAt);
+        product.updateLastPublishAt(lastPublishAt);
 
         //then
-        assertThat(item.getLastPublishAt()).isEqualTo(lastPublishAt);
+        assertThat(product.getLastPublishAt()).isEqualTo(lastPublishAt);
     }
 
 }

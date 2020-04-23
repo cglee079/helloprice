@@ -1,4 +1,4 @@
-package com.podo.helloprice.core.model;
+package com.podo.helloprice.core.enums;
 
 import lombok.RequiredArgsConstructor;
 

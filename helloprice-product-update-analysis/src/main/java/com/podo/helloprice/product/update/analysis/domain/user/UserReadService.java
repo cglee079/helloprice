@@ -1,7 +1,6 @@
 package com.podo.helloprice.product.update.analysis.domain.user;
 
-import com.podo.helloprice.core.model.UserStatus;
-import com.podo.helloprice.product.update.analysis.domain.user.dto.UserDto;
+import com.podo.helloprice.core.enums.UserStatus;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

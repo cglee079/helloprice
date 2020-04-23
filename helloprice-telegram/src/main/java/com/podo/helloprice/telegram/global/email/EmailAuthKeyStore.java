@@ -16,7 +16,7 @@ import java.util.concurrent.TimeUnit;
 
 @Slf4j
 @Component
-public class EmailKeyStore {
+public class EmailAuthKeyStore {
 
     private final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(3);
 
@@ -27,7 +27,7 @@ public class EmailKeyStore {
     private long certifyTimeout;
 
     public String createAuthKey(String email) {
-        final String newKey = getNewKey();
+        final String newKey = createNewKey();
 
         emailKeyStore.put(email, newKey);
         keyStoreTimes.put(newKey, LocalDateTime.now());
@@ -45,11 +45,11 @@ public class EmailKeyStore {
         }, certifyTimeout, TimeUnit.MINUTES);
     }
 
-    private String getNewKey() {
+    private String createNewKey() {
         final String newKey = String.format("%06d", NumberUtil.getRandomInt(999999));
 
         if (keyStoreTimes.containsKey(newKey)) {
-            return getNewKey();
+            return createNewKey();
         }
 
         return newKey;

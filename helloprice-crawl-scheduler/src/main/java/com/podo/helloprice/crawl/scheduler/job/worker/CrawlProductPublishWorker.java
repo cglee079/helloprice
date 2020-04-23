@@ -1,9 +1,10 @@
-package com.podo.helloprice.crawl.scheduler.job;
+package com.podo.helloprice.crawl.scheduler.job.worker;
 
 import com.podo.helloprice.crawl.scheduler.domain.product.ProductDto;
-import com.podo.helloprice.crawl.scheduler.global.config.infra.mq.CrawlProductPublisher;
-import com.podo.helloprice.crawl.scheduler.global.config.infra.mq.message.CrawlProductMessage;
+import com.podo.helloprice.crawl.scheduler.global.config.infra.mq.publisher.ProductToCrawlPublisher;
+import com.podo.helloprice.crawl.scheduler.global.config.infra.mq.message.ProductToCrawlMessage;
 import com.podo.helloprice.crawl.scheduler.domain.product.ProductReadService;
+import com.podo.helloprice.crawl.scheduler.job.Worker;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -20,7 +21,7 @@ public class CrawlProductPublishWorker implements Worker {
     @Value("${product.publish.expire.minute}")
     private Integer crawlExpireMinute;
 
-    private final CrawlProductPublisher crawlProductPublisher;
+    private final ProductToCrawlPublisher productToCrawlPublisher;
     private final ProductReadService productReadService;
 
     @Override
@@ -35,7 +36,7 @@ public class CrawlProductPublishWorker implements Worker {
     }
 
     private void publish(ProductDto crawlProduct, LocalDateTime lastPublishAt) {
-        crawlProductPublisher.publish(new CrawlProductMessage(crawlProduct.getProductName(), crawlProduct.getProductCode()));
+        productToCrawlPublisher.publish(new ProductToCrawlMessage(crawlProduct.getProductName(), crawlProduct.getProductCode()));
         productReadService.updateLastPublishAt(crawlProduct.getProductCode(), lastPublishAt);
     }
 }

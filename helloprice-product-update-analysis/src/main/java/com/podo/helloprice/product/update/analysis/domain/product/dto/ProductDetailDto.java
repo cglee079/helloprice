@@ -1,8 +1,8 @@
 package com.podo.helloprice.product.update.analysis.domain.product.dto;
 
-import com.podo.helloprice.core.model.PriceType;
-import com.podo.helloprice.core.model.ProductAliveStatus;
-import com.podo.helloprice.core.model.ProductSaleStatus;
+import com.podo.helloprice.core.enums.PriceType;
+import com.podo.helloprice.core.enums.ProductAliveStatus;
+import com.podo.helloprice.core.enums.ProductSaleStatus;
 import com.podo.helloprice.product.update.analysis.domain.product.model.Product;
 import com.podo.helloprice.product.update.analysis.domain.product.model.ProductPrice;
 import lombok.Builder;
@@ -42,7 +42,7 @@ public class ProductDetailDto {
         this.lastCrawledAt = product.getLastCrawledAt();
         this.priceType = priceType;
 
-        final ProductPrice priceByType = product.getPriceByType(priceType);
+        final ProductPrice priceByType = product.getProductPriceByType(priceType);
         this.price = priceByType.getPrice();
         this.prevPrice = priceByType.getPrevPrice();
         this.priceAdditionalInfo = priceByType.getAdditionalInfo();
