@@ -9,15 +9,16 @@ import com.podo.helloprice.product.update.analysis.domain.userproduct.applicatio
 import com.podo.helloprice.product.update.analysis.infra.mq.message.EmailNotifyMessage;
 import com.podo.helloprice.product.update.analysis.infra.mq.message.TelegramNotifyMessage;
 import com.podo.helloprice.product.update.analysis.processor.notify.Notifier;
+import com.podo.helloprice.product.update.analysis.processor.notify.NotifyTarget;
 import com.podo.helloprice.product.update.analysis.processor.notify.helper.EmailContentCreator;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.StringUtils;
 
 import java.util.List;
 
+@Slf4j
 public abstract class AbstractCommonNotifyExecutor implements NotifyExecutor {
-
-    @Autowired
-    private Notifier notifier;
 
     @Autowired
     private ProductReadService productReadService;
@@ -33,7 +34,7 @@ public abstract class AbstractCommonNotifyExecutor implements NotifyExecutor {
     protected abstract String getNotifyContents(ProductSimpleDto product);
 
     @Override
-    public boolean execute(Long productId) {
+    public NotifyTarget execute(Long productId) {
 
         final ProductSimpleDto product = productReadService.findByProductId(productId);
 
@@ -45,12 +46,7 @@ public abstract class AbstractCommonNotifyExecutor implements NotifyExecutor {
         final String title = getNotifyTitle(product);
         final String contents = getNotifyContents(product);
 
-        for (UserDto user : users) {
-            notifier.notify(TelegramNotifyMessage.create(user.getTelegramId(), imageUrl, contents));
-            notifier.notify(EmailNotifyMessage.create(user.getEmail(), user.getUsername(), title, EmailContentCreator.create(imageUrl, contents)));
-        }
-
-        return true;
+        return new NotifyTarget(users, imageUrl, title, contents);
     }
 
 

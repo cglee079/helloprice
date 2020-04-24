@@ -1,6 +1,7 @@
 package com.podo.helloprice.product.update.analysis.processor.notify.helper;
 
 import lombok.experimental.UtilityClass;
+import org.springframework.util.StringUtils;
 
 import java.util.Objects;
 
@@ -12,7 +13,7 @@ public class EmailContentCreator {
 
         htmlContents.append("<div>");
 
-        if (Objects.nonNull(imageUrl)) {
+        if (!StringUtils.isEmpty(imageUrl)) {
             htmlContents.append("<div>")
                     .append("<img src='")
                     .append(imageUrl)

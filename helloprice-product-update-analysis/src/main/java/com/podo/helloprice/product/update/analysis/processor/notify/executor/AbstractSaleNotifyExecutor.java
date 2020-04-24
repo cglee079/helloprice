@@ -4,6 +4,7 @@ import com.podo.helloprice.core.enums.PriceType;
 import com.podo.helloprice.core.enums.UserStatus;
 import com.podo.helloprice.core.util.CalculateUtil;
 import com.podo.helloprice.core.util.CurrencyUtil;
+import com.podo.helloprice.core.util.StringUtil;
 import com.podo.helloprice.product.update.analysis.domain.product.application.ProductReadService;
 import com.podo.helloprice.product.update.analysis.domain.product.dto.ProductDetailDto;
 import com.podo.helloprice.product.update.analysis.domain.user.UserReadService;
@@ -12,8 +13,10 @@ import com.podo.helloprice.product.update.analysis.domain.userproduct.applicatio
 import com.podo.helloprice.product.update.analysis.infra.mq.message.EmailNotifyMessage;
 import com.podo.helloprice.product.update.analysis.infra.mq.message.TelegramNotifyMessage;
 import com.podo.helloprice.product.update.analysis.processor.notify.Notifier;
+import com.podo.helloprice.product.update.analysis.processor.notify.NotifyTarget;
 import com.podo.helloprice.product.update.analysis.processor.notify.helper.EmailContentCreator;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.StringUtils;
 
 import java.util.List;
 
@@ -22,9 +25,6 @@ import static com.podo.helloprice.core.util.CurrencyUtil.toKRW;
 import static java.math.BigDecimal.valueOf;
 
 public abstract class AbstractSaleNotifyExecutor implements NotifyExecutor {
-
-    @Autowired
-    private Notifier notifier;
 
     @Autowired
     private ProductReadService productReadService;
@@ -38,7 +38,7 @@ public abstract class AbstractSaleNotifyExecutor implements NotifyExecutor {
     protected abstract PriceType getPriceType();
 
     @Override
-    public boolean execute(Long productId) {
+    public NotifyTarget execute(Long productId) {
         final PriceType priceType = this.getPriceType();
 
         final ProductDetailDto product = productReadService.findByProductId(productId, priceType);
@@ -50,28 +50,18 @@ public abstract class AbstractSaleNotifyExecutor implements NotifyExecutor {
         final Integer prevPrice = product.getPrevPrice();
 
         if (satisfiedSendResaleNotify(price, prevPrice)) {
-            notifyToUsers(users, imageUrl, getResaleNotifyTitle(product), getResaleNotifyContents(product));
-            return true;
+            return new NotifyTarget(users, imageUrl, getResaleNotifyTitle(product), getResaleNotifyContents(product));
         }
 
         if (satisfiedSendZeroPriceNotify(price)) {
-            notifyToUsers(users, imageUrl, getZeroPriceNotifyTitle(product), getZeroPriceNotifyContents(product));
-            return true;
+            return new NotifyTarget(users, imageUrl, getZeroPriceNotifyTitle(product), getZeroPriceNotifyContents(product));
         }
 
         if (satisfiedSendLowestPriceNotify(price, prevPrice)) {
-            notifyToUsers(users, imageUrl, getLowestPriceNotifyTitle(product), getLowestPriceNotifyContents(product));
-            return true;
+            return new NotifyTarget(users, imageUrl, getLowestPriceNotifyTitle(product), getLowestPriceNotifyContents(product));
         }
 
-        return false;
-    }
-
-    private void notifyToUsers(List<UserDto> users, String imageUrl, String title, String contents) {
-        for (UserDto user : users) {
-            notifier.notify(TelegramNotifyMessage.create(user.getTelegramId(), imageUrl, contents));
-            notifier.notify(EmailNotifyMessage.create(user.getEmail(), user.getUsername(), title, EmailContentCreator.create(imageUrl, contents)));
-        }
+        return NotifyTarget.EMPTY;
     }
 
     private boolean satisfiedSendResaleNotify(Integer price, Integer prevPrice) {

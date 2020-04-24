@@ -24,10 +24,6 @@ public class Notifier {
     }
 
     public void notify(EmailNotifyMessage emailNotifyMessage){
-        if(StringUtils.isEmpty(emailNotifyMessage.getEmail())){
-            return;
-        }
-
         log.info("NOTIFY ::  EMAIL :: email : {}, contents : {}", emailNotifyMessage.getEmail(), StringUtil.summary(emailNotifyMessage.getContents(), 100));
         emailNotifyPublisher.publish(emailNotifyMessage);
     }

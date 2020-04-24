@@ -25,11 +25,25 @@ public class NotifyLog {
     @Enumerated(EnumType.STRING)
     private ProductUpdateStatus updateStatus;
 
+    private String imageUrl;
+
+    private String title;
+
+    private String contents;
+
     private LocalDateTime notifyAt;
 
-    public NotifyLog(Long productId, ProductUpdateStatus updateStatus, LocalDateTime notifyAt) {
+    public NotifyLog(Long productId,
+                     ProductUpdateStatus updateStatus,
+                     String imageUrl,
+                     String title,
+                     String contents,
+                     LocalDateTime notifyAt) {
         this.productId = productId;
         this.updateStatus = updateStatus;
+        this.imageUrl = imageUrl;
+        this.title = title;
+        this.contents = contents;
         this.notifyAt = notifyAt;
     }
 }
