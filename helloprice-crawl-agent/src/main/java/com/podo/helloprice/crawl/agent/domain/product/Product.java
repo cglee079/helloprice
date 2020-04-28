@@ -5,6 +5,7 @@ import com.podo.helloprice.core.enums.ProductAliveStatus;
 import com.podo.helloprice.core.enums.ProductSaleStatus;
 import com.podo.helloprice.core.enums.ProductUpdateStatus;
 import com.podo.helloprice.crawl.worker.value.CrawledProduct;
+import com.podo.helloprice.crawl.worker.value.CrawledProductPrice;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -119,7 +120,7 @@ public class Product {
     }
 
     private boolean updatePrice(CrawledProduct crawledProduct, PriceType priceType, LocalDateTime crawledAt) {
-        final CrawledProduct.CrawledProductPrice price = crawledProduct.getProductPriceByType(priceType);
+        final CrawledProductPrice price = crawledProduct.getProductPriceByType(priceType);
 
         //기존에 있는 경우, 업데이트
         if(priceTypeToPrice.containsKey(priceType) && price != null) {

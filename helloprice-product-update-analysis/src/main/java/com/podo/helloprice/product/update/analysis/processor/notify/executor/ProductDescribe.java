@@ -1,8 +1,10 @@
 package com.podo.helloprice.product.update.analysis.processor.notify.executor;
 
 import com.podo.helloprice.core.enums.PriceType;
+import com.podo.helloprice.core.parser.PriceTypeParser;
 import com.podo.helloprice.core.enums.ProductAliveStatus;
 import com.podo.helloprice.core.enums.ProductSaleStatus;
+import com.podo.helloprice.core.parser.ProductSaleStatusParser;
 import com.podo.helloprice.core.util.CalculateUtil;
 import com.podo.helloprice.core.util.DateTimeUtil;
 import com.podo.helloprice.product.update.analysis.domain.product.dto.ProductDetailDto;
@@ -57,13 +59,13 @@ public class ProductDescribe {
 
                 .append("<b>")
                 .append("상품상태 : ")
-                .append(product.getSaleStatus().kr())
+                .append(ProductSaleStatusParser.kr(product.getSaleStatus()))
                 .append("</b>")
                 .append("\n")
 
                 .append("<b>")
                 .append("가격타입 : ★")
-                .append(product.getPriceType().kr())
+                .append(PriceTypeParser.kr(product.getPriceType()))
                 .append(StringUtils.isEmpty(product.getPriceAdditionalInfo()) ? "" : "(" + product.getPriceAdditionalInfo() + ")")
                 .append("</b>")
                 .append("\n")
@@ -120,7 +122,7 @@ public class ProductDescribe {
         final StringBuilder message = new StringBuilder();
 
         if (price.equals(0)) {
-            return "<i>죄송합니다, <b>" + priceType.kr() + "</b>는 판매가 진행되지 않고 있어요..</i>";
+            return "<i>죄송합니다, <b>" + PriceTypeParser.kr(priceType) + "</b>는 판매가 진행되지 않고 있어요..</i>";
         }
 
         if (prevPrice.equals(0)) {

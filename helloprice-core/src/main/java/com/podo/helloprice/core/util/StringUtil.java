@@ -12,9 +12,10 @@ public class StringUtil {
     }
 
     public static String summary(String str, int length) {
-        return str
+        final String summary = str
                 .replace("\n", "")
-                .replace("\r", "")
-                .substring(0, length);
+                .replace("\r", "");
+
+        return summary.substring(0, length < str.length() ? length : summary.length());
     }
 }

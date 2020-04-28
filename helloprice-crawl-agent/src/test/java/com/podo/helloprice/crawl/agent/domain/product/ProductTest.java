@@ -9,6 +9,7 @@ import java.time.LocalDateTime;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+@DisplayName("Product 단위 테스트")
 class ProductTest {
 
     @DisplayName("DEAD_COUNT 증가")
@@ -41,7 +42,5 @@ class ProductTest {
         assertThat(product.getDeadCount()).isEqualTo(1);
         assertThat(product.getAliveStatus()).isEqualTo(ProductAliveStatus.DEAD);
     }
-
-
 
 }

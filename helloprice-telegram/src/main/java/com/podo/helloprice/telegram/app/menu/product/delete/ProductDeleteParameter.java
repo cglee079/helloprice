@@ -1,6 +1,7 @@
 package com.podo.helloprice.telegram.app.menu.product.delete;
 
 import com.podo.helloprice.core.enums.PriceType;
+import com.podo.helloprice.core.parser.PriceTypeParser;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -16,6 +17,6 @@ public class ProductDeleteParameter {
 
     @Override
     public String toString() {
-        return String.format("%s/%s", productCode, priceType.kr());
+        return String.format("%s/%s", productCode, PriceTypeParser.kr(priceType));
     }
 }

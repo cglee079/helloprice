@@ -2,8 +2,8 @@ package com.podo.helloprice.crawl.agent.job.step.publish;
 
 import com.podo.helloprice.crawl.agent.global.infra.mq.publish.ProductUpdatePublisher;
 import com.podo.helloprice.crawl.agent.global.infra.mq.message.ProductUpdateMessage;
-import com.podo.helloprice.crawl.agent.job.CrawlProductJobStore;
-import com.podo.helloprice.crawl.agent.job.ProductUpdate;
+import com.podo.helloprice.crawl.agent.job.ProductUpdateEventStore;
+import com.podo.helloprice.crawl.agent.job.ProductUpdateEvent;
 import lombok.RequiredArgsConstructor;
 import org.springframework.batch.core.StepContribution;
 import org.springframework.batch.core.scope.context.ChunkContext;
@@ -17,15 +17,15 @@ import java.util.List;
 @Component
 public class CrawlProductUpdatePublishTasklet implements Tasklet {
 
-    private final CrawlProductJobStore crawlProductJobStore;
+    private final ProductUpdateEventStore productUpdateEventStore;
     private final ProductUpdatePublisher productUpdatePublisher;
 
     @Override
     public RepeatStatus execute(StepContribution contribution, ChunkContext chunkContext){
-        final List<ProductUpdate> productUpdates = crawlProductJobStore.getProductUpdates();
+        final List<ProductUpdateEvent> productUpdateEvents = productUpdateEventStore.getProductUpdateEvents();
 
-        for (ProductUpdate productUpdate : productUpdates) {
-            productUpdatePublisher.publish(new ProductUpdateMessage(productUpdate.getProductId(), productUpdate.getUpdateStatus()));
+        for (ProductUpdateEvent productUpdateEvent : productUpdateEvents) {
+            productUpdatePublisher.publish(new ProductUpdateMessage(productUpdateEvent.getProductId(), productUpdateEvent.getUpdateStatus()));
         }
 
         return RepeatStatus.FINISHED;

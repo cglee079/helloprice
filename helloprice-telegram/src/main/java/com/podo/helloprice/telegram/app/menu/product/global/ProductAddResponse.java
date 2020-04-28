@@ -1,8 +1,9 @@
 package com.podo.helloprice.telegram.app.menu.product.global;
 
+import com.podo.helloprice.core.parser.ProductSaleStatusParser;
 import com.podo.helloprice.crawl.worker.value.CrawledProduct;
 import com.podo.helloprice.core.util.CurrencyUtil;
-import com.podo.helloprice.crawl.worker.value.CrawledProduct.CrawledProductPrice;
+import com.podo.helloprice.crawl.worker.value.CrawledProductPrice;
 import com.podo.helloprice.telegram.app.menu.CommonResponse;
 import lombok.experimental.UtilityClass;
 
@@ -88,7 +89,7 @@ public class ProductAddResponse {
 
                 .append("<b>")
                 .append("상품상태 : ")
-                .append(crawledProduct.getSaleStatus().kr())
+                .append(ProductSaleStatusParser.kr(crawledProduct.getSaleStatus()))
                 .append("</b>")
                 .append("\n")
 

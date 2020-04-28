@@ -1,22 +1,17 @@
 package com.podo.helloprice.product.update.analysis.processor.notify.executor;
 
 import com.podo.helloprice.core.enums.PriceType;
+import com.podo.helloprice.core.parser.PriceTypeParser;
 import com.podo.helloprice.core.enums.UserStatus;
 import com.podo.helloprice.core.util.CalculateUtil;
 import com.podo.helloprice.core.util.CurrencyUtil;
-import com.podo.helloprice.core.util.StringUtil;
 import com.podo.helloprice.product.update.analysis.domain.product.application.ProductReadService;
 import com.podo.helloprice.product.update.analysis.domain.product.dto.ProductDetailDto;
 import com.podo.helloprice.product.update.analysis.domain.user.UserReadService;
 import com.podo.helloprice.product.update.analysis.domain.user.UserDto;
 import com.podo.helloprice.product.update.analysis.domain.userproduct.application.UserProductNotifyReadService;
-import com.podo.helloprice.product.update.analysis.infra.mq.message.EmailNotifyMessage;
-import com.podo.helloprice.product.update.analysis.infra.mq.message.TelegramNotifyMessage;
-import com.podo.helloprice.product.update.analysis.processor.notify.Notifier;
 import com.podo.helloprice.product.update.analysis.processor.notify.NotifyTarget;
-import com.podo.helloprice.product.update.analysis.processor.notify.helper.EmailContentCreator;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.util.StringUtils;
 
 import java.util.List;
 
@@ -117,7 +112,7 @@ public abstract class AbstractSaleNotifyExecutor implements NotifyExecutor {
         return new StringBuilder()
                 .append(product.getProductName())
                 .append("' 상품의 ")
-                .append(product.getPriceType().kr())
+                .append(PriceTypeParser.kr(product.getPriceType()))
                 .append("는 판매가 진행되지 않고 있습니다")
                 .toString();
     }
@@ -134,7 +129,7 @@ public abstract class AbstractSaleNotifyExecutor implements NotifyExecutor {
                 .append("\n")
 
                 .append("<b>")
-                .append(product.getPriceType().kr())
+                .append(PriceTypeParser.kr(product.getPriceType()))
                 .append("</b>는 판매가 진행되지 않고 있어요..\n")
                 .append("\n")
 

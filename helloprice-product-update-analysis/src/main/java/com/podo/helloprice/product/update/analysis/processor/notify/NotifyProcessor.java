@@ -11,6 +11,7 @@ import com.podo.helloprice.product.update.analysis.processor.Processor;
 import com.podo.helloprice.product.update.analysis.processor.notify.executor.NotifyExecutor;
 import com.podo.helloprice.product.update.analysis.processor.notify.helper.EmailContentCreator;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
@@ -22,7 +23,7 @@ import java.util.Map;
 import static java.util.stream.Collectors.toMap;
 
 @Slf4j
-@Order(-1)
+@Order(Ordered.HIGHEST_PRECEDENCE)
 @Component
 public class NotifyProcessor implements Processor {
 

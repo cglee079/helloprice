@@ -1,5 +1,6 @@
 package com.podo.helloprice.notifier.mq.message;
 
+import com.podo.helloprice.core.util.StringUtil;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -20,7 +21,7 @@ public class EmailNotifyMessage {
                 "email='" + email + '\'' +
                 ", username='" + username + '\'' +
                 ", title='" + title + '\'' +
-                ", contents='" + StringUtil. + '\'' +
+                ", contents='" + StringUtil.summary(contents, 100) + '\'' +
                 '}';
     }
 }

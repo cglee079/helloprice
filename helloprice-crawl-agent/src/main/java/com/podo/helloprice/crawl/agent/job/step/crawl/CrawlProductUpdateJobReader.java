@@ -10,13 +10,16 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class CrawlProductUpdateJobReader extends AbstractItemCountingItemStreamItemReader<ProductToCrawl> {
 
+    private static final int MAX_SIZE = 1;
+    private static final ProductToCrawl END_READ = null;
+
     private int count = 0;
     private final CrawlProductJobParameter jobParameter;
 
     @Override
     protected ProductToCrawl doRead() {
         if (isEnded()) {
-            return null;
+            return END_READ;
         }
 
         count++;
@@ -25,7 +28,7 @@ public class CrawlProductUpdateJobReader extends AbstractItemCountingItemStreamI
     }
 
     private boolean isEnded() {
-        return count >= 1;
+        return count >= MAX_SIZE;
     }
 
     @Override

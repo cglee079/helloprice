@@ -66,7 +66,7 @@ public class CrawlProductJobConfig {
 
     @Bean
     @JobScope
-    public CrawlProductJobStore jobStore() {
-        return new CrawlProductJobStore();
+    public ProductUpdateEventStore jobStore() {
+        return new ProductUpdateEventStore();
     }
 }

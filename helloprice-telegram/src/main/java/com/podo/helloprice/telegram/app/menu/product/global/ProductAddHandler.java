@@ -35,7 +35,7 @@ public class ProductAddHandler {
         final HomeKeyboard homeKeyboard = new HomeKeyboard(productDescCommands);
 
         final CrawledProduct crawledProduct = danawaProductCache.get(productCode);
-        if (Objects.isNull(crawledProduct)) {
+        if (CrawledProduct.FAIL.equals(crawledProduct)) {
             log.debug("APP :: {} << 상품 정보를 가져 올 수 없습니다. 상품코드 '{}'", telegramId, productCode);
             sender.send(SendMessageVo.create(messageVo, ProductAddResponse.wrongProductCode(productCode), homeKeyboard, callbackFactory.create(telegramId, Menu.HOME)));
             return;

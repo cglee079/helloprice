@@ -1,8 +1,10 @@
 package com.podo.helloprice.telegram.app.menu.product.global;
 
 import com.podo.helloprice.core.enums.PriceType;
+import com.podo.helloprice.core.parser.PriceTypeParser;
 import com.podo.helloprice.core.enums.ProductAliveStatus;
 import com.podo.helloprice.core.enums.ProductSaleStatus;
+import com.podo.helloprice.core.parser.ProductSaleStatusParser;
 import com.podo.helloprice.core.util.CalculateUtil;
 import com.podo.helloprice.telegram.domain.product.dto.ProductOnePriceTypeDto;
 import lombok.experimental.UtilityClass;
@@ -58,13 +60,13 @@ public class ProductCommonResponse {
                 .append("<b>")
                 .append("가격타입 : ")
                 .append("★")
-                .append(product.getPriceType().kr())
+                .append(PriceTypeParser.kr(product.getPriceType()))
                 .append("</b>")
                 .append("\n")
 
                 .append("<b>")
                 .append("상품상태 : ")
-                .append(product.getSaleStatus().kr())
+                .append(ProductSaleStatusParser.kr(product.getSaleStatus()))
                 .append("</b>")
                 .append("\n")
 
@@ -118,7 +120,7 @@ public class ProductCommonResponse {
     private static String descSaleStatusChange(Integer price, Integer prevPrice, PriceType priceType) {
 
         if (price.equals(0)) {
-            return "<i>죄송합니다, <b>" + priceType.kr() + "</b>는 판매가 진행되지 않고 있어요..</i>";
+            return "<i>죄송합니다, <b>" + PriceTypeParser.kr(priceType) + "</b>는 판매가 진행되지 않고 있어요..</i>";
         }
 
         if (price > 0 && prevPrice.equals(0)) {

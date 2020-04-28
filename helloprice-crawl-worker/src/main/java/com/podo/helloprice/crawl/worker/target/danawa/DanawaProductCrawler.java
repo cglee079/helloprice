@@ -33,7 +33,7 @@ public class DanawaProductCrawler {
         final Document document = DocumentReaderHelper.crawl(documentPromptReader, productUrl);
         if (Objects.isNull(document)) {
             log.error("CRAWL :: ERROR :: 상품 상세 페이지를 가져올 수 없습니다");
-            return null;
+            return CrawledProduct.FAIL;
         }
 
         final CrawledProduct crawledProduct = crawledProductParser.parse(document, productCode, productUrl, crawledAt);

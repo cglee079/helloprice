@@ -10,6 +10,7 @@ import java.util.Optional;
 @EnableJpaAuditing
 @Configuration
 public class JpaConfig {
+
     @Bean
     AuditorAware auditorAware() {
         return (AuditorAware<String>) () -> Optional.of("CrawlAgent");

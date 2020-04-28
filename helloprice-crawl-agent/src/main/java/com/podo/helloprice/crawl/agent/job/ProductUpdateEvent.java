@@ -7,7 +7,7 @@ import lombok.RequiredArgsConstructor;
 
 @Getter
 @RequiredArgsConstructor
-public class ProductUpdate {
+public class ProductUpdateEvent {
     private final Long productId;
     private final ProductUpdateStatus updateStatus;
 }

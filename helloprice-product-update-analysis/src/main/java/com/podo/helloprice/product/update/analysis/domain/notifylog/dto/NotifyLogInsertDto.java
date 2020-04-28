@@ -16,7 +16,6 @@ public class NotifyLogInsertDto {
     private String title;
     private String contents;
 
-
     public NotifyLog toEntity(){
         return new NotifyLog(productId, updateStatus, imageUrl, title, contents, notifyAt);
     }

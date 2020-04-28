@@ -4,7 +4,7 @@ import com.podo.helloprice.core.enums.PriceType;
 import com.podo.helloprice.core.enums.ProductAliveStatus;
 import com.podo.helloprice.core.enums.ProductSaleStatus;
 import com.podo.helloprice.crawl.worker.value.CrawledProduct;
-import com.podo.helloprice.crawl.worker.value.CrawledProduct.CrawledProductPrice;
+import com.podo.helloprice.crawl.worker.value.CrawledProductPrice;
 import com.podo.helloprice.telegram.domain.BaseEntity;
 import com.podo.helloprice.telegram.domain.userproduct.UserProductNotify;
 import lombok.AccessLevel;

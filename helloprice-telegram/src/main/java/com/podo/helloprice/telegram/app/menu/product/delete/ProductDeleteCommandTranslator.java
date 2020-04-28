@@ -1,6 +1,7 @@
 package com.podo.helloprice.telegram.app.menu.product.delete;
 
 import com.podo.helloprice.core.enums.PriceType;
+import com.podo.helloprice.core.parser.PriceTypeParser;
 import com.podo.helloprice.telegram.domain.product.dto.ProductOnePriceTypeDto;
 import lombok.experimental.UtilityClass;
 import org.springframework.util.StringUtils;
@@ -23,7 +24,7 @@ public class ProductDeleteCommandTranslator {
     }
 
     private static String encode(ProductOnePriceTypeDto product) {
-        return String.format("#%s" + TOKEN_PRODUCT_KEY + "%s" + TOKEN_PRODUCT_DESC + "\n %s", product.getProductCode(), product.getPriceType().kr(), product.getProductName());
+        return String.format("#%s" + TOKEN_PRODUCT_KEY + "%s" + TOKEN_PRODUCT_DESC + "\n %s", product.getProductCode(), PriceTypeParser.kr(product.getPriceType()), product.getProductName());
     }
 
     public static ProductDeleteParameter decode(String command) {
@@ -39,7 +40,7 @@ public class ProductDeleteCommandTranslator {
 
         final String[] productKey = command.substring(1, index).split(TOKEN_PRODUCT_KEY);
         final String productCode = productKey[0];
-        final PriceType priceType = PriceType.from(productKey[1]);
+        final PriceType priceType = PriceTypeParser.from(productKey[1]);
 
         if (StringUtils.isEmpty(productCode) || Objects.isNull(priceType)) {
             return null;

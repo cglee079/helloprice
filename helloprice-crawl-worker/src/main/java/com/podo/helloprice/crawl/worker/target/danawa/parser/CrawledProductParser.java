@@ -4,7 +4,7 @@ import com.podo.helloprice.core.enums.PriceType;
 import com.podo.helloprice.core.enums.ProductSaleStatus;
 import com.podo.helloprice.core.util.StringUtil;
 import com.podo.helloprice.crawl.worker.value.CrawledProduct;
-import com.podo.helloprice.crawl.worker.value.CrawledProduct.CrawledProductPrice;
+import com.podo.helloprice.crawl.worker.value.CrawledProductPrice;
 import lombok.extern.slf4j.Slf4j;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;

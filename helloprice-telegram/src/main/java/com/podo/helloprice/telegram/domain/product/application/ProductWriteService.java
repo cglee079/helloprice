@@ -2,7 +2,7 @@ package com.podo.helloprice.telegram.domain.product.application;
 
 import com.podo.helloprice.core.enums.PriceType;
 import com.podo.helloprice.crawl.worker.value.CrawledProduct;
-import com.podo.helloprice.crawl.worker.value.CrawledProduct.CrawledProductPrice;
+import com.podo.helloprice.crawl.worker.value.CrawledProductPrice;
 import com.podo.helloprice.telegram.domain.product.dto.ProductInsertDto;
 import com.podo.helloprice.telegram.domain.product.model.Product;
 import com.podo.helloprice.telegram.domain.product.repository.ProductRepository;

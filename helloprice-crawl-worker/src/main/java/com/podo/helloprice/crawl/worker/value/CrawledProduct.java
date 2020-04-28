@@ -2,18 +2,19 @@ package com.podo.helloprice.crawl.worker.value;
 
 import com.podo.helloprice.core.enums.PriceType;
 import com.podo.helloprice.core.enums.ProductSaleStatus;
-import lombok.Builder;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.ToString;
+import lombok.*;
 
 import java.time.LocalDateTime;
 import java.util.Map;
 
 @ToString
-@EqualsAndHashCode
 @Getter
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
+@EqualsAndHashCode
 public class CrawledProduct {
+
+    public static final CrawledProduct FAIL = new CrawledProduct();
+
     private String productName;
     private String productCode;
     private String url;
@@ -42,19 +43,5 @@ public class CrawledProduct {
         return this.priceTypeToPrice.get(priceType);
     }
 
-    @Getter
-    public static class CrawledProductPrice{
-        private Integer price;
-        private String additionalInfo;
-
-        public CrawledProductPrice(Integer price) {
-            this(price, "");
-        }
-
-        public CrawledProductPrice(Integer price, String additionalInfo) {
-          this.price = price;
-          this.additionalInfo = additionalInfo;
-        }
-    }
 }
 
