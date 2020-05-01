@@ -2,7 +2,7 @@ crawler:
   useragent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/77.0.3865.120 Safari/537.36
   timeout: 10000
   webdriver:
-    servers: http://192.168.219.103:4442/wd/hub
+    servers: http://192.168.219.101:4442/wd/hub
 
 
 ---
@@ -12,4 +12,4 @@ spring:
 
 crawler:
   webdriver:
-    servers: http://192.168.219.103:4441/wd/hub
+    servers: http://192.168.219.101:4441/wd/hub

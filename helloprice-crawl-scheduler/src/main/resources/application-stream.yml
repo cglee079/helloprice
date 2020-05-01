@@ -8,7 +8,7 @@ spring.cloud:
           binder : kafka
       kafka:
         binder:
-          brokers: 192.168.219.103:9092
+          brokers: 192.168.219.101:9092
           auto-add-partitions: true
           min-partition-count: 1
           auto-create-topics: true
