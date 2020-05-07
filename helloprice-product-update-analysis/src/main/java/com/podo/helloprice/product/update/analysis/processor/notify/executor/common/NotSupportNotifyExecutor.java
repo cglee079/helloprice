@@ -1,7 +1,7 @@
 package com.podo.helloprice.product.update.analysis.processor.notify.executor.common;
 
 import com.podo.helloprice.core.enums.ProductUpdateStatus;
-import com.podo.helloprice.product.update.analysis.domain.product.dto.ProductSimpleDto;
+import com.podo.helloprice.product.update.analysis.domain.product.dto.ProductDto;
 import com.podo.helloprice.product.update.analysis.processor.notify.executor.AbstractCommonNotifyExecutor;
 import com.podo.helloprice.product.update.analysis.processor.notify.executor.ProductSimpleDescribe;
 import lombok.RequiredArgsConstructor;
@@ -18,7 +18,7 @@ public class NotSupportNotifyExecutor extends AbstractCommonNotifyExecutor {
     }
 
     @Override
-    protected String getNotifyTitle(ProductSimpleDto product) {
+    protected String getNotifyTitle(ProductDto product) {
         return new StringBuilder()
                 .append("'")
                 .append(product.getProductName())
@@ -27,7 +27,7 @@ public class NotSupportNotifyExecutor extends AbstractCommonNotifyExecutor {
     }
 
     @Override
-    protected String getNotifyContents(ProductSimpleDto product) {
+    protected String getNotifyContents(ProductDto product) {
         return new StringBuilder()
                 .append("<b>")
                 .append("해당 상품은 '가격비교중지' 상태로 변경되었습니다\n")

@@ -1,7 +1,7 @@
 package com.podo.helloprice.product.update.analysis.domain.userproduct.application;
 
 import com.podo.helloprice.product.update.analysis.domain.userproduct.UserProductSaleNotify;
-import com.podo.helloprice.product.update.analysis.domain.userproduct.repository.UserProductNotifyRepository;
+import com.podo.helloprice.product.update.analysis.domain.userproduct.repository.UserProductSaleNotifyRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -15,13 +15,13 @@ import java.util.List;
 @Service
 public class UserProductSaleNotifyDeleteService {
 
-    private final UserProductNotifyRepository userProductNotifyRepository;
+    private final UserProductSaleNotifyRepository userProductSaleNotifyRepository;
 
     public void deleteNotifiesByProductId(Long productId) {
-        final List<UserProductSaleNotify> userProductNotifies = userProductNotifyRepository.findByProductId(productId);
+        final List<UserProductSaleNotify> userProductNotifies = userProductSaleNotifyRepository.findByProductId(productId);
 
         for (UserProductSaleNotify userProductSaleNotify : userProductNotifies) {
-            this.userProductNotifyRepository.delete(userProductSaleNotify);
+            this.userProductSaleNotifyRepository.delete(userProductSaleNotify);
         }
     }
 

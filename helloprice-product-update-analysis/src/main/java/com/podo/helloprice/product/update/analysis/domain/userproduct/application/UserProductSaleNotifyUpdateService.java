@@ -1,7 +1,7 @@
 package com.podo.helloprice.product.update.analysis.domain.userproduct.application;
 
 import com.podo.helloprice.product.update.analysis.domain.userproduct.UserProductSaleNotify;
-import com.podo.helloprice.product.update.analysis.domain.userproduct.repository.UserProductNotifyRepository;
+import com.podo.helloprice.product.update.analysis.domain.userproduct.repository.UserProductSaleNotifyRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -15,10 +15,10 @@ import java.time.LocalDateTime;
 @Service
 public class UserProductSaleNotifyUpdateService {
 
-    private final UserProductNotifyRepository userProductNotifyRepository;
+    private final UserProductSaleNotifyRepository userProductSaleNotifyRepository;
 
     public void updateNotifiedAtByProductId(Long productId, LocalDateTime notifiedAt) {
-        for (UserProductSaleNotify userProductSaleNotify : userProductNotifyRepository.findByProductId(productId)) {
+        for (UserProductSaleNotify userProductSaleNotify : userProductSaleNotifyRepository.findByProductId(productId)) {
             userProductSaleNotify.updateNotifiedAt(notifiedAt);
         }
     }

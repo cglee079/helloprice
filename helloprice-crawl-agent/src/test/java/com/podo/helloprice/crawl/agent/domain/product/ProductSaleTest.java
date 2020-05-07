@@ -1,6 +1,7 @@
 package com.podo.helloprice.crawl.agent.domain.product;
 
 import com.podo.helloprice.core.enums.SaleType;
+import com.podo.helloprice.crawl.agent.domain.productsale.ProductSale;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 

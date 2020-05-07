@@ -19,7 +19,7 @@ public class SaleOfNormalNotifyExecutor extends AbstractSaleNotifyExecutor {
     }
 
     @Override
-    protected SaleType getPriceType() {
+    protected SaleType getSaleType() {
         return NORMAL;
     }
 }

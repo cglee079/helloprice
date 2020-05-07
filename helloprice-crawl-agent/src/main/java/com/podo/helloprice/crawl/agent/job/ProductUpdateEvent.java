@@ -6,7 +6,7 @@ import lombok.RequiredArgsConstructor;
 
 
 @Getter
-@RequiredArgsConstructor
+@RequiredArgsConstructor(staticName = "create")
 public class ProductUpdateEvent {
     private final Long productId;
     private final ProductUpdateStatus updateStatus;

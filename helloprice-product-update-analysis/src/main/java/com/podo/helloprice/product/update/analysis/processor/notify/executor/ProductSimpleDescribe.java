@@ -1,7 +1,8 @@
 package com.podo.helloprice.product.update.analysis.processor.notify.executor;
 
 import com.podo.helloprice.core.util.DateTimeUtil;
-import com.podo.helloprice.product.update.analysis.domain.product.dto.ProductSimpleDto;
+import com.podo.helloprice.product.update.analysis.domain.product.dto.ProductDto;
+import com.podo.helloprice.product.update.analysis.domain.product.dto.ProductDto;
 import lombok.experimental.UtilityClass;
 
 @UtilityClass
@@ -9,7 +10,7 @@ public class ProductSimpleDescribe {
 
     private static final String DATE_TIME_FORMAT = "yyyy년 MM월 dd일 HH시 mm분";
 
-    public static String descProductSimple(ProductSimpleDto product) {
+    public static String descProductSimple(ProductDto product) {
 
         return new StringBuilder().append("<b>")
                 .append("최종확인시간 : ")

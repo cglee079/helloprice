@@ -47,12 +47,4 @@ public class Product{
     @Enumerated(EnumType.STRING)
     private ProductSaleStatus saleStatus;
 
-    @OneToMany(mappedBy = "product")
-    @MapKey(name = "priceType")
-    private Map<SaleType, ProductSale> priceTypeToPrice = new HashMap<>();
-
-    public ProductSale getProductPriceByType(SaleType saleType){
-        return priceTypeToPrice.get(saleType);
-    }
-
 }

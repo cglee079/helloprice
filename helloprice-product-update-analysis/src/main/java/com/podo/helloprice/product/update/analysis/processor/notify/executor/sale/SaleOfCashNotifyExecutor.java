@@ -19,7 +19,7 @@ public class SaleOfCashNotifyExecutor extends AbstractSaleNotifyExecutor {
     }
 
     @Override
-    protected SaleType getPriceType() {
+    protected SaleType getSaleType() {
         return CASH;
     }
 }

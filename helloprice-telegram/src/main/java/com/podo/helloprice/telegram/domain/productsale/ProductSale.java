@@ -75,7 +75,6 @@ public class ProductSale extends BaseEntity {
         return true;
     }
 
-
     public void addUserProductNotify(UserProductSaleNotify userProductSaleNotify) {
         this.userProductSaleNotifies.add(userProductSaleNotify);
         this.product.revive();

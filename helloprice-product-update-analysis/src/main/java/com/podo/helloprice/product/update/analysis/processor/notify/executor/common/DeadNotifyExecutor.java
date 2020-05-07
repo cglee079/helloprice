@@ -1,7 +1,7 @@
 package com.podo.helloprice.product.update.analysis.processor.notify.executor.common;
 
 import com.podo.helloprice.core.enums.ProductUpdateStatus;
-import com.podo.helloprice.product.update.analysis.domain.product.dto.ProductSimpleDto;
+import com.podo.helloprice.product.update.analysis.domain.product.dto.ProductDto;
 import com.podo.helloprice.product.update.analysis.processor.notify.executor.AbstractCommonNotifyExecutor;
 import com.podo.helloprice.product.update.analysis.processor.notify.executor.ProductSimpleDescribe;
 import lombok.RequiredArgsConstructor;
@@ -19,7 +19,7 @@ public class DeadNotifyExecutor extends AbstractCommonNotifyExecutor {
     }
 
     @Override
-    protected String getNotifyTitle(ProductSimpleDto product) {
+    protected String getNotifyTitle(ProductDto product) {
         return new StringBuilder()
                 .append("'")
                 .append(product.getProductName())
@@ -28,7 +28,7 @@ public class DeadNotifyExecutor extends AbstractCommonNotifyExecutor {
     }
 
     @Override
-    protected String getNotifyContents(ProductSimpleDto product) {
+    protected String getNotifyContents(ProductDto product) {
         return new StringBuilder()
                 .append("<b>")
                 .append("해당 상품의 상품페이지를 더이상 확인 할 수 없습니다.\n")

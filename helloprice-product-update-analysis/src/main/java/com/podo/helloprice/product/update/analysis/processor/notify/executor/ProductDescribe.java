@@ -1,14 +1,15 @@
 package com.podo.helloprice.product.update.analysis.processor.notify.executor;
 
-import com.podo.helloprice.core.enums.SaleType;
-import com.podo.helloprice.core.parser.SaleTypeParser;
 import com.podo.helloprice.core.enums.ProductAliveStatus;
 import com.podo.helloprice.core.enums.ProductSaleStatus;
+import com.podo.helloprice.core.enums.SaleType;
 import com.podo.helloprice.core.parser.ProductSaleStatusParser;
+import com.podo.helloprice.core.parser.SaleTypeParser;
 import com.podo.helloprice.core.util.CalculateUtil;
-import com.podo.helloprice.core.util.DateTimeUtil;
-import com.podo.helloprice.product.update.analysis.domain.product.dto.ProductDetailDto;
 import com.podo.helloprice.core.util.CurrencyUtil;
+import com.podo.helloprice.core.util.DateTimeUtil;
+import com.podo.helloprice.product.update.analysis.domain.product.dto.ProductDto;
+import com.podo.helloprice.product.update.analysis.domain.productsale.dto.ProductSaleDto;
 import lombok.experimental.UtilityClass;
 import org.springframework.util.StringUtils;
 
@@ -17,20 +18,21 @@ public class ProductDescribe {
 
     private static final String DATE_TIME_FORMAT = "yyyy년 MM월 dd일 HH시 mm분";
 
-    public static String descProductDetailWithChangeMessage(ProductDetailDto product) {
+    public static String descProductDetailWithChangeMessage(ProductSaleDto productSale) {
         return new StringBuilder()
-                .append(descProductDetail(product))
+                .append(descProductDetail(productSale))
                 .append("\n")
                 .append("\n")
-                .append(descProductChange(product))
+                .append(descProductChange(productSale))
                 .toString();
     }
 
-    private static String descProductDetail(ProductDetailDto product) {
-
+    private static String descProductDetail(ProductSaleDto productSale) {
         final StringBuilder message = new StringBuilder();
-        final Integer price = product.getPrice();
-        final Integer prevPrice = product.getPrevPrice();
+
+        final ProductDto product = productSale.getProduct();
+        final Integer price = productSale.getPrice();
+        final Integer prevPrice = productSale.getPrevPrice();
 
         message.append("<b>")
                 .append("최종확인시간 : ")
@@ -39,7 +41,7 @@ public class ProductDescribe {
                 .append("\n")
 
                 .append("<b>가격변동시간</b> : ")
-                .append(DateTimeUtil.dateTimeToString(product.getLastUpdateAt(), DATE_TIME_FORMAT))
+                .append(DateTimeUtil.dateTimeToString(productSale.getLastUpdateAt(), DATE_TIME_FORMAT))
                 .append("\n")
                 .append("\n")
 
@@ -65,8 +67,8 @@ public class ProductDescribe {
 
                 .append("<b>")
                 .append("가격타입 : ★")
-                .append(SaleTypeParser.kr(product.getSaleType()))
-                .append(StringUtils.isEmpty(product.getPriceAdditionalInfo()) ? "" : "(" + product.getPriceAdditionalInfo() + ")")
+                .append(SaleTypeParser.kr(productSale.getSaleType()))
+                .append(StringUtils.isEmpty(productSale.getAdditionalInfo()) ? "" : "(" + productSale.getAdditionalInfo() + ")")
                 .append("</b>")
                 .append("\n")
 
@@ -91,15 +93,16 @@ public class ProductDescribe {
     }
 
 
-    private static String descProductChange(ProductDetailDto product) {
-        if (product.getAliveStatus().equals(ProductAliveStatus.DEAD)) {
+    private static String descProductChange(ProductSaleDto productSale) {
+        if (productSale.getProduct().getAliveStatus().equals(ProductAliveStatus.DEAD)) {
             return "죄송합니다.. <b>상품의 페이지를 확인 할 수 없어요..</b>";
         }
 
-        return descChangeBySaleStatus(product);
+        return descChangeBySaleStatus(productSale);
     }
 
-    private static String descChangeBySaleStatus(ProductDetailDto product) {
+    private static String descChangeBySaleStatus(ProductSaleDto productSale) {
+        final ProductDto product = productSale.getProduct();
 
         final ProductSaleStatus saleStatus = product.getSaleStatus();
         switch (saleStatus) {
@@ -112,7 +115,7 @@ public class ProductDescribe {
             case EMPTY_AMOUNT:
                 return "죄송합니다.. <b>상품의 재고가 없어요..</b>";
             case SALE:
-                return descSaleStatusChange(product.getPrice(), product.getPrevPrice(), product.getSaleType());
+                return descSaleStatusChange(productSale.getPrice(), productSale.getPrevPrice(), productSale.getSaleType());
         }
 
         return "";

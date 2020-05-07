@@ -93,6 +93,7 @@ public class Product extends BaseEntity {
                 break;
             case EMPTY_AMOUNT:
             case SALE:
+                this.aliveStatus = ProductAliveStatus.ALIVE;
             default:
                 break;
         }

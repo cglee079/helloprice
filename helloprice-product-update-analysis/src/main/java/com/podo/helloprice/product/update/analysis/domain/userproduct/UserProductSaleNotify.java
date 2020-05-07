@@ -1,6 +1,6 @@
 package com.podo.helloprice.product.update.analysis.domain.userproduct;
 
-import com.podo.helloprice.core.enums.SaleType;
+import com.podo.helloprice.product.update.analysis.domain.productsale.ProductSale;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -10,7 +10,7 @@ import java.time.LocalDateTime;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Table(name = "user_product_notify")
+@Table(name = "user_product_sale_notify")
 @Entity
 public class UserProductSaleNotify {
 
@@ -19,10 +19,10 @@ public class UserProductSaleNotify {
     private Long id;
 
     private Long userId;
-    private Long productId;
 
-    @Enumerated(EnumType.STRING)
-    private SaleType saleType;
+    @JoinColumn(name = "product_sale_id")
+    @ManyToOne
+    private ProductSale productSale;
 
     private LocalDateTime lastNotifiedAt;
 

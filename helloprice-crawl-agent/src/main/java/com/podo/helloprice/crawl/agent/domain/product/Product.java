@@ -3,9 +3,8 @@ package com.podo.helloprice.crawl.agent.domain.product;
 import com.podo.helloprice.core.enums.SaleType;
 import com.podo.helloprice.core.enums.ProductAliveStatus;
 import com.podo.helloprice.core.enums.ProductSaleStatus;
-import com.podo.helloprice.core.enums.ProductUpdateStatus;
+import com.podo.helloprice.crawl.agent.domain.productsale.ProductSale;
 import com.podo.helloprice.crawl.worker.value.CrawledProduct;
-import com.podo.helloprice.crawl.worker.value.CrawledProductPrice;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -16,14 +15,8 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
-
-import static com.podo.helloprice.core.enums.SaleType.*;
-import static java.util.Collections.emptyList;
-import static java.util.Collections.singletonList;
 
 @EntityListeners(AuditingEntityListener.class)
 @Slf4j
@@ -47,10 +40,6 @@ public class Product {
 
     private String imageUrl;
 
-    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
-    @MapKey(name = "priceType")
-    private Map<SaleType, ProductSale> priceTypeToPrice = new HashMap<>();
-
     private LocalDateTime lastCrawledAt;
 
     private Integer deadCount;
@@ -67,7 +56,7 @@ public class Product {
     @LastModifiedBy
     private String updateBy;
 
-    public List<ProductUpdateStatus> updateByCrawledProduct(CrawledProduct crawledProduct) {
+    public void updateByCrawledProduct(CrawledProduct crawledProduct) {
         final LocalDateTime crawledAt = crawledProduct.getCrawledAt();
 
         this.deadCount = 0;
@@ -78,73 +67,21 @@ public class Product {
 
         switch (saleStatus) {
             case UNKNOWN:
-                this.updateAllProductPrices(0, "", lastCrawledAt);
-                this.aliveStatus = ProductAliveStatus.PAUSE;
-                return singletonList(ProductUpdateStatus.UPDATE_UNKNOWN);
             case DISCONTINUE:
-                this.updateAllProductPrices(0, "", lastCrawledAt);
-                this.aliveStatus = ProductAliveStatus.PAUSE;
-                return singletonList(ProductUpdateStatus.UPDATE_DISCONTINUE);
             case NOT_SUPPORT:
-                this.updateAllProductPrices(0, "", lastCrawledAt);
                 this.aliveStatus = ProductAliveStatus.PAUSE;
-                return singletonList(ProductUpdateStatus.UPDATE_NOT_SUPPORT);
             case EMPTY_AMOUNT:
-                this.updateAllProductPrices(0, "", lastCrawledAt);
-                this.aliveStatus = ProductAliveStatus.ALIVE;
-                return singletonList(ProductUpdateStatus.UPDATE_EMPTY_AMOUNT);
             case SALE:
                 this.aliveStatus = ProductAliveStatus.ALIVE;
-                return updatePrices(crawledProduct, crawledAt);
             default:
-                return emptyList();
         }
     }
 
-    private List<ProductUpdateStatus> updatePrices(CrawledProduct crawledProduct, LocalDateTime crawledAt) {
-        final List<ProductUpdateStatus> productUpdateStatuses = new ArrayList<>();
-
-        if (updatePrice(crawledProduct, NORMAL, crawledAt)) {
-            productUpdateStatuses.add(ProductUpdateStatus.UPDATE_SALE_NORMAL_PRICE);
-        }
-
-        if (updatePrice(crawledProduct, CASH, crawledAt)) {
-            productUpdateStatuses.add(ProductUpdateStatus.UPDATE_SALE_CASH_PRICE);
-        }
-
-        if (updatePrice(crawledProduct, CARD, crawledAt)) {
-            productUpdateStatuses.add(ProductUpdateStatus.UPDATE_SALE_CARD_PRICE);
-        }
-
-        return productUpdateStatuses;
-    }
-
-    private boolean updatePrice(CrawledProduct crawledProduct, SaleType saleType, LocalDateTime crawledAt) {
-        final CrawledProductPrice price = crawledProduct.getProductPriceByType(saleType);
-
-        //기존에 있는 경우, 업데이트
-        if(priceTypeToPrice.containsKey(saleType) && price != null) {
-            return priceTypeToPrice.get(saleType)
-                    .update(price.getPrice(), price.getAdditionalInfo(), crawledAt);
-        }
-
-        //기존에 없는 경우, 새로 등록
-        if(!priceTypeToPrice.containsKey(saleType) && price != null){
-            final ProductSale productSale = ProductSale.create(saleType, price.getPrice(), price.getAdditionalInfo(), crawledAt);
-            priceTypeToPrice.put(saleType, productSale);
-            productSale.setProduct(this);
-            return true;
-        }
-
-        return false;
-    }
-
-    public boolean increaseDeadCount(Integer maxDeadCount, LocalDateTime updateAt) {
+    public boolean increaseDeadCount(Integer maxDeadCount) {
         this.deadCount++;
 
         if (this.deadCount > maxDeadCount) {
             log.debug("{}({}) 상품 DEAD_COUNT 초과, DEAD 상태로 변경", this.productName, this.productCode);
-            this.updateAllProductPrices(0, "", updateAt);
             this.aliveStatus = ProductAliveStatus.DEAD;
             return true;
         }
@@ -152,10 +89,5 @@ public class Product {
         return false;
     }
 
-    private void updateAllProductPrices(Integer price, String additionalInfo, LocalDateTime updateAt) {
-        for (ProductSale productSale : priceTypeToPrice.values()) {
-            productSale.update(price, additionalInfo, updateAt);
-        }
-    }
 
 }

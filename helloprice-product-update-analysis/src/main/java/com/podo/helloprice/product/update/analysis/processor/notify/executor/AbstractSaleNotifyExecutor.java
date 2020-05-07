@@ -5,8 +5,9 @@ import com.podo.helloprice.core.parser.SaleTypeParser;
 import com.podo.helloprice.core.enums.UserStatus;
 import com.podo.helloprice.core.util.CalculateUtil;
 import com.podo.helloprice.core.util.CurrencyUtil;
-import com.podo.helloprice.product.update.analysis.domain.product.application.ProductReadService;
-import com.podo.helloprice.product.update.analysis.domain.product.dto.ProductDetailDto;
+import com.podo.helloprice.product.update.analysis.domain.product.dto.ProductDto;
+import com.podo.helloprice.product.update.analysis.domain.productsale.ProductSaleReadService;
+import com.podo.helloprice.product.update.analysis.domain.productsale.dto.ProductSaleDto;
 import com.podo.helloprice.product.update.analysis.domain.user.UserReadService;
 import com.podo.helloprice.product.update.analysis.domain.user.UserDto;
 import com.podo.helloprice.product.update.analysis.domain.userproduct.application.UserProductNotifyReadService;
@@ -22,7 +23,7 @@ import static java.math.BigDecimal.valueOf;
 public abstract class AbstractSaleNotifyExecutor implements NotifyExecutor {
 
     @Autowired
-    private ProductReadService productReadService;
+    private ProductSaleReadService productSaleReadService;
 
     @Autowired
     private UserReadService userReadService;
@@ -30,30 +31,30 @@ public abstract class AbstractSaleNotifyExecutor implements NotifyExecutor {
     @Autowired
     private UserProductNotifyReadService userProductNotifyReadService;
 
-    protected abstract SaleType getPriceType();
+    protected abstract SaleType getSaleType();
 
     @Override
     public NotifyTarget execute(Long productId) {
-        final SaleType saleType = this.getPriceType();
+        final ProductSaleDto productSale = productSaleReadService.findByProductIdAndSaleType(productId, this.getSaleType());
+        final ProductDto product = productSale.getProduct();
 
-        final ProductDetailDto product = productReadService.findByProductId(productId, saleType);
-        final List<Long> userIds = userProductNotifyReadService.findUserIdsByProductIdAndPriceType(productId, saleType);
+        final List<Long> userIds = userProductNotifyReadService.findUserIdsByProductSaleId(productSale.getId());
         final List<UserDto> users = userReadService.findByUserIdsAndUserStatus(userIds, UserStatus.ALIVE);
 
         final String imageUrl = product.getImageUrl();
-        final Integer price = product.getPrice();
-        final Integer prevPrice = product.getPrevPrice();
+        final Integer price = productSale.getPrice();
+        final Integer prevPrice = productSale.getPrevPrice();
 
         if (satisfiedSendResaleNotify(price, prevPrice)) {
-            return new NotifyTarget(users, imageUrl, getResaleNotifyTitle(product), getResaleNotifyContents(product));
+            return new NotifyTarget(users, imageUrl, getResaleNotifyTitle(productSale), getResaleNotifyContents(productSale));
         }
 
         if (satisfiedSendZeroPriceNotify(price)) {
-            return new NotifyTarget(users, imageUrl, getZeroPriceNotifyTitle(product), getZeroPriceNotifyContents(product));
+            return new NotifyTarget(users, imageUrl, getZeroPriceNotifyTitle(productSale), getZeroPriceNotifyContents(productSale));
         }
 
         if (satisfiedSendLowestPriceNotify(price, prevPrice)) {
-            return new NotifyTarget(users, imageUrl, getLowestPriceNotifyTitle(product), getLowestPriceNotifyContents(product));
+            return new NotifyTarget(users, imageUrl, getLowestPriceNotifyTitle(productSale), getLowestPriceNotifyContents(productSale));
         }
 
         return NotifyTarget.EMPTY;
@@ -71,17 +72,21 @@ public abstract class AbstractSaleNotifyExecutor implements NotifyExecutor {
         return price < prevPrice && getChangePercent(price, prevPrice).compareTo(valueOf(-1)) < 0;
     }
 
-    private String getResaleNotifyTitle(ProductDetailDto product) {
+    private String getResaleNotifyTitle(ProductSaleDto productSale) {
+        final ProductDto product = productSale.getProduct();
+
         return new StringBuilder()
                 .append("'")
                 .append(product.getProductName())
                 .append("' 상품이 ")
-                .append(toKRW(product.getPrice()))
+                .append(toKRW(productSale.getPrice()))
                 .append(" 으로 다시 판매를 시작했어요.")
                 .toString();
     }
 
-    private String getResaleNotifyContents(ProductDetailDto product) {
+    private String getResaleNotifyContents(ProductSaleDto productSale) {
+        final ProductDto product = productSale.getProduct();
+
         return new StringBuilder()
                 .append("<b>")
                 .append("상품이름 : ")
@@ -91,7 +96,7 @@ public abstract class AbstractSaleNotifyExecutor implements NotifyExecutor {
 
                 .append("<b>")
                 .append("현재가격 : ")
-                .append(CurrencyUtil.toKRW(product.getPrice()))
+                .append(CurrencyUtil.toKRW(productSale.getPrice()))
                 .append("</b>")
                 .append("\n")
 
@@ -103,21 +108,25 @@ public abstract class AbstractSaleNotifyExecutor implements NotifyExecutor {
                 .append("\n")
                 .append("\n")
 
-                .append(ProductDescribe.descProductDetailWithChangeMessage(product))
+                .append(ProductDescribe.descProductDetailWithChangeMessage(productSale))
                 .toString();
     }
 
 
-    private String getZeroPriceNotifyTitle(ProductDetailDto product) {
+    private String getZeroPriceNotifyTitle(ProductSaleDto productSale) {
+        final ProductDto product = productSale.getProduct();
+
         return new StringBuilder()
                 .append(product.getProductName())
                 .append("' 상품의 ")
-                .append(SaleTypeParser.kr(product.getSaleType()))
+                .append(SaleTypeParser.kr(productSale.getSaleType()))
                 .append("는 판매가 진행되지 않고 있습니다")
                 .toString();
     }
 
-    private String getZeroPriceNotifyContents(ProductDetailDto product) {
+    private String getZeroPriceNotifyContents(ProductSaleDto productSale) {
+        final ProductDto product = productSale.getProduct();
+
         return new StringBuilder()
                 .append("<b>")
                 .append("상품이름 : ")
@@ -129,7 +138,7 @@ public abstract class AbstractSaleNotifyExecutor implements NotifyExecutor {
                 .append("\n")
 
                 .append("<b>")
-                .append(SaleTypeParser.kr(product.getSaleType()))
+                .append(SaleTypeParser.kr(productSale.getSaleType()))
                 .append("</b>는 판매가 진행되지 않고 있어요..\n")
                 .append("\n")
 
@@ -137,19 +146,22 @@ public abstract class AbstractSaleNotifyExecutor implements NotifyExecutor {
     }
 
 
-    private String getLowestPriceNotifyTitle(ProductDetailDto product) {
+    private String getLowestPriceNotifyTitle(ProductSaleDto productSale) {
+        final ProductDto product = productSale.getProduct();
+
         return new StringBuilder()
                 .append("'")
                 .append(product.getProductName())
                 .append("' 상품의 최저가격이  ")
-                .append(toKRW(product.getPrice()))
+                .append(toKRW(productSale.getPrice()))
                 .append(" 으로 갱신되었습니다.")
                 .toString();
     }
 
-    private String getLowestPriceNotifyContents(ProductDetailDto product) {
-        final Integer price = product.getPrice();
-        final Integer prevPrice = product.getPrevPrice();
+    private String getLowestPriceNotifyContents(ProductSaleDto productSale) {
+        final ProductDto product = productSale.getProduct();
+        final Integer price = productSale.getPrice();
+        final Integer prevPrice = productSale.getPrevPrice();
 
         return new StringBuilder()
                 .append("<b>")
@@ -178,7 +190,7 @@ public abstract class AbstractSaleNotifyExecutor implements NotifyExecutor {
                 .append("</b>")
                 .append("\n")
 
-                .append(ProductDescribe.descProductDetailWithChangeMessage(product))
+                .append(ProductDescribe.descProductDetailWithChangeMessage(productSale))
                 .toString();
     }
 

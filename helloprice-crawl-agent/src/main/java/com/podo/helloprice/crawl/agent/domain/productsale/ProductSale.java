@@ -1,6 +1,7 @@
-package com.podo.helloprice.crawl.agent.domain.product;
+package com.podo.helloprice.crawl.agent.domain.productsale;
 
 import com.podo.helloprice.core.enums.SaleType;
+import com.podo.helloprice.crawl.agent.domain.product.Product;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -42,18 +43,15 @@ public class ProductSale {
     @LastModifiedBy
     private String updateBy;
 
-    public static ProductSale create(SaleType saleType, Integer price, String additionalInfo, LocalDateTime lastUpdateAt) {
+    public static ProductSale create(SaleType saleType, Product product, Integer price, String additionalInfo, LocalDateTime lastUpdateAt) {
         final ProductSale productSale = new ProductSale();
+        productSale.product = product;
         productSale.saleType = saleType;
         productSale.price = price;
         productSale.prevPrice = price;
         productSale.lastUpdateAt = lastUpdateAt;
         productSale.additionalInfo = additionalInfo;
         return productSale;
-    }
-
-    public void setProduct(Product product) {
-        this.product = product;
     }
 
     public boolean update(Integer price, String additionalInfo, LocalDateTime updateAt) {
