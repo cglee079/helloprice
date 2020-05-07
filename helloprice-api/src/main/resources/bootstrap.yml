@@ -10,6 +10,8 @@ spring.profiles.include: dev-jpa
 logging:
   file.path: c://dev-log/helloprice/logs/helloprice-api
 
+server:
+  port: 8082
 ---
 
 spring.profiles: test

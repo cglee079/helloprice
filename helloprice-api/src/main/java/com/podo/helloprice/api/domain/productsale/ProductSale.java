@@ -1,5 +1,6 @@
-package com.podo.helloprice.api.domain.product.model;
+package com.podo.helloprice.api.domain.productsale;
 
+import com.podo.helloprice.api.domain.product.model.Product;
 import com.podo.helloprice.core.enums.SaleType;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -10,15 +11,15 @@ import java.time.LocalDateTime;
 @Getter
 @NoArgsConstructor
 @Entity
-@Table(name = "product_price")
-public class ProductPrice{
+@Table(name = "product_sale")
+public class ProductSale {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @JoinColumn(name = "product_id")
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
     private Product product;
 
     @Enumerated(EnumType.STRING)

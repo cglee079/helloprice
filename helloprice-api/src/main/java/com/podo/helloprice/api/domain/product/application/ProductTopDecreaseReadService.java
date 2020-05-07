@@ -1,9 +1,10 @@
 package com.podo.helloprice.api.domain.product.application;
 
-import com.podo.helloprice.api.domain.product.dto.ProductResponseDto;
 import com.podo.helloprice.api.domain.product.dto.ProductTopDecreaseResponseDto;
 import com.podo.helloprice.api.domain.product.model.Product;
 import com.podo.helloprice.api.domain.product.repository.ProductQuerydslRepository;
+import com.podo.helloprice.api.domain.productsale.ProductSale;
+import com.podo.helloprice.api.domain.productsale.ProductSaleQuerydslRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -19,14 +20,13 @@ import java.util.stream.Collectors;
 public class ProductTopDecreaseReadService {
 
     private final ProductQuerydslRepository productQueryDslRepository;
+    private final ProductSaleQuerydslRepository productSaleQuerydslRepository;
 
     public List<ProductTopDecreaseResponseDto> getTopDecrease(LocalDateTime now){
 
-        final Map<Product, Double> topDecrease = productQueryDslRepository.findTopDecrease(now);
+        final List<ProductSale> productSales = productSaleQuerydslRepository.findTopDecrease(now);
 
-        return topDecrease.keySet().stream()
-                .map(p -> new ProductTopDecreaseResponseDto(p, topDecrease.get(p)))
-                .collect(Collectors.toList());
+        return new ArrayList<>();
     }
 
 

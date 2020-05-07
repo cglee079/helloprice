@@ -44,8 +44,4 @@ public class Product {
     @Enumerated(EnumType.STRING)
     private ProductSaleStatus saleStatus;
 
-    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
-    @MapKey(name = "priceType")
-    private Map<SaleType, ProductPrice> priceTypeToPrice = new HashMap<>();
-
 }
