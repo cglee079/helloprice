@@ -1,6 +1,6 @@
 package com.podo.helloprice.telegram.app.menu.product.typeselect;
 
-import com.podo.helloprice.core.enums.PriceType;
+import com.podo.helloprice.core.enums.SaleType;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -14,6 +14,6 @@ import java.util.List;
 public class ProductTypeParameter {
 
     private final String productCode;
-    private final List<PriceType> priceTypes;
+    private final List<SaleType> saleTypes;
 
 }

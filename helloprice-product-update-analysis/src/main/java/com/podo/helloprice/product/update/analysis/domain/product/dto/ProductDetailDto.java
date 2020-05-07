@@ -1,10 +1,10 @@
 package com.podo.helloprice.product.update.analysis.domain.product.dto;
 
-import com.podo.helloprice.core.enums.PriceType;
+import com.podo.helloprice.core.enums.SaleType;
 import com.podo.helloprice.core.enums.ProductAliveStatus;
 import com.podo.helloprice.core.enums.ProductSaleStatus;
 import com.podo.helloprice.product.update.analysis.domain.product.model.Product;
-import com.podo.helloprice.product.update.analysis.domain.product.model.ProductPrice;
+import com.podo.helloprice.product.update.analysis.domain.productsale.ProductSale;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -18,7 +18,7 @@ public class ProductDetailDto {
     private String productName;
     private String productCode;
     private String description;
-    private PriceType priceType;
+    private SaleType saleType;
     private String url;
     private String imageUrl;
     private Integer price;
@@ -30,7 +30,7 @@ public class ProductDetailDto {
     private LocalDateTime lastCrawledAt;
 
     @Builder
-    public ProductDetailDto(Product product, PriceType priceType) {
+    public ProductDetailDto(Product product, SaleType saleType) {
         this.id = product.getId();
         this.aliveStatus = product.getAliveStatus();
         this.productCode = product.getProductCode();
@@ -40,9 +40,9 @@ public class ProductDetailDto {
         this.imageUrl = product.getImageUrl();
         this.saleStatus = product.getSaleStatus();
         this.lastCrawledAt = product.getLastCrawledAt();
-        this.priceType = priceType;
+        this.saleType = saleType;
 
-        final ProductPrice priceByType = product.getProductPriceByType(priceType);
+        final ProductSale priceByType = product.getProductPriceByType(saleType);
         this.price = priceByType.getPrice();
         this.prevPrice = priceByType.getPrevPrice();
         this.priceAdditionalInfo = priceByType.getAdditionalInfo();

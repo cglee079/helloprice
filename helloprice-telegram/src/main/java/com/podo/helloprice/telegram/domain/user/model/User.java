@@ -3,7 +3,7 @@ package com.podo.helloprice.telegram.domain.user.model;
 import com.podo.helloprice.core.enums.UserStatus;
 import com.podo.helloprice.telegram.app.menu.Menu;
 import com.podo.helloprice.telegram.domain.BaseEntity;
-import com.podo.helloprice.telegram.domain.userproduct.UserProductNotify;
+import com.podo.helloprice.telegram.domain.userproduct.UserProductSaleNotify;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -40,7 +40,7 @@ public class User extends BaseEntity {
     private LocalDateTime lastSendAt;
 
     @OneToMany(mappedBy = "user")
-    List<UserProductNotify> userProductNotifies;
+    List<UserProductSaleNotify> userProductNotifies;
 
     @Builder
     public User(String username,
@@ -63,12 +63,12 @@ public class User extends BaseEntity {
         this.menuStatus = menuStatus;
     }
 
-    public void addUserProductNotify(UserProductNotify userProductNotify) {
-        this.userProductNotifies.add(userProductNotify);
+    public void addUserProductNotify(UserProductSaleNotify userProductSaleNotify) {
+        this.userProductNotifies.add(userProductSaleNotify);
     }
 
-    public void removeUserProductNotify(UserProductNotify userProductNotify) {
-        this.userProductNotifies.remove(userProductNotify);
+    public void removeUserProductNotify(UserProductSaleNotify userProductSaleNotify) {
+        this.userProductNotifies.remove(userProductSaleNotify);
     }
 
     public void increaseErrorCount(Integer userMaxErrorCount) {

@@ -1,7 +1,8 @@
 package com.podo.helloprice.telegram.app.menu.product.delete;
 
 import com.podo.helloprice.telegram.app.menu.CommonResponse;
-import com.podo.helloprice.telegram.domain.product.dto.ProductOnePriceTypeDto;
+import com.podo.helloprice.telegram.domain.product.dto.ProductDto;
+import com.podo.helloprice.telegram.domain.productsale.dto.ProductSaleDto;
 import lombok.experimental.UtilityClass;
 
 @UtilityClass
@@ -26,7 +27,9 @@ public class ProductDeleteResponse {
                 .toString();
     }
 
-    public static String deletedNotifyProduct(ProductOnePriceTypeDto product) {
+    public static String deletedNotifyProduct(ProductSaleDto productSale) {
+        final ProductDto product = productSale.getProduct();
+
         return new StringBuilder()
 
                 .append("상품코드 : ")

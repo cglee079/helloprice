@@ -1,19 +1,21 @@
-package com.podo.helloprice.telegram.domain.product.model;
+package com.podo.helloprice.crawl.agent.domain.product;
 
-import com.podo.helloprice.core.enums.PriceType;
-import com.podo.helloprice.telegram.domain.BaseEntity;
+import com.podo.helloprice.core.enums.SaleType;
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.data.annotation.LastModifiedBy;
+import org.springframework.data.annotation.LastModifiedDate;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
-@Getter
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
-@Table(name = "product_price")
-public class ProductPrice extends BaseEntity {
+@Table(name = "product_sale")
+@Getter
+public class ProductSale {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -24,7 +26,7 @@ public class ProductPrice extends BaseEntity {
     private Product product;
 
     @Enumerated(EnumType.STRING)
-    private PriceType priceType;
+    private SaleType saleType;
 
     private Integer price;
 
@@ -34,14 +36,20 @@ public class ProductPrice extends BaseEntity {
 
     private LocalDateTime lastUpdateAt;
 
-    public static ProductPrice create(PriceType priceType, Integer price, String additionalInfo, LocalDateTime lastUpdateAt) {
-        final ProductPrice productPrice = new ProductPrice();
-        productPrice.priceType = priceType;
-        productPrice.price = price;
-        productPrice.prevPrice = price;
-        productPrice.lastUpdateAt = lastUpdateAt;
-        productPrice.additionalInfo = additionalInfo;
-        return productPrice;
+    @LastModifiedDate
+    private LocalDateTime updateAt;
+
+    @LastModifiedBy
+    private String updateBy;
+
+    public static ProductSale create(SaleType saleType, Integer price, String additionalInfo, LocalDateTime lastUpdateAt) {
+        final ProductSale productSale = new ProductSale();
+        productSale.saleType = saleType;
+        productSale.price = price;
+        productSale.prevPrice = price;
+        productSale.lastUpdateAt = lastUpdateAt;
+        productSale.additionalInfo = additionalInfo;
+        return productSale;
     }
 
     public void setProduct(Product product) {
@@ -49,14 +57,14 @@ public class ProductPrice extends BaseEntity {
     }
 
     public boolean update(Integer price, String additionalInfo, LocalDateTime updateAt) {
-
-        if(Objects.isNull(this.price)){
-            this.price = 0;
+        if(Objects.isNull(price)){
+            price = 0;
         }
 
         final Integer existPrice = this.price;
 
         if (price.equals(existPrice) && Objects.equals(this.additionalInfo, additionalInfo)) {
+            this.additionalInfo = additionalInfo;
             return false;
         }
 
@@ -67,7 +75,5 @@ public class ProductPrice extends BaseEntity {
 
         return true;
     }
-
-
 }
 

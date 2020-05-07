@@ -1,7 +1,7 @@
 package com.podo.helloprice.product.update.analysis.processor.notify.executor;
 
-import com.podo.helloprice.core.enums.PriceType;
-import com.podo.helloprice.core.parser.PriceTypeParser;
+import com.podo.helloprice.core.enums.SaleType;
+import com.podo.helloprice.core.parser.SaleTypeParser;
 import com.podo.helloprice.core.enums.ProductAliveStatus;
 import com.podo.helloprice.core.enums.ProductSaleStatus;
 import com.podo.helloprice.core.parser.ProductSaleStatusParser;
@@ -65,7 +65,7 @@ public class ProductDescribe {
 
                 .append("<b>")
                 .append("가격타입 : ★")
-                .append(PriceTypeParser.kr(product.getPriceType()))
+                .append(SaleTypeParser.kr(product.getSaleType()))
                 .append(StringUtils.isEmpty(product.getPriceAdditionalInfo()) ? "" : "(" + product.getPriceAdditionalInfo() + ")")
                 .append("</b>")
                 .append("\n")
@@ -112,17 +112,17 @@ public class ProductDescribe {
             case EMPTY_AMOUNT:
                 return "죄송합니다.. <b>상품의 재고가 없어요..</b>";
             case SALE:
-                return descSaleStatusChange(product.getPrice(), product.getPrevPrice(), product.getPriceType());
+                return descSaleStatusChange(product.getPrice(), product.getPrevPrice(), product.getSaleType());
         }
 
         return "";
     }
 
-    private static String descSaleStatusChange(Integer price, Integer prevPrice, PriceType priceType) {
+    private static String descSaleStatusChange(Integer price, Integer prevPrice, SaleType saleType) {
         final StringBuilder message = new StringBuilder();
 
         if (price.equals(0)) {
-            return "<i>죄송합니다, <b>" + PriceTypeParser.kr(priceType) + "</b>는 판매가 진행되지 않고 있어요..</i>";
+            return "<i>죄송합니다, <b>" + SaleTypeParser.kr(saleType) + "</b>는 판매가 진행되지 않고 있어요..</i>";
         }
 
         if (prevPrice.equals(0)) {

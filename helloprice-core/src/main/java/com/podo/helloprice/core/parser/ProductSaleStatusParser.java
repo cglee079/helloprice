@@ -1,6 +1,5 @@
 package com.podo.helloprice.core.parser;
 
-import com.podo.helloprice.core.enums.PriceType;
 import com.podo.helloprice.core.enums.ProductSaleStatus;
 import lombok.experimental.UtilityClass;
 

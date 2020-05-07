@@ -3,7 +3,7 @@ package com.podo.helloprice.telegram.app.menu;
 import com.podo.helloprice.telegram.app.core.TelegramMessageSender;
 import com.podo.helloprice.telegram.app.menu.home.HomeKeyboard;
 import com.podo.helloprice.telegram.app.menu.product.global.ProductDescCommandTranslator;
-import com.podo.helloprice.telegram.domain.userproduct.application.UserProductNotifyReadService;
+import com.podo.helloprice.telegram.domain.userproduct.application.UserProductSaleNotifyReadService;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
@@ -14,7 +14,7 @@ public abstract class AbstractMenuHandler implements MenuHandler {
     private TelegramMessageSender telegramMessageSender;
 
     @Autowired
-    private UserProductNotifyReadService userProductNotifyReadService;
+    private UserProductSaleNotifyReadService userProductSaleNotifyReadService;
 
     @Override
     public TelegramMessageSender sender() {
@@ -22,7 +22,7 @@ public abstract class AbstractMenuHandler implements MenuHandler {
     }
 
     public HomeKeyboard createHomeKeyboard(String telegramId){
-        final List<String> productCommands = ProductDescCommandTranslator.encodes(userProductNotifyReadService.findNotifyProductsByTelegramId(telegramId));
+        final List<String> productCommands = ProductDescCommandTranslator.encodes(userProductSaleNotifyReadService.findByTelegramId(telegramId));
         return new HomeKeyboard(productCommands);
     }
 }

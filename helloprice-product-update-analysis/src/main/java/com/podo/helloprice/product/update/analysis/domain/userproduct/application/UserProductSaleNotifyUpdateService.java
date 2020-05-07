@@ -1,6 +1,6 @@
 package com.podo.helloprice.product.update.analysis.domain.userproduct.application;
 
-import com.podo.helloprice.product.update.analysis.domain.userproduct.UserProductNotify;
+import com.podo.helloprice.product.update.analysis.domain.userproduct.UserProductSaleNotify;
 import com.podo.helloprice.product.update.analysis.domain.userproduct.repository.UserProductNotifyRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -13,13 +13,13 @@ import java.time.LocalDateTime;
 @RequiredArgsConstructor
 @Transactional
 @Service
-public class UserProductNotifyUpdateService {
+public class UserProductSaleNotifyUpdateService {
 
     private final UserProductNotifyRepository userProductNotifyRepository;
 
     public void updateNotifiedAtByProductId(Long productId, LocalDateTime notifiedAt) {
-        for (UserProductNotify userProductNotify : userProductNotifyRepository.findByProductId(productId)) {
-            userProductNotify.updateNotifiedAt(notifiedAt);
+        for (UserProductSaleNotify userProductSaleNotify : userProductNotifyRepository.findByProductId(productId)) {
+            userProductSaleNotify.updateNotifiedAt(notifiedAt);
         }
     }
 

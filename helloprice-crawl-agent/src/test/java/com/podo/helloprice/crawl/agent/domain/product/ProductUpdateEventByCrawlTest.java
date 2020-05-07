@@ -1,6 +1,6 @@
 package com.podo.helloprice.crawl.agent.domain.product;
 
-import com.podo.helloprice.core.enums.PriceType;
+import com.podo.helloprice.core.enums.SaleType;
 import com.podo.helloprice.core.enums.ProductSaleStatus;
 import com.podo.helloprice.core.enums.ProductUpdateStatus;
 import com.podo.helloprice.crawl.worker.value.CrawledProduct;
@@ -65,8 +65,8 @@ class ProductUpdateEventByCrawlTest {
     void testUpdateByCrawledProduct03() {
         //given
         final Product product = this.createDefaultProduct(1000);
-        product.getPriceTypeToPrice().remove(PriceType.CARD);
-        product.getPriceTypeToPrice().remove(PriceType.CASH);
+        product.getPriceTypeToPrice().remove(SaleType.CARD);
+        product.getPriceTypeToPrice().remove(SaleType.CASH);
 
         final int crawledPrice = 1000;
         final LocalDateTime crawledAt = LocalDateTime.now();
@@ -77,8 +77,8 @@ class ProductUpdateEventByCrawlTest {
 
         //then
         assertThat(product.getSaleStatus()).isEqualTo(ProductSaleStatus.SALE);
-        assertThat(product.getPriceTypeToPrice().containsKey(PriceType.CASH)).isTrue();
-        assertThat(product.getPriceTypeToPrice().containsKey(PriceType.CARD)).isTrue();
+        assertThat(product.getPriceTypeToPrice().containsKey(SaleType.CASH)).isTrue();
+        assertThat(product.getPriceTypeToPrice().containsKey(SaleType.CARD)).isTrue();
         assertThat(productUpdateStatuses).containsExactlyInAnyOrder(
                 UPDATE_SALE_CASH_PRICE,
                 UPDATE_SALE_CARD_PRICE
@@ -104,18 +104,18 @@ class ProductUpdateEventByCrawlTest {
 
         //then
         assertThat(product.getSaleStatus()).isEqualTo(saleStatus);
-        assertThat(product.getPriceTypeToPrice().get(PriceType.NORMAL)).extracting(ProductPrice::getPrice).isEqualTo(0);
-        assertThat(product.getPriceTypeToPrice().get(PriceType.CASH)).extracting(ProductPrice::getPrice).isEqualTo(0);
-        assertThat(product.getPriceTypeToPrice().get(PriceType.CARD)).extracting(ProductPrice::getPrice).isEqualTo(0);
+        assertThat(product.getPriceTypeToPrice().get(SaleType.NORMAL)).extracting(ProductSale::getPrice).isEqualTo(0);
+        assertThat(product.getPriceTypeToPrice().get(SaleType.CASH)).extracting(ProductSale::getPrice).isEqualTo(0);
+        assertThat(product.getPriceTypeToPrice().get(SaleType.CARD)).extracting(ProductSale::getPrice).isEqualTo(0);
         assertThat(productUpdateStatuses).containsExactly(updateStatus);
     }
 
     private CrawledProduct createCrawledProduct(Product product, ProductSaleStatus productSaleStatus, int crawledPrice, LocalDateTime crawledAt) {
 
-        final Map<PriceType, CrawledProductPrice> priceTypeToPrice = new HashMap<>();
-        priceTypeToPrice.put(PriceType.NORMAL, new CrawledProductPrice(crawledPrice));
-        priceTypeToPrice.put(PriceType.CASH, new CrawledProductPrice(crawledPrice));
-        priceTypeToPrice.put(PriceType.CARD, new CrawledProductPrice(crawledPrice, "삼성"));
+        final Map<SaleType, CrawledProductPrice> priceTypeToPrice = new HashMap<>();
+        priceTypeToPrice.put(SaleType.NORMAL, new CrawledProductPrice(crawledPrice));
+        priceTypeToPrice.put(SaleType.CASH, new CrawledProductPrice(crawledPrice));
+        priceTypeToPrice.put(SaleType.CARD, new CrawledProductPrice(crawledPrice, "삼성"));
 
         return CrawledProduct.builder()
                 .productCode(product.getProductCode())
@@ -138,10 +138,10 @@ class ProductUpdateEventByCrawlTest {
         final ProductSaleStatus saleStatus = ProductSaleStatus.SALE;
         final LocalDateTime lastCrawledAt = LocalDateTime.now();
 
-        final HashMap<PriceType, ProductPrice> priceTypeToPrice = new HashMap<>();
-        priceTypeToPrice.put(PriceType.NORMAL, ProductPrice.create(PriceType.NORMAL, price, "", LocalDateTime.now()));
-        priceTypeToPrice.put(PriceType.CASH, ProductPrice.create(PriceType.CASH, price, "", LocalDateTime.now()));
-        priceTypeToPrice.put(PriceType.CARD, ProductPrice.create(PriceType.CARD, price, "삼성", LocalDateTime.now()));
+        final HashMap<SaleType, ProductSale> priceTypeToPrice = new HashMap<>();
+        priceTypeToPrice.put(SaleType.NORMAL, ProductSale.create(SaleType.NORMAL, price, "", LocalDateTime.now()));
+        priceTypeToPrice.put(SaleType.CASH, ProductSale.create(SaleType.CASH, price, "", LocalDateTime.now()));
+        priceTypeToPrice.put(SaleType.CARD, ProductSale.create(SaleType.CARD, price, "삼성", LocalDateTime.now()));
 
         final Product product = new Product();
         ReflectionTestUtils.setField(product, "productName", productName);

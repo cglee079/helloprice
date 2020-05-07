@@ -1,7 +1,7 @@
 package com.podo.helloprice.telegram.app.menu.product.typeselect;
 
-import com.podo.helloprice.core.enums.PriceType;
-import com.podo.helloprice.core.parser.PriceTypeParser;
+import com.podo.helloprice.core.enums.SaleType;
+import com.podo.helloprice.core.parser.SaleTypeParser;
 import com.podo.helloprice.telegram.app.menu.CommonResponse;
 import lombok.experimental.UtilityClass;
 
@@ -16,12 +16,12 @@ public class ProductTypeSelectResponse {
 
     }
 
-    public static String alreadySetNotifyProduct(String productName, PriceType priceType) {
+    public static String alreadySetNotifyProduct(String productName, SaleType saleType) {
         return new StringBuilder()
                 .append("'")
                 .append(productName)
                 .append("/★")
-                .append(PriceTypeParser.kr(priceType))
+                .append(SaleTypeParser.kr(saleType))
                 .append("' 은 이미 알림이 등록된 상품입니다\n")
                 .append("\n")
                 .append(CommonResponse.toHome())

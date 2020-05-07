@@ -1,7 +1,7 @@
 package com.podo.helloprice.product.update.analysis.processor.notify.executor;
 
-import com.podo.helloprice.core.enums.PriceType;
-import com.podo.helloprice.core.parser.PriceTypeParser;
+import com.podo.helloprice.core.enums.SaleType;
+import com.podo.helloprice.core.parser.SaleTypeParser;
 import com.podo.helloprice.core.enums.UserStatus;
 import com.podo.helloprice.core.util.CalculateUtil;
 import com.podo.helloprice.core.util.CurrencyUtil;
@@ -30,14 +30,14 @@ public abstract class AbstractSaleNotifyExecutor implements NotifyExecutor {
     @Autowired
     private UserProductNotifyReadService userProductNotifyReadService;
 
-    protected abstract PriceType getPriceType();
+    protected abstract SaleType getPriceType();
 
     @Override
     public NotifyTarget execute(Long productId) {
-        final PriceType priceType = this.getPriceType();
+        final SaleType saleType = this.getPriceType();
 
-        final ProductDetailDto product = productReadService.findByProductId(productId, priceType);
-        final List<Long> userIds = userProductNotifyReadService.findUserIdsByProductIdAndPriceType(productId, priceType);
+        final ProductDetailDto product = productReadService.findByProductId(productId, saleType);
+        final List<Long> userIds = userProductNotifyReadService.findUserIdsByProductIdAndPriceType(productId, saleType);
         final List<UserDto> users = userReadService.findByUserIdsAndUserStatus(userIds, UserStatus.ALIVE);
 
         final String imageUrl = product.getImageUrl();
@@ -112,7 +112,7 @@ public abstract class AbstractSaleNotifyExecutor implements NotifyExecutor {
         return new StringBuilder()
                 .append(product.getProductName())
                 .append("' 상품의 ")
-                .append(PriceTypeParser.kr(product.getPriceType()))
+                .append(SaleTypeParser.kr(product.getSaleType()))
                 .append("는 판매가 진행되지 않고 있습니다")
                 .toString();
     }
@@ -129,7 +129,7 @@ public abstract class AbstractSaleNotifyExecutor implements NotifyExecutor {
                 .append("\n")
 
                 .append("<b>")
-                .append(PriceTypeParser.kr(product.getPriceType()))
+                .append(SaleTypeParser.kr(product.getSaleType()))
                 .append("</b>는 판매가 진행되지 않고 있어요..\n")
                 .append("\n")
 

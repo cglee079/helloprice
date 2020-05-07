@@ -4,7 +4,7 @@ import com.podo.helloprice.core.enums.ProductUpdateStatus;
 import com.podo.helloprice.product.update.analysis.domain.notifylog.application.NotifyLogInsertService;
 import com.podo.helloprice.product.update.analysis.domain.notifylog.dto.NotifyLogInsertDto;
 import com.podo.helloprice.product.update.analysis.domain.user.UserDto;
-import com.podo.helloprice.product.update.analysis.domain.userproduct.application.UserProductNotifyUpdateService;
+import com.podo.helloprice.product.update.analysis.domain.userproduct.application.UserProductSaleNotifyUpdateService;
 import com.podo.helloprice.product.update.analysis.infra.mq.message.EmailNotifyMessage;
 import com.podo.helloprice.product.update.analysis.infra.mq.message.TelegramNotifyMessage;
 import com.podo.helloprice.product.update.analysis.processor.Processor;
@@ -30,18 +30,18 @@ public class NotifyProcessor implements Processor {
     private final Notifier notifier;
 
     private final NotifyLogInsertService notifyLogInsertService;
-    private final UserProductNotifyUpdateService userProductNotifyUpdateService;
+    private final UserProductSaleNotifyUpdateService userProductSaleNotifyUpdateService;
     private final Map<ProductUpdateStatus, NotifyExecutor> notifyExecutors;
 
     public NotifyProcessor(
             Notifier notifier,
             NotifyLogInsertService notifyLogInsertService,
-            UserProductNotifyUpdateService userProductNotifyUpdateService,
+            UserProductSaleNotifyUpdateService userProductSaleNotifyUpdateService,
             List<NotifyExecutor> notifyExecutors) {
 
         this.notifier = notifier;
         this.notifyLogInsertService = notifyLogInsertService;
-        this.userProductNotifyUpdateService = userProductNotifyUpdateService;
+        this.userProductSaleNotifyUpdateService = userProductSaleNotifyUpdateService;
         this.notifyExecutors = notifyExecutors.stream()
                 .collect(toMap(NotifyExecutor::getProductUpdateStatus, t -> t));
     }
@@ -58,7 +58,7 @@ public class NotifyProcessor implements Processor {
 
         notifyToUsers(notifyTarget);
 
-        userProductNotifyUpdateService.updateNotifiedAtByProductId(productId, now);
+        userProductSaleNotifyUpdateService.updateNotifiedAtByProductId(productId, now);
 
         final NotifyLogInsertDto notifyLog = NotifyLogInsertDto.builder()
                 .productId(productId)

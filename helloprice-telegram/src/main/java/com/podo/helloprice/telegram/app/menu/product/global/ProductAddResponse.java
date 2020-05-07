@@ -9,7 +9,7 @@ import lombok.experimental.UtilityClass;
 
 import java.util.Objects;
 
-import static com.podo.helloprice.core.enums.PriceType.*;
+import static com.podo.helloprice.core.enums.SaleType.*;
 
 @UtilityClass
 public class ProductAddResponse {

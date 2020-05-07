@@ -1,6 +1,7 @@
-package com.podo.helloprice.product.update.analysis.domain.product.model;
+package com.podo.helloprice.product.update.analysis.domain.productsale;
 
-import com.podo.helloprice.core.enums.PriceType;
+import com.podo.helloprice.core.enums.SaleType;
+import com.podo.helloprice.product.update.analysis.domain.product.model.Product;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -11,8 +12,8 @@ import java.time.LocalDateTime;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
-@Table(name = "product_price")
-public class ProductPrice {
+@Table(name = "product_sale")
+public class ProductSale {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -23,7 +24,7 @@ public class ProductPrice {
     private Product product;
 
     @Enumerated(EnumType.STRING)
-    private PriceType priceType;
+    private SaleType saleType;
 
     private Integer price;
 

@@ -1,6 +1,6 @@
 package com.podo.helloprice.crawl.agent.domain.product;
 
-import com.podo.helloprice.core.enums.PriceType;
+import com.podo.helloprice.core.enums.SaleType;
 import com.podo.helloprice.core.enums.ProductAliveStatus;
 import com.podo.helloprice.core.enums.ProductSaleStatus;
 import com.podo.helloprice.core.enums.ProductUpdateStatus;
@@ -21,7 +21,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static com.podo.helloprice.core.enums.PriceType.*;
+import static com.podo.helloprice.core.enums.SaleType.*;
 import static java.util.Collections.emptyList;
 import static java.util.Collections.singletonList;
 
@@ -49,7 +49,7 @@ public class Product {
 
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
     @MapKey(name = "priceType")
-    private Map<PriceType, ProductPrice> priceTypeToPrice = new HashMap<>();
+    private Map<SaleType, ProductSale> priceTypeToPrice = new HashMap<>();
 
     private LocalDateTime lastCrawledAt;
 
@@ -119,20 +119,20 @@ public class Product {
         return productUpdateStatuses;
     }
 
-    private boolean updatePrice(CrawledProduct crawledProduct, PriceType priceType, LocalDateTime crawledAt) {
-        final CrawledProductPrice price = crawledProduct.getProductPriceByType(priceType);
+    private boolean updatePrice(CrawledProduct crawledProduct, SaleType saleType, LocalDateTime crawledAt) {
+        final CrawledProductPrice price = crawledProduct.getProductPriceByType(saleType);
 
         //기존에 있는 경우, 업데이트
-        if(priceTypeToPrice.containsKey(priceType) && price != null) {
-            return priceTypeToPrice.get(priceType)
+        if(priceTypeToPrice.containsKey(saleType) && price != null) {
+            return priceTypeToPrice.get(saleType)
                     .update(price.getPrice(), price.getAdditionalInfo(), crawledAt);
         }
 
         //기존에 없는 경우, 새로 등록
-        if(!priceTypeToPrice.containsKey(priceType) && price != null){
-            final ProductPrice productPrice = ProductPrice.create(priceType, price.getPrice(), price.getAdditionalInfo(), crawledAt);
-            priceTypeToPrice.put(priceType, productPrice);
-            productPrice.setProduct(this);
+        if(!priceTypeToPrice.containsKey(saleType) && price != null){
+            final ProductSale productSale = ProductSale.create(saleType, price.getPrice(), price.getAdditionalInfo(), crawledAt);
+            priceTypeToPrice.put(saleType, productSale);
+            productSale.setProduct(this);
             return true;
         }
 
@@ -153,8 +153,8 @@ public class Product {
     }
 
     private void updateAllProductPrices(Integer price, String additionalInfo, LocalDateTime updateAt) {
-        for (ProductPrice productPrice : priceTypeToPrice.values()) {
-            productPrice.update(price, additionalInfo, updateAt);
+        for (ProductSale productSale : priceTypeToPrice.values()) {
+            productSale.update(price, additionalInfo, updateAt);
         }
     }
 

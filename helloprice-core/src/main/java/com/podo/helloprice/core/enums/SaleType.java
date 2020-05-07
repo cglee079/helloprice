@@ -5,7 +5,7 @@ import lombok.RequiredArgsConstructor;
 import java.util.Arrays;
 
 @RequiredArgsConstructor
-public enum PriceType {
+public enum SaleType {
     NORMAL,
     CASH,
     CARD,

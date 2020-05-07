@@ -1,10 +1,10 @@
 package com.podo.helloprice.telegram.domain.userproduct.repository;
 
-import com.podo.helloprice.core.enums.PriceType;
-import com.podo.helloprice.telegram.domain.userproduct.UserProductNotify;
+import com.podo.helloprice.core.enums.SaleType;
+import com.podo.helloprice.telegram.domain.userproduct.UserProductSaleNotify;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface UserProductNotifyRepository extends JpaRepository<UserProductNotify, Long>, UserProductNotifyRepositoryCustom{
+public interface UserProductNotifyRepository extends JpaRepository<UserProductSaleNotify, Long>, UserProductNotifyRepositoryCustom{
 
-    UserProductNotify findByUserIdAndProductIdAndPriceType(Long userId, Long productId, PriceType priceType);
+    UserProductSaleNotify findByUserIdAndProductSaleId(Long userId, Long productSaleId);
 }

@@ -4,16 +4,17 @@ package com.podo.helloprice.telegram.app.menu.product.delete;
 import com.podo.helloprice.telegram.app.SendMessageCallbackFactory;
 import com.podo.helloprice.telegram.app.menu.AbstractMenuHandler;
 import com.podo.helloprice.telegram.app.menu.CommonResponse;
+import com.podo.helloprice.telegram.app.menu.Menu;
 import com.podo.helloprice.telegram.app.menu.home.HomeKeyboard;
 import com.podo.helloprice.telegram.app.value.MessageVo;
 import com.podo.helloprice.telegram.app.value.SendMessageVo;
-import com.podo.helloprice.telegram.domain.product.application.ProductReadService;
-import com.podo.helloprice.telegram.domain.product.dto.ProductOnePriceTypeDto;
+import com.podo.helloprice.telegram.domain.product.dto.ProductDto;
+import com.podo.helloprice.telegram.domain.productsale.application.ProductSaleReadService;
+import com.podo.helloprice.telegram.domain.productsale.dto.ProductSaleDto;
 import com.podo.helloprice.telegram.domain.user.application.UserReadService;
 import com.podo.helloprice.telegram.domain.user.dto.UserDetailDto;
-import com.podo.helloprice.telegram.app.menu.Menu;
-import com.podo.helloprice.telegram.domain.userproduct.application.UserProductNotifyReadService;
-import com.podo.helloprice.telegram.domain.userproduct.application.UserProductNotifyWriteService;
+import com.podo.helloprice.telegram.domain.userproduct.application.UserProductSaleNotifyReadService;
+import com.podo.helloprice.telegram.domain.userproduct.application.UserProductSaleNotifyWriteService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -28,10 +29,10 @@ import static com.podo.helloprice.telegram.app.menu.product.delete.ProductDelete
 public class ProductDeleteMenuHandler extends AbstractMenuHandler {
 
     private final UserReadService userReadService;
-    private final ProductReadService productReadService;
+    private final ProductSaleReadService productSaleReadService;
 
-    private final UserProductNotifyReadService userProductNotifyReadService;
-    private final UserProductNotifyWriteService userProductNotifyWriteService;
+    private final UserProductSaleNotifyReadService userProductSaleNotifyReadService;
+    private final UserProductSaleNotifyWriteService userProductSaleNotifyWriteService;
 
     private final SendMessageCallbackFactory callbackFactory;
 
@@ -64,16 +65,17 @@ public class ProductDeleteMenuHandler extends AbstractMenuHandler {
         }
 
         final UserDetailDto user = userReadService.findByTelegramId(telegramId);
-        final ProductOnePriceTypeDto product = productReadService.findByProductParameter(productDeleteParameter.getProductCode(), productDeleteParameter.getPriceType());
+        final ProductSaleDto productSale = productSaleReadService.findByProductCodeAndSaleType(productDeleteParameter.getProductCode(), productDeleteParameter.getSaleType());
+        final ProductDto product = productSale.getProduct();
 
-        if (!userProductNotifyReadService.isExistedNotify(user.getId(), product.getId(), product.getPriceType())) {
+        if (!userProductSaleNotifyReadService.isExistedNotify(user.getId(), productSale.getId())) {
             log.debug("APP :: {} << 삭제 요청한 {}({}) 상품 알림이 등록되어있지 않습니다. 받은메세지 '{}'", telegramId, product.getProductName(), productDeleteParameter, messageContents);
             sender().send(SendMessageVo.create(messageVo, ProductDeleteResponse.alreadyNotNotifyProduct(), homeKeyboard, callbackFactory.create(telegramId, Menu.HOME)));
         }
 
-        userProductNotifyWriteService.deleteNotifyByUserIdAndProductId(user.getId(), product.getId(), productDeleteParameter.getPriceType());
+        userProductSaleNotifyWriteService.deleteNotifyByUserIdAndProductId(user.getId(), productSale.getId());
 
-        sender().send(SendMessageVo.create(messageVo, ProductDeleteResponse.deletedNotifyProduct(product), createHomeKeyboard(telegramId), callbackFactory.create(telegramId, Menu.HOME)));
+        sender().send(SendMessageVo.create(messageVo, ProductDeleteResponse.deletedNotifyProduct(productSale), createHomeKeyboard(telegramId), callbackFactory.create(telegramId, Menu.HOME)));
     }
 }
 

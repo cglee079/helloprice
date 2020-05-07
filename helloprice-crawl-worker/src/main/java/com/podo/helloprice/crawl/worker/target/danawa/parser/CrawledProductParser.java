@@ -1,6 +1,6 @@
 package com.podo.helloprice.crawl.worker.target.danawa.parser;
 
-import com.podo.helloprice.core.enums.PriceType;
+import com.podo.helloprice.core.enums.SaleType;
 import com.podo.helloprice.core.enums.ProductSaleStatus;
 import com.podo.helloprice.core.util.StringUtil;
 import com.podo.helloprice.crawl.worker.value.CrawledProduct;
@@ -13,7 +13,7 @@ import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Objects;
 
-import static com.podo.helloprice.core.enums.PriceType.*;
+import static com.podo.helloprice.core.enums.SaleType.*;
 
 @Slf4j
 public class CrawledProductParser {
@@ -43,7 +43,7 @@ public class CrawledProductParser {
                 return null;
             }
 
-            final HashMap<PriceType, CrawledProductPrice> priceTypeToPrice = new HashMap<>();
+            final HashMap<SaleType, CrawledProductPrice> priceTypeToPrice = new HashMap<>();
             priceTypeToPrice.put(NORMAL,  getNormalPrice(document));
             priceTypeToPrice.put(CASH,  getCashPrice(document));
             priceTypeToPrice.put(CARD,  getCardPrice(document));
@@ -56,7 +56,7 @@ public class CrawledProductParser {
                     .productName(productName)
                     .description(description)
                     .imageUrl(imageUrl)
-                    .priceTypeToPrice(priceTypeToPrice)
+                    .saleTypeToPrice(priceTypeToPrice)
                     .saleStatus(saleStatus)
                     .crawledAt(crawledAt)
                     .build();

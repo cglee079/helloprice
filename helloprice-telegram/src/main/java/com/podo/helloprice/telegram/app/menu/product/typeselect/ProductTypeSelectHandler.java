@@ -1,33 +1,35 @@
 package com.podo.helloprice.telegram.app.menu.product.typeselect;
 
 
-import com.podo.helloprice.core.enums.PriceType;
+import com.podo.helloprice.core.enums.SaleType;
 import com.podo.helloprice.telegram.app.SendMessageCallbackFactory;
 import com.podo.helloprice.telegram.app.menu.AbstractMenuHandler;
 import com.podo.helloprice.telegram.app.menu.CommonResponse;
+import com.podo.helloprice.telegram.app.menu.Menu;
 import com.podo.helloprice.telegram.app.menu.home.HomeKeyboard;
 import com.podo.helloprice.telegram.app.value.MessageVo;
 import com.podo.helloprice.telegram.app.value.SendMessageVo;
 import com.podo.helloprice.telegram.domain.product.application.ProductReadService;
 import com.podo.helloprice.telegram.domain.product.application.ProductWriteService;
-import com.podo.helloprice.telegram.domain.product.dto.ProductAllPriceTypeDto;
-import com.podo.helloprice.telegram.domain.product.dto.ProductOnePriceTypeDto;
+import com.podo.helloprice.telegram.domain.product.dto.ProductDto;
+import com.podo.helloprice.telegram.domain.productsale.application.ProductSaleReadService;
+import com.podo.helloprice.telegram.domain.productsale.dto.ProductSaleDto;
 import com.podo.helloprice.telegram.domain.user.application.UserReadService;
 import com.podo.helloprice.telegram.domain.user.dto.UserDetailDto;
-import com.podo.helloprice.telegram.app.menu.Menu;
-import com.podo.helloprice.telegram.domain.userproduct.application.UserProductNotifyReadService;
-import com.podo.helloprice.telegram.domain.userproduct.application.UserProductNotifyWriteService;
+import com.podo.helloprice.telegram.domain.userproduct.application.UserProductSaleNotifyReadService;
+import com.podo.helloprice.telegram.domain.userproduct.application.UserProductSaleNotifyWriteService;
 import com.podo.helloprice.telegram.global.cache.DanawaProductCache;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 
-import static com.podo.helloprice.telegram.app.menu.product.typeselect.ProductTypeSelectCommand.EXIT;
 import static com.podo.helloprice.telegram.app.menu.Menu.HOME;
+import static com.podo.helloprice.telegram.app.menu.product.typeselect.ProductTypeSelectCommand.EXIT;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -37,10 +39,11 @@ public class ProductTypeSelectHandler extends AbstractMenuHandler {
     private final UserReadService userReadService;
 
     private final ProductReadService productReadService;
+    private final ProductSaleReadService productSaleReadService;
     private final ProductWriteService productWriteService;
 
-    private final UserProductNotifyReadService userProductNotifyReadService;
-    private final UserProductNotifyWriteService userProductNotifyWriteService;
+    private final UserProductSaleNotifyReadService userProductSaleNotifyReadService;
+    private final UserProductSaleNotifyWriteService userProductSaleNotifyWriteService;
 
     private final SendMessageCallbackFactory callbackFactory;
     private final DanawaProductCache danawaProductCache;
@@ -70,60 +73,62 @@ public class ProductTypeSelectHandler extends AbstractMenuHandler {
         }
 
         final String productCode = productTypeParameter.getProductCode();
-        final List<PriceType> priceTypes = productTypeParameter.getPriceTypes();
+        final List<SaleType> saleTypes = productTypeParameter.getSaleTypes();
 
         final Long productId = productWriteService.writeCrawledProduct(danawaProductCache.get(productCode));
 
-        if (priceTypes.size() > 1) {
+        if (saleTypes.size() > 1) {
             handleAllPriceType(messageVo, productId, homeKeyboard);
             return;
         }
 
-         handleOnePriceType(messageVo, productId, priceTypes.get(0), homeKeyboard);
+         handleOnePriceType(messageVo, productId, saleTypes.get(0), homeKeyboard);
     }
 
     private void handleAllPriceType(MessageVo messageVo, Long productId, HomeKeyboard homeKeyboard) {
         final String telegramId = messageVo.getTelegramId();
         final UserDetailDto user = userReadService.findByTelegramId(telegramId);
-        final ProductAllPriceTypeDto product = productReadService.findByProductId(productId);
+        final ProductDto product = productReadService.findByProductId(productId);
+        final Map<SaleType, ProductSaleDto> saleTypeToProductSale = productSaleReadService.findByProductId(productId);
 
         final Long userId = user.getId();
         final String productName = product.getProductName();
-        final Set<PriceType> priceTypes = product.getPrices().keySet();
+        final Set<SaleType> saleTypes = saleTypeToProductSale.keySet();
 
-        for (PriceType priceType : priceTypes) {
-            if (userProductNotifyReadService.isExistedNotify(userId, productId, priceType)) {
+        for (SaleType saleType : saleTypes) {
+            if (userProductSaleNotifyReadService.isExistedNotify(userId, saleTypeToProductSale.get(saleType).getId())) {
                 log.debug("APP :: {} << {} 상품 알림이 이미 등록되었습니다.", telegramId, productName);
-                sender().send(SendMessageVo.create(messageVo, ProductTypeSelectResponse.alreadySetNotifyProduct(productName, priceType), null, homeKeyboard, callbackFactory.create(telegramId, HOME)));
+                sender().send(SendMessageVo.create(messageVo, ProductTypeSelectResponse.alreadySetNotifyProduct(productName, saleType), null, homeKeyboard, callbackFactory.create(telegramId, HOME)));
                 return;
             }
         }
 
-        if (userReadService.hasMaxNotifyByTelegramIdIfAdded(telegramId, priceTypes.size())){
+        if (userReadService.hasMaxNotifyByTelegramIdIfAdded(telegramId, saleTypes.size())){
             log.debug("APP :: {} << 사용자는 이미 최대 상품알림 개수를 초과했습니다", telegramId);
             sender().send(SendMessageVo.create(messageVo, ProductTypeSelectResponse.hasMaxProduct(), null, homeKeyboard, callbackFactory.create(telegramId, HOME)));
             return;
         }
 
-        for (PriceType priceType : priceTypes) {
-            userProductNotifyWriteService.insertNewNotify(userId, productId, priceType);
+        for (SaleType saleType : saleTypes) {
+            userProductSaleNotifyWriteService.insertNewNotify(userId, saleTypeToProductSale.get(saleType).getId());
         }
 
         sender().send(SendMessageVo.create(messageVo, ProductTypeSelectResponse.successAddNotifyProduct(), product.getImageUrl(),  createHomeKeyboard(telegramId), callbackFactory.create(telegramId, HOME)));
     }
 
-    private void handleOnePriceType(MessageVo messageVo, Long productId, PriceType priceType, HomeKeyboard homeKeyboard) {
+    private void handleOnePriceType(MessageVo messageVo, Long productId, SaleType saleType, HomeKeyboard homeKeyboard) {
         final String telegramId = messageVo.getTelegramId();
 
         final UserDetailDto user = userReadService.findByTelegramId(telegramId);
-        final ProductOnePriceTypeDto product = productReadService.findByProductId(productId, priceType);
+        final ProductSaleDto productSale = productSaleReadService.findByProductIdAndSaleType(productId, saleType);
+        final ProductDto product = productSale.getProduct();
 
         final Long userId = user.getId();
         final String productName = product.getProductName();
 
-        if (userProductNotifyReadService.isExistedNotify(userId, productId, product.getPriceType())) {
+        if (userProductSaleNotifyReadService.isExistedNotify(userId, productSale.getId())) {
             log.debug("APP :: {} << {} 상품 알림이 이미 등록되었습니다.", telegramId, productName);
-            sender().send(SendMessageVo.create(messageVo, ProductTypeSelectResponse.alreadySetNotifyProduct(productName, priceType), null, homeKeyboard, callbackFactory.create(telegramId, HOME)));
+            sender().send(SendMessageVo.create(messageVo, ProductTypeSelectResponse.alreadySetNotifyProduct(productName, saleType), null, homeKeyboard, callbackFactory.create(telegramId, HOME)));
             return;
         }
 
@@ -133,7 +138,7 @@ public class ProductTypeSelectHandler extends AbstractMenuHandler {
             return;
         }
 
-        userProductNotifyWriteService.insertNewNotify(userId, productId, priceType);
+        userProductSaleNotifyWriteService.insertNewNotify(userId, productSale.getId());
 
         sender().send(SendMessageVo.create(messageVo, ProductTypeSelectResponse.successAddNotifyProduct(), product.getImageUrl(),  createHomeKeyboard(telegramId), callbackFactory.create(telegramId, HOME)));
     }

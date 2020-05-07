@@ -1,6 +1,6 @@
 package com.podo.helloprice.product.update.analysis.domain.userproduct.application;
 
-import com.podo.helloprice.product.update.analysis.domain.userproduct.UserProductNotify;
+import com.podo.helloprice.product.update.analysis.domain.userproduct.UserProductSaleNotify;
 import com.podo.helloprice.product.update.analysis.domain.userproduct.repository.UserProductNotifyRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -13,15 +13,15 @@ import java.util.List;
 @RequiredArgsConstructor
 @Transactional
 @Service
-public class UserProductNotifyDeleteService {
+public class UserProductSaleNotifyDeleteService {
 
     private final UserProductNotifyRepository userProductNotifyRepository;
 
     public void deleteNotifiesByProductId(Long productId) {
-        final List<UserProductNotify> userProductNotifies = userProductNotifyRepository.findByProductId(productId);
+        final List<UserProductSaleNotify> userProductNotifies = userProductNotifyRepository.findByProductId(productId);
 
-        for (UserProductNotify userProductNotify : userProductNotifies) {
-            this.userProductNotifyRepository.delete(userProductNotify);
+        for (UserProductSaleNotify userProductSaleNotify : userProductNotifies) {
+            this.userProductNotifyRepository.delete(userProductSaleNotify);
         }
     }
 

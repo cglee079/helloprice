@@ -1,6 +1,6 @@
 package com.podo.helloprice.product.update.analysis.domain.userproduct;
 
-import com.podo.helloprice.core.enums.PriceType;
+import com.podo.helloprice.core.enums.SaleType;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "user_product_notify")
 @Entity
-public class UserProductNotify{
+public class UserProductSaleNotify {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -22,7 +22,7 @@ public class UserProductNotify{
     private Long productId;
 
     @Enumerated(EnumType.STRING)
-    private PriceType priceType;
+    private SaleType saleType;
 
     private LocalDateTime lastNotifiedAt;
 

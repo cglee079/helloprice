@@ -1,6 +1,6 @@
 package com.podo.helloprice.crawl.worker.value;
 
-import com.podo.helloprice.core.enums.PriceType;
+import com.podo.helloprice.core.enums.SaleType;
 import com.podo.helloprice.core.enums.ProductSaleStatus;
 import lombok.*;
 
@@ -22,12 +22,12 @@ public class CrawledProduct {
     private String imageUrl;
     private ProductSaleStatus saleStatus;
     private LocalDateTime crawledAt;
-    private Map<PriceType, CrawledProductPrice> priceTypeToPrice;
+    private Map<SaleType, CrawledProductPrice> saleTypeToPrice;
 
     @Builder
     public CrawledProduct(String productCode, String url, String description,
                           String productName, String imageUrl, ProductSaleStatus saleStatus,
-                          Map<PriceType, CrawledProductPrice> priceTypeToPrice,
+                          Map<SaleType, CrawledProductPrice> saleTypeToPrice,
                           LocalDateTime crawledAt) {
         this.productCode = productCode;
         this.url = url;
@@ -35,12 +35,12 @@ public class CrawledProduct {
         this.productName = productName;
         this.imageUrl = imageUrl;
         this.saleStatus = saleStatus;
-        this.priceTypeToPrice = priceTypeToPrice;
+        this.saleTypeToPrice = saleTypeToPrice;
         this.crawledAt = crawledAt;
     }
 
-    public CrawledProductPrice getProductPriceByType(PriceType priceType) {
-        return this.priceTypeToPrice.get(priceType);
+    public CrawledProductPrice getProductPriceByType(SaleType saleType) {
+        return this.saleTypeToPrice.get(saleType);
     }
 
 }

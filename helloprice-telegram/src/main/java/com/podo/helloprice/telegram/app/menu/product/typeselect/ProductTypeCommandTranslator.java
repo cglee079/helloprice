@@ -1,7 +1,7 @@
 package com.podo.helloprice.telegram.app.menu.product.typeselect;
 
-import com.podo.helloprice.core.enums.PriceType;
-import com.podo.helloprice.core.parser.PriceTypeParser;
+import com.podo.helloprice.core.enums.SaleType;
+import com.podo.helloprice.core.parser.SaleTypeParser;
 import com.podo.helloprice.crawl.worker.value.CrawledProduct;
 import com.podo.helloprice.crawl.worker.value.CrawledProductPrice;
 import lombok.experimental.UtilityClass;
@@ -32,12 +32,12 @@ public class ProductTypeCommandTranslator {
 
         commands.add(String.format(COMMAND_FORMAT, productCode, ALL_PRICE_TYPE, "일괄 등록"));
 
-        for (PriceType priceType : PriceType.values()) {
+        for (SaleType saleType : SaleType.values()) {
 
-            final CrawledProductPrice priceByType = crawledProduct.getProductPriceByType(priceType);
+            final CrawledProductPrice priceByType = crawledProduct.getProductPriceByType(saleType);
 
             if (Objects.nonNull(priceByType)) {
-                commands.add(String.format(COMMAND_FORMAT, productCode, PriceTypeParser.kr(priceType), toKRW(priceByType.getPrice())));
+                commands.add(String.format(COMMAND_FORMAT, productCode, SaleTypeParser.kr(saleType), toKRW(priceByType.getPrice())));
             }
         }
 
@@ -59,13 +59,13 @@ public class ProductTypeCommandTranslator {
         final String priceType = command.split(TOKEN)[1].split(TOKEN_PRICE)[0];
 
         if (priceType.equals(ALL_PRICE_TYPE)) {
-            return new ProductTypeParameter(productCode, Arrays.asList(PriceType.values()));
+            return new ProductTypeParameter(productCode, Arrays.asList(SaleType.values()));
         }
 
-        if(Objects.isNull(PriceTypeParser.from(priceType))){
+        if(Objects.isNull(SaleTypeParser.from(priceType))){
             return null;
         }
 
-        return new ProductTypeParameter(productCode, singletonList(PriceTypeParser.from(priceType)));
+        return new ProductTypeParameter(productCode, singletonList(SaleTypeParser.from(priceType)));
     }
 }

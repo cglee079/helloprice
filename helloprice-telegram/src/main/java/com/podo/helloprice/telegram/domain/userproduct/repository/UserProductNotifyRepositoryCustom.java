@@ -1,10 +1,10 @@
 package com.podo.helloprice.telegram.domain.userproduct.repository;
 
-import com.podo.helloprice.telegram.domain.userproduct.UserProductNotify;
+import com.podo.helloprice.telegram.domain.userproduct.UserProductSaleNotify;
 
 import java.util.List;
 
 public interface UserProductNotifyRepositoryCustom {
 
-    List<UserProductNotify> findByTelegramId(String telegramId);
+    List<UserProductSaleNotify> findByTelegramId(String telegramId);
 }

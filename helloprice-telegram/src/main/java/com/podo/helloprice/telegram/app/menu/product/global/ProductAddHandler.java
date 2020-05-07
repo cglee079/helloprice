@@ -10,28 +10,27 @@ import com.podo.helloprice.telegram.app.menu.product.typeselect.ProductTypeSelec
 import com.podo.helloprice.telegram.app.value.MessageVo;
 import com.podo.helloprice.telegram.app.menu.Menu;
 import com.podo.helloprice.telegram.app.value.SendMessageVo;
-import com.podo.helloprice.telegram.domain.userproduct.application.UserProductNotifyReadService;
+import com.podo.helloprice.telegram.domain.userproduct.application.UserProductSaleNotifyReadService;
 import com.podo.helloprice.telegram.global.cache.DanawaProductCache;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
-import java.util.Objects;
 
 @Slf4j
 @RequiredArgsConstructor
 @Component
 public class ProductAddHandler {
 
-    private final UserProductNotifyReadService userProductNotifyReadService;
+    private final UserProductSaleNotifyReadService userProductSaleNotifyReadService;
     private final TelegramMessageSender sender;
     private final DanawaProductCache danawaProductCache;
     private final SendMessageCallbackFactory callbackFactory;
 
     public void handleProductAdd(MessageVo messageVo, String productCode) {
         final String telegramId = messageVo.getTelegramId();
-        final List<String> productDescCommands = ProductDescCommandTranslator.encodes(userProductNotifyReadService.findNotifyProductsByTelegramId(telegramId));
+        final List<String> productDescCommands = ProductDescCommandTranslator.encodes(userProductSaleNotifyReadService.findByTelegramId(telegramId));
         final HomeKeyboard homeKeyboard = new HomeKeyboard(productDescCommands);
 
         final CrawledProduct crawledProduct = danawaProductCache.get(productCode);

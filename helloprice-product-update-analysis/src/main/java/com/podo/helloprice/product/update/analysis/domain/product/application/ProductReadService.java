@@ -1,6 +1,6 @@
 package com.podo.helloprice.product.update.analysis.domain.product.application;
 
-import com.podo.helloprice.core.enums.PriceType;
+import com.podo.helloprice.core.enums.SaleType;
 import com.podo.helloprice.product.update.analysis.domain.product.application.helper.ProductReadHelper;
 import com.podo.helloprice.product.update.analysis.domain.product.dto.ProductDetailDto;
 import com.podo.helloprice.product.update.analysis.domain.product.dto.ProductSimpleDto;
@@ -23,9 +23,9 @@ public class ProductReadService {
         return new ProductSimpleDto(product);
     }
 
-    public ProductDetailDto findByProductId(Long productId, PriceType priceType) {
+    public ProductDetailDto findByProductId(Long productId, SaleType saleType) {
         final Product product = ProductReadHelper.findProductById(productRepository, productId);
-        return new ProductDetailDto(product, priceType);
+        return new ProductDetailDto(product, saleType);
     }
 
 }
