@@ -14,6 +14,30 @@
 
 ## API document
 
+
+### 상품 등록
+
+`POST /api/v0/products`
+
+Request Body
+- `productCode` : 제품코드 (require)
+    
+```json
+{
+  "productCode" : "1231231"
+}
+```
+
+Response
+- `id` : 상품 ID
+```json
+{
+  "id" : "1"
+}
+```
+
+<br/>
+
 ### 사용자 등록 상품 조회
 
 `GET /api/v0/my/products`
@@ -68,26 +92,44 @@ Response Sample
 ```
 
 
-### 사용자 상품 등록
+<br/>
 
-`GET /api/v0/users/{userId}/product-sales/{productSaleId}`
+### 사용자 상품 알림 등록
 
-Path Variable
-- `userId` : 사용자 ID
-- `productSaleId` : 제품판매 ID
+`POST /api/v0/my/products/notify`
 
-Response Sample
+Request Header
+- `userId` : 사용자 ID (require)
 
+Request Body
+- `productId` : 상품 ID (require)
+- `saleType` : 상품 판매 타입
+    
+```json
+{
+  "productId" : "1",
+  "saleType" : "CASH"
+}
+```
+
+
+<br/>
 
 ### 사용자 상품 삭제
 
-`GET /api/v0/users/{userId}/products-sales/{productSaleId}`
+`DELETE /api/v0/my/products/notify`
 
-Path Variable
-- `userId` : 사용자 ID
-- `productSaleId` : 제품판매 ID
+Request Header
+- `userId` : 사용자 ID (require)
 
-Response Sample
+Request Body
+- `id` : 알림 ID (require)
+    
+```json
+{
+  "id" : "1"
+}
+```
  
 
 
