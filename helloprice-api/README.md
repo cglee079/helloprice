@@ -10,7 +10,6 @@
 - 사용자 알림 상품 조회
 - 사용자 상품 알림 등록
 - 사용자 상품 알림 삭제
-
 <br/>
 
 ## API document
@@ -20,24 +19,34 @@
 `POST /api/v0/products`
 
 Request Header
-- `token` : 토큰 (require)
+- `Authorization` : 토큰 (require), format : `Bearer tokenblabla`
 
 Request Body
-- `productCode` : 제품코드 (require)
+- `productCode` : 제품코드 (require) // 다나와에서 조회 가능
     
 ```json
 {
-  "productCode" : "1231231",
+  "productCode" : "1231231"
 }
 ```
 
 Response
-- `id` : 상품 ID
-
 ```json
 {
-  "id" : "1"
+  "id": 1,
+  "productSales" : [
+    { 
+      "id": 101,
+      "saleType" :  "NORMAL"
+    },
+    { 
+      "id": 102,
+      "saleType" :  "CASH"
+    }
+  ]
 }
+
+
 ```
 
 
@@ -76,7 +85,7 @@ Response
 `GET /api/v0/my/notifies/product`
 
 Request Header
-- `token` : 토큰 (require)
+- `Authorization` : 토큰 (require), format : `Bearer tokenblabla`
 
 Response
 ```
@@ -133,16 +142,14 @@ Response
 `POST /api/v0/my/notifies`
 
 Request Header
-- `token` : 토큰 (require)
+- `Authorization` : 토큰 (require), format : `Bearer tokenblabla`
 
 Request Body
-- `productId` : 상품 ID (require)
-- `saleType` : 상품 판매 타입 (require)
+- `productSaleId` : 상품판매 ID (require)
     
 ```json
 {
-  "productId" : "1",
-  "saleType" : "CASH"
+  "productSaleId" : "1"
 }
 
 ```
@@ -150,21 +157,15 @@ Request Body
 
 <br/>
 
-### 개인화 - 사용자 상품 삭제
+### 개인화 - 사용자 알림 상품 삭제
 
-`DELETE /api/v0/my/notifies`
+`DELETE /api/v0/my/notifies/{notifyd}`
 
 Request Header
-- `userId` : 사용자 ID (require)
+- `Authorization` : 토큰 (require), format : `Bearer tokenblabla`
 
-Request Body
-- `id` : 알림 ID (require)
-    
-```json
-{
-  "id" : "1"
-}
-```
+Path Variable 
+- `notifyId` : 알림 ID (require)
  
 
 
