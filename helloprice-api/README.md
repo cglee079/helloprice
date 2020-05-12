@@ -159,7 +159,7 @@ Request Body
 
 ### 개인화 - 사용자 알림 상품 삭제
 
-`DELETE /api/v0/my/notifies/{notifyd}`
+`DELETE /api/v0/my/notifies/{notifyId}`
 
 Request Header
 - `Authorization` : 토큰 (require), format : `Bearer tokenblabla`
