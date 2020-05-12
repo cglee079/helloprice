@@ -6,46 +6,51 @@
 
 ### v0.0.0 
 - 최초 배포
-- 사용자 등록 상품 조회
-- 사용자 상품 등록
-- 사용자 상품 삭제
+- 상품 등록
+- 사용자 알림 상품 조회
+- 사용자 상품 알림 등록
+- 사용자 상품 알림 삭제
 
 <br/>
 
 ## API document
 
-
 ### 상품 등록
 
 `POST /api/v0/products`
+
+Request Header
+- `token` : 토큰 (require)
 
 Request Body
 - `productCode` : 제품코드 (require)
     
 ```json
 {
-  "productCode" : "1231231"
+  "productCode" : "1231231",
 }
 ```
 
 Response
 - `id` : 상품 ID
+
 ```json
 {
   "id" : "1"
 }
 ```
 
+
 <br/>
 
-### 사용자 등록 상품 조회
+### 사용자 알림 등록 상품 조회
 
-`GET /api/v0/my/products`
+`GET /api/v0/my/notifies/product`
 
-Path Variable
-- `userId` : 사용자 ID
+Request Header
+- `token` : 토큰 (require)
 
-Response Sample
+Response
 ```
 {
     "size": 1,
@@ -56,13 +61,13 @@ Response Sample
             "productName": "삼성전자 DDR4 16G PC4-21300 (정품)",
             "url": "http://prod.danawa.com/info/?pcode=5941995",
             "imageUrl": "http://img.danawa.com/prod_img/500000/995/941/img/5941995_1.jpg?shrink=500:500&_v=20190208132600",
-            "description": "DDR4 / PC용 / 패키지: 1개 / 2666MHz (PC4-21300) / 히트싱크: 미포함",
-            "saleStatus": "SALE",
-            "lastConfirmAt": "2020-05-07T16:34:30",
+            "description": "DDR4 / PC용 / 패키지: 1개 / 2666MHz (PC4-21300) / 히트싱크: 미포함", 
+            "saleStatus": "SALE", // 상품 상태 [SALE, DISCONTINUE, EMPTY_AMOUNT, NOT_SUPPORT, UNKNOWN]
+            "lastConfirmAt": "2020-05-07T16:34:30", //최종확인일
             "productSales": [
                 {
                     "id": 11,
-                    "saleType": "NORMAL",
+                    "saleType": "NORMAL", // [NORMAL, CASH, CARD]
                     "price": 67400,
                     "prevPrice": 67320,
                     "priceChangeRate": 0.0011869436201780415,
@@ -91,25 +96,27 @@ Response Sample
 }
 ```
 
-
 <br/>
+
+
 
 ### 사용자 상품 알림 등록
 
-`POST /api/v0/my/products/notify`
+`POST /api/v0/my/notifies`
 
 Request Header
-- `userId` : 사용자 ID (require)
+- `token` : 토큰 (require)
 
 Request Body
 - `productId` : 상품 ID (require)
-- `saleType` : 상품 판매 타입
+- `saleType` : 상품 판매 타입 (require)
     
 ```json
 {
   "productId" : "1",
   "saleType" : "CASH"
 }
+
 ```
 
 
@@ -117,7 +124,7 @@ Request Body
 
 ### 사용자 상품 삭제
 
-`DELETE /api/v0/my/products/notify`
+`DELETE /api/v0/my/notifies`
 
 Request Header
 - `userId` : 사용자 ID (require)
