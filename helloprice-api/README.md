@@ -43,7 +43,35 @@ Response
 
 <br/>
 
-### 사용자 알림 등록 상품 조회
+### 상품 판매 조회 - 가격 많이 떨어진
+
+`GET /api/v0/product-sales/top-decrease`
+
+
+Response
+
+``` json
+
+[
+    {
+        "id": 2240,
+        "productName": "원더스리빙 원더스 브리즈킹 WF70",
+        "productCode": "7862200",
+        "url": "http://prod.danawa.com/info/?pcode=7862200",
+        "imageUrl": "http://img.danawa.com/prod_img/500000/200/862/img/7862200_1.jpg?shrink=500:500&_v=20200325134432",
+        "saleType": "NORMAL",
+        "price": 28100,
+        "prevPrice": 29900,
+        "priceChangeRate": -6.02007,
+        "lastUpdateAt": "2020-05-12T08:44:40"
+    }
+    //...
+]
+    
+```
+<br/>
+
+### 개인화 - 사용자 알림 등록 상품 조회
 
 `GET /api/v0/my/notifies/product`
 
@@ -100,7 +128,7 @@ Response
 
 
 
-### 사용자 상품 알림 등록
+### 개인화 - 사용자 상품 알림 등록
 
 `POST /api/v0/my/notifies`
 
@@ -122,7 +150,7 @@ Request Body
 
 <br/>
 
-### 사용자 상품 삭제
+### 개인화 - 사용자 상품 삭제
 
 `DELETE /api/v0/my/notifies`
 
