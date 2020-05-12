@@ -57,6 +57,10 @@ Response
 `GET /api/v0/product-sales/top-decrease`
 
 
+Request Header
+- `Authorization` : 토큰 (require), format : `Bearer tokenblabla`
+
+
 Response
 
 ``` json
@@ -73,6 +77,7 @@ Response
         "prevPrice": 29900,
         "priceChangeRate": -6.02007,
         "lastUpdateAt": "2020-05-12T08:44:40"
+        "notifyOn: true // 알림 등록 여부
     }
     //...
 ]
@@ -108,7 +113,8 @@ Response
                     "price": 67400,
                     "prevPrice": 67320,
                     "priceChangeRate": 0.0011869436201780415,
-                    "additionalInfo": ""
+                    "additionalInfo": "",
+                    "notifyOn: true // 알림 등록 여부
                 },
                 {
                     "id": 12,
@@ -116,7 +122,8 @@ Response
                     "price": 65300,
                     "prevPrice": 64800,
                     "priceChangeRate": 0.007656967840735069,
-                    "additionalInfo": ""
+                    "additionalInfo": "",
+                    "notifyOn: true // 알림 등록 여부
                 },
                 {
                     "id": 13,
@@ -124,7 +131,8 @@ Response
                     "price": 66730,
                     "prevPrice": 66646,
                     "priceChangeRate": 0.001258804136070733,
-                    "additionalInfo": "KB국민"
+                    "additionalInfo": "KB국민",
+                    "notifyOn: true // 알림 등록 여부
                 }
             ]
         }
@@ -151,7 +159,6 @@ Request Body
 {
   "productSaleId" : "1"
 }
-
 ```
 
 
@@ -159,15 +166,13 @@ Request Body
 
 ### 개인화 - 사용자 알림 상품 삭제
 
-`DELETE /api/v0/my/notifies/{notifyId}`
+`DELETE /api/v0/my/notifies`
 
 Request Header
 - `Authorization` : 토큰 (require), format : `Bearer tokenblabla`
 
-Path Variable 
-- `notifyId` : 알림 ID (require)
- 
-
-
-
-
+```json
+{
+  "productSaleId" : "1"
+}
+```
