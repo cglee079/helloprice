@@ -1,6 +1,6 @@
 package com.podo.helloprice.product.update.analysis.processor.notify;
 
-import com.podo.helloprice.product.update.analysis.domain.user.UserDto;
+import com.podo.helloprice.product.update.analysis.domain.tuser.TUserDto;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -15,7 +15,7 @@ public class NotifyTarget {
 
     public static final NotifyTarget EMPTY = new NotifyTarget();
 
-    private List<UserDto> users;
+    private List<TUserDto> users;
     private String imageUrl;
     private String title;
     private String contents;

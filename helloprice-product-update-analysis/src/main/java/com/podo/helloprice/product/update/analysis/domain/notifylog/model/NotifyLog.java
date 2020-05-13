@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 @Slf4j
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Table(name = "product_notify_log")
+@Table(name = "notify_log")
 @Entity
 public class NotifyLog {
 

@@ -18,10 +18,9 @@ class ProductTest {
         //given
         final Product product = new Product();
         ReflectionTestUtils.setField(product, "deadCount", 0);
-        final LocalDateTime lastCrawledAt = LocalDateTime.now();
 
         //when
-        product.increaseDeadCount(100, lastCrawledAt);
+        product.increaseDeadCount(100);
 
         //then
         assertThat(product.getDeadCount()).isEqualTo(1);
@@ -33,10 +32,9 @@ class ProductTest {
         //given
         final Product product = new Product();
         ReflectionTestUtils.setField(product, "deadCount", 0);
-        final LocalDateTime lastCrawledAt = LocalDateTime.now();
 
         //when
-        product.increaseDeadCount(0, lastCrawledAt);
+        product.increaseDeadCount(0);
 
         //then
         assertThat(product.getDeadCount()).isEqualTo(1);

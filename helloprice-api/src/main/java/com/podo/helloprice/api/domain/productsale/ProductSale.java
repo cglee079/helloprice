@@ -33,6 +33,17 @@ public class ProductSale {
 
     private LocalDateTime lastUpdateAt;
 
+    public static ProductSale create(Product product, SaleType saleType, Integer price, String additionalInfo, LocalDateTime lastUpdateAt) {
+        final ProductSale productSale = new ProductSale();
+        productSale.product = product;
+        productSale.saleType = saleType;
+        productSale.price = price;
+        productSale.prevPrice = price;
+        productSale.lastUpdateAt = lastUpdateAt;
+        productSale.additionalInfo = additionalInfo;
+        return productSale;
+    }
+
 
 }
 

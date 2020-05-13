@@ -3,9 +3,9 @@ package com.podo.helloprice.product.update.analysis.processor.notify.executor;
 import com.podo.helloprice.core.enums.UserStatus;
 import com.podo.helloprice.product.update.analysis.domain.product.application.ProductReadService;
 import com.podo.helloprice.product.update.analysis.domain.product.dto.ProductDto;
-import com.podo.helloprice.product.update.analysis.domain.user.UserDto;
-import com.podo.helloprice.product.update.analysis.domain.user.UserReadService;
-import com.podo.helloprice.product.update.analysis.domain.userproduct.application.UserProductNotifyReadService;
+import com.podo.helloprice.product.update.analysis.domain.tuser.TUserDto;
+import com.podo.helloprice.product.update.analysis.domain.tuser.TUserReadService;
+import com.podo.helloprice.product.update.analysis.domain.tusernotify.application.TUserNotifyReadService;
 import com.podo.helloprice.product.update.analysis.processor.notify.NotifyTarget;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,10 +19,10 @@ public abstract class AbstractCommonNotifyExecutor implements NotifyExecutor {
     private ProductReadService productReadService;
 
     @Autowired
-    private UserReadService userReadService;
+    private TUserReadService TUserReadService;
 
     @Autowired
-    private UserProductNotifyReadService userProductNotifyReadService;
+    private TUserNotifyReadService TUserNotifyReadService;
 
     protected abstract String getNotifyTitle(ProductDto product);
 
@@ -31,8 +31,8 @@ public abstract class AbstractCommonNotifyExecutor implements NotifyExecutor {
     @Override
     public NotifyTarget execute(Long productId) {
 
-        List<Long> userIds = userProductNotifyReadService.findUserIdsByProductSaleId(productId);
-        final List<UserDto> users = userReadService.findByUserIdsAndUserStatus(userIds, UserStatus.ALIVE);
+        List<Long> userIds = TUserNotifyReadService.findUserIdsByProductSaleId(productId);
+        final List<TUserDto> users = TUserReadService.findByUserIdsAndUserStatus(userIds, UserStatus.ALIVE);
 
         final ProductDto product = productReadService.findByProductId(productId);
 

@@ -8,9 +8,9 @@ import com.podo.helloprice.core.util.CurrencyUtil;
 import com.podo.helloprice.product.update.analysis.domain.product.dto.ProductDto;
 import com.podo.helloprice.product.update.analysis.domain.productsale.ProductSaleReadService;
 import com.podo.helloprice.product.update.analysis.domain.productsale.dto.ProductSaleDto;
-import com.podo.helloprice.product.update.analysis.domain.user.UserReadService;
-import com.podo.helloprice.product.update.analysis.domain.user.UserDto;
-import com.podo.helloprice.product.update.analysis.domain.userproduct.application.UserProductNotifyReadService;
+import com.podo.helloprice.product.update.analysis.domain.tuser.TUserReadService;
+import com.podo.helloprice.product.update.analysis.domain.tuser.TUserDto;
+import com.podo.helloprice.product.update.analysis.domain.tusernotify.application.TUserNotifyReadService;
 import com.podo.helloprice.product.update.analysis.processor.notify.NotifyTarget;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -26,10 +26,10 @@ public abstract class AbstractSaleNotifyExecutor implements NotifyExecutor {
     private ProductSaleReadService productSaleReadService;
 
     @Autowired
-    private UserReadService userReadService;
+    private TUserReadService TUserReadService;
 
     @Autowired
-    private UserProductNotifyReadService userProductNotifyReadService;
+    private TUserNotifyReadService TUserNotifyReadService;
 
     protected abstract SaleType getSaleType();
 
@@ -38,8 +38,8 @@ public abstract class AbstractSaleNotifyExecutor implements NotifyExecutor {
         final ProductSaleDto productSale = productSaleReadService.findByProductIdAndSaleType(productId, this.getSaleType());
         final ProductDto product = productSale.getProduct();
 
-        final List<Long> userIds = userProductNotifyReadService.findUserIdsByProductSaleId(productSale.getId());
-        final List<UserDto> users = userReadService.findByUserIdsAndUserStatus(userIds, UserStatus.ALIVE);
+        final List<Long> userIds = TUserNotifyReadService.findUserIdsByProductSaleId(productSale.getId());
+        final List<TUserDto> users = TUserReadService.findByUserIdsAndUserStatus(userIds, UserStatus.ALIVE);
 
         final String imageUrl = product.getImageUrl();
         final Integer price = productSale.getPrice();

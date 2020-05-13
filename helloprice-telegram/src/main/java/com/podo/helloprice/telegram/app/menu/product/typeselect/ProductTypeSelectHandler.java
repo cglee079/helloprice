@@ -16,8 +16,8 @@ import com.podo.helloprice.telegram.domain.productsale.application.ProductSaleRe
 import com.podo.helloprice.telegram.domain.productsale.dto.ProductSaleDto;
 import com.podo.helloprice.telegram.domain.user.application.UserReadService;
 import com.podo.helloprice.telegram.domain.user.dto.UserDetailDto;
-import com.podo.helloprice.telegram.domain.userproduct.application.UserProductSaleNotifyReadService;
-import com.podo.helloprice.telegram.domain.userproduct.application.UserProductSaleNotifyWriteService;
+import com.podo.helloprice.telegram.domain.usernotify.application.UserNotifyReadService;
+import com.podo.helloprice.telegram.domain.usernotify.application.UerNotifyWriteService;
 import com.podo.helloprice.telegram.global.cache.DanawaProductCache;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -42,8 +42,8 @@ public class ProductTypeSelectHandler extends AbstractMenuHandler {
     private final ProductSaleReadService productSaleReadService;
     private final ProductWriteService productWriteService;
 
-    private final UserProductSaleNotifyReadService userProductSaleNotifyReadService;
-    private final UserProductSaleNotifyWriteService userProductSaleNotifyWriteService;
+    private final UserNotifyReadService userNotifyReadService;
+    private final UerNotifyWriteService uerNotifyWriteService;
 
     private final SendMessageCallbackFactory callbackFactory;
     private final DanawaProductCache danawaProductCache;
@@ -96,7 +96,7 @@ public class ProductTypeSelectHandler extends AbstractMenuHandler {
         final Set<SaleType> saleTypes = saleTypeToProductSale.keySet();
 
         for (SaleType saleType : saleTypes) {
-            if (userProductSaleNotifyReadService.isExistedNotify(userId, saleTypeToProductSale.get(saleType).getId())) {
+            if (userNotifyReadService.isExistedNotify(userId, saleTypeToProductSale.get(saleType).getId())) {
                 log.debug("APP :: {} << {} 상품 알림이 이미 등록되었습니다.", telegramId, productName);
                 sender().send(SendMessageVo.create(messageVo, ProductTypeSelectResponse.alreadySetNotifyProduct(productName, saleType), null, homeKeyboard, callbackFactory.create(telegramId, HOME)));
                 return;
@@ -110,7 +110,7 @@ public class ProductTypeSelectHandler extends AbstractMenuHandler {
         }
 
         for (SaleType saleType : saleTypes) {
-            userProductSaleNotifyWriteService.insertNewNotify(userId, saleTypeToProductSale.get(saleType).getId());
+            uerNotifyWriteService.insertNewNotify(userId, saleTypeToProductSale.get(saleType).getId());
         }
 
         sender().send(SendMessageVo.create(messageVo, ProductTypeSelectResponse.successAddNotifyProduct(), product.getImageUrl(),  createHomeKeyboard(telegramId), callbackFactory.create(telegramId, HOME)));
@@ -126,7 +126,7 @@ public class ProductTypeSelectHandler extends AbstractMenuHandler {
         final Long userId = user.getId();
         final String productName = product.getProductName();
 
-        if (userProductSaleNotifyReadService.isExistedNotify(userId, productSale.getId())) {
+        if (userNotifyReadService.isExistedNotify(userId, productSale.getId())) {
             log.debug("APP :: {} << {} 상품 알림이 이미 등록되었습니다.", telegramId, productName);
             sender().send(SendMessageVo.create(messageVo, ProductTypeSelectResponse.alreadySetNotifyProduct(productName, saleType), null, homeKeyboard, callbackFactory.create(telegramId, HOME)));
             return;
@@ -138,7 +138,7 @@ public class ProductTypeSelectHandler extends AbstractMenuHandler {
             return;
         }
 
-        userProductSaleNotifyWriteService.insertNewNotify(userId, productSale.getId());
+        uerNotifyWriteService.insertNewNotify(userId, productSale.getId());
 
         sender().send(SendMessageVo.create(messageVo, ProductTypeSelectResponse.successAddNotifyProduct(), product.getImageUrl(),  createHomeKeyboard(telegramId), callbackFactory.create(telegramId, HOME)));
     }

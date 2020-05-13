@@ -5,7 +5,7 @@ logging.file.name: helloprice-api.%d{yyyy-MM-dd}-%i.log
 ---
 
 spring.profiles: dev
-spring.profiles.include: dev-jpa
+spring.profiles.include: dev-app, dev-jpa, dev-oauth
 
 logging:
   file.path: c://dev-log/helloprice/logs/helloprice-api

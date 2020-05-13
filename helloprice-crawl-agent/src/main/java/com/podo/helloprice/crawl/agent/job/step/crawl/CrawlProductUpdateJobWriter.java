@@ -98,7 +98,6 @@ public class CrawlProductUpdateJobWriter implements ItemWriter<CrawledProduct> {
         }
     }
 
-
     private List<ProductUpdateEvent> updatePrices(Long productId, CrawledProduct crawledProduct, LocalDateTime crawledAt) {
         final List<ProductUpdateEvent> productUpdateEvents = new ArrayList<>();
 

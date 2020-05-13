@@ -3,7 +3,7 @@ package com.podo.helloprice.telegram.domain.productsale;
 import com.podo.helloprice.core.enums.SaleType;
 import com.podo.helloprice.telegram.domain.BaseEntity;
 import com.podo.helloprice.telegram.domain.product.model.Product;
-import com.podo.helloprice.telegram.domain.userproduct.UserProductSaleNotify;
+import com.podo.helloprice.telegram.domain.usernotify.UserNotify;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -39,7 +39,7 @@ public class ProductSale extends BaseEntity {
     private LocalDateTime lastUpdateAt;
 
     @OneToMany(mappedBy = "productSale")
-    private List<UserProductSaleNotify> userProductSaleNotifies = new ArrayList<>();
+    private List<UserNotify> userProductSaleNotifies = new ArrayList<>();
 
     public static ProductSale create(SaleType saleType, Integer price, String additionalInfo, LocalDateTime lastUpdateAt) {
         final ProductSale productSale = new ProductSale();
@@ -75,13 +75,13 @@ public class ProductSale extends BaseEntity {
         return true;
     }
 
-    public void addUserProductNotify(UserProductSaleNotify userProductSaleNotify) {
-        this.userProductSaleNotifies.add(userProductSaleNotify);
+    public void addUserProductNotify(UserNotify userNotify) {
+        this.userProductSaleNotifies.add(userNotify);
         this.product.revive();
     }
 
-    public void removeUserProductNotify(UserProductSaleNotify userProductSaleNotify) {
-        this.userProductSaleNotifies.remove(userProductSaleNotify);
+    public void removeUserProductNotify(UserNotify userNotify) {
+        this.userProductSaleNotifies.remove(userNotify);
         this.product.checkSaleNotify();
     }
 

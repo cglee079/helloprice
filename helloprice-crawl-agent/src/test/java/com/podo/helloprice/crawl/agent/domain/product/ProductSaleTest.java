@@ -18,7 +18,7 @@ class ProductSaleTest {
         //given
         final LocalDateTime now = LocalDateTime.now();
         final LocalDateTime beforeUpdateAt = now.minusMinutes(1);
-        final ProductSale productSale = ProductSale.create(SaleType.NORMAL, 1000, "", beforeUpdateAt);
+        final ProductSale productSale = ProductSale.create(SaleType.NORMAL, null, 1000, "", beforeUpdateAt);
 
         //when, then
         assertThat(productSale.update(1000, "", now)).isFalse();
@@ -31,7 +31,7 @@ class ProductSaleTest {
         //given
         final LocalDateTime now = LocalDateTime.now();
         final LocalDateTime beforeUpdateAt = now.minusMinutes(1);
-        final ProductSale productSale = ProductSale.create(SaleType.NORMAL, 1000, "", beforeUpdateAt);
+        final ProductSale productSale = ProductSale.create(SaleType.NORMAL, null,1000, "", beforeUpdateAt);
 
         //when, then
         assertThat(productSale.update(1, "", now)).isTrue();
@@ -44,7 +44,7 @@ class ProductSaleTest {
         //given
         final LocalDateTime now = LocalDateTime.now();
         final LocalDateTime beforeUpdateAt = now.minusMinutes(1);
-        final ProductSale productSale = ProductSale.create(SaleType.NORMAL, 1000, "", beforeUpdateAt);
+        final ProductSale productSale = ProductSale.create(SaleType.NORMAL, null,1000, "", beforeUpdateAt);
 
         //when, then
         assertThat(productSale.update(1000, "삼성", now)).isTrue();

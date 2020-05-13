@@ -3,7 +3,7 @@ package com.podo.helloprice.telegram.domain.user.model;
 import com.podo.helloprice.core.enums.UserStatus;
 import com.podo.helloprice.telegram.app.menu.Menu;
 import com.podo.helloprice.telegram.domain.BaseEntity;
-import com.podo.helloprice.telegram.domain.userproduct.UserProductSaleNotify;
+import com.podo.helloprice.telegram.domain.usernotify.UserNotify;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -15,7 +15,7 @@ import java.util.List;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Table(name = "user")
+@Table(name = "tuser")
 @Entity
 public class User extends BaseEntity {
 
@@ -40,7 +40,7 @@ public class User extends BaseEntity {
     private LocalDateTime lastSendAt;
 
     @OneToMany(mappedBy = "user")
-    List<UserProductSaleNotify> userProductNotifies;
+    List<UserNotify> userProductNotifies;
 
     @Builder
     public User(String username,
@@ -63,12 +63,12 @@ public class User extends BaseEntity {
         this.menuStatus = menuStatus;
     }
 
-    public void addUserProductNotify(UserProductSaleNotify userProductSaleNotify) {
-        this.userProductNotifies.add(userProductSaleNotify);
+    public void addUserProductNotify(UserNotify userNotify) {
+        this.userProductNotifies.add(userNotify);
     }
 
-    public void removeUserProductNotify(UserProductSaleNotify userProductSaleNotify) {
-        this.userProductNotifies.remove(userProductSaleNotify);
+    public void removeUserProductNotify(UserNotify userNotify) {
+        this.userProductNotifies.remove(userNotify);
     }
 
     public void increaseErrorCount(Integer userMaxErrorCount) {

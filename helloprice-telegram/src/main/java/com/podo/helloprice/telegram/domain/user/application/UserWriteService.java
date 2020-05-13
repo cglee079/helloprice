@@ -5,8 +5,8 @@ import com.podo.helloprice.telegram.domain.user.application.helper.UserReadServi
 import com.podo.helloprice.telegram.app.menu.Menu;
 import com.podo.helloprice.telegram.domain.user.model.User;
 import com.podo.helloprice.telegram.domain.user.repository.UserRepository;
-import com.podo.helloprice.telegram.domain.userproduct.UserProductSaleNotify;
-import com.podo.helloprice.telegram.domain.userproduct.repository.UserProductNotifyRepository;
+import com.podo.helloprice.telegram.domain.usernotify.UserNotify;
+import com.podo.helloprice.telegram.domain.usernotify.repository.UserProductNotifyRepository;
 import com.podo.helloprice.telegram.domain.user.dto.UserInsertDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -44,12 +44,12 @@ public class UserWriteService {
         }
     }
 
-    private void removeUserProductNotifies(List<UserProductSaleNotify> userProductNotifies) {
-        for (UserProductSaleNotify userProductSaleNotify : userProductNotifies) {
-            userProductSaleNotify.getUser().removeUserProductNotify(userProductSaleNotify);
-            userProductSaleNotify.getProductSale().removeUserProductNotify(userProductSaleNotify);
+    private void removeUserProductNotifies(List<UserNotify> userProductNotifies) {
+        for (UserNotify userNotify : userProductNotifies) {
+            userNotify.getUser().removeUserProductNotify(userNotify);
+            userNotify.getProductSale().removeUserProductNotify(userNotify);
 
-            userProductNotifyRepository.delete(userProductSaleNotify);
+            userProductNotifyRepository.delete(userNotify);
         }
     }
 

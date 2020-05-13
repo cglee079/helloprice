@@ -3,8 +3,8 @@ package com.podo.helloprice.product.update.analysis.processor.notify;
 import com.podo.helloprice.core.enums.ProductUpdateStatus;
 import com.podo.helloprice.product.update.analysis.domain.notifylog.application.NotifyLogInsertService;
 import com.podo.helloprice.product.update.analysis.domain.notifylog.dto.NotifyLogInsertDto;
-import com.podo.helloprice.product.update.analysis.domain.user.UserDto;
-import com.podo.helloprice.product.update.analysis.domain.userproduct.application.UserProductSaleNotifyUpdateService;
+import com.podo.helloprice.product.update.analysis.domain.tuser.TUserDto;
+import com.podo.helloprice.product.update.analysis.domain.tusernotify.application.TUserNotifyUpdateService;
 import com.podo.helloprice.product.update.analysis.infra.mq.message.EmailNotifyMessage;
 import com.podo.helloprice.product.update.analysis.infra.mq.message.TelegramNotifyMessage;
 import com.podo.helloprice.product.update.analysis.processor.Processor;
@@ -30,18 +30,18 @@ public class NotifyProcessor implements Processor {
     private final Notifier notifier;
 
     private final NotifyLogInsertService notifyLogInsertService;
-    private final UserProductSaleNotifyUpdateService userProductSaleNotifyUpdateService;
+    private final TUserNotifyUpdateService TUserNotifyUpdateService;
     private final Map<ProductUpdateStatus, NotifyExecutor> notifyExecutors;
 
     public NotifyProcessor(
             Notifier notifier,
             NotifyLogInsertService notifyLogInsertService,
-            UserProductSaleNotifyUpdateService userProductSaleNotifyUpdateService,
+            TUserNotifyUpdateService TUserNotifyUpdateService,
             List<NotifyExecutor> notifyExecutors) {
 
         this.notifier = notifier;
         this.notifyLogInsertService = notifyLogInsertService;
-        this.userProductSaleNotifyUpdateService = userProductSaleNotifyUpdateService;
+        this.TUserNotifyUpdateService = TUserNotifyUpdateService;
         this.notifyExecutors = notifyExecutors.stream()
                 .collect(toMap(NotifyExecutor::getProductUpdateStatus, t -> t));
     }
@@ -58,7 +58,7 @@ public class NotifyProcessor implements Processor {
 
         notifyToUsers(notifyTarget);
 
-        userProductSaleNotifyUpdateService.updateNotifiedAtByProductId(productId, now);
+        TUserNotifyUpdateService.updateNotifiedAtByProductId(productId, now);
 
         final NotifyLogInsertDto notifyLog = NotifyLogInsertDto.builder()
                 .productId(productId)
@@ -66,6 +66,7 @@ public class NotifyProcessor implements Processor {
                 .imageUrl(notifyTarget.getImageUrl())
                 .title(notifyTarget.getTitle())
                 .contents(notifyTarget.getContents())
+                .notifyAt(now)
                 .build();
 
         notifyLogInsertService.insertNew(notifyLog);
@@ -73,12 +74,12 @@ public class NotifyProcessor implements Processor {
 
 
     private void notifyToUsers(NotifyTarget notifyTarget) {
-        final List<UserDto> users = notifyTarget.getUsers();
+        final List<TUserDto> users = notifyTarget.getUsers();
         final String imageUrl = notifyTarget.getImageUrl();
         final String title = notifyTarget.getTitle();
         final String contents = notifyTarget.getContents();
 
-        for (UserDto user : users) {
+        for (TUserDto user : users) {
             notifier.notify(TelegramNotifyMessage.create(user.getTelegramId(), imageUrl, contents));
             final String email = user.getEmail();
 
