@@ -4,6 +4,8 @@ import com.podo.helloprice.core.enums.SaleType;
 import com.podo.helloprice.telegram.domain.productsale.ProductSale;
 import com.podo.helloprice.telegram.domain.productsale.ProductSaleRepository;
 import com.podo.helloprice.telegram.domain.productsale.dto.ProductSaleDto;
+import com.podo.helloprice.telegram.domain.productsale.exception.InvalidProductCodeAndSaleTypeException;
+import com.podo.helloprice.telegram.domain.productsale.exception.InvalidProductIdAndSaleTypeException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -12,8 +14,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
-
-import static java.util.stream.Collectors.toMap;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -32,15 +32,16 @@ public class ProductSaleReadService {
     }
 
     public ProductSaleDto findByProductIdAndSaleType(Long productId, SaleType saleType) {
+        final ProductSale productSale = productSaleRepository.findByProductIdAndSaleType(productId, saleType)
+                .orElseThrow(() -> new InvalidProductIdAndSaleTypeException(productId, saleType));
 
-        //TODo
-        final ProductSale productSale = productSaleRepository.findByProductIdAndSaleType(productId, saleType).get();
         return new ProductSaleDto(productSale);
     }
 
     public ProductSaleDto findByProductCodeAndSaleType(String productCode, SaleType saleType) {
-        //TODO
-        final ProductSale productSale = productSaleRepository.findByProductCodeAndSaleType(productCode, saleType).get();
+        final ProductSale productSale = productSaleRepository.findByProductCodeAndSaleType(productCode, saleType)
+                .orElseThrow(() -> new InvalidProductCodeAndSaleTypeException(productCode, saleType));
+
         return new ProductSaleDto(productSale);
     }
 }
