@@ -9,7 +9,7 @@ import java.time.LocalDateTime;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Table(name = "user_product_sale_notify")
+@Table(name = "user_notify")
 @Entity
 public class UserNotify {
 

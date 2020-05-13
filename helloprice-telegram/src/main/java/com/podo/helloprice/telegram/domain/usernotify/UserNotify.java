@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Table(name = "tuser_product_sale_notify")
+@Table(name = "tuser_notify")
 @Entity
 public class UserNotify extends BaseTimeEntity {
 
@@ -21,7 +21,7 @@ public class UserNotify extends BaseTimeEntity {
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "tuser_id")
     private User user;
 
     @ManyToOne(fetch = FetchType.LAZY)
