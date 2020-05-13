@@ -26,7 +26,7 @@ public class JpaConfig {
 
     @Bean
     AuditorAware auditorAware() {
-        return (AuditorAware<String>) () -> Optional.of("Telegram");
+        return (AuditorAware<String>) () -> Optional.of("Api");
     }
 }
 

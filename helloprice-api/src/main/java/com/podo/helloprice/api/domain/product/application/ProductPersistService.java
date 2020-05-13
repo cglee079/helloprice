@@ -4,6 +4,7 @@ import com.podo.helloprice.api.domain.product.dto.ProductPersistDto;
 import com.podo.helloprice.api.domain.product.model.Product;
 import com.podo.helloprice.api.domain.product.repository.ProductRepository;
 import com.podo.helloprice.api.domain.productsale.ProductSale;
+import com.podo.helloprice.api.domain.productsale.application.ProductSaleWriteService;
 import com.podo.helloprice.api.domain.productsale.repository.ProductSaleRepository;
 import com.podo.helloprice.core.enums.ProductAliveStatus;
 import com.podo.helloprice.core.enums.SaleType;
@@ -14,6 +15,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 import java.util.Objects;
 import java.util.Optional;
@@ -24,22 +26,23 @@ import java.util.Optional;
 @Service
 public class ProductPersistService {
 
+    private final ProductSaleWriteService productSaleWriteService;
     private final DanawaProductCrawler danawaProductCrawler;
     private final ProductRepository productRepository;
     private final ProductSaleRepository productSaleRepository;
 
-    public Long persist(ProductPersistDto productWrite, LocalDateTime now){
+    public Long persist(ProductPersistDto productWrite, LocalDateTime now) {
 
         final String productCode = productWrite.getProductCode();
 
         final Optional<Product> existedProduct = productRepository.findByProductCode(productCode);
+        final CrawledProduct crawledProduct = danawaProductCrawler.crawl(productCode, now);
 
-        if(existedProduct.isPresent()){
-            existedProduct.get().revive();
+        if (existedProduct.isPresent()) {
+            updateProduct(existedProduct.get(), crawledProduct);
             return existedProduct.get().getId();
         }
 
-        final CrawledProduct crawledProduct = danawaProductCrawler.crawl(productCode, now);
 
         final Product product = Product.builder()
                 .productName(crawledProduct.getProductName())
@@ -62,5 +65,25 @@ public class ProductPersistService {
         }
 
         return savedProduct.getId();
+    }
+
+    private Long updateProduct(Product product, @NotNull CrawledProduct crawledProduct) {
+        product.updateByCrawledProduct(crawledProduct);
+
+        final Long productId = product.getId();
+
+        switch (crawledProduct.getSaleStatus()) {
+            case UNKNOWN:
+            case DISCONTINUE:
+            case NOT_SUPPORT:
+            case EMPTY_AMOUNT:
+                productSaleWriteService.setPriceZeroByProductId(productId, crawledProduct.getCrawledAt());
+                break;
+            case SALE:
+                productSaleWriteService.updateSalePrice(productId, crawledProduct.getSaleTypeToPrice(), crawledProduct.getCrawledAt());
+            default:
+
+        }
+        return productId;
     }
 }

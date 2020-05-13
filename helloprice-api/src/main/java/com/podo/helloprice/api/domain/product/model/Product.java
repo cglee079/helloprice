@@ -2,6 +2,7 @@ package com.podo.helloprice.api.domain.product.model;
 
 import com.podo.helloprice.core.enums.ProductAliveStatus;
 import com.podo.helloprice.core.enums.ProductSaleStatus;
+import com.podo.helloprice.crawl.worker.value.CrawledProduct;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -65,5 +66,9 @@ public class Product {
 
     public void pause() {
         this.aliveStatus = ProductAliveStatus.PAUSE;
+    }
+
+    public void updateByCrawledProduct(CrawledProduct crawledProduct) {
+
     }
 }

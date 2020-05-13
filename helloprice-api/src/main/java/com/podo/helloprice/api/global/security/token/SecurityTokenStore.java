@@ -80,8 +80,6 @@ public class SecurityTokenStore {
 
         this.authentication = new OAuthAuthentication(oAuthUserDetails);
         final String token = this.login(authentication, userVo);
-
-        System.out.println(token);
     }
 }
 

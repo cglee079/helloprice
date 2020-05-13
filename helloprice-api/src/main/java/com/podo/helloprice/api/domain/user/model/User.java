@@ -1,5 +1,6 @@
 package com.podo.helloprice.api.domain.user.model;
 
+import com.podo.helloprice.api.domain.BaseEntity;
 import com.podo.helloprice.api.global.security.oauth.value.OAuthType;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -12,7 +13,7 @@ import javax.persistence.*;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "user")
 @Entity
-public class User{
+public class User extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

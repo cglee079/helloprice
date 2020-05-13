@@ -1,5 +1,6 @@
 package com.podo.helloprice.api.domain.usernotify.model;
 
+import com.podo.helloprice.api.domain.BaseEntity;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -11,7 +12,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "user_notify")
 @Entity
-public class UserNotify {
+public class UserNotify extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
