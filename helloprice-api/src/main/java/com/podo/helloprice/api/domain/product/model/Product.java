@@ -60,15 +60,26 @@ public class Product {
         this.saleStatus = saleStatus;
     }
 
-    public void revive() {
-        this.aliveStatus = ProductAliveStatus.ALIVE;
-    }
-
     public void pause() {
         this.aliveStatus = ProductAliveStatus.PAUSE;
     }
 
     public void updateByCrawledProduct(CrawledProduct crawledProduct) {
+        this.deadCount = 0;
+        this.productName = crawledProduct.getProductName();
+        this.imageUrl = crawledProduct.getImageUrl();
+        this.saleStatus = crawledProduct.getSaleStatus();
+        this.lastCrawledAt =  crawledProduct.getCrawledAt();
 
+        switch (saleStatus) {
+            case UNKNOWN:
+            case DISCONTINUE:
+            case NOT_SUPPORT:
+                this.aliveStatus = ProductAliveStatus.PAUSE;
+            case EMPTY_AMOUNT:
+            case SALE:
+                this.aliveStatus = ProductAliveStatus.ALIVE;
+            default:
+        }
     }
 }

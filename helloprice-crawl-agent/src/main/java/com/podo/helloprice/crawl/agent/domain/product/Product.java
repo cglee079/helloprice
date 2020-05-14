@@ -57,13 +57,11 @@ public class Product {
     private String updateBy;
 
     public void updateByCrawledProduct(CrawledProduct crawledProduct) {
-        final LocalDateTime crawledAt = crawledProduct.getCrawledAt();
-
         this.deadCount = 0;
         this.productName = crawledProduct.getProductName();
         this.imageUrl = crawledProduct.getImageUrl();
         this.saleStatus = crawledProduct.getSaleStatus();
-        this.lastCrawledAt = crawledAt;
+        this.lastCrawledAt =  crawledProduct.getCrawledAt();
 
         switch (saleStatus) {
             case UNKNOWN:
