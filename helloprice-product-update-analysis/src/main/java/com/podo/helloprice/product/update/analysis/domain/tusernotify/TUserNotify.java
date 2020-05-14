@@ -18,7 +18,8 @@ public class TUserNotify {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private Long tuser_id;
+    @Column(name = "tuser_id")
+    private Long tUserId;
 
     @JoinColumn(name = "product_sale_id")
     @ManyToOne

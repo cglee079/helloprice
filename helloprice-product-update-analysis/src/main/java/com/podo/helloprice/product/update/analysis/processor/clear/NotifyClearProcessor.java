@@ -4,11 +4,14 @@ import com.podo.helloprice.core.enums.ProductUpdateStatus;
 import com.podo.helloprice.product.update.analysis.processor.Processor;
 import com.podo.helloprice.product.update.analysis.domain.tusernotify.application.TUserNotifyDeleteService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.core.Ordered;
+import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
 
 @RequiredArgsConstructor
+@Order(Ordered.LOWEST_PRECEDENCE)
 @Component
 public class NotifyClearProcessor implements Processor {
 

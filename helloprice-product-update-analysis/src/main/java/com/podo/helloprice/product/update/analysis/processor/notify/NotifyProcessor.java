@@ -1,12 +1,12 @@
 package com.podo.helloprice.product.update.analysis.processor.notify;
 
 import com.podo.helloprice.core.enums.ProductUpdateStatus;
-import com.podo.helloprice.product.update.analysis.domain.notifylog.application.NotifyLogInsertService;
-import com.podo.helloprice.product.update.analysis.domain.notifylog.dto.NotifyLogInsertDto;
 import com.podo.helloprice.product.update.analysis.domain.tuser.TUserDto;
 import com.podo.helloprice.product.update.analysis.domain.tusernotify.application.TUserNotifyUpdateService;
 import com.podo.helloprice.product.update.analysis.infra.mq.message.EmailNotifyMessage;
 import com.podo.helloprice.product.update.analysis.infra.mq.message.TelegramNotifyMessage;
+import com.podo.helloprice.product.update.analysis.infra.mq.publisher.EmailNotifyPublisher;
+import com.podo.helloprice.product.update.analysis.infra.mq.publisher.TelegramNotifyPublisher;
 import com.podo.helloprice.product.update.analysis.processor.Processor;
 import com.podo.helloprice.product.update.analysis.processor.notify.executor.NotifyExecutor;
 import com.podo.helloprice.product.update.analysis.processor.notify.helper.EmailContentCreator;
@@ -27,21 +27,20 @@ import static java.util.stream.Collectors.toMap;
 @Component
 public class NotifyProcessor implements Processor {
 
-    private final Notifier notifier;
-
-    private final NotifyLogInsertService notifyLogInsertService;
-    private final TUserNotifyUpdateService TUserNotifyUpdateService;
+    private final TelegramNotifyPublisher telegramNotifyPublisher;
+    private final EmailNotifyPublisher emailNotifyPublisher;
+    private final TUserNotifyUpdateService tUserNotifyUpdateService;
     private final Map<ProductUpdateStatus, NotifyExecutor> notifyExecutors;
 
     public NotifyProcessor(
-            Notifier notifier,
-            NotifyLogInsertService notifyLogInsertService,
+            TelegramNotifyPublisher telegramNotifyPublisher,
+            EmailNotifyPublisher emailNotifyPublisher,
             TUserNotifyUpdateService TUserNotifyUpdateService,
             List<NotifyExecutor> notifyExecutors) {
 
-        this.notifier = notifier;
-        this.notifyLogInsertService = notifyLogInsertService;
-        this.TUserNotifyUpdateService = TUserNotifyUpdateService;
+        this.telegramNotifyPublisher = telegramNotifyPublisher;
+        this.emailNotifyPublisher = emailNotifyPublisher;
+        this.tUserNotifyUpdateService = TUserNotifyUpdateService;
         this.notifyExecutors = notifyExecutors.stream()
                 .collect(toMap(NotifyExecutor::getProductUpdateStatus, t -> t));
     }
@@ -58,18 +57,8 @@ public class NotifyProcessor implements Processor {
 
         notifyToUsers(notifyTarget);
 
-        TUserNotifyUpdateService.updateNotifiedAtByProductId(productId, now);
+        tUserNotifyUpdateService.updateNotifiedAtByProductId(productId, now);
 
-        final NotifyLogInsertDto notifyLog = NotifyLogInsertDto.builder()
-                .productId(productId)
-                .updateStatus(updateStatus)
-                .imageUrl(notifyTarget.getImageUrl())
-                .title(notifyTarget.getTitle())
-                .contents(notifyTarget.getContents())
-                .notifyAt(now)
-                .build();
-
-        notifyLogInsertService.insertNew(notifyLog);
     }
 
 
@@ -80,11 +69,11 @@ public class NotifyProcessor implements Processor {
         final String contents = notifyTarget.getContents();
 
         for (TUserDto user : users) {
-            notifier.notify(TelegramNotifyMessage.create(user.getTelegramId(), imageUrl, contents));
+            telegramNotifyPublisher.publish(TelegramNotifyMessage.create(user.getTelegramId(), imageUrl, contents));
             final String email = user.getEmail();
 
             if (!StringUtils.isEmpty(email)) {
-                notifier.notify(EmailNotifyMessage.create(email, user.getUsername(), title, EmailContentCreator.create(imageUrl, contents)));
+                emailNotifyPublisher.publish(EmailNotifyMessage.create(email, user.getUsername(), title, EmailContentCreator.create(imageUrl, contents)));
             }
 
         }

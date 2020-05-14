@@ -7,6 +7,8 @@ import com.podo.helloprice.product.update.analysis.processor.notify.Notifier;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.Ordered;
+import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
@@ -18,6 +20,7 @@ import static com.podo.helloprice.core.enums.ProductUpdateStatus.UPDATE_UNKNOWN;
 
 @Slf4j
 @RequiredArgsConstructor
+@Order(Ordered.HIGHEST_PRECEDENCE + 1)
 @Component
 public class NotifyAdminProcessor implements Processor {
 

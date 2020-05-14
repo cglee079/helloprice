@@ -7,6 +7,8 @@ import com.podo.helloprice.product.update.analysis.infra.mq.publisher.EmailNotif
 import com.podo.helloprice.product.update.analysis.infra.mq.publisher.TelegramNotifyPublisher;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.core.Ordered;
+import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 

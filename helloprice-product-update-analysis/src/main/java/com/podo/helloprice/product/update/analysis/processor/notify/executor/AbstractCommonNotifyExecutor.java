@@ -19,10 +19,10 @@ public abstract class AbstractCommonNotifyExecutor implements NotifyExecutor {
     private ProductReadService productReadService;
 
     @Autowired
-    private TUserReadService TUserReadService;
+    private TUserReadService tUserReadService;
 
     @Autowired
-    private TUserNotifyReadService TUserNotifyReadService;
+    private TUserNotifyReadService tUserNotifyReadService;
 
     protected abstract String getNotifyTitle(ProductDto product);
 
@@ -31,8 +31,8 @@ public abstract class AbstractCommonNotifyExecutor implements NotifyExecutor {
     @Override
     public NotifyTarget execute(Long productId) {
 
-        List<Long> userIds = TUserNotifyReadService.findUserIdsByProductSaleId(productId);
-        final List<TUserDto> users = TUserReadService.findByUserIdsAndUserStatus(userIds, UserStatus.ALIVE);
+        List<Long> userIds = tUserNotifyReadService.findUserIdsByProductId(productId);
+        final List<TUserDto> users = tUserReadService.findByUserIdsAndUserStatus(userIds, UserStatus.ALIVE);
 
         final ProductDto product = productReadService.findByProductId(productId);
 

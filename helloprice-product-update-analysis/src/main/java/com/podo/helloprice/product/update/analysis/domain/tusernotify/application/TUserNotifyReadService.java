@@ -18,22 +18,23 @@ import static java.util.stream.Collectors.toList;
 @Service
 public class TUserNotifyReadService {
 
-    private final TUserNotifyRepository TUserNotifyRepository;
+    private final TUserNotifyRepository tUserNotifyRepository;
 
     public List<Long> findUserIdsByProductId(Long productId) {
-        final List<TUserNotify> existedUserProductNotifies = TUserNotifyRepository.findByProductId(productId);
+        final List<TUserNotify> existedUserProductNotifies = tUserNotifyRepository.findByProductId(productId);
 
         return existedUserProductNotifies.stream()
-                .map(TUserNotify::getTuser_id)
+                .distinct()
+                .map(TUserNotify::getTUserId)
                 .collect(toList());
 
     }
 
     public List<Long> findUserIdsByProductSaleId(Long productId) {
-        final List<TUserNotify> existedUserProductNotifies = TUserNotifyRepository.findByProductSaleId(productId);
+        final List<TUserNotify> existedUserProductNotifies = tUserNotifyRepository.findByProductSaleId(productId);
 
         return existedUserProductNotifies.stream()
-                .map(TUserNotify::getTuser_id)
+                .map(TUserNotify::getTUserId)
                 .collect(toList());
 
     }
