@@ -4,12 +4,12 @@ spring.cloud:
   stream:
     bindings:
       consumeTelegramNotify-in-0:
-        group: dev.com.podo.hellorpice
-        destination: dev.com.podo.helloprice.notify.telegram
+        group: test
+        destination: tset
         binder: kafka
       consumeEmailNotify-in-0:
-        group: dev.com.podo.hellorpice
-        destination: dev.com.podo.helloprice.notify.email
+        group: test
+        destination: test
         binder: kafka
     kafka:
       binder:

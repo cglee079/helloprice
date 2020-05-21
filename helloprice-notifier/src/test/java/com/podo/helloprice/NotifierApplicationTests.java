@@ -8,8 +8,5 @@ import org.springframework.test.context.ActiveProfiles;
 @SpringBootTest
 class NotifierApplicationTests {
 
-    @Test
-    void contextLoads() {
-    }
 
 }

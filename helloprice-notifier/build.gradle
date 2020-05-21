@@ -9,7 +9,6 @@ jar {
     enabled = false
 }
 
-
 dependencies {
     implementation project(':helloprice-core')
 
