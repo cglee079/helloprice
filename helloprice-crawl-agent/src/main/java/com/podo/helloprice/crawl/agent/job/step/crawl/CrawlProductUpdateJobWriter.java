@@ -84,7 +84,7 @@ public class CrawlProductUpdateJobWriter implements ItemWriter<CrawledProduct> {
                 updateAllProductPrices(productId, 0, "", crawledAt);
                 productUpdateEventStore.add(ProductUpdateEvent.create(productId, ProductUpdateStatus.UPDATE_EMPTY_AMOUNT));
             case SALE:
-                productUpdateEventStore.addAll(updatePrices(productId, crawledProduct, crawledAt));
+                 productUpdateEventStore.addAll(updatePrices(productId, crawledProduct, crawledAt));
         }
 
         log.debug("STEP :: WRITER :: {}({}) ::  상품상태 : `{}`, 상품판매상태 `{}`", productName, productCode, product.getAliveStatus(), ProductSaleStatusParser.kr(product.getSaleStatus()));

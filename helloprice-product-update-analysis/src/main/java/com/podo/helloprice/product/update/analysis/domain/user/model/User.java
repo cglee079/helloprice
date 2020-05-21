@@ -1,9 +1,8 @@
 package com.podo.helloprice.product.update.analysis.domain.user.model;
 
-import com.podo.helloprice.api.domain.BaseEntity;
-import com.podo.helloprice.api.global.security.oauth.value.OAuthType;
+import com.podo.helloprice.core.enums.UserStatus;
+import com.podo.helloprice.product.update.analysis.domain.BaseEntity;
 import lombok.AccessLevel;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -21,20 +20,11 @@ public class User extends BaseEntity {
 
     private String userKey;
 
+    private UserStatus userStatus;
+
     private String username;
 
     private String picture;
 
     private UserRole role;
-
-    private OAuthType oAuthType;
-
-    @Builder
-    public User(String userKey, String username, String picture, UserRole role, OAuthType oAuthType) {
-        this.userKey = userKey;
-        this.username = username;
-        this.picture = picture;
-        this.role = role;
-        this.oAuthType = oAuthType;
-    }
 }

@@ -5,6 +5,7 @@ logging.file.name: helloprice-crawl-agent.%d{yyyy-MM-dd}-%i.log
 ---
 
 spring.profiles: dev
+
 spring.profiles.include: dev-app, dev-jpa, dev-stream
 
 logging:

@@ -25,8 +25,4 @@ public class ProductUpdatePublisher {
         return this.processor;
     }
 
-    @PostConstruct
-    public void dd(){
-        this.publish(new ProductUpdateMessage(60L, ProductUpdateStatus.UPDATE_EMPTY_AMOUNT));
-    }
 }

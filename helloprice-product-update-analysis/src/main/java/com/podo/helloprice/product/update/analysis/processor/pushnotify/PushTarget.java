@@ -10,7 +10,6 @@ import java.util.List;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
-@AllArgsConstructor
 public class PushTarget {
 
     public static final PushTarget EMPTY = new PushTarget();

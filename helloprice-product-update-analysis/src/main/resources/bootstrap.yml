@@ -7,6 +7,8 @@ logging.file.name: helloprice-product-update-analysis.%d{yyyy-MM-dd}-%i.log
 spring.profiles: dev
 spring.profiles.include: dev-infra, dev-jpa, dev-stream
 
+server.port: 8082
+
 logging.file.path: c://dev-log/helloprice/logs/helloprice-product-update-analysis
 
 ---

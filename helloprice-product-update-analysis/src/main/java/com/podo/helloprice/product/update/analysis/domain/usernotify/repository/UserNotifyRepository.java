@@ -9,7 +9,6 @@ import java.util.List;
 
 public interface UserNotifyRepository extends JpaRepository<UserNotify, Long>{
 
-    @Query("SELECT upsn FROM UserNotify upsn where upsn.productSale.product.id = :productId")
-    List<UserNotify> findByProductId(@Param("productId") Long productId);
+    List<UserNotify> findByProductSaleIdIn(List<Long> productSaleIds);
 }
 

@@ -26,10 +26,10 @@ public abstract class AbstractSaleNotifyExecutor implements NotifyExecutor {
     private ProductSaleReadService productSaleReadService;
 
     @Autowired
-    private TUserReadService TUserReadService;
+    private TUserReadService tUserReadService;
 
     @Autowired
-    private TUserNotifyReadService TUserNotifyReadService;
+    private TUserNotifyReadService tUserNotifyReadService;
 
     protected abstract SaleType getSaleType();
 
@@ -38,8 +38,8 @@ public abstract class AbstractSaleNotifyExecutor implements NotifyExecutor {
         final ProductSaleDto productSale = productSaleReadService.findByProductIdAndSaleType(productId, this.getSaleType());
         final ProductDto product = productSale.getProduct();
 
-        final List<Long> userIds = TUserNotifyReadService.findUserIdsByProductSaleId(productSale.getId());
-        final List<TUserDto> users = TUserReadService.findByUserIdsAndUserStatus(userIds, UserStatus.ALIVE);
+        final List<Long> userIds = tUserNotifyReadService.findUserIdsByProductSaleId(productSale.getId());
+        final List<TUserDto> users = tUserReadService.findByUserIdsAndUserStatus(userIds, UserStatus.ALIVE);
 
         final String imageUrl = product.getImageUrl();
         final Integer price = productSale.getPrice();
