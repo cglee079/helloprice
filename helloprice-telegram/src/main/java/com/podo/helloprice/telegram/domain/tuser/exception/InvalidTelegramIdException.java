@@ -1,4 +1,4 @@
-package com.podo.helloprice.telegram.domain.user.exception;
+package com.podo.helloprice.telegram.domain.tuser.exception;
 
 public class InvalidTelegramIdException extends RuntimeException {
     public InvalidTelegramIdException(String telegramId) {

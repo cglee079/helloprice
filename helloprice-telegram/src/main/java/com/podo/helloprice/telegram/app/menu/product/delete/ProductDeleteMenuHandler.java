@@ -11,10 +11,10 @@ import com.podo.helloprice.telegram.app.value.SendMessageVo;
 import com.podo.helloprice.telegram.domain.product.dto.ProductDto;
 import com.podo.helloprice.telegram.domain.productsale.application.ProductSaleReadService;
 import com.podo.helloprice.telegram.domain.productsale.dto.ProductSaleDto;
-import com.podo.helloprice.telegram.domain.user.application.UserReadService;
-import com.podo.helloprice.telegram.domain.user.dto.UserDetailDto;
-import com.podo.helloprice.telegram.domain.usernotify.application.UserNotifyReadService;
-import com.podo.helloprice.telegram.domain.usernotify.application.UerNotifyWriteService;
+import com.podo.helloprice.telegram.domain.tuser.application.TUserReadService;
+import com.podo.helloprice.telegram.domain.tuser.dto.TUserDetailDto;
+import com.podo.helloprice.telegram.domain.tusernotify.application.TUserNotifyReadService;
+import com.podo.helloprice.telegram.domain.tusernotify.application.TUerNotifyWriteService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -28,11 +28,11 @@ import static com.podo.helloprice.telegram.app.menu.product.delete.ProductDelete
 @Component
 public class ProductDeleteMenuHandler extends AbstractMenuHandler {
 
-    private final UserReadService userReadService;
+    private final TUserReadService userReadService;
     private final ProductSaleReadService productSaleReadService;
 
-    private final UserNotifyReadService userNotifyReadService;
-    private final UerNotifyWriteService uerNotifyWriteService;
+    private final TUserNotifyReadService tUserNotifyReadService;
+    private final TUerNotifyWriteService tUerNotifyWriteService;
 
     private final SendMessageCallbackFactory callbackFactory;
 
@@ -64,16 +64,16 @@ public class ProductDeleteMenuHandler extends AbstractMenuHandler {
             return;
         }
 
-        final UserDetailDto user = userReadService.findByTelegramId(telegramId);
+        final TUserDetailDto user = userReadService.findByTelegramId(telegramId);
         final ProductSaleDto productSale = productSaleReadService.findByProductCodeAndSaleType(productDeleteParameter.getProductCode(), productDeleteParameter.getSaleType());
         final ProductDto product = productSale.getProduct();
 
-        if (!userNotifyReadService.isExistedNotify(user.getId(), productSale.getId())) {
+        if (!tUserNotifyReadService.isExistedNotify(user.getId(), productSale.getId())) {
             log.debug("APP :: {} << 삭제 요청한 {}({}) 상품 알림이 등록되어있지 않습니다. 받은메세지 '{}'", telegramId, product.getProductName(), productDeleteParameter, messageContents);
             sender().send(SendMessageVo.create(messageVo, ProductDeleteResponse.alreadyNotNotifyProduct(), homeKeyboard, callbackFactory.create(telegramId, Menu.HOME)));
         }
 
-        uerNotifyWriteService.deleteNotifyByUserIdAndProductId(user.getId(), productSale.getId());
+        tUerNotifyWriteService.deleteNotifyByUserIdAndProductId(user.getId(), productSale.getId());
 
         sender().send(SendMessageVo.create(messageVo, ProductDeleteResponse.deletedNotifyProduct(productSale), createHomeKeyboard(telegramId), callbackFactory.create(telegramId, Menu.HOME)));
     }

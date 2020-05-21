@@ -2,7 +2,7 @@ package com.podo.helloprice.telegram.app;
 
 
 import com.podo.helloprice.telegram.app.menu.Menu;
-import com.podo.helloprice.telegram.domain.user.application.UserWriteService;
+import com.podo.helloprice.telegram.domain.tuser.application.TUserWriteService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -18,7 +18,7 @@ import java.util.Objects;
 @RequiredArgsConstructor
 public class SendMessageCallbackFactory {
 
-    private final UserWriteService userWriteService;
+    private final TUserWriteService userWriteService;
 
     public SentCallback<Message> createDefaultNoAction(String telegramId) {
         return this.create(telegramId, null);

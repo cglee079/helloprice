@@ -1,9 +1,9 @@
-package com.podo.helloprice.telegram.domain.user.model;
+package com.podo.helloprice.telegram.domain.tuser.model;
 
 import com.podo.helloprice.core.enums.UserStatus;
 import com.podo.helloprice.telegram.app.menu.Menu;
 import com.podo.helloprice.telegram.domain.BaseEntity;
-import com.podo.helloprice.telegram.domain.usernotify.UserNotify;
+import com.podo.helloprice.telegram.domain.tusernotify.TUserNotify;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -17,7 +17,7 @@ import java.util.List;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "tuser")
 @Entity
-public class User extends BaseEntity {
+public class TUser extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -39,13 +39,13 @@ public class User extends BaseEntity {
 
     private LocalDateTime lastSendAt;
 
-    @OneToMany(mappedBy = "user")
-    List<UserNotify> userProductNotifies;
+    @OneToMany(mappedBy = "tUser")
+    private List<TUserNotify> userProductNotifies;
 
     @Builder
-    public User(String username,
-                String telegramId, String email, Integer errorCount,
-                Menu menuStatus, UserStatus userStatus, LocalDateTime lastSendAt) {
+    public TUser(String username,
+                 String telegramId, String email, Integer errorCount,
+                 Menu menuStatus, UserStatus userStatus, LocalDateTime lastSendAt) {
         this.username = username;
         this.telegramId = telegramId;
         this.email = email;
@@ -63,12 +63,12 @@ public class User extends BaseEntity {
         this.menuStatus = menuStatus;
     }
 
-    public void addUserProductNotify(UserNotify userNotify) {
-        this.userProductNotifies.add(userNotify);
+    public void addUserProductNotify(TUserNotify tUserNotify) {
+        this.userProductNotifies.add(tUserNotify);
     }
 
-    public void removeUserProductNotify(UserNotify userNotify) {
-        this.userProductNotifies.remove(userNotify);
+    public void removeUserProductNotify(TUserNotify tUserNotify) {
+        this.userProductNotifies.remove(tUserNotify);
     }
 
     public void increaseErrorCount(Integer userMaxErrorCount) {

@@ -22,9 +22,9 @@ import com.podo.helloprice.telegram.domain.product.application.ProductReadServic
 import com.podo.helloprice.telegram.domain.product.dto.ProductDto;
 import com.podo.helloprice.telegram.domain.productsale.application.ProductSaleReadService;
 import com.podo.helloprice.telegram.domain.productsale.dto.ProductSaleDto;
-import com.podo.helloprice.telegram.domain.user.application.UserReadService;
-import com.podo.helloprice.telegram.domain.user.dto.UserDetailDto;
-import com.podo.helloprice.telegram.domain.usernotify.application.UserNotifyReadService;
+import com.podo.helloprice.telegram.domain.tuser.application.TUserReadService;
+import com.podo.helloprice.telegram.domain.tuser.dto.TUserDetailDto;
+import com.podo.helloprice.telegram.domain.tusernotify.application.TUserNotifyReadService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -47,11 +47,11 @@ public class HomeMenuHandler extends AbstractMenuHandler {
     @Value("${app.help_url}")
     private String helpUrl;
 
-    private final UserReadService userReadService;
+    private final TUserReadService userReadService;
     private final ProductSaleReadService productSaleReadService;
     private final ProductReadService productReadService;
 
-    private final UserNotifyReadService userNotifyReadService;
+    private final TUserNotifyReadService tUserNotifyReadService;
     private final SendMessageCallbackFactory callbackFactory;
 
     @Override
@@ -91,12 +91,12 @@ public class HomeMenuHandler extends AbstractMenuHandler {
     }
 
     private void handleProductDescCommands(MessageVo messageVo, String telegramId, ProductDescParameter productDescParameter) {
-        final UserDetailDto user = userReadService.findByTelegramId(telegramId);
+        final TUserDetailDto user = userReadService.findByTelegramId(telegramId);
         final ProductSaleDto productSale = productSaleReadService.findByProductCodeAndSaleType(productDescParameter.getProductCode(), productDescParameter.getSaleType());
         final ProductDto product = productSale.getProduct();
 
         //상품알림이 등록되어있지 않은 경우.
-        if (!userNotifyReadService.isExistedNotify(user.getId(), productSale.getId())) {
+        if (!tUserNotifyReadService.isExistedNotify(user.getId(), productSale.getId())) {
             log.debug("APP :: {} << 등록되지 않았거나, 알림 삭제된 상품입니다 : {}", telegramId, product.getProductCode());
             sender().send(SendMessageVo.create(messageVo, HomeResponse.invalidNotifyProduct(), createHomeKeyboard(telegramId), callbackFactory.create(telegramId, Menu.HOME)));
             return;
@@ -119,7 +119,7 @@ public class HomeMenuHandler extends AbstractMenuHandler {
 
             case ITEM_DELETE:
                 log.debug("APP :: {} << 상품 삭제 메뉴로 이동. 받은메세지 '{}'", telegramId, requestMessage);
-                final List<String> productDeleteCommands = ProductDeleteCommandTranslator.encodes(userNotifyReadService.findByTelegramId(telegramId));
+                final List<String> productDeleteCommands = ProductDeleteCommandTranslator.encodes(tUserNotifyReadService.findByTelegramId(telegramId));
                 sender().send(SendMessageVo.create(messageVo, ProductDeleteResponse.explain(), new ProductDeleteKeyboard(productDeleteCommands), callbackFactory.create(telegramId, Menu.PRODUCT_DELETE)));
                 break;
 
@@ -142,7 +142,7 @@ public class HomeMenuHandler extends AbstractMenuHandler {
     private void handleEmailAddCommand(MessageVo messageVo, HomeKeyboard homeKeyboard) {
         final String telegramId = messageVo.getTelegramId();
 
-        final UserDetailDto user = userReadService.findByTelegramId(telegramId);
+        final TUserDetailDto user = userReadService.findByTelegramId(telegramId);
         final String userEmail = user.getEmail();
 
         if (Objects.nonNull(userEmail)) {
@@ -158,7 +158,7 @@ public class HomeMenuHandler extends AbstractMenuHandler {
     private void handleEmailDeleteCommand(MessageVo messageVo, HomeKeyboard homeKeyboard) {
         final String telegramId = messageVo.getTelegramId();
 
-        final UserDetailDto user = userReadService.findByTelegramId(telegramId);
+        final TUserDetailDto user = userReadService.findByTelegramId(telegramId);
         final String userEmail = user.getEmail();
 
         if (StringUtils.isEmpty(userEmail)) {

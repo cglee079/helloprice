@@ -1,16 +1,16 @@
-package com.podo.helloprice.telegram.domain.user.dto;
+package com.podo.helloprice.telegram.domain.tuser.dto;
 
 
 import com.podo.helloprice.core.enums.UserStatus;
 import com.podo.helloprice.telegram.app.menu.Menu;
-import com.podo.helloprice.telegram.domain.user.model.User;
+import com.podo.helloprice.telegram.domain.tuser.model.TUser;
 import lombok.Builder;
 import lombok.Getter;
 
 import java.time.LocalDateTime;
 
 @Getter
-public class UserInsertDto {
+public class TUserInsertDto {
 
     private String telegramId;
     private String username;
@@ -20,7 +20,7 @@ public class UserInsertDto {
     private LocalDateTime lastSendAt;
 
     @Builder
-    public UserInsertDto(String telegramId, String username, String email, Menu menuStatus, UserStatus userStatus, LocalDateTime lastSendAt) {
+    public TUserInsertDto(String telegramId, String username, String email, Menu menuStatus, UserStatus userStatus, LocalDateTime lastSendAt) {
         this.telegramId = telegramId;
         this.username = username;
         this.email = email;
@@ -29,8 +29,8 @@ public class UserInsertDto {
         this.lastSendAt = lastSendAt;
     }
 
-    public User toEntity() {
-        return User.builder()
+    public TUser toEntity() {
+        return TUser.builder()
                 .telegramId(telegramId)
                 .username(username)
                 .email(email)

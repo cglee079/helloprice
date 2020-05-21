@@ -1,8 +1,8 @@
-package com.podo.helloprice.telegram.domain.usernotify;
+package com.podo.helloprice.telegram.domain.tusernotify;
 
 import com.podo.helloprice.telegram.domain.BaseTimeEntity;
 import com.podo.helloprice.telegram.domain.productsale.ProductSale;
-import com.podo.helloprice.telegram.domain.user.model.User;
+import com.podo.helloprice.telegram.domain.tuser.model.TUser;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -14,7 +14,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "tuser_notify")
 @Entity
-public class UserNotify extends BaseTimeEntity {
+public class TUserNotify extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -22,7 +22,7 @@ public class UserNotify extends BaseTimeEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "tuser_id")
-    private User user;
+    private TUser tUser;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "product_sale_id")
@@ -30,8 +30,8 @@ public class UserNotify extends BaseTimeEntity {
 
     private LocalDateTime lastNotifiedAt;
 
-    public UserNotify(User user, ProductSale productSale) {
-        this.user = user;
+    public TUserNotify(TUser tUser, ProductSale productSale) {
+        this.tUser = tUser;
         this.productSale = productSale;
     }
 }

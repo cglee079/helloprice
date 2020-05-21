@@ -6,7 +6,7 @@ import com.podo.helloprice.telegram.app.menu.AbstractMenuHandler;
 import com.podo.helloprice.telegram.app.menu.home.HomeKeyboard;
 import com.podo.helloprice.telegram.app.value.MessageVo;
 import com.podo.helloprice.telegram.app.value.SendMessageVo;
-import com.podo.helloprice.telegram.domain.user.application.UserWriteService;
+import com.podo.helloprice.telegram.domain.tuser.application.TUserWriteService;
 import com.podo.helloprice.telegram.app.menu.Menu;
 import com.podo.helloprice.telegram.global.email.EmailAuthKeyStore;
 import lombok.RequiredArgsConstructor;
@@ -25,7 +25,7 @@ import static com.podo.helloprice.telegram.app.menu.Menu.HOME;
 public class EmailKeyMenuHandler extends AbstractMenuHandler {
 
     private final EmailAuthKeyStore emailAuthKeyStore;
-    private final UserWriteService userWriteService;
+    private final TUserWriteService userWriteService;
     private final SendMessageCallbackFactory callbackFactory;
 
     @Override

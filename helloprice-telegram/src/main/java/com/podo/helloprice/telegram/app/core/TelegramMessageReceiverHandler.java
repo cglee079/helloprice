@@ -8,10 +8,10 @@ import com.podo.helloprice.telegram.app.menu.MenuHandler;
 import com.podo.helloprice.telegram.app.menu.home.HomeKeyboard;
 import com.podo.helloprice.telegram.app.value.MessageVo;
 import com.podo.helloprice.telegram.app.value.SendMessageVo;
-import com.podo.helloprice.telegram.domain.user.application.UserReadService;
-import com.podo.helloprice.telegram.domain.user.application.UserWriteService;
-import com.podo.helloprice.telegram.domain.user.dto.UserDetailDto;
-import com.podo.helloprice.telegram.domain.user.dto.UserInsertDto;
+import com.podo.helloprice.telegram.domain.tuser.application.TUserReadService;
+import com.podo.helloprice.telegram.domain.tuser.application.TUserWriteService;
+import com.podo.helloprice.telegram.domain.tuser.dto.TUserDetailDto;
+import com.podo.helloprice.telegram.domain.tuser.dto.TUserInsertDto;
 import com.podo.helloprice.telegram.app.menu.Menu;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -36,8 +36,8 @@ public class TelegramMessageReceiverHandler {
     @Value("${app.help_url}")
     private String helpUrl;
 
-    private final UserReadService userReadService;
-    private final UserWriteService userWriteService;
+    private final TUserReadService userReadService;
+    private final TUserWriteService userWriteService;
 
     private final TelegramMessageSender telegramMessageSender;
     private final SendMessageCallbackFactory callbackFactory;
@@ -62,7 +62,7 @@ public class TelegramMessageReceiverHandler {
             return;
         }
 
-        final UserDetailDto userDetail = userReadService.findByTelegramId(telegramId);
+        final TUserDetailDto userDetail = userReadService.findByTelegramId(telegramId);
 
         if (userDetail.getUserStatus().equals(UserStatus.DEAD)) {
             reviveExistedUser(userDetail.getId(), messageVo);
@@ -84,7 +84,7 @@ public class TelegramMessageReceiverHandler {
 
         log.debug("APP :: {} << 새로운 사용자가 등록되었습니다 {}({})", telegramId, username, telegramId);
 
-        final UserInsertDto userInsert = UserInsertDto.builder()
+        final TUserInsertDto userInsert = TUserInsertDto.builder()
                 .username(username)
                 .telegramId(telegramId)
                 .email(null)
