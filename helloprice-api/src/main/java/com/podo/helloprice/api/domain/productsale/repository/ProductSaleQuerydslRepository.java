@@ -7,9 +7,11 @@ import com.podo.helloprice.api.domain.productsale.ProductSale;
 import com.querydsl.core.group.GroupBy;
 import com.querydsl.core.types.dsl.NumberExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import jdk.nashorn.internal.codegen.types.BitwiseType;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
@@ -25,13 +27,12 @@ public class ProductSaleQuerydslRepository {
 
 
     public List<ProductSale> findTopDecrease(int limit, LocalDateTime now) {
-        final NumberExpression<Double> priceChangeRate = productSale.price.doubleValue()
-                .subtract(productSale.prevPrice)
-                .divide(productSale.prevPrice);
+        final NumberExpression<BigDecimal> priceChangeRate = productSale.price.castToNum(BigDecimal.class)
+                .subtract(productSale.prevPrice.castToNum(BigDecimal.class))
+                .divide(productSale.prevPrice.castToNum(BigDecimal.class));
 
         return queryFactory.selectFrom(productSale)
                 .limit(limit)
-                .where(priceChangeRate.lt(0))
                 .orderBy(priceChangeRate.asc())
                 .fetch();
     }

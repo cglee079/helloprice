@@ -70,11 +70,13 @@ Response
         "id": 2240,
         "productName": "원더스리빙 원더스 브리즈킹 WF70",
         "productCode": "7862200",
+        "description": "LED백라이트 / 무풍",
         "url": "http://prod.danawa.com/info/?pcode=7862200",
         "imageUrl": "http://img.danawa.com/prod_img/500000/200/862/img/7862200_1.jpg?shrink=500:500&_v=20200325134432",
-        "saleType": "NORMAL",
+        "saleType": "CARD",
         "price": 28100,
         "prevPrice": 29900,
+        "additionalInfo": "신한",
         "priceChangeRate": -6.02007,
         "lastUpdateAt": "2020-05-12T08:44:40"
         "notifyOn: true // 알림 등록 여부
