@@ -7,7 +7,8 @@
 ### v0.0.0 
 - 최초 배포
 - 상품 등록
-- 사용자 알림 상품 조회
+- ~~사용자 알림 상품 조회~~
+- 사용자 상품 알림 조회
 - 사용자 상품 알림 등록
 - 사용자 상품 알림 삭제
 <br/>
@@ -91,10 +92,10 @@ Response
 
 `GET /api/v0/my/notifies/product`
 
-Request Header
+~~Request Header~~
 - `Authorization` : 토큰 (require), format : `Bearer tokenblabla`
 
-Response
+~~Response~~
 ```
 {
     "size": 1,
@@ -146,7 +147,7 @@ Response
 <br/>
 
 
-### 개인화 - 사용자 알림 등록 상품 조회
+### 개인화 - 사용자 상품 알림 조회
 
 `GET /api/v0/my/notifies`
 
@@ -203,6 +204,8 @@ Response Sample
     ]
 }
 ```
+
+<br/>
 
 ### 개인화 - 사용자 상품 알림 등록
 
