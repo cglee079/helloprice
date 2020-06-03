@@ -14,7 +14,6 @@ import java.util.List;
 @RestController
 public class ProductPersonalApi {
 
-
     private final ProductPersonalReadService productPersonalReadService;
 
     @GetMapping("/api/v0/my/products")

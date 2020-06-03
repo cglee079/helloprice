@@ -13,5 +13,7 @@ public interface UserNotifyRepository extends JpaRepository<UserNotify, Long>{
     Optional<UserNotify> findByUserIdAndProductSaleId(Long userId, Long productSaleId);
 
     List<UserNotify> findByProductSaleIdIn(List<Long> productSaleIds);
+
+    void deleteByUserIdAndProductSaleId(Long userId, Long productSaleId);
 }
 

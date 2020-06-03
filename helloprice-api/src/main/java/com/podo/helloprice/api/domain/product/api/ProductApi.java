@@ -21,8 +21,6 @@ public class ProductApi {
     public ProductSimpleDto write(@Valid @RequestBody ProductPersistDto productWrite){
         final Long productId = productPersistService.persist(productWrite, LocalDateTime.now());
         return productSimpleReadService.get(productId);
-
     }
-
 
 }
