@@ -1,11 +1,11 @@
 package com.podo.helloprice.api.global.security;
 
+import com.podo.helloprice.api.global.security.filter.CorsFilter;
 import com.podo.helloprice.api.global.security.filter.TokenAuthFilter;
 import com.podo.helloprice.api.global.security.oauth.OAuth2Service;
 import com.podo.helloprice.api.global.security.token.SecurityTokenStore;
 import com.podo.helloprice.core.enums.RequestHeader;
 import lombok.RequiredArgsConstructor;
-import org.apache.catalina.filters.CorsFilter;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.access.expression.SecurityExpressionHandler;
@@ -47,7 +47,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
         http.authorizeRequests().expressionHandler(expressionHandler());
 
-        http.authorizeRequests().antMatchers("/api/v0/*").hasRole(USER.name());
+        http.authorizeRequests().antMatchers("/api/v0/**").hasRole(USER.name());
 
         http.addFilterBefore(new CorsFilter(), SessionManagementFilter.class);
         http.addFilterBefore(new TokenAuthFilter(securityTokenStore), BasicAuthenticationFilter.class);

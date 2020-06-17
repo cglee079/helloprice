@@ -22,6 +22,7 @@ dependencies {
     implementation 'mysql:mysql-connector-java'
     implementation group: 'javax.mail', name: 'mail', version: '1.4.7'
 
+
     testImplementation 'org.springframework.cloud:spring-cloud-stream-test-support'
     testImplementation group: 'com.h2database', name: 'h2', version: '1.4.200'
 }

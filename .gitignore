@@ -23,3 +23,5 @@ out/
 application-*.yml
 *.log
 !application-test*.yml
+
+firebase-admin-sdk.json

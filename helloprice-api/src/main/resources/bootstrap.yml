@@ -11,7 +11,8 @@ logging:
   file.path: c://dev-log/helloprice/logs/helloprice-api
 
 server:
-  port: 8082
+  port: 8094
+
 ---
 
 spring.profiles: test
