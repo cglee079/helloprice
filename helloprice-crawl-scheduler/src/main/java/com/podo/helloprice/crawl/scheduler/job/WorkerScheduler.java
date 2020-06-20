@@ -14,7 +14,8 @@ public class WorkerScheduler {
 
     private final List<Worker> workers;
 
-    @Scheduled(cron = "*/10 * * * * *")
+    //TODO
+    @Scheduled(cron = "0 * * * * *")
     public void schedule() {
         LocalDateTime now = LocalDateTime.now();
 
