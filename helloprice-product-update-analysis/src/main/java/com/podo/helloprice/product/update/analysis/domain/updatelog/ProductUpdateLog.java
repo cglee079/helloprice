@@ -31,6 +31,10 @@ public class ProductUpdateLog {
 
     private String url;
 
+    private Integer price;
+
+    private Integer prevPrice;
+
     private String imageUrl;
 
     @Enumerated(EnumType.STRING)
@@ -44,15 +48,21 @@ public class ProductUpdateLog {
 
     private LocalDateTime productUpdateAt;
 
-    public ProductUpdateLog(Product product, ProductUpdateStatus updateStatus, LocalDateTime productUpdateAt) {
+    public ProductUpdateLog(Product product, Integer price, Integer prevPrice, ProductUpdateStatus updateStatus, LocalDateTime productUpdateAt) {
         this.productId = product.getId();
         this.productName = product.getProductName();
         this.productCode = product.getProductCode();
         this.url = product.getUrl();
         this.imageUrl = product.getImageUrl();
+        this.price = price;
+        this.prevPrice = prevPrice;
         this.aliveStatus = product.getAliveStatus();
         this.saleStatus = product.getSaleStatus();
         this.updateStatus = updateStatus;
         this.productUpdateAt = productUpdateAt;
+    }
+
+    public ProductUpdateLog(Product product, ProductUpdateStatus productUpdateStatus, LocalDateTime now) {
+        this(product, null, null, productUpdateStatus, now);
     }
 }

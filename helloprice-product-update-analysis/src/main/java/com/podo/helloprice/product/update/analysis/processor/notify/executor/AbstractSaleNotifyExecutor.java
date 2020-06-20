@@ -91,8 +91,10 @@ public abstract class AbstractSaleNotifyExecutor implements NotifyExecutor {
 
         return new StringBuilder()
                 .append("<b>")
-                .append("상품이름 : ")
+                .append("상품 : ")
                 .append(product.getProductName())
+                .append("/")
+                .append(SaleTypeParser.kr(productSale.getSaleType()))
                 .append("</b>")
                 .append("\n")
 
@@ -133,8 +135,10 @@ public abstract class AbstractSaleNotifyExecutor implements NotifyExecutor {
 
         return new StringBuilder()
                 .append("<b>")
-                .append("상품이름 : ")
+                .append("상품 : ")
                 .append(product.getProductName())
+                .append("/")
+                .append(SaleTypeParser.kr(productSale.getSaleType()))
                 .append("</b>")
                 .append("\n")
 
@@ -171,8 +175,10 @@ public abstract class AbstractSaleNotifyExecutor implements NotifyExecutor {
 
         return new StringBuilder()
                 .append("<b>")
-                .append("상품이름 : ")
+                .append("상품 : ")
                 .append(product.getProductName())
+                .append("/")
+                .append(SaleTypeParser.kr(productSale.getSaleType()))
                 .append("</b>")
                 .append("\n")
 

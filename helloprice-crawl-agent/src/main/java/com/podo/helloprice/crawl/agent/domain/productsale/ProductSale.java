@@ -1,6 +1,7 @@
 package com.podo.helloprice.crawl.agent.domain.productsale;
 
 import com.podo.helloprice.core.enums.SaleType;
+import com.podo.helloprice.crawl.agent.domain.BaseEntity;
 import com.podo.helloprice.crawl.agent.domain.product.Product;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -16,7 +17,7 @@ import java.util.Objects;
 @Entity
 @Table(name = "product_sale")
 @Getter
-public class ProductSale {
+public class ProductSale extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -36,12 +37,6 @@ public class ProductSale {
     private String additionalInfo;
 
     private LocalDateTime lastUpdateAt;
-
-    @LastModifiedDate
-    private LocalDateTime updateAt;
-
-    @LastModifiedBy
-    private String updateBy;
 
     public static ProductSale create(SaleType saleType, Product product, Integer price, String additionalInfo, LocalDateTime lastUpdateAt) {
         final ProductSale productSale = new ProductSale();

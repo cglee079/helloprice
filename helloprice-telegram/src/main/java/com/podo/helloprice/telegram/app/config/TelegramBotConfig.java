@@ -1,8 +1,10 @@
 package com.podo.helloprice.telegram.app.config;
 
+import com.podo.helloprice.telegram.app.SendMessageCallbackFactory;
 import com.podo.helloprice.telegram.app.core.TelegramMessageReceiver;
 import com.podo.helloprice.telegram.app.core.TelegramMessageReceiverHandler;
 import com.podo.helloprice.telegram.app.core.TelegramMessageSender;
+import com.podo.helloprice.telegram.domain.tuser.repository.TUserRepository;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -24,8 +26,8 @@ public class TelegramBotConfig {
     }
 
     @Bean
-    public TelegramMessageSender telegramMessageSender(){
-        return new TelegramMessageSender(botToken);
+    public TelegramMessageSender telegramMessageSender(TUserRepository tUserRepository, SendMessageCallbackFactory sendMessageCallbackFactory){
+        return new TelegramMessageSender(botToken, tUserRepository, sendMessageCallbackFactory);
     }
 
     @Bean

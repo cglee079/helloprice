@@ -7,6 +7,8 @@ logging.file.name: helloprice-telegram.%d{yyyy-MM-dd}-%i.log
 spring.profiles: dev
 spring.profiles.include: dev-app, dev-jpa, dev-infra
 
+server.port: 8084
+
 logging:
   file.path: c://dev-log/helloprice/logs/helloprice-telegram
 

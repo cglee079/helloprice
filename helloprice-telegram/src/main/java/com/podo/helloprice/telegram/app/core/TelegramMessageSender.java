@@ -1,23 +1,37 @@
 package com.podo.helloprice.telegram.app.core;
 
+import com.podo.helloprice.telegram.app.SendMessageCallbackFactory;
+import com.podo.helloprice.telegram.app.value.MessageVo;
 import com.podo.helloprice.telegram.app.value.SendMessageVo;
+import com.podo.helloprice.telegram.domain.tuser.repository.TUserRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.util.StringUtils;
 import org.telegram.telegrambots.bots.DefaultAbsSender;
 import org.telegram.telegrambots.bots.DefaultBotOptions;
 import org.telegram.telegrambots.meta.ApiContext;
+import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.methods.send.SendPhoto;
+import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
+import org.telegram.telegrambots.meta.exceptions.TelegramApiRequestException;
+import org.telegram.telegrambots.meta.updateshandlers.SentCallback;
+
+import javax.annotation.PostConstruct;
+import java.util.List;
 
 @Slf4j
 public class TelegramMessageSender extends DefaultAbsSender {
 
     private final String botToken;
+    private final TUserRepository tUserRepository;
+    private final SendMessageCallbackFactory sendMessageCallbackFactory;
 
-    public TelegramMessageSender(String botToken) {
+    public TelegramMessageSender(String botToken, TUserRepository tUserRepository, SendMessageCallbackFactory sendMessageCallbackFactory) {
         super(ApiContext.getInstance(DefaultBotOptions.class));
         this.botToken = botToken;
+        this.tUserRepository = tUserRepository;
+        this.sendMessageCallbackFactory = sendMessageCallbackFactory;
     }
 
     @Override
