@@ -2,8 +2,8 @@ package com.podo.helloprice.product.update.analysis.processor.notifyadmin;
 
 import com.podo.helloprice.core.enums.ProductUpdateStatus;
 import com.podo.helloprice.product.update.analysis.infra.mq.message.TelegramNotifyMessage;
+import com.podo.helloprice.product.update.analysis.infra.mq.publisher.TelegramNotifyPublisher;
 import com.podo.helloprice.product.update.analysis.processor.Processor;
-import com.podo.helloprice.product.update.analysis.processor.notify.Notifier;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -29,14 +29,14 @@ public class NotifyAdminProcessor implements Processor {
     @Value("${infra.telegram.admin.id}")
     private String adminTelegramId;
 
-    private final Notifier notifier;
+    private final TelegramNotifyPublisher telegramNotifyPublisher;
 
     @Override
     public void process(Long productId, ProductUpdateStatus updateStatus, LocalDateTime now) {
         log.debug("PROCESSOR :: NOTIFY ADMIN :: ID : {}, UPDATE : {}, DATETIME : {}", productId, updateStatus, now);
 
         if (NOTIFY_ADMIN_PRODUCT_UPDATES.contains(updateStatus)) {
-            notifier.notify(TelegramNotifyMessage.create(adminTelegramId, null, createContents(productId, updateStatus)));
+            telegramNotifyPublisher.publish(TelegramNotifyMessage.create(adminTelegramId, null, createContents(productId, updateStatus)));
         }
     }
 

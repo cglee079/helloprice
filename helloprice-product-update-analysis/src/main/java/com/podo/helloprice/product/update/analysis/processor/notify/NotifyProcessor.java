@@ -58,7 +58,6 @@ public class NotifyProcessor implements Processor {
         notifyToUsers(notifyTarget);
 
         tUserNotifyUpdateService.updateNotifiedAtByProductId(productId, now);
-
     }
 
 
@@ -68,14 +67,14 @@ public class NotifyProcessor implements Processor {
         final String title = notifyTarget.getTitle();
         final String contents = notifyTarget.getContents();
 
-        for (TUserDto user : users) {
-            telegramNotifyPublisher.publish(TelegramNotifyMessage.create(user.getTelegramId(), imageUrl, contents));
-            final String email = user.getEmail();
-
-            if (!StringUtils.isEmpty(email)) {
-                emailNotifyPublisher.publish(EmailNotifyMessage.create(email, user.getUsername(), title, EmailContentCreator.create(imageUrl, contents)));
-            }
-
-        }
+        //TODO
+//        for (TUserDto user : users) {
+//                telegramNotifyPublisher.publish(TelegramNotifyMessage.create(user.getTelegramId(), imageUrl, contents));
+//                final String email = user.getEmail();
+//
+//                if (!StringUtils.isEmpty(email)) {
+//                    emailNotifyPublisher.publish(EmailNotifyMessage.create(email, user.getUsername(), title, EmailContentCreator.create(imageUrl, contents)));
+//                }
+//        }
     }
 }
