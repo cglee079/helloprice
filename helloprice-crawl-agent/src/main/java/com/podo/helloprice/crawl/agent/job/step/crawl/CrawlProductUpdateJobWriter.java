@@ -74,15 +74,19 @@ public class CrawlProductUpdateJobWriter implements ItemWriter<CrawledProduct> {
             case UNKNOWN:
                 updateAllProductPrices(productId, 0, "", crawledAt);
                 productUpdateEventStore.add(ProductUpdateEvent.create(productId, ProductUpdateStatus.UPDATE_UNKNOWN));
+                break;
             case DISCONTINUE:
                 updateAllProductPrices(productId, 0, "", crawledAt);
                 productUpdateEventStore.add(ProductUpdateEvent.create(productId, ProductUpdateStatus.UPDATE_DISCONTINUE));
+                break;
             case NOT_SUPPORT:
                 updateAllProductPrices(productId, 0, "", crawledAt);
                 productUpdateEventStore.add(ProductUpdateEvent.create(productId, ProductUpdateStatus.UPDATE_NOT_SUPPORT));
+                break;
             case EMPTY_AMOUNT:
                 updateAllProductPrices(productId, 0, "", crawledAt);
                 productUpdateEventStore.add(ProductUpdateEvent.create(productId, ProductUpdateStatus.UPDATE_EMPTY_AMOUNT));
+                break;
             case SALE:
                  productUpdateEventStore.addAll(updatePrices(productId, crawledProduct, crawledAt));
         }
