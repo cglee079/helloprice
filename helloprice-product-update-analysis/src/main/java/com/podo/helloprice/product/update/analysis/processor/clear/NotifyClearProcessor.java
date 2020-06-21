@@ -26,6 +26,7 @@ public class NotifyClearProcessor implements Processor {
             case UPDATE_DISCONTINUE:
             case UPDATE_NOT_SUPPORT:
                 TUserNotifyDeleteService.deleteNotifiesByProductId(productId);
+                break;
             case UPDATE_SALE_NORMAL_PRICE:
             case UPDATE_SALE_CARD_PRICE:
             case UPDATE_SALE_CASH_PRICE:

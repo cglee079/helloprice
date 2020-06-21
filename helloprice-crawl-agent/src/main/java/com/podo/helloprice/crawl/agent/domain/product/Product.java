@@ -68,10 +68,13 @@ public class Product {
             case DISCONTINUE:
             case NOT_SUPPORT:
                 this.aliveStatus = ProductAliveStatus.PAUSE;
+                break;
             case EMPTY_AMOUNT:
             case SALE:
                 this.aliveStatus = ProductAliveStatus.ALIVE;
+                break;
             default:
+                break;
         }
     }
 
