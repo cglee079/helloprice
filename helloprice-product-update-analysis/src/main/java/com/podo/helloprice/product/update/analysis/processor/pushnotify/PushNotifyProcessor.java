@@ -17,7 +17,8 @@ import static java.util.stream.Collectors.toMap;
 
 @Slf4j
 @Order(Ordered.HIGHEST_PRECEDENCE)
-@Component
+//TODO
+//@Component
 public class PushNotifyProcessor implements Processor {
 
     private final UserNotifyUpdateService userNotifyUpdateService;
