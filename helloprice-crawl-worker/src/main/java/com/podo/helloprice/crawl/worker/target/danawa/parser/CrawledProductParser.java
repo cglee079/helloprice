@@ -10,6 +10,7 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 
 import java.time.LocalDateTime;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Objects;
 
@@ -48,7 +49,7 @@ public class CrawledProductParser {
             priceTypeToPrice.put(CASH,  getCashPrice(document));
             priceTypeToPrice.put(CARD,  getCardPrice(document));
 
-            final ProductSaleStatus saleStatus = getProductSaleStatus(priceTypeToPrice.get(NORMAL), document.select(SELECTOR_PRODUCT_SALE_STATUS).text().trim());
+            final ProductSaleStatus saleStatus = getProductSaleStatus(priceTypeToPrice.values(), document.select(SELECTOR_PRODUCT_SALE_STATUS).text().trim());
 
             return CrawledProduct.builder()
                     .productCode(productCode)
@@ -91,8 +92,8 @@ public class CrawledProductParser {
         );
     }
 
-    private ProductSaleStatus getProductSaleStatus(CrawledProductPrice crawledProductPrice, String saleStatusText) {
-        if (crawledProductPrice.getPrice() != 0) {
+    private ProductSaleStatus getProductSaleStatus(Collection<CrawledProductPrice> crawledProductPrices, String saleStatusText) {
+        if (crawledProductPrices.stream().filter(Objects::nonNull).anyMatch(p -> p.getPrice() != 0)) {
             return ProductSaleStatus.SALE;
         }
 

@@ -58,6 +58,31 @@ class DanawaProductCrawlerTest {
         assertThat(crawledProduct.getCrawledAt()).isEqualTo(crawledAt);
     }
 
+    @DisplayName("판매중인 상품 크롤링, 일반/카드 없는 경우")
+    @Test
+    void testCrawlSaleProduct2() throws FailReadDocumentException {
+
+        //given
+        final String productCode = "10055181";
+        final String html = TestUtil.getStringFromResource("document", "danawa_product_page_sale2.html");
+        final LocalDateTime crawledAt = LocalDateTime.now();
+
+        final Document document = Jsoup.parse(html);
+        given(documentPromptReader.getDocument(DanawaProductCrawler.DANAWA_PRODUCT_URL + productCode)).willReturn(document);
+
+        //when
+        final CrawledProduct crawledProduct = danawaProductCrawler.crawl(productCode, crawledAt);
+
+        //then
+        assertThat(crawledProduct.getProductCode()).isEqualTo(productCode);
+        assertThat(crawledProduct.getSaleStatus()).isEqualTo(ProductSaleStatus.SALE);
+        assertThat(crawledProduct.getProductPriceByType(SaleType.NORMAL).getPrice()).isEqualTo(0);
+        assertThat(crawledProduct.getProductPriceByType(CASH).getPrice()).isEqualTo(1300000);
+        assertThat(crawledProduct.getProductPriceByType(SaleType.CARD)).isNull();
+        assertThat(crawledProduct.getProductName()).isNotEmpty();
+        assertThat(crawledProduct.getCrawledAt()).isEqualTo(crawledAt);
+    }
+
     @DisplayName("재고없는 상품 크롤링")
     @Test
     void testCrawlEmptyStockProduct() throws FailReadDocumentException {
