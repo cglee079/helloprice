@@ -20,7 +20,7 @@ public class User extends BaseEntity {
 
     private String userKey;
 
-    @Enumerated
+    @Enumerated(EnumType.STRING)
     private UserStatus userStatus;
 
     private String username;
