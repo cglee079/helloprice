@@ -13,7 +13,7 @@ public class TelegramNotifyPublisher {
     private final EmitterProcessor<TelegramNotifyMessage> processor  = EmitterProcessor.create();
 
     public void publish(TelegramNotifyMessage telegramNotifyMessage){
-        log.debug("MQ :: PUBLISH :: payload : {}", telegramNotifyMessage);
+        log.debug("MQ :: TELEGRAM NOTIFY PUBLISH :: payload : {}", telegramNotifyMessage);
 
         processor.onNext(telegramNotifyMessage);
     }

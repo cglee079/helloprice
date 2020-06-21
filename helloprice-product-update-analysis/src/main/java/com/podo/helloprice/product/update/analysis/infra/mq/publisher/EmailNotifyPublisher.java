@@ -14,12 +14,11 @@ public class EmailNotifyPublisher {
     private final EmitterProcessor<EmailNotifyMessage> processor  = EmitterProcessor.create();
 
     public void publish(EmailNotifyMessage emailNotifyMessage) {
-        log.debug("MQ :: PUBLISH :: payload : {}", emailNotifyMessage);
+        log.debug("MQ :: EMAIL NOTIFY PUBLISH :: payload : {}", emailNotifyMessage);
         processor.onNext(emailNotifyMessage);
     }
 
     public Flux<EmailNotifyMessage> processor() {
         return this.processor;
     }
-
 }
