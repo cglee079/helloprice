@@ -28,3 +28,13 @@ spring.cloud.config.uri: http://192.168.219.103:8888
 
 logging:
   file.path: /data/logs
+
+---
+
+spring.profiles: external-deploy
+spring.profiles.include: external-deploy-app, external-deploy-jpa, external-deploy-stream
+
+spring.cloud.config.uri: http://125.186.242.83:8888
+
+logging:
+  file.path: /data/logs
