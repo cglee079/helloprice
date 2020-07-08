@@ -1,0 +1,32 @@
+spring.application.name: helloprice-api
+
+logging.file.name: helloprice-api.%d{yyyy-MM-dd}-%i.log
+
+---
+
+spring.profiles: dev
+spring.profiles.include: dev-app, dev-jpa, dev-oauth
+
+logging:
+  file.path: c://dev-log/helloprice/logs/helloprice-api
+
+server:
+  port: 8094
+
+---
+
+spring.profiles: test
+spring.profiles.include: test-jpa
+
+logging:
+  file.path: logs
+
+---
+
+spring.profiles: deploy
+spring.profiles.include: deploy-jpa
+
+spring.cloud.config.uri: http://192.168.219.103:8888
+
+logging:
+  file.path: /data/logs

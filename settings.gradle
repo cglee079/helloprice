@@ -7,9 +7,10 @@ pluginManagement {
 rootProject.name = 'helloprice'
 
 include 'helloprice-core',
-        'helloprice-domain',
+        'helloprice-api',
         'helloprice-crawl-agent',
-        'helloprice-crawl-core',
         'helloprice-crawl-worker',
         'helloprice-crawl-scheduler',
-        'helloprice-telegram'
+        'helloprice-notifier',
+        'helloprice-telegram',
+        'helloprice-product-update-analysis'

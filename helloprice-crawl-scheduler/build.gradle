@@ -1,5 +1,5 @@
 archivesBaseName = 'helloprice-crawl-scheduler'
-version = ''
+version = '3.0.0'
 
 bootJar {
     enabled = true
@@ -9,21 +9,42 @@ jar {
     enabled = false
 }
 
-
 dependencies {
-    implementation project(':helloprice-domain')
-    implementation project(':helloprice-crawl-core')
+    implementation project(':helloprice-core')
 
     implementation 'org.springframework.boot:spring-boot-starter'
     implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+
     implementation 'org.springframework.cloud:spring-cloud-stream'
     implementation 'org.springframework.cloud:spring-cloud-stream-binder-kafka'
+    implementation 'org.springframework.cloud:spring-cloud-starter-config'
+
+    implementation 'mysql:mysql-connector-java'
+    implementation "com.querydsl:querydsl-jpa"
+
     testImplementation 'org.springframework.cloud:spring-cloud-stream-test-support'
+    testImplementation group: 'com.h2database', name: 'h2', version: '1.4.200'
 }
 
-dependencyManagement {
-    imports {
-        mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
-    }
+apply plugin: "com.ewerk.gradle.plugins.querydsl"
+
+configurations {
+    querydsl.extendsFrom compileClasspath
+}
+
+def querydslDir = "$buildDir/generated/querydsl"
+querydsl {
+    jpa = true
+    querydslSourcesDir = querydslDir
+}
+sourceSets {
+    main.java.srcDir querydslDir
+}
+configurations {
+    querydsl.extendsFrom compileClasspath
+}
+compileQuerydsl {
+    options.annotationProcessorPath = configurations.querydsl
 }
 

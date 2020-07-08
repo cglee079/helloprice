@@ -1,0 +1,9 @@
+spring.batch:
+  job:
+    enabled: false
+
+product.max_dead_count: 10
+
+crawler:
+  useragent: test
+  read-timeout: 10000

@@ -1,0 +1,40 @@
+spring.application.name: helloprice-crawl-agent
+
+logging.file.name: helloprice-crawl-agent.%d{yyyy-MM-dd}-%i.log
+
+---
+
+spring.profiles: dev
+
+spring.profiles.include: dev-app, dev-jpa, dev-stream
+
+logging:
+  file.path: c://dev-log/helloprice/logs/helloprice-crawl-agent
+
+---
+
+spring.profiles: test
+spring.profiles.include: test-app, test-jpa, test-stream
+
+logging:
+  file.path: logs
+
+---
+
+spring.profiles: deploy
+spring.profiles.include: deploy-app, deploy-jpa, deploy-stream
+
+spring.cloud.config.uri: http://192.168.219.103:8888
+
+logging:
+  file.path: /data/logs
+
+---
+
+spring.profiles: external-deploy
+spring.profiles.include: external-deploy-app, external-deploy-jpa, external-deploy-stream
+
+spring.cloud.config.uri: http://125.186.242.83:8888
+
+logging:
+  file.path: /data/logs

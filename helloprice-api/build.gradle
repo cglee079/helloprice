@@ -1,0 +1,56 @@
+bootJar {
+    enabled = true
+}
+
+jar {
+    enabled = false
+}
+
+dependencies {
+    implementation project(':helloprice-core')
+    implementation project(':helloprice-crawl-worker')
+
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.springframework.boot:spring-boot-starter-security'
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
+    implementation 'org.springframework.cloud:spring-cloud-starter-config'
+
+    implementation group: 'io.jsonwebtoken', name: 'jjwt-jackson', version: '0.10.7'
+    implementation group: 'io.jsonwebtoken', name: 'jjwt-api', version: '0.10.7'
+    implementation group: 'io.jsonwebtoken', name: 'jjwt-impl', version: '0.10.7'
+
+    implementation group: 'com.google.firebase', name: 'firebase-admin', version: '6.8.1'
+
+    implementation 'mysql:mysql-connector-java'
+    implementation "com.querydsl:querydsl-jpa"
+
+    testImplementation group: 'com.h2database', name: 'h2', version: '1.4.200'
+
+}
+
+
+apply plugin: "com.ewerk.gradle.plugins.querydsl"
+
+configurations {
+    querydsl.extendsFrom compileClasspath
+}
+
+def querydslDir = "$buildDir/generated/querydsl"
+querydsl {
+    jpa = true
+    querydslSourcesDir = querydslDir
+}
+sourceSets {
+    main.java.srcDir querydslDir
+}
+configurations {
+    querydsl.extendsFrom compileClasspath
+}
+compileQuerydsl {
+    options.annotationProcessorPath = configurations.querydsl
+}
+
+
+
+

@@ -1,0 +1,19 @@
+spring.cloud:
+  function:
+    definition: consumeTelegramNotify;consumeEmailNotify;
+  stream:
+    bindings:
+      consumeTelegramNotify-in-0:
+        group: test
+        destination: tset
+        binder: kafka
+      consumeEmailNotify-in-0:
+        group: test
+        destination: test
+        binder: kafka
+    kafka:
+      binder:
+        brokers: localhost:9092
+        auto-add-partitions: true
+        min-partition-count: 1
+        auto-create-topics: true

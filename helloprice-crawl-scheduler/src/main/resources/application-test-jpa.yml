@@ -1,0 +1,12 @@
+spring.datasource:
+  url: jdbc:h2:mem:testdb
+  username: sa
+  password: sa
+  driverClassName: org.h2.Driver
+
+spring.jpa:
+  properties:
+    hibernate:
+      fomat_sql: true
+      show_sql: true
+      default_batch_fetch_size: 20

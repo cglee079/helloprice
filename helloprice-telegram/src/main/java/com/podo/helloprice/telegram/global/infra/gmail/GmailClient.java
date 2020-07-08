@@ -10,7 +10,6 @@ import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 import java.io.UnsupportedEncodingException;
 import java.util.Properties;
-import java.util.concurrent.Executor;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -20,28 +19,24 @@ import java.util.concurrent.Executors;
 @Component
 public class GmailClient {
 
-    @Value("${app.name}")
-    private String appName;
-
     @Value("${infra.gmail.send.timeout}")
-    private Integer sendTimeout;
+    private final Integer sendTimeout;
+
+    @Value("${infra.gmail.admin.username}")
+    private final String adminUsername;
 
     @Value("${infra.gmail.admin.email}")
-    private String adminEmail;
+    private final String adminEmail;
 
     private final Authenticator gmailAuth;
 
     private ExecutorService executorService = Executors.newFixedThreadPool(5);
 
-    public void sendEmailToAdmin(String title, String contents) {
-        sendEmail(appName, adminEmail, title, contents);
-    }
-
     public void sendEmail(String username, String userEmail, String title, String contents) {
 
         executorService.execute(() -> {
 
-            log.info("'{}({})'로 메일을 발송합니다, 메일제목 : {}", userEmail, username, title);
+            log.debug("EMAIL :: '{}({})'로 메일을 발송합니다, 메일제목 : {}", userEmail, username, title);
 
             try {
                 final Properties mailProperties = getMailProperties();
@@ -60,11 +55,11 @@ public class GmailClient {
 
     }
 
-    private MimeMessage createMessage(String username, String userEmail, String title, String contents, Session msgSession) throws MessagingException, UnsupportedEncodingException {
+    private MimeMessage createMessage(String username, String email, String title, String contents, Session msgSession) throws MessagingException, UnsupportedEncodingException {
         final MimeMessage message = new MimeMessage(msgSession);
 
-        message.setFrom(new InternetAddress(adminEmail, appName));
-        message.setRecipient(Message.RecipientType.TO, new InternetAddress(userEmail, username));
+        message.setFrom(new InternetAddress(adminEmail, adminUsername));
+        message.setRecipient(Message.RecipientType.TO, new InternetAddress(email, username));
         message.setSubject(title);
         message.setContent(contents, "text/html; charset=utf-8");
 

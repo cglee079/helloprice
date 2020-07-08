@@ -1,0 +1,28 @@
+spring.application.name: helloprice-notifier
+
+logging.file.name: helloprice-notifier.%d{yyyy-MM-dd}-%i.log
+
+---
+
+spring.profiles: dev
+spring.profiles.include: dev-infra, dev-stream
+
+server.port: 8083
+
+logging.file.path: c://dev-log/helloprice/logs/helloprice-notifier
+
+---
+
+spring.profiles: test
+spring.profiles.include: test-infra, test-stream
+
+logging.file.path: logs
+
+---
+
+spring.profiles: deploy
+spring.profiles.include: deploy-infra, deploy-stream
+
+spring.cloud.config.uri: http://192.168.219.103:8888
+
+logging.file.path: /data/logs
