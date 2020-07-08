@@ -1,0 +1,20 @@
+app:
+  name: test
+  version: test
+  help_url: https://www.podo-dev.com/blogs/185
+
+crawler:
+  useragent: test
+  read-timeout: test
+  webdriver-remotes : http://test.com
+
+user:
+  max_error_count: 1
+  max_product: 1
+
+product:
+  cache:
+    expire_minutes: 1
+
+email.key:
+    expire_minutes: 1

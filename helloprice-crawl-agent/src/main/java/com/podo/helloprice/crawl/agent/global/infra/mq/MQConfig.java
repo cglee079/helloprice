@@ -1,12 +1,17 @@
 package com.podo.helloprice.crawl.agent.global.infra.mq;
 
-import com.podo.helloprice.crawl.agent.job.CrawlJobRunner;
+import com.podo.helloprice.crawl.agent.global.infra.mq.consumer.CrawlProductJobConsumer;
+import com.podo.helloprice.crawl.agent.global.infra.mq.message.ProductToCrawlMessage;
+import com.podo.helloprice.crawl.agent.global.infra.mq.message.ProductUpdateMessage;
+import com.podo.helloprice.crawl.agent.global.infra.mq.publish.ProductUpdatePublisher;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import reactor.core.publisher.Flux;
 
 import java.util.function.Consumer;
+import java.util.function.Supplier;
 
 @Slf4j
 @Configuration
@@ -14,10 +19,13 @@ import java.util.function.Consumer;
 public class MQConfig {
 
     @Bean
-    public Consumer<String> lastCrawledItem(CrawlJobRunner crawlJobRunner) {
-        return (lastPublishedItem) ->{
-            log.info("메세지 수신 : " + lastPublishedItem);
-            crawlJobRunner.run(lastPublishedItem);
-        };
+    public Consumer<ProductToCrawlMessage> consumeProductToCrawl(CrawlProductJobConsumer crawlProductJobConsumer) {
+        return crawlProductJobConsumer;
     }
+
+    @Bean
+    public Supplier<Flux<ProductUpdateMessage>> publishProductUpdate(ProductUpdatePublisher productUpdatePublisher){
+        return productUpdatePublisher::processor;
+    }
+
 }

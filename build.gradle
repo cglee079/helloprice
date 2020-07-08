@@ -14,6 +14,7 @@ buildscript {
         classpath "org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}"
         classpath "io.spring.gradle:dependency-management-plugin:0.6.0.RELEASE"
         classpath "io.franzbecker:gradle-lombok:3.1.0"
+        classpath "gradle.plugin.com.ewerk.gradle.plugins:querydsl-plugin:${querydslPluginVersion}"
     }
 }
 
@@ -24,8 +25,13 @@ subprojects {
     apply plugin: 'io.spring.dependency-management'
 
     group = 'com.podo'
-    version = '1.0'
     sourceCompatibility = '1.8'
+
+    compileJava.options.encoding = 'UTF-8'
+
+    tasks.withType(JavaCompile) {
+        options.encoding = 'UTF-8'
+    }
 
     bootJar {
         enabled = false
@@ -52,8 +58,12 @@ subprojects {
         testImplementation('org.springframework.boot:spring-boot-starter-test') {
             exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
         }
+    }
 
-        testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    dependencyManagement {
+        imports {
+            mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
+        }
     }
 
     test {
